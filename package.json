@@ -1,0 +1,32 @@
+{
+  "author": "Blake Newman",
+  "name": "TweakJS",
+  "description": "TweakJS MVC Framework",
+  "version": "0.0.0",
+  "homepage": "http://tweakjs.com",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/blake_newman/TweakJS"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  },
+  "scripts": {
+    "start": "brunch watch --server",
+    "test": "brunch test"
+  },
+  "dependencies": {
+    "javascript-brunch": "*",
+    "coffee-script-brunch": "*",
+    "css-brunch": "*",
+    "uglify-js-brunch": "*",
+    "auto-reload-brunch": "*",
+    "after-brunch": "*"
+  },
+  "main": "public/tweak.js",
+  "directories": {
+    "test": "test"
+  },
+  "license": "MIT"
+}
