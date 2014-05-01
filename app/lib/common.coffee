@@ -12,6 +12,8 @@ tweak.Common =
             It should be overriden by your code to interact with the object.  
   ###
   init: ->
+
+  construct: ->
    
   ###
     Parameters:   url:String, [params]

@@ -10,14 +10,8 @@ tweak.Viewable = {
 
 class tweak.View
 
-  extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'splitComponents', 'clone', 'relToAbs'], Common)
-  init: -> 
+  extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'splitComponents', 'clone', 'relToAbs', 'init', 'construct'], Common)
 
-  ### 
-    Parameters: data:Object 
-    Description: Construct the View with given options  
-  ###   
-  construct: ->        
   ### 
     Description:      
   ###       
@@ -114,7 +108,7 @@ class tweak.View
     if parent.body is document.body then nodes.push document.body
     children(parent)
     nodes
-  isRendered: -> if @el?.parentNode then true else false
+
 
   getComponentNode: (parent, value) ->
     nodes = @getChildren(parent)
@@ -143,6 +137,8 @@ class tweak.View
 
       @parent.innerHTML = ''
       @el = null
+
+  isRendered: -> if @el?.parentNode then true else false
   
   ### 
     Description:      
@@ -162,13 +158,6 @@ class tweak.View
       callback temp.firstChild
     ,
     0)
-
-  # Left in here for now, but redundent
-  # Remove when current project is finished
-  htmlToDom: (str) -> 
-    dom = document.createElement('div')
-    dom.innerHTML = str
-    dom
 
   # Tweak has an optional dependecy of any selector engine in the tweak.Selector object
   element: (element, root= @el) -> 
@@ -211,6 +200,7 @@ class tweak.View
         for curClass in currentClasses
           if curClass is addClass then add = false
         if add then item.className += " #{addClass}"
+      item.className = item.className.replace(/\s*/g,' ');
 
   removeClass: (element, classes = '') -> 
     if @element(element).length is 0 then return 
@@ -220,9 +210,7 @@ class tweak.View
       for prop in classes
         if prop is ' ' then continue
         item.className = item.className.replace(prop, '')
-  
-  # Events are stored on the body element. This is to help with event deligation.
-  # Events are also stored in the domEvents variable, each view has its own domEvents variable. 
+ 
   DOMon: (element, type, callback, bubble = true) -> 
     el = @el
     elements = @element(element)
@@ -231,8 +219,6 @@ class tweak.View
         callback e, element            
       , false)
 
-
-  # Go through dom Events and remove events to the body element
   DOMoff: (element, type, callback) -> 
     elements = @element(element)
     for item in elements
