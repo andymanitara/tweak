@@ -38,7 +38,7 @@ exports.config =
     definition:false
     wrapper: (path, data) ->
       """
-    (function(window){
+    ;\n(function(window){
     #{data}
-    })(window) \n\n
+    })(window); \n\n
       """    
