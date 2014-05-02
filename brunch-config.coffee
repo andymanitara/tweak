@@ -18,10 +18,7 @@ exports.config =
           'app/lib/model.coffee',
           'app/lib/view.coffee',
           'app/lib/router.coffee',
-          'app/lib/collection.coffee',
-          'app/lib/views.coffee',
-          'app/lib/models.coffee',
-          'app/lib/components.coffee'
+          'app/lib/collection.coffee'
         ]
 
     stylesheets:
