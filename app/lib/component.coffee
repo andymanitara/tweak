@@ -85,48 +85,43 @@ class tweak.Component
   start: ->
     @construct()
     @init()
-    @models.init()
-    for item in @models.data
-      item.init()
-    @components.init()
-    @controllers.init()    
-    for item in @controllers.data
-      item.init()
-    if @router?
-      @router.init()
+
+  ### 
+    Params: name:String, surrogate:Object, params...
+    Description: Add a module to the component
+    If module can't be found then it will use a surrogate object
+  ###
+  addModule: (name, surrogate, params...) ->
+    module = @[name] = new @findModule(@paths, name, surrogate)(params...)
+    module.component = module.relation = @
+    module.config = @config[name]
+    module
 
   ###
     Shortcut function to adding view
   ###
-  addViews: (params...) ->    
-    if not @config.views 
-      @config.views = if @config.view then {view:@config.view} or {view:{}}  
-    @buildModule("view", tweak.View, params...)
+  addView: (params...) -> @addModule("view", tweak.View, params...)
 
   ###
     Shortcut function to adding Model
   ###
-  addModels: (params...) ->
-    if not @config.models 
-      @config.models = if @config.model then {model:@config.model} or {model:{}}  
-    @buildModule("model", tweak.Model, params...)
+  addModel: (params...) -> @addModule("model", tweak.Model, params...)
 
   ###
     Shortcut function to adding controller
   ###
-  addControllers: (params...) ->     
-    @config.controllers ?= ["controller"]
-    @buildModule("controller", tweak.Controller, params...)
+  addController: (params...) -> @addModule("controller", tweak.Controller, params...)
 
   ###
     Shortcut function to adding components
   ###
-  addComponents: (params...) -> @buildModule("components", tweak.Components, params...)
+  addComponents: (params...) -> @addModule("components", tweak.Components, params...)
 
   ###
     Shortcut function to adding router
   ###
-  addRouter: (params...) -> @buildModule("router", tweak.Router, params...)
+  addRouter: (params...) -> @addModule("router", tweak.Router, params...)
+
 
   ###
     Constructs the component and its modules
@@ -138,29 +133,38 @@ class tweak.Component
       @addRouter()
 
     # Add modules to the component
-    @addModels()
-    @addViews() 
+    @addModel()
+    @addView() 
     @addComponents()
-    @addControllers()
+    @addController()
     
-    # Add references to the the main collections and modules
-    refs = ["models", "views", "controllers", "components", "router"]
-    for module in refs
-      prop = @[module]
-      for item in refs
-        if module is item then continue
+    # Add references to the the modules
+    for name in ["model", "view", "controller", "components", "router"]
+      prop = @[name]
+      for item in ["name", "model", "view", "controller", "components", "router"]
+        if name is item then continue
         if prop? then prop[item] = @[item]
 
     # Construct the modules after they have been added
-    @models.construct()
-    @views.construct()
+    @model.construct()
+    @view.construct()
     @components.construct()
-    @controllers.construct()
+    @controller.construct()
     if @router?        
       @router.construct()
     
     true
     
+  ###
+    initialise the component and its modules
+  ###
+  init: ->
+    @model.init()
+    @components.init()
+    @controller.init()
+    if @router?
+      @router.init()
+    true
 
   ###
     Renders itself and its subcomponents

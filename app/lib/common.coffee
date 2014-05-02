@@ -164,32 +164,3 @@ tweak.Common =
           values.push("#{prefix}#{i}")
       else values.push item
     values
-
-  ### 
-    Params: name:String, surrogate:Object, params...
-    Description: Add a module to the component
-    If module can't be found then it will use a surrogate object
-  ###
-  buildModule: (name, surrogate, params...) ->
-    module = new @findModule(@paths, name, surrogate)(params...)
-    module.component = module.relation = @
-    module.config = @config[name]
-    module.name = @name
-    module
-
-  addReferences: (module) ->
-    # Add references to the the main collections and modules
-    refs = ["models", "views", "controllers", "components", "router"]
-    for name in refs
-      prop = @[name]
-      for item in refs
-        if name is item then continue
-        if prop? then prop[item] = @[item]
-
-    # Add references to the main modules of collections
-    # The main module is always the first item
-    refs = ["model", "view", "controller"]
-    for name in refs
-      for item in refs
-        if name is item then continue
-        module[item] = @["#{name}s"].at(0)
