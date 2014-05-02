@@ -13,8 +13,7 @@ class tweak.Controllers extends tweak.Collection
   ### 
   construct: ->
     super()
-    controllers = @config or ["controller"]
-    for item in controllers
+    for item in @config
       @addController(item)
 
   ###

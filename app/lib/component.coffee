@@ -21,7 +21,7 @@
 ###
 
 class tweak.Component   
-  constructor: (relation, name) ->   
+  constructor: (relation, name, config) ->   
     # Build relation if window and build its default properties
     # The relation is it direct caller
     relation = @relation = if relation is window then {} else relation
@@ -31,7 +31,7 @@ class tweak.Component
     # Set name of component
     @name = name or ""
 
-    @config = @buildConfig() or {}
+    @config = @buildConfig(config) or {}
 
     # The config file can prevent automatic build and start of componets      
     if not @config.preventStart
@@ -45,11 +45,17 @@ class tweak.Component
       Builds the config component
       It inteligently iherits modules, and configuartion settings from its extending components
   ###
-  buildConfig: ->  
+  buildConfig: (options) ->  
     configs = []    
     paths = @paths = []
-    # Gets all configs, by configs extension path
+
     config = @name
+    if options
+      configs.push options
+      paths.push @name
+      config = config.extends
+    
+    # Gets all configs, by configs extension path
     while config
       requested = @require "#{config}/config"
       # Store all the paths
@@ -92,17 +98,25 @@ class tweak.Component
   ###
     Shortcut function to adding view
   ###
-  addViews: (params...) -> @buildModule("view", tweak.View, params...)
+  addViews: (params...) ->    
+    if not @config.views 
+      @config.views = if @config.view then {view:@config.view} or {view:{}}  
+    @buildModule("view", tweak.View, params...)
 
   ###
     Shortcut function to adding Model
   ###
-  addModels: (params...) -> @buildModule("model", tweak.Model, params...)
+  addModels: (params...) ->
+    if not @config.models 
+      @config.models = if @config.model then {model:@config.model} or {model:{}}  
+    @buildModule("model", tweak.Model, params...)
 
   ###
     Shortcut function to adding controller
   ###
-  addControllers: (params...) -> @buildModule("controller", tweak.Controller, params...)
+  addControllers: (params...) ->     
+    @config.controllers ?= ["controller"]
+    @buildModule("controller", tweak.Controller, params...)
 
   ###
     Shortcut function to adding components

@@ -99,7 +99,6 @@ class tweak.EventSystem
       context = name.context
       name = name.name or name.event or ""
 
-    console.log name
     event = @find(name)
     return false if not event?.__callbacks
     callbacks = event.__callbacks
