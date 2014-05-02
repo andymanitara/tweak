@@ -10,32 +10,37 @@ tweak.Viewable = {
 
 class tweak.View
 
-  extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'splitComponents', 'clone', 'relToAbs', 'init', 'construct'], Common)
+  tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'splitComponents', 'clone', 'relToAbs', 'init', 'construct'], tweak.Common)
 
   ### 
     Description:      
   ###       
   render: -> 
+    # Triggers event so you an do some configurations before it renders
     @trigger("#{@name}:view:prerender")
 
     @model.set("rendering", true)
-
-    if not @model.get("id") then @model.set "id", @name.replace(/\//g, "-")
-    attachment = @config.attachment or 'after'
-
+    
+    # Makes sure that there is an id for this component set, either by the config or by its name
+    @model.set "id",  @config.className or @name.replace(/\//g, "-")
+    # Build the template with the date from the model
     template = if @config.template then @require(@config.template) else @findModule(@component.paths, 'template')
     template = template(@model.data)
     
     @asyncInnerHTML(template, (template) =>
 
+      # adds a unique class to the element based on the component name
       addClass = (element) =>
         if not element then return
         if not element.className? then element.className = ""
         element.className += " #{@model.get('id')}"
 
+
+      # Attach nodes to the dome
+      # It can either replace whats is in its parent node, or append after or be inserted before.
       attach = =>
         @parent = parent = @getParent()
-        switch attachment
+        switch @config.attachment or 'after'
           when 'bottom', 'after'
             @parent.appendChild(template)
             addClass(@parent.lastElementChild)
@@ -57,7 +62,7 @@ class tweak.View
         @trigger("#{@name}:view:rendered")
         @init()
      
-      # Check if other components are waiting to finish rendering, if they are then wait
+      # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
       previousComponent = -1
       comps = @component.parent.components?.data or []
       for item in comps
@@ -68,10 +73,6 @@ class tweak.View
           if not render then attach()
         )
       else attach()
-
-
-     
-
     )
 
     # Set viewable height and width
@@ -92,15 +93,13 @@ class tweak.View
     children = (node = {}) =>
       node.children ?= []
       for element in node.children
-        ignore = false
         # Check if that a node is part of a lower down component 
         # If it is then we do not want to loop through it later
         # so we can ignore it
         par = @component.parent
         if par.components
           for component in par.components.data
-            if component.view.el is element then ignore = true
-        if ignore then continue
+            if component.view.el is element then continue
         if element.children then children(element)
         nodes.push(element)
     # If the parent is the body then put it is the nodes array
@@ -109,21 +108,17 @@ class tweak.View
     children(parent)
     nodes
 
-
   getComponentNode: (parent, value) ->
     nodes = @getChildren(parent)
     nodes.push parent
     for prop in nodes
-      attach = ''
       components = ''
       if child then break
       try
         components = prop.getAttribute('tweak-components') or ''
-        attach = prop.getAttribute('tweak-attachments') or ''
       catch e
-      attr = "#{components} #{attach}"
-      if attr is " " then continue
-      for val in @splitComponents(attr)
+      if components is " " then continue
+      for val in @splitComponents(components)
         if value is val then child = prop
     child
 
@@ -138,6 +133,9 @@ class tweak.View
       @parent.innerHTML = ''
       @el = null
 
+  ### 
+    Description: checks to see if the item is rendered; this is detirmined if the node has a parentNode    
+  ###
   isRendered: -> if @el?.parentNode then true else false
   
   ### 

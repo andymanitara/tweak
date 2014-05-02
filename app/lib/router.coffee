@@ -6,7 +6,7 @@
 
 class tweak.Router      
 
-  extend(@, ['trigger', 'on', 'off', 'init'], Common)
+  tweak.Extend(@, ['trigger', 'on', 'off', 'init'], tweak.Common)
   construct: ->
     @before = '#'
     if history.pushState then history.pushState null, null, ''
