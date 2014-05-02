@@ -32,6 +32,8 @@ exports.config =
       port: [1234, 2345, 3456]
       delay: 200 if require('os').platform() is 'win32'
 
+  sourceMaps: false
+
   server:
     port: 3455
 
