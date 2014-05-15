@@ -209,7 +209,7 @@ class tweak.View
         if prop is ' ' then continue
         item.className = item.className.replace(prop, '')
  
-  DOMon: (element, type, callback, bubble = true) -> 
+  DOMon: (element, type, callback) -> 
     el = @el
     elements = @element(element)
     for item in elements

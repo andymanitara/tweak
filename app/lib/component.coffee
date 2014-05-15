@@ -39,7 +39,7 @@ class tweak.Component
       @start()
 
 
-  tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'clone', 'same', 'combine', 'splitComponents', 'relToAbs', 'buildModule', 'init'], tweak.Common)
+  tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'clone', 'same', 'combine', 'splitComponents', 'relToAbs', 'init'], tweak.Common)
   ### 
     Description:
       Builds the config component
