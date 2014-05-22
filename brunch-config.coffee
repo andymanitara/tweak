@@ -13,11 +13,11 @@ exports.config =
           'app/lib/common.coffee',
           'app/lib/helpers.coffee',
           'app/lib/events.coffee',
-          'app/lib/component.coffee',,
-          'app/lib/collection.coffee'
+          'app/lib/model.coffee',
+          'app/lib/component.coffee',
+          'app/lib/collection.coffee',
           'app/lib/components.coffee',
           'app/lib/controller.coffee',
-          'app/lib/model.coffee',
           'app/lib/view.coffee',
           'app/lib/router.coffee',
           'app/lib/sync.coffee'
@@ -31,11 +31,9 @@ exports.config =
       port: [1234, 2345, 3456]
       delay: 200 if require('os').platform() is 'win32'
 
-  sourceMaps: false
-
   server:
     port: 3455
-
+  
   modules:
     definition:false
     wrapper: (path, data) ->

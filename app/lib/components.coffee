@@ -9,9 +9,9 @@ The collection should be usable to have a collection of anything like views, mod
 class tweak.Components extends tweak.Collection
   of:'components'
   tweak.Extend(@, ['splitComponents', 'findModule', 'relToAbs'], tweak.Common)
+  
   ### 
-    Parameters: data:Object 
-    Description: Construct the Collection with given options  
+    Description: Construct the Collection with given options from the config file
   ### 
   construct: ->
     @data = []
@@ -26,28 +26,28 @@ class tweak.Components extends tweak.Collection
     for key, item of data
       @add item, {quiet:true, store:false}
 
-  render: ->
+  ###
+    Rendering functionality to reduce code
+  ###
+  componentRender = (type) ->
     if @length() is 0
       @trigger("#{@name}:#{@of}:ready")
       return
     total = 0
     totalItems = @data.length
     for item in @data
-      item.render()
-      @on("#{item.name}:views:rendered", =>
+      item[type]()
+      @on("#{item.name}:views:#{type}d", =>
         total++
         if total >= totalItems then @trigger("#{@name}:#{@of}:ready")
       )
 
-  rerender: ->
-    if @length() is 0
-      @trigger("#{@name}:#{@of}:ready")
-      return
-    total = 0
-    totalItems = @data.length
-    for item in @data
-      item.rerender()
-      @on("#{item.name}:views:rendered", =>
-        total++
-        if total >= totalItems then @trigger("#{@name}:#{@of}:ready")
-      )
+  ###
+    Description: Renders all of its components, also triggers ready state when all components are ready
+  ###
+  render: -> componentRender("render");
+
+  ###
+    Description: rerender all of its components, also triggers ready state when all components are ready
+  ###
+  rerender: -> componentRender("rerender");

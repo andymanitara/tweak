@@ -92,7 +92,8 @@ class tweak.Component
     If module can't be found then it will use a surrogate object
   ###
   addModule: (name, surrogate, params...) ->
-    module = @[name] = new @findModule(@paths, name, surrogate)(params...)
+    Module = @findModule(@paths, name, surrogate)
+    module = @[name] = new Module(params...)
     module.component = module.relation = @
     module.config = @config[name]
     module

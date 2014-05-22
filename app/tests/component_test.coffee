@@ -27,10 +27,10 @@ describe("Component", ->
 
   afterEach ->
     expect(component).to.have.property("name", "test")
-    expect(component).to.have.property("views")
-    expect(component).to.have.property("models")
+    expect(component).to.have.property("view")
+    expect(component).to.have.property("model")
     expect(component).to.have.property("components")
     expect(component).to.have.property("parent")
-    expect(component).to.have.property("controllers")
+    expect(component).to.have.property("controller")
     expect(component).to.have.property("config")
 )
