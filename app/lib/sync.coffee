@@ -1,10 +1,8 @@
-### 
+###
   ----- SYNC -----
 
 
 ###
 
-class tweak.Sync      
-
+class tweak.Sync
   tweak.Extend(@, ['init'], tweak.Common)
- 

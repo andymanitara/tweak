@@ -1,27 +1,29 @@
-### 
+###
   ----- COMPONENT -----
-  TweakJS has its own unique twist to the MVC concept. 
+  TweakJS has its own unique twist to the MVC concept.
 
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
   For example you can plug "Web Components" into your static site; like sliders, accordians.
-  The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps. 
-  
+  The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps.
+
   TweakJS wraps its Models, Views, Templates, and Controllers into a component module.
-  The component module acts inteliigently to build up your application with simple config files. 
+  The component module acts inteliigently to build up your application with simple config files.
   Each component its built through a config object; this allows for powerfull configuration with tonnes of flexibity.
 
   Each component can have sub components which are accessible in both directions; although it is recommended to keep functionality seperate
   it sometimes comes in handy to have access to other parts of the application.
 
-  Each component can extend another component, which will then inheret the models, views, templates, and controllers directly from that component. 
+  Each component can extend another component, which will then inheret the models, views, templates, and controllers directly from that component.
   If you however want to extend a component yet using a different Model you can simply overrite that model, or extend the functionality to the components model.
-  
+
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
 ###
 
-class tweak.Component   
-  constructor: (relation, name, config) ->   
+class tweak.Component
+  modules = ["model", "view", "components", "controller", "router"]
+
+  constructor: (relation, name, config) ->
     # Build relation if window and build its default properties
     # The relation is it direct caller
     relation = @relation = if relation is window then {} else relation
@@ -33,20 +35,20 @@ class tweak.Component
 
     @config = @buildConfig(config) or {}
 
-    # The config file can prevent automatic build and start of componets      
+    # The config file can prevent automatic build and start of componets
     if not @config.preventStart
       # Start the construcion of the component
       @start()
 
-
   tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'clone', 'same', 'combine', 'splitComponents', 'relToAbs', 'init'], tweak.Common)
-  ### 
+
+  ###
     Description:
       Builds the config component
-      It inteligently iherits modules, and configuartion settings from its extending components
+      It inteligently iherits modules, and configuration settings from its extending components
   ###
-  buildConfig: (options) ->  
-    configs = []    
+  buildConfig: (options) ->
+    configs = []
     paths = @paths = []
 
     config = @name
@@ -54,7 +56,7 @@ class tweak.Component
       configs.push options
       paths.push @name
       config = config.extends
-    
+
     # Gets all configs, by configs extension path
     while config
       requested = @require "#{config}/config"
@@ -78,15 +80,15 @@ class tweak.Component
     result.events ?= {}
     result
 
-  ### 
+  ###
     Description:
-      This initiates the construction and initialisation of the component. 
+      This initiates the construction and initialisation of the component.
   ###
   start: ->
     @construct()
     @init()
 
-  ### 
+  ###
     Params: name:String, surrogate:Object, params...
     Description: Add a module to the component
     If module can't be found then it will use a surrogate object
@@ -123,73 +125,61 @@ class tweak.Component
   ###
   addRouter: (params...) -> @addModule("router", tweak.Router, params...)
 
-
   ###
     Constructs the component and its modules
   ###
   construct: ->
     # Router is optional as it is perfomance heavy
     # So it needs to be explicility defind in the config for the component that it should be used
-    if @config.router 
+    if @config.router
       @addRouter()
 
     # Add modules to the component
     @addModel()
-    @addView() 
+    @addView()
     @addComponents()
     @addController()
-    
+
     # Add references to the the modules
-    for name in ["model", "view", "controller", "components", "router"]
+    for name in modules
       prop = @[name]
-      for item in ["name", "model", "view", "controller", "components", "router"]
-        if name is item then continue
-        if prop? then prop[item] = @[item]
+      for item in modules
+        if name isnt item then prop?[item] = @[item]
 
     # Construct the modules after they have been added
-    @model.construct()
-    @view.construct()
-    @components.construct()
-    @controller.construct()
-    if @router?        
-      @router.construct()
-    
+    for name in modules then @[name]?.construct()
+
+    # Return true
     true
-    
+
   ###
-    initialise the component and its modules
+    initialise the component and its modules exept the view
   ###
   init: ->
-    @model.init()
-    @components.init()
-    @controller.init()
-    if @router?
-      @router.init()
+    for name in modules
+      if name isnt "view" then @[name]?.construct()
     true
 
-  ###
-    Renders itself and its subcomponents
-    It has a built in component:ready event trigger; this allows you to perform your logic once things are defiantly ready
-  ###
-  render: ->
-    @on("#{@name}:views:rendered", =>
-      @on("#{@name}:components:ready", => @trigger("#{@name}:ready", @name))        
-      @components.render()
-    )     
-    @views.render()
+  componentRender = (type) ->
+    @on("#{@name}:views:#{type}ed", =>
+      @on("#{@name}:components:ready", => @trigger("#{@name}:ready", @name))
+      @components[type]()
+    )
+    @view[type]()
 
   ###
     Renders itself and its subcomponents
     It has a built in component:ready event trigger; this allows you to perform your logic once things are defiantly ready
   ###
-  rerender: ->
-    @on("#{@name}:views:rendered", =>
-      @on("#{@name}:components:ready", => @trigger("#{@name}:ready", @name))
-      @components.rerender() 
-    )     
-    @views.rerender()    
-  
-  ### 
+  render: -> componentRender("render")
+
+  ###
+    Renders itself and its subcomponents
+    It has a built in component:ready event trigger; this allows you to perform your logic once things are defiantly ready
+  ###
+  rerender: -> componentRender("rerender")
+
+  ###
     Parameters:   co:Object
     Description:  Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
   ###

@@ -25,20 +25,20 @@ tweak.Common =
   ###
   init: ->
   construct: ->
-   
+
   ###
     Parameters:   url:String, [params]
     Description:  If using require; this function will find the specified modules.
-            This is used when building controllers and collections dynamically. 
+            This is used when building controllers and collections dynamically.
             It will try to find specified modules; or default to tweaks default objects
     returns: Object
   ###
   require: (url, params...) ->
     # Convert url to absolute path
     url = @relToAbs(url, @name)
-    try 
+    try
       result = require url
-    catch error 
+    catch error
       throw new Error "Can not find path #{url}"
     result
 
@@ -48,7 +48,7 @@ tweak.Common =
     returns: String
   ###
   relToAbs: (path, prefix) -> path.replace(/^\.[\/\\]/, "#{prefix}/")
-  
+
   ###
     Parameters:   paths:Array, module:String, surrogate:Object (optional)
     Description:  Try to find a module by name in multiple paths. If there is a surrogate, then if not found it will return this instead
@@ -58,7 +58,7 @@ tweak.Common =
   findModule: (paths, module, surrogate = null) ->
     for path in paths
       path = @relToAbs(path, @name)
-      try         
+      try
         return require "#{path}/#{module}"
       catch e
         ###
@@ -71,19 +71,19 @@ tweak.Common =
         if e.message isnt "Cannot find module \"#{path}/#{module}\" from \"#{errorPath}\""
           e.message = "Found module (#{module}) for component #{@name} but there was an error: #{e.message}"
           throw e
-    
+
     return surrogate if surrogate?
     # If no paths are found then throw an error
     throw new Error "Could not find a default module (#{module}) for component #{paths[0]}"
-  
-  ### 
+
+  ###
     Description: Event trigger handler for DOM and the Event API
     *** Triggering a DOM EVENT ***
     Parameters: params...
                 params[0]:domElement #element
                 params[1]:String #type
-    
-    *** Triggering event from EVENT API ***    
+
+    *** Triggering event from EVENT API ***
     Parameters: params...
                 params[0]:String|Object(
                                   {
@@ -101,37 +101,35 @@ tweak.Common =
     0)
     return
 
-  ### 
+  ###
     Description: Event on handler for DOM and the Event API
     *** adding DOM EVENT ***
     Parameters: params...
                 params[0]:domElement #element
                 params[1]:String #type
                 params[2]:function #callback
-    
-    *** adding event to EVENT API ***    
+
+    *** adding event to EVENT API ***
     Parameters: params...
                 params[1]:String #name
                 params[2]:function #callback
                 params[3]:maxCalls #optional
-
-
   ###
   on: (params...) ->
-    if typeof params[0] is "string"         
-      tweak.Events.on @, params...          
+    if typeof params[0] is "string"
+      tweak.Events.on @, params...
     else (@view or @).DOMon params...
     return
 
-  ### 
+  ###
     Description: Event off handler for DOM and the Event API
     *** removing DOM EVENT ***
     Parameters: params...
                 params[0]:domElement #element
                 params[1]:String #type
                 params[2]:function #callback
-    
-    *** removing event from EVENT API ***    
+
+    *** removing event from EVENT API ***
     Parameters: params...
                 params[1]:String #name
                 params[2]:function #callback (optional)
@@ -144,13 +142,13 @@ tweak.Common =
       tweak.Events.off @, params...
     else (@view or @).DOMoff params...
     return
-  
+
   ###
     Parameters:   obj:(Object or Array)
     Description:  Clone an object to remove reference to original object or simply to copy it.
     Returns: Object
   ###
-  clone: (obj) ->  
+  clone: (obj) ->
     # Handle the 3 simple types, and null or undefined. returns itself if it tries to clone itslef otherwise it will stack overflow
     return obj if null is obj or "object" isnt typeof obj or obj is @
 
@@ -159,7 +157,7 @@ tweak.Common =
       copy = new Date()
       copy.setTime obj.getTime()
       return copy
-    
+
     # Handle Array
     if obj instanceof Array
       copy = []
@@ -170,7 +168,7 @@ tweak.Common =
         copy[i] = @clone(obj[i])
         i++
       return copy
-    
+
     # Handle Object
     if obj instanceof Object
       copy = {}
@@ -180,21 +178,21 @@ tweak.Common =
     throw new Error("Unable to copy object its type isnt supported")
 
     return
-  
+
   ###
     Parameters:   arr:Array
     Description:  Reduce an array be remove elements from the front of the array and returning the new array
     returns: Array
-  ###   
-  reduced: (arr, length) -> 
+  ###
+  reduced: (arr, length) ->
     start = arr.length - length
-    for [start..length] then arr[_i]  
+    for [start..length] then arr[_i]
 
   ###
     Parameters:   one:Object, two:Object
     Description:  Check if object is the same
     returns: Boolean
-  ### 
+  ###
   same: (one, two) ->
     for key, prop of one
       if not two[key]? or two[key] isnt prop then return false
@@ -205,8 +203,8 @@ tweak.Common =
     Parameters:   one:Object, two:Object
     Description:  merge properites from object two into object one
     returns: Object
-  ### 
-  combine: (one, two) -> 
+  ###
+  combine: (one, two) ->
     for key, prop of two
       if typeof prop is 'object'
         one[key] ?= if prop instanceof Array then [] else {}
@@ -219,9 +217,9 @@ tweak.Common =
     Parameters:   str:String, name:String
     Description:  Reduce component names like ./cd[0-98] to an array of full path names
     returns: Array of Strings
-  ### 
+  ###
   splitComponents: (str, name) ->
-    values = []       
+    values = []
     arrayRegex = /^(.*)\[((\d*)\-(\d*)|(\d*))\]$/
     for item in str.split(" ")
       if item is " " then continue

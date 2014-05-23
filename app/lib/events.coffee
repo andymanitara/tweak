@@ -1,6 +1,6 @@
-### 
+###
   ----- Events System -----
-  The framework is driven by a powerful and simple event system. 
+  The framework is driven by a powerful and simple event system.
 
   The event system simply stores the callbacks in an object tree.
   The tree allows quick traversal of events, during interaction with the event API
@@ -27,14 +27,14 @@ class tweak.EventSystem
   constructor: -> @reset()
 
   ###
-    Description:  
-      Add an event listener into the event system. 
+    Description:
+      Add an event listener into the event system.
       The event system will store the object based on its event name
       The event name is split on the / and : characters
 
     Parameters:   name:String, callback:Function, maxCalls:Number
 
-    Examples: 
+    Examples:
       // Sample event
       tweak.Events.on(this, "sample/event", function(){
         alert("Sample event triggered.")
@@ -45,14 +45,14 @@ class tweak.EventSystem
       // The event is automatically removed from the event object on max calls
       tweak.Events.on(this, "sample/event", function(){
         alert("Sample event triggered.")
-      }, 2)        
+      }, 2)
   ###
   on: (context, name, callback, maxCalls = null) ->
     # If there is no callback then return from function
     if not callback? then return false
     # Find the event / build the event path
     event = @find(name, true)
-    # Convert callback to string; 
+    # Convert callback to string;
     # This is used as a saftey device to prevent multiple events being added which call the same function
     callbackString = callback.toString()
     for item in event.__callbacks ?= []
@@ -60,15 +60,15 @@ class tweak.EventSystem
     event.__callbacks.push({context, callback, maxCalls, calls:0})
     true
 
-  ### 
-    Description:  
+  ###
+    Description:
       Remove from events by given name
       If no specific function is given then all the events under node are removed
-    Parameters: context, name:String, callback:Function  
-  ###   
+    Parameters: context, name:String, callback:Function
+  ###
   off: (context, name, callback) ->
     event = @find(name)
-    # Return false if there is no event      
+    # Return false if there is no event
     return false if not event?.__callbacks
 
     # If callback isnt specified then clear the callbacks and return true
@@ -76,7 +76,7 @@ class tweak.EventSystem
       event.__callbacks = []
       return true
 
-    # Check to see if the callback matches 
+    # Check to see if the callback matches
     # If event matches critera then delete and return true
     callbackString = callback.toString()
     for key, item of event.__callbacks
@@ -86,14 +86,14 @@ class tweak.EventSystem
     false
 
   ###
-    Description:  
+    Description:
       Trigger events by name
       Also pass params to event
-    Parameters:  name:String or Object ({name:String, context}), [params] 
-    Returns: 
+    Parameters:  name:String or Object ({name:String, context}), [params]
+    Returns:
       Returned values of the callbacks
-      False if no callbacks or event found     
-  ###   
+      False if no callbacks or event found
+  ###
   trigger: (name, params...) ->
     if typeof name is "object"
       context = name.context
@@ -115,32 +115,32 @@ class tweak.EventSystem
           delete callbacks[key]
     called
   
-  ### 
-    Description: 
+  ###
+    Description:
       Iterate through the events to find given event
 
     Parameters: name:String, build:Boolean = false
     Returns: Event or Null
-  ###   
+  ###
   find: (name, build = false) ->
     # Split the name of event
     name = splitEventName(name)
     # Iterate through the event object
     event = @events
     for item in name
-      if not event[item] 
+      if not event[item]
         # If build is true then the event path with be added to the tree
-        if build       
+        if build
           event[item] = {__parent:event}
-        else 
+        else
           # If the event cant be found then return null
           return null
       event = event[item]
     # Return the event object
     event
   
-  ###     
-    Description: Resets the events back to empty.  
+  ###
+    Description: Resets the events back to empty.
   ###
   reset: -> @events = {}; return
 

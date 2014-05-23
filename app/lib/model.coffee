@@ -1,10 +1,10 @@
-### 
+###
   ----- MODEL -----
   The model is simply a way of storing some data, with event triggering on changes to the model
-  In common MVC concept the Model is not always a database. So the controller should be used to get data from a database. 
-  The controller is normally the interface between the view and the models data. 
+  In common MVC concept the Model is not always a database. So the controller should be used to get data from a database.
+  The controller is normally the interface between the view and the models data.
   When the model updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
-  You can update the model quietly aswell.  
+  You can update the model quietly aswell.
   The model has its own history, so you can easily revert.
 ###
 class tweak.Model
@@ -19,23 +19,22 @@ class tweak.Model
     # Defaults are overriden completely when overriden by an extending model, however config model data is merged
     if @defaults? then @set @defaults, {quiet:true, store:false}
     data = @config or {}
-    if data then @set data, {quiet:true, store:false}  
+    if data then @set data, {quiet:true, store:false}
   
-
-  ### 
-    Parameters:   property:String 
+  ###
+    Parameters:   property:String
     Description:  returns whether or not the object exists or not
   ###
   has: (property) -> @data[property]?
   
-  ### 
+  ###
     Parameters:   property:String
     Description:  Get a models property
   ###
   get: (property) -> @data[property]
   
-  ### 
-    Parameters:   properties: object, [params]  
+  ###
+    Parameters:   properties: object, [params]
     Description:  Set multiple properties or one property of the model by passing an object with object of the data you with to update.
                   Pass options to control extra functionality
                     quiet:Boolean to set whether to do it quiet or not. Default is false.
@@ -43,18 +42,18 @@ class tweak.Model
                   Each property set triggers an event. And triggers an event that the model has changed.
   ###
   set: (properties, params...) ->
-    options = params[0] 
+    options = params[0]
     if typeof properties is 'string'
       prevProps = properties
       properties = {}
       properties[prevProps] = params[0]
       options = params[1]
-    options or= {}    
+    options or= {}
     store = if options.store? then options.store else true
-    quiet = options.quiet 
+    quiet = options.quiet
     if store then @store()
     for key, prop of properties
-      @data[key] = prop       
+      @data[key] = prop
       @length++
       if not quiet then @trigger "#{@name}:model:changed:#{key}", prop
 
@@ -62,9 +61,9 @@ class tweak.Model
 
     return
 
-  ### 
+  ###
     Parameters:   properties:Object or String, options:Object
-    Description:  Remove a single property or many properties. 
+    Description:  Remove a single property or many properties.
                   Pass options to control extra functionality
                     quiet:Boolean to set whether to do it quiet or not. Default is false.
                     store:Boolean  is to set whether to store this change to the history. Default is true
@@ -76,21 +75,21 @@ class tweak.Model
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       for key, prop of data
-        if key is property 
+        if key is property
           @length--
           delete @data[key]
           @trigger "#{@name}:model:removed:#{key}"
     
     if store then @store()
-    if not quiet then @trigger "#{@name}:model:changed" 
+    if not quiet then @trigger "#{@name}:model:changed"
     return
   
-  ### 
+  ###
     Description:  Revert the model back to previous state in history, default is one previous version
   ###
   revert: (params...) ->
     if typeof params[0] is 'object' then options = params[0]
-    else 
+    else
       amount = params[0]
       options = params[1]
     options or= {}
@@ -103,12 +102,12 @@ class tweak.Model
     @set @clone(state), options
     return
   
-  ### 
+  ###
     Description:  Returns the changed properties between the current model and a previous model state. Default is one state behind.
-  ###     
+  ###
   changed: (position) ->
     position ?= 1
-    if position > @history.length then position = @history.length 
+    if position > @history.length then position = @history.length
     state = @history[@history.length - position]
     data = @data
     results = {}
@@ -120,50 +119,50 @@ class tweak.Model
           if prop isnt prevProp then results[key] = prevProp
     results
   
-  ### 
+  ###
     description:   Store the models data to the history
   ###
-  store: -> 
-    @history.push(@clone @data) 
+  store: ->
+    @history.push(@clone @data)
     memLength = @relation.memoryLength
     history = @history
     historyLength = history.length
     if memLength? and memLength < historyLength then @reduced(memLength)
     return
   
-  ### 
+  ###
     description:  Reset the model back to defaults
   ###
   reset: (options = {}) ->
     @data = {}
     @history = []
     @construct()
-    return  
-  
-  ### 
-    Description: Get an element ad position of 
+    return
+
   ###
-  at: (position) -> 
+    Description: Get an element ad position of
+  ###
+  at: (position) ->
     position = Number(position)
     data = @data
-    i = 0   
+    i = 0
     for key, prop of data
       if i is position then return data[key]
       i++
 
     null
   
-  ###   
-    Description:  
-  ###   
+  ###
+    Description:
+  ###
   removeAt: (position, options = {}) ->
     element = @at position
     for key, prop of element
       @remove key, options
     return
   
-  ###   
-    Description:  
+  ###
+    Description:
   ###
   where: (value) ->
     result = []

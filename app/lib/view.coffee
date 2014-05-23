@@ -12,10 +12,10 @@ class tweak.View
 
   tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'splitComponents', 'clone', 'relToAbs', 'init', 'construct'], tweak.Common)
 
-  ### 
-    Description:      
-  ###       
-  render: -> 
+  ###
+    Description:
+  ###
+  render: ->
     # Triggers event so you an do some configurations before it renders
     @trigger("#{@name}:view:prerender")
 
@@ -44,19 +44,19 @@ class tweak.View
           when 'bottom', 'after'
             @parent.appendChild(template)
             addClass(@parent.lastElementChild)
-            @el = @parent.lastElementChild  
-          when 'top', 'before'     
+            @el = @parent.lastElementChild
+          when 'top', 'before'
             @parent.insertBefore(template, @parent.firstChild)
             addClass(@parent.firstElementChild)
-            @el = @parent.firstElementChild  
+            @el = @parent.firstElementChild
           when 'replace'
             for item in @parent.children
-              try 
-                @parent.removeChild item 
-              catch e 
+              try
+                @parent.removeChild item
+              catch e
             @parent.appendChild template
             addClass(@parent.firstElementChild)
-            @el = @parent.firstElementChild  
+            @el = @parent.firstElementChild
 
         @model.set("rendering", false)
         @trigger("#{@name}:view:rendered")
@@ -69,7 +69,7 @@ class tweak.View
         if item is @component then break
         previousComponent = item
       if previousComponent isnt -1 and previousComponent.model?.get("rendering")
-        @on("#{previousComponent.name}:model:changed:rendering", (render) => 
+        @on("#{previousComponent.name}:model:changed:rendering", (render) ->
           if not render then attach()
         )
       else attach()
@@ -80,10 +80,10 @@ class tweak.View
 
     return
 
-  ### 
-    Description:      
   ###
-  rerender: -> 
+    Description:
+  ###
+  rerender: ->
     @clear()
     @render()
     @trigger("#{@name}:view:rerendered")
@@ -93,7 +93,7 @@ class tweak.View
     children = (node = {}) =>
       node.children ?= []
       for element in node.children
-        # Check if that a node is part of a lower down component 
+        # Check if that a node is part of a lower down component
         # If it is then we do not want to loop through it later
         # so we can ignore it
         par = @component.parent
@@ -122,24 +122,24 @@ class tweak.View
         if value is val then child = prop
     child
 
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   clear: ->
-    if @parent 
+    if @parent
       for node in @getChildren(@parent)
         @off(node)
 
       @parent.innerHTML = ''
       @el = null
 
-  ### 
-    Description: checks to see if the item is rendered; this is detirmined if the node has a parentNode    
+  ###
+    Description: checks to see if the item is rendered; this is detirmined if the node has a parentNode
   ###
   isRendered: -> if @el?.parentNode then true else false
   
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   getParent: ->
     view = @component.parent?.view
@@ -149,7 +149,7 @@ class tweak.View
     @getComponentNode(parent, name) or view?.el or throw new Error("Unable to find view parent for #{@name} (#{name})")
   
   asyncInnerHTML: (HTML, callback) ->
-    setTimeout(=>
+    setTimeout(->
       temp = document.createElement("div")
       frag = document.createDocumentFragment()
       temp.innerHTML = HTML
@@ -158,23 +158,23 @@ class tweak.View
     0)
 
   # Tweak has an optional dependecy of any selector engine in the tweak.Selector object
-  element: (element, root= @el) -> 
-    if typeof element is 'string' 
+  element: (element, root= @el) ->
+    if typeof element is 'string'
       if tweak.Selector
         tweak.Selector(element, root)
       else throw new Error("Trying to get element with selector engine, but none defined to tweak.Selector")
-    else [element] 
+    else [element]
 
   height: (element) -> @element(element)[0].offsetHeight
   insideHeight: (element) -> @element(element)[0].clientHeight
   width: (element) -> @element(element)[0].offsetWidth
   insideWidth: (element) -> @element(element)[0].clientWidth
 
-  offsetFrom:(element, from = "top", relativeTo = window.document.body) -> 
+  offsetFrom:(element, from = "top", relativeTo = window.document.body) ->
     element = @element(element)[0]
     elementBounds = element.getBoundingClientRect()
     relativeBounds = relativeTo.getBoundingClientRect()
-    elementBounds[from] - relativeBounds[from] 
+    elementBounds[from] - relativeBounds[from]
 
   offsetTop: (element, relativeTo) -> @offsetFrom(element, "top", relativeTo)
   offestBottom: (element, relativeTo) -> @offsetFrom(element, "bottom", relativeTo)
@@ -185,7 +185,7 @@ class tweak.View
     results = []
     if typeof classes isnt "string" then classes = ''
     for key, prop of classes.split(" ")
-      if prop isnt "" then results.push prop 
+      if prop isnt "" then results.push prop
     results
 
   addClass: (element, classes = '') ->
@@ -198,10 +198,10 @@ class tweak.View
         for curClass in currentClasses
           if curClass is addClass then add = false
         if add then item.className += " #{addClass}"
-      item.className = item.className.replace(/\s*/g,' ');
+      item.className = item.className.replace(/\s*/g,' ')
 
-  removeClass: (element, classes = '') -> 
-    if @element(element).length is 0 then return 
+  removeClass: (element, classes = '') ->
+    if @element(element).length is 0 then return
     classes = @splitClasses(classes)
     for item in @element(element)
       if not item? then continue
@@ -209,20 +209,20 @@ class tweak.View
         if prop is ' ' then continue
         item.className = item.className.replace(prop, '')
  
-  DOMon: (element, type, callback) -> 
+  DOMon: (element, type, callback) ->
     el = @el
     elements = @element(element)
     for item in elements
       item.addEventListener(type, (e) ->
-        callback e, element            
+        callback e, element
       , false)
 
-  DOMoff: (element, type, callback) -> 
+  DOMoff: (element, type, callback) ->
     elements = @element(element)
     for item in elements
-      item.removeEventListener(type, callback, false) 
+      item.removeEventListener(type, callback, false)
 
-  DOMtrigger: (element, type) ->        
+  DOMtrigger: (element, type) ->
     elements = @element(element)
     e = new Event(type)
     for item in elements

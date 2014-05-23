@@ -1,9 +1,9 @@
-### 
+###
 ----- Collection -----
 
 Needs to be refactored from tweak.components
 
-###   
+###
 
 class tweak.Collection extends tweak.Model
 
@@ -13,26 +13,26 @@ class tweak.Collection extends tweak.Model
 
   build: (relation, data) ->
     @component = @relation = relation
-    @config = data 
+    @config = data
     @name ?= @component.name
     @construct()
   
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   pop: (options = {}) ->
     result = @data[length()-1]
     @remove result, options
     return result
   
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   add: (data, options = {}) ->
     @set "#{@length}", data, options
   
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   place: (data, position, options = {}) ->
     options.data = options.data or {}
@@ -43,18 +43,18 @@ class tweak.Collection extends tweak.Model
       if position is _i then break
       result.push @data[_i]
     result.push data
-    for data in @data
+    for data in @datas
       if _j < position then continue
       result.push @data[_j]
     @data = result
     if store then @store()
-    if not quiet 
+    if not quiet
       @trigger "#{@name}:#{@of}:changed"
       @trigger "#{@name}:#{@of}:changed:#{position}"
     return
   
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   pluck: (property) ->
     result = []
@@ -62,8 +62,8 @@ class tweak.Collection extends tweak.Model
       if prop is property then result.push prop
     return result
 
-  ###   
-    Description:  
+  ###
+    Description:
   ###
   whereData: (property, value) ->
     result = []
@@ -90,5 +90,6 @@ class tweak.Collection extends tweak.Model
   sort: ->
     result = []
     for key, item of @data
-      result[result.length] = item 
+      result[result.length] = item
     @data = result
+    true

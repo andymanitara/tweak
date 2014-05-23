@@ -1,20 +1,19 @@
-### 
+###
   ----- ROUTER -----
 
 
 ###
 
-class tweak.Router      
-
+class tweak.Router
   tweak.Extend(@, ['trigger', 'on', 'off', 'init'], tweak.Common)
   construct: ->
     @before = '#'
     if history.pushState then history.pushState null, null, ''
 
 
-  ### 
-    Description:      
-  ###  
+  ###
+    Description:
+  ###
   start: (options = {}) ->
     speed = options.speed or 50
     quiet = options.quiet
@@ -24,13 +23,13 @@ class tweak.Router
     , speed
     return
   
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   stop: -> clearInterval(@watch); return
   
-  ### 
-    Description:      
+  ###
+    Description:
   ###
   check: (options = {}) ->
     hash = window.location.hash.substring 1
@@ -52,19 +51,19 @@ class tweak.Router
         else
           object = {}
           object[itemArr[0]] = itemArr[1]
-          hashArr.push object         
+          hashArr.push object
           if not quiet then @trigger "#{@name}:router:data:"+itemArr[0], object[itemArr[1]]
       if not quiet then @trigger "#{@name}:router:changed", hashArr
     return
   
-  ### 
-    Description:      
   ###
-  set: (arr, options = {}) -> 
+    Description:
+  ###
+  set: (arr, options = {}) ->
     location = ''
     for item in arr
       if typeof item isnt 'object' then location += item
-      else 
+      else
         itemArr = []
         for key, prop of item
           itemArr.push key, prop
