@@ -1,3 +1,5 @@
 # TweakJS Framework
 
-# Documentation writeup to come
+# Documentation
+For documentation see:
+[wiki.tweakjs.com](wiki.tweakjs.com)
