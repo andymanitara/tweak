@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset='UTF-8'>
+  <title>CoffeeScript API Documentation</title>
+  <script src='../../javascript/application.js'></script>
+  <script src='../../javascript/search.js'></script>
+  <link rel='stylesheet' href='../../stylesheets/application.css' type='text/css'>
+</head>
+  <body>
+    <div id='base' data-path='../../'></div>
+<div id='header'>
+  <div id='menu'>
+    <a href='../../extra/README.md.html' title='TweakJS'>
+      TweakJS
+    </a>
+    &raquo;
+    <a href='../../alphabetical_index.html' title='Index'>
+      Index
+    </a>
+    &raquo;
+    <span class='title'>tweak</span>
+    &raquo;
+    <span class='title'>Common</span>
+  </div>
+</div>
+    <div id='content'>
+      <h1>
+        Mixin:
+        tweak.Common
+      </h1>
+      <table class='box'>
+        <tr>
+          <td>Defined in:</td>
+          <td>app\lib\common.coffee</td>
+        </tr>
+      </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>Common functions that are used in multiple places throughout the framework
+The aim of this is to reduce the size of the framework</p>
+</div>
+<div class='tags'>
+</div>
+      <h2>Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#init-'>
+        ~
+(void)
+<b>init</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#construct-'>
+        ~
+(void)
+<b>construct</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#require-'>
+        ~
+(Object)
+<b>require</b><span>(path)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      If using require; this function will find the specified modules. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#relToAbs-'>
+        ~
+(void)
+<b>relToAbs</b><span>(path, prefix)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Parameters:   path:String, prefix:String Description:  convert relative path to an absolute path, relative path defined by ./ or .\
+returns: String</p>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#findModule-'>
+        ~
+(void)
+<b>findModule</b><span>(paths, module, surrogate = null)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Parameters:   paths:Array, module:String, surrogate:Object (optional) Description:  Try to find a module by name in multiple paths.
+
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#trigger-'>
+        ~
+(void)
+<b>trigger</b><span>(params...)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Description: Event trigger handler for DOM and the Event API <strong><em> Triggering a DOM EVENT </em></strong>
+Parameters: params...</p>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#on-'>
+        ~
+(void)
+<b>on</b><span>(params...)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Description: Event on handler for DOM and the Event API <strong><em> adding DOM EVENT </em></strong>
+Parameters: params...</p>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#off-'>
+        ~
+(void)
+<b>off</b><span>(params...)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Description: Event off handler for DOM and the Event API <strong><em> removing DOM EVENT </em></strong>
+Parameters: params...</p>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#clone-'>
+        ~
+(void)
+<b>clone</b><span>(obj)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Parameters:   obj:(Object or Array) Description:  Clone an object to remove reference to original object or simply to copy it.
+
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#reduced-'>
+        ~
+(void)
+<b>reduced</b><span>(arr, length)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Parameters:   arr:Array Description:  Reduce an array be remove elements from the front of the array and returning the new array
+returns: Array</p>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#same-'>
+        ~
+(void)
+<b>same</b><span>(one, two)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Parameters:   one:Object, two:Object Description:  Check if object is the same
+returns: Boolean</p>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#combine-'>
+        ~
+(void)
+<b>combine</b><span>(one, two)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Parameters:   one:Object, two:Object Description:  merge properites from object two into object one
+returns: Object</p>
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#splitComponents-'>
+        ~
+(void)
+<b>splitComponents</b><span>(str, name)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      <p>Parameters:   str:String, name:String Description:  Reduce component names like ./cd[0-98] to an array of full path names
+returns: Array of Strings</p>
+    </span>
+  </li>
+</ul>
+      <h2>Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='init-'>
+      ~
+(void)
+<b>init</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <div class='note'>
+    <strong>Note:</strong>
+    Empty function 
+  </div>
+  
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='construct-'>
+      ~
+(void)
+<b>construct</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <div class='note'>
+    <strong>Note:</strong>
+    Empty function 
+  </div>
+  
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='require-'>
+      ~
+(Object)
+<b>require</b><span>(path)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>If using require; this function will find the specified modules.
+This is used when building controllers and collections dynamically.
+It will try to find specified modules; or default to tweaks default objects</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>path</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Path to module </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      <tt>Object</tt>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='relToAbs-'>
+      ~
+(void)
+<b>relToAbs</b><span>(path, prefix)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parameters:   path:String, prefix:String
+Description:  convert relative path to an absolute path, relative path defined by ./ or .\
+returns: String</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='findModule-'>
+      ~
+(void)
+<b>findModule</b><span>(paths, module, surrogate = null)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parameters:   paths:Array, module:String, surrogate:Object (optional)
+Description:  Try to find a module by name in multiple paths. If there is a surrogate, then if not found it will return this instead
+returns: Object
+throws: When cant be found and no surrogate is provided; when there is an error further down the scope.</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='trigger-'>
+      ~
+(void)
+<b>trigger</b><span>(params...)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Description: Event trigger handler for DOM and the Event API
+<strong><em> Triggering a DOM EVENT </em></strong>
+Parameters: params...
+            params[0]:domElement #element
+            params[1]:String #type</p><p><strong><em> Triggering event from EVENT API </em></strong>
+Parameters: params...
+            params[0]:String|Object(
+                              {
+                                name:String,
+                                context:String
+                              }
+                            )</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='on-'>
+      ~
+(void)
+<b>on</b><span>(params...)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Description: Event on handler for DOM and the Event API
+<strong><em> adding DOM EVENT </em></strong>
+Parameters: params...
+            params[0]:domElement #element
+            params[1]:String #type
+            params[2]:function #callback</p><p><strong><em> adding event to EVENT API </em></strong>
+Parameters: params...
+            params[1]:String #name
+            params[2]:function #callback
+            params[3]:maxCalls #optional</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='off-'>
+      ~
+(void)
+<b>off</b><span>(params...)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Description: Event off handler for DOM and the Event API
+<strong><em> removing DOM EVENT </em></strong>
+Parameters: params...
+            params[0]:domElement #element
+            params[1]:String #type
+            params[2]:function #callback</p><p><strong><em> removing event from EVENT API </em></strong>
+Parameters: params...
+            params[1]:String #name
+            params[2]:function #callback (optional)
+            params[3]:maxCalls #optional</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='clone-'>
+      ~
+(void)
+<b>clone</b><span>(obj)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parameters:   obj:(Object or Array)
+Description:  Clone an object to remove reference to original object or simply to copy it.
+Returns: Object</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='reduced-'>
+      ~
+(void)
+<b>reduced</b><span>(arr, length)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parameters:   arr:Array
+Description:  Reduce an array be remove elements from the front of the array and returning the new array
+returns: Array</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='same-'>
+      ~
+(void)
+<b>same</b><span>(one, two)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parameters:   one:Object, two:Object
+Description:  Check if object is the same
+returns: Boolean</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='combine-'>
+      ~
+(void)
+<b>combine</b><span>(one, two)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parameters:   one:Object, two:Object
+Description:  merge properites from object two into object one
+returns: Object</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='splitComponents-'>
+      ~
+(void)
+<b>splitComponents</b><span>(str, name)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Parameters:   str:String, name:String
+Description:  Reduce component names like ./cd[0-98] to an array of full path names
+returns: Array of Strings</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+</div>
+    </div>
+    <div id='footer'>
+  May 27, 14 10:23:32 by
+  <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
+    Codo
+  </a>
+  2.0.8
+  &#10034;
+  Press H to see the keyboard shortcuts
+  &#10034;
+  <a href='http://twitter.com/netzpirat' target='_parent'>@netzpirat</a>
+  &#10034;
+  <a href='http://twitter.com/_inossidabile' target='_parent'>@_inossidabile</a>
+</div>
+<iframe id='search_frame'></iframe>
+<div id='fuzzySearch'>
+  <input type='text'>
+  <ol></ol>
+</div>
+<div id='help'>
+  <p>
+    Quickly fuzzy find classes, mixins, methods, file:
+  </p>
+  <ul>
+    <li>
+      <span>T</span>
+      Open fuzzy finder dialog
+    </li>
+  </ul>
+  <p>
+    Control the navigation frame:
+  </p>
+  <ul>
+    <li>
+      <span>L</span>
+      Toggle list view
+    </li>
+    <li>
+      <span>C</span>
+      Show class list
+    </li>
+    <li>
+      <span>I</span>
+      Show mixin list
+    </li>
+    <li>
+      <span>F</span>
+      Show file list
+    </li>
+    <li>
+      <span>M</span>
+      Show method list
+    </li>
+    <li>
+      <span>E</span>
+      Show extras list
+    </li>
+  </ul>
+  <p>
+    You can focus and blur the search input:
+  </p>
+  <ul>
+    <li>
+      <span>S</span>
+      Focus search input
+    </li>
+    <li>
+      <span>Esc</span>
+      Blur search input
+    </li>
+  </ul>
+</div>
+  </body>
+</html>
