@@ -1,5 +1,4 @@
 ###
-  ----- COMPONENT -----
   TweakJS has its own unique twist to the MVC concept.
 
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
@@ -18,11 +17,37 @@
 
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
+  @include tweak.Common.require
+  @include tweak.Common.findModule
+  @include tweak.Common.trigger
+  @include tweak.Common.on
+  @include tweak.Common.off
+  @include tweak.Common.clone
+  @include tweak.Common.same
+  @include tweak.Common.combine
+  @include tweak.Common.splitComponents
+  @include tweak.Common.relToAbs
 ###
-
 class tweak.Component
-  modules = ["model", "view", "components", "controller", "router"]
+  # Private constants
+  MODULES = ["model", "view", "components", "controller", "router"]
+  
+  # @property [Object]
+  model: null
+  # @property [Object]
+  view: null
+  # @property [Object]
+  components: null
+  # @property [Object]
+  controller: null
+  # @property [Object]
+  router: null
 
+  ###
+    @param [Object] relation Relation to the component
+    @param [string] name Name of the component
+    @param [Object] config (optional) Configuartion for the component
+  ###
   constructor: (relation, name, config) ->
     # Build relation if window and build its default properties
     # The relation is it direct caller
@@ -40,12 +65,13 @@ class tweak.Component
       # Start the construcion of the component
       @start()
 
-  tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'clone', 'same', 'combine', 'splitComponents', 'relToAbs', 'init'], tweak.Common)
+  tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'clone', 'same', 'combine', 'splitComponents', 'relToAbs'], tweak.Common)
 
   ###
-    Description:
-      Builds the config component
-      It inteligently iherits modules, and configuration settings from its extending components
+    @param [Object] options Component options
+    @return [Object] returns combined config based on the configs extending inheritance
+    Builds the config component
+    It inteligently iherits modules, and configuration settings from its extending components
   ###
   buildConfig: (options) ->
     configs = []
@@ -81,17 +107,18 @@ class tweak.Component
     result
 
   ###
-    Description:
-      This initiates the construction and initialisation of the component.
+    Initiates the construction and initialisation of the component.
   ###
   start: ->
     @construct()
     @init()
 
   ###
-    Params: name:String, surrogate:Object, params...
-    Description: Add a module to the component
-    If module can't be found then it will use a surrogate object
+    Add a module to the component, if module can't be found then it will use a surrogate object
+    @param [String] name Name of the module
+    @param [Object] surrogate Surrogate if the module can not be found
+    @param [...] params Parameters passed into the module on constuction
+    @return [Object] Constructed object
   ###
   addModule: (name, surrogate, params...) ->
     Module = @findModule(@paths, name, surrogate)
@@ -101,32 +128,42 @@ class tweak.Component
     module
 
   ###
-    Shortcut function to adding view
+    Shortcut method to adding view using the addModule method
+    @param [...] params Parameters passed to into the view constructor
+    @return [Object] View
   ###
   addView: (params...) -> @addModule("view", tweak.View, params...)
 
   ###
-    Shortcut function to adding Model
+    Shortcut method to adding Model using the addModule method
+    @param [...] params Parameters passed to into the model constructor
+    @return [Object] Model
   ###
   addModel: (params...) -> @addModule("model", tweak.Model, params...)
 
   ###
-    Shortcut function to adding controller
+    Shortcut method to adding controller using the addModule method
+    @param [...] params Parameters passed to into the controller constructor
+    @return [Object] Controller
   ###
   addController: (params...) -> @addModule("controller", tweak.Controller, params...)
 
   ###
-    Shortcut function to adding components
+    Shortcut method to adding components using the addModule method
+    @param [...] params Parameters passed to into the components constructor
+    @return [Object] Components
   ###
   addComponents: (params...) -> @addModule("components", tweak.Components, params...)
 
   ###
-    Shortcut function to adding router
+    Shortcut method to adding router using the addModule method
+    @param [...] params Parameters passed to into the router constructor
+    @return [Object] Router
   ###
   addRouter: (params...) -> @addModule("router", tweak.Router, params...)
 
   ###
-    Constructs the component and its modules
+    Constructs the component and its modules using the addModule method
   ###
   construct: ->
     # Router is optional as it is perfomance heavy
@@ -141,24 +178,20 @@ class tweak.Component
     @addController()
 
     # Add references to the the modules
-    for name in modules
+    for name in MODULES
       prop = @[name]
-      for item in modules
+      for item in MODULES
         if name isnt item then prop?[item] = @[item]
 
     # Construct the modules after they have been added
-    for name in modules then @[name]?.construct()
-
-    # Return true
-    true
+    for name in MODULES then @[name]?.construct()
 
   ###
     initialise the component and its modules exept the view
   ###
   init: ->
-    for name in modules
+    for name in MODULES
       if name isnt "view" then @[name]?.construct()
-    true
 
   componentRender = (type) ->
     @on("#{@name}:views:#{type}ed", =>
@@ -169,22 +202,21 @@ class tweak.Component
 
   ###
     Renders itself and its subcomponents
-    It has a built in component:ready event trigger; this allows you to perform your logic once things are defiantly ready
+    @event #{@name}:ready Triggers ready event when itself and its components are ready/rendered
   ###
   render: -> componentRender("render")
 
   ###
-    Renders itself and its subcomponents
-    It has a built in component:ready event trigger; this allows you to perform your logic once things are defiantly ready
+    Rerenders itself and its subcomponents
+    @event #{@name}:ready Triggers ready event when itself and its components are ready/rerendered
   ###
   rerender: -> componentRender("rerender")
 
   ###
-    Parameters:   co:Object
-    Description:  Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
+    Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
+    @param [Object] options (optional) Options = {store:true, quiet:false}
   ###
   destroy: (options = {}) ->
     @views.clear()
     components = @relation.components
     if components? then components.remove @name, options
-    return
