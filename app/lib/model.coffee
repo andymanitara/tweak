@@ -10,9 +10,10 @@
 class tweak.Model
   length: 0
   
-  tweak.Extend(@, ['trigger', 'on', 'off', 'clone', 'reduced', 'same'], tweak.Common)
-  init: ->
-
+  tweak.Extend(@, ['trigger', 'on', 'off', 'clone', 'reduced', 'same', 'init'], tweak.Common)
+  ###
+    Constructs the model ready for use
+  ###
   construct: ->
     @data = {}
     @history = []

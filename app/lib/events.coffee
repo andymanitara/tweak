@@ -16,6 +16,7 @@ class tweak.EventSystem
   # Initialise the event object
   events: {}
 
+  # @private
   constructor: -> @reset()
 
   ###

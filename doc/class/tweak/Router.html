@@ -34,26 +34,28 @@
           <td>Defined in:</td>
           <td>app\lib\router.coffee</td>
         </tr>
+        <tr>
+          <td>Includes:</td>
+          <td>
+            tweak.Common.trigger
+            tweak.Common.on
+            tweak.Common.off
+            tweak.Common.init
+          </td>
+        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>----- ROUTER -----</p>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Document description 
+  </div>
+  <p>Router module</p>
 </div>
 <div class='tags'>
 </div>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#construct-dynamic'>
-        #
-(void)
-<b>construct</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-    </span>
-  </li>
   <li>
     <span class='signature'>
       <a href='#start-dynamic'>
@@ -63,7 +65,7 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      Start watching the roouter for changes, options for speed and whether to be quiet 
     </span>
   </li>
   <li>
@@ -75,7 +77,7 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      Stop watching the router for changes 
     </span>
   </li>
   <li>
@@ -83,11 +85,11 @@
       <a href='#check-dynamic'>
         #
 (void)
-<b>check</b><span>(options = {})</span>
+<b>check</b><span>(quiet = false)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      Check the window location, if there is an update from previous url then trigger an event 
     </span>
   </li>
   <li>
@@ -95,11 +97,11 @@
       <a href='#set-dynamic'>
         #
 (void)
-<b>set</b><span>(arr, options = {})</span>
+<b>set</b><span>(obj, quiet = false)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      Set the url hash with certain data; triggering router based events 
     </span>
   </li>
   <li>
@@ -107,24 +109,49 @@
       <a href='#mask-dynamic'>
         #
 (void)
-<b>mask</b><span>(arr)</span>
+<b>mask</b><span>(obj)</span>
       </a>
     </span>
     <span class='desc'>
+      Masks the url hash with certain data without triggering events 
     </span>
   </li>
 </ul>
-      <h2>Instance Method Details</h2>
+      <h2>
+        <small>Included Method Summary</small>
+      </h2>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.trigger
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.on
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.off
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.init
+      </h3>
+      <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
-    <p class='signature' id='construct-dynamic'>
+    <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>construct</b><span>()</span>
+<b>constructor</b><span>()</span>
+      <span class='note private'>Private</span>
       <br>
     </p>
-    
+    <div class='tags'>
+</div>
   </div>
+</div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='start-dynamic'>
       #
@@ -133,9 +160,48 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>Start watching the roouter for changes, options for speed and whether to be quiet</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The listening options object </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>speed</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The amount of time per check in ms </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>If true then it wont trigger events </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -146,7 +212,7 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>Stop watching the router for changes</p>
 </div>
 <div class='tags'>
 </div>
@@ -155,41 +221,141 @@
     <p class='signature' id='check-dynamic'>
       #
 (void)
-<b>check</b><span>(options = {})</span>
+<b>check</b><span>(quiet = false)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    event name is made up from the data in the url. The router data is split up by / \ per data set, and by : = between the key and data. 
+  </div>
+  <p>Check the window location, if there is an update from previous url then trigger an event</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      hash url examples
+    </h4>
+    <pre><code class='coffeescript'>tweakjs.com&#47;#search&#47;safe&#47;version=2
+triggers:
+  #{@name}:router:data:search
+  #{@name}:router:data:safe
+  #{@name}:router:data:version (passes in 2)
+  #{@name}:router:changed (passes in {search:true, safe:true, version:2})
+
+tweakjs.com&#47;#version:1&#47;search&#47;safe&#47;version=2
+triggers:
+  #{@name}:router:data:version (passes in 1)
+  #{@name}:router:data:search
+  #{@name}:router:data:safe
+  #{@name}:router:data:version (passes in 2)
+  #{@name}:router:changed (passes in {search:true, safe:true, version:2})</code></pre>
+  </div>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>If true then it wont trigger events </span>
+    </li>
+  </ul>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:router:data:#{data
+      </p>
+      <div class='docstring'>
+  <p>key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:router:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event and passes the data of the url back</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+  </div>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='set-dynamic'>
       #
 (void)
-<b>set</b><span>(arr, options = {})</span>
+<b>set</b><span>(obj, quiet = false)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>Set the url hash with certain data; triggering router based events</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>obj</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Simple object to pass into url. Can&#39;t be more than one level deep. </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>If true router events will not be triggered on change </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='mask-dynamic'>
       #
 (void)
-<b>mask</b><span>(arr)</span>
+<b>mask</b><span>(obj)</span>
       <br>
     </p>
-    
+    <div class='docstring'>
+  <p>Masks the url hash with certain data without triggering events</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>obj</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Simple object to pass into url. Can&#39;t be more than one level deep. </span>
+    </li>
+  </ul>
+</div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  May 27, 14 10:23:32 by
+  May 28, 14 12:02:32 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

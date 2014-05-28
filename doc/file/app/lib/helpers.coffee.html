@@ -44,7 +44,7 @@
       </a>
     </span>
     <span class='desc'>
-      Description: Extend an objects prototype with functions. 
+      Extend an objects prototype with functions. 
     </span>
   </li>
 </ul>
@@ -56,18 +56,104 @@
 (void)
 <b>tweak.Extend</b><span>(context, selection, properties)</span>
       <br>
+      ~
+(void)
+<b>tweak.Extend</b><span>(context, functions)</span>
+      <br>
     </p>
     <div class='docstring'>
-  <p>Description: Extend an objects prototype with functions.
-Parameters: context:Object, selection:Array of (Strings or Functions), [properties:Array of Functions]</p>
+  <p>Extend an objects prototype with functions.</p>
 </div>
 <div class='tags'>
+  <div class='overloads'>
+    <h3>Overloads:</h3>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>tweak.Extend</b><span>(context, selection, properties)</span>
+      </p>
+      <div class='docstring'>
+  <p>Extend an objects prototype with functions from another object, based on an array of names</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>context to apply the methods </span>
+    </li>
+    <li>
+      <span class='name'>selection</span>
+      <span class='type'>
+        (
+          <tt>Array&lt;String&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>An array of strings representing the names of function to apply to the context </span>
+    </li>
+    <li>
+      <span class='name'>properties</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>an object containing the functions to extend to the context </span>
+    </li>
+  </ul>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>tweak.Extend</b><span>(context, functions)</span>
+      </p>
+      <div class='docstring'>
+  <p>Extend an objects prototype with functions</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>context to apply the methods </span>
+    </li>
+    <li>
+      <span class='name'>functions</span>
+      <span class='type'>
+        (
+          <tt>Array&lt;Function&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>to apply to an object </span>
+    </li>
+  </ul>
+</div>
+    </div>
+  </div>
 </div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  May 27, 14 10:23:32 by
+  May 28, 14 12:02:32 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

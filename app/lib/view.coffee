@@ -1,13 +1,11 @@
-###
------ VIEW -----
-
-
-###
 tweak.Viewable = {
   width : window.innerWidth or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientWidth
   height : window.innerHeight or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientHeight
 }
 
+###
+  @todo class documentation
+###
 class tweak.View
 
   tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'splitComponents', 'clone', 'relToAbs', 'init', 'construct'], tweak.Common)
@@ -87,7 +85,9 @@ class tweak.View
     @clear()
     @render()
     @trigger("#{@name}:view:rerendered")
-
+  ###
+    Description:
+  ###
   getChildren: (parent) =>
     nodes = []
     children = (node = {}) =>
@@ -107,7 +107,9 @@ class tweak.View
     if parent.body is document.body then nodes.push document.body
     children(parent)
     nodes
-
+  ###
+    Description:
+  ###
   getComponentNode: (parent, value) ->
     nodes = @getChildren(parent)
     nodes.push parent
@@ -148,6 +150,9 @@ class tweak.View
     name = @config.attachmentName or @name
     @getComponentNode(parent, name) or view?.el or throw new Error("Unable to find view parent for #{@name} (#{name})")
   
+  ###
+    Description:
+  ###
   asyncInnerHTML: (HTML, callback) ->
     setTimeout(->
       temp = document.createElement("div")
@@ -164,23 +169,58 @@ class tweak.View
         tweak.Selector(element, root)
       else throw new Error("Trying to get element with selector engine, but none defined to tweak.Selector")
     else [element]
-
+  ###
+    Description:
+  ###
   height: (element) -> @element(element)[0].offsetHeight
+
+  ###
+    Description:
+  ###
   insideHeight: (element) -> @element(element)[0].clientHeight
+
+  ###
+    Description:
+  ###
   width: (element) -> @element(element)[0].offsetWidth
+
+  ###
+    Description:
+  ###
   insideWidth: (element) -> @element(element)[0].clientWidth
 
+  ###
+    Description:
+  ###
   offsetFrom:(element, from = "top", relativeTo = window.document.body) ->
     element = @element(element)[0]
     elementBounds = element.getBoundingClientRect()
     relativeBounds = relativeTo.getBoundingClientRect()
     elementBounds[from] - relativeBounds[from]
-
+  
+  ###
+    Description:
+  ###
   offsetTop: (element, relativeTo) -> @offsetFrom(element, "top", relativeTo)
+
+  ###
+    Description:
+  ###
   offestBottom: (element, relativeTo) -> @offsetFrom(element, "bottom", relativeTo)
+  
+  ###
+    Description:
+  ###
   offsetLeft: (element, relativeTo) -> @offsetFrom(element, "left", relativeTo)
+  
+  ###
+    Description:
+  ###
   offsetRight: (element, relativeTo) -> @offsetFrom(element, "right", relativeTo)
 
+  ###
+    Description:
+  ###
   splitClasses: (classes) ->
     results = []
     if typeof classes isnt "string" then classes = ''
@@ -188,6 +228,9 @@ class tweak.View
       if prop isnt "" then results.push prop
     results
 
+  ###
+    Description:
+  ###
   addClass: (element, classes = '') ->
     addingClasses = @splitClasses(classes)
     for item in @element(element)
@@ -200,6 +243,9 @@ class tweak.View
         if add then item.className += " #{addClass}"
       item.className = item.className.replace(/\s*/g,' ')
 
+  ###
+    Description:
+  ###
   removeClass: (element, classes = '') ->
     if @element(element).length is 0 then return
     classes = @splitClasses(classes)
@@ -208,7 +254,10 @@ class tweak.View
       for prop in classes
         if prop is ' ' then continue
         item.className = item.className.replace(prop, '')
- 
+  
+  ###
+    Description:
+  ###
   DOMon: (element, type, callback) ->
     el = @el
     elements = @element(element)
@@ -217,11 +266,17 @@ class tweak.View
         callback e, element
       , false)
 
+  ###
+    Description:
+  ###
   DOMoff: (element, type, callback) ->
     elements = @element(element)
     for item in elements
       item.removeEventListener(type, callback, false)
 
+  ###
+    Description:
+  ###
   DOMtrigger: (element, type) ->
     elements = @element(element)
     e = new Event(type)

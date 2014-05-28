@@ -1,22 +1,31 @@
 ###
-  ----- ROUTER -----
+  Router module
+  @todo Document description
 
-
+  @include tweak.Common.trigger
+  @include tweak.Common.on
+  @include tweak.Common.off
+  @include tweak.Common.init
 ###
 
 class tweak.Router
   tweak.Extend(@, ['trigger', 'on', 'off', 'init'], tweak.Common)
-  construct: ->
+
+  # @private
+  constructor: ->
     @before = '#'
     if history.pushState then history.pushState null, null, ''
 
 
   ###
-    Description:
+    Start watching the roouter for changes, options for speed and whether to be quiet
+    @param [Object] options The listening options object
+    @option options [Number] speed The amount of time per check in ms
+    @option options [Boolean] quiet If true then it wont trigger events
   ###
   start: (options = {}) ->
     speed = options.speed or 50
-    quiet = options.quiet
+    quiet = if options.quiet then true else false
     check = @check
     @watch = setInterval =>
       @check(quiet)
@@ -24,53 +33,76 @@ class tweak.Router
     return
   
   ###
-    Description:
+    Stop watching the router for changes
   ###
   stop: -> clearInterval(@watch); return
   
   ###
-    Description:
+    Check the window location, if there is an update from previous url then trigger an event
+    @param [Boolean] quiet If true then it wont trigger events
+
+    @example hash url examples
+      tweakjs.com/#search/safe/version=2
+      triggers:
+        #{@name}:router:data:search
+        #{@name}:router:data:safe
+        #{@name}:router:data:version (passes in 2)
+        #{@name}:router:changed (passes in {search:true, safe:true, version:2})
+
+      tweakjs.com/#version:1/search/safe/version=2
+      triggers:
+        #{@name}:router:data:version (passes in 1)
+        #{@name}:router:data:search
+        #{@name}:router:data:safe
+        #{@name}:router:data:version (passes in 2)
+        #{@name}:router:changed (passes in {search:true, safe:true, version:2})
+
+
+    @note event name is made up from the data in the url. The router data is split up by / \ per data set, and by : = between the key and data.
+
+    @event #{@name}:router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+    @event #{@name}:router:changed Triggers an event and passes the data of the url back
   ###
-  check: (options = {}) ->
+  check: (quiet = false) ->
     hash = window.location.hash.substring 1
     data = 'data'
-    quiet = options.quiet
     if hash isnt @before
-      hashArr = []
+      hashObj = {}
       @before = hash
       if @ignore is true
         @ignore = false
         return
       @ignore = false
 
-      for item in hash.split('/')
-        itemArr = item.split(':')
+      for item in hash.split(/[\\/]/)
+        itemArr = item.split(/[=:]/)
         if itemArr.length is 1
-          hashArr.push itemArr[0]
+          hashObj[itemArr[0]] = true
           if not quiet then @trigger "#{@name}:router:data:"+itemArr[0]
         else
-          object = {}
-          object[itemArr[0]] = itemArr[1]
-          hashArr.push object
-          if not quiet then @trigger "#{@name}:router:data:"+itemArr[0], object[itemArr[1]]
-      if not quiet then @trigger "#{@name}:router:changed", hashArr
+          hashObj[itemArr[0]] = itemArr[1]
+          if not quiet then @trigger "#{@name}:router:data:"+itemArr[0], itemArr[1]
+      if not quiet then @trigger "#{@name}:router:changed", hashObj
     return
   
   ###
-    Description:
+    Set the url hash with certain data; triggering router based events
+    @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
+    @param [Boolean] quiet If true router events will not be triggered on change
   ###
-  set: (arr, options = {}) ->
+  set: (obj, quiet = false) ->
     location = ''
-    for item in arr
-      if typeof item isnt 'object' then location += item
+    for key, item of obj
+      if tyepof(item) is 'boolean' and item
+        location += "#{item}/"
       else
-        itemArr = []
-        for key, prop of item
-          itemArr.push key, prop
-        location += itemArr[0] + ':' + itemArr[1]
-      location += '/'
-    @ignore = options.quiet
+        location += "#{key}:#{item}/"
+    @ignore = quiet
     window.location.hash = location.slice 0, -1
     return
 
-  mask: (arr) -> @set(arr, {quiet:true})
+  ###
+    Masks the url hash with certain data without triggering events
+    @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
+  ###
+  mask: (obj) -> @set(obj, {quiet:true})

@@ -37,7 +37,8 @@
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>Common functions that are used in multiple places throughout the framework
+  <p>----- Common -----
+Common functions that are used in multiple places throughout the framework
 The aim of this is to reduce the size of the framework</p>
 </div>
 <div class='tags'>
@@ -53,6 +54,7 @@ The aim of this is to reduce the size of the framework</p>
       </a>
     </span>
     <span class='desc'>
+      Empty reusable function 
     </span>
   </li>
   <li>
@@ -64,18 +66,20 @@ The aim of this is to reduce the size of the framework</p>
       </a>
     </span>
     <span class='desc'>
+      Empty reusable functions 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#require-'>
         ~
-(Object)
-<b>require</b><span>(path)</span>
+(void)
+<b>require</b><span>(url, params...)</span>
       </a>
     </span>
     <span class='desc'>
-      If using require; this function will find the specified modules. 
+      Parameters:   url:String, [params] Description:  If using require; this function will find the specified modules.
+
     </span>
   </li>
   <li>
@@ -219,11 +223,7 @@ returns: Array of Strings</p>
       <br>
     </p>
     <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    Empty function 
-  </div>
-  
+  <p>Empty reusable function</p>
 </div>
 <div class='tags'>
 </div>
@@ -236,11 +236,7 @@ returns: Array of Strings</p>
       <br>
     </p>
     <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    Empty function 
-  </div>
-  
+  <p>Empty reusable functions</p>
 </div>
 <div class='tags'>
 </div>
@@ -248,36 +244,18 @@ returns: Array of Strings</p>
   <div class='method_details'>
     <p class='signature' id='require-'>
       ~
-(Object)
-<b>require</b><span>(path)</span>
+(void)
+<b>require</b><span>(url, params...)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>If using require; this function will find the specified modules.
-This is used when building controllers and collections dynamically.
-It will try to find specified modules; or default to tweaks default objects</p>
+  <p>Parameters:   url:String, [params]
+Description:  If using require; this function will find the specified modules.
+        This is used when building controllers and collections dynamically.
+        It will try to find specified modules; or default to tweaks default objects
+returns: Object</p>
 </div>
 <div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>path</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Path to module </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      <tt>Object</tt>
-    </li>
-  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -457,7 +435,7 @@ returns: Array of Strings</p>
 </div>
     </div>
     <div id='footer'>
-  May 27, 14 10:23:32 by
+  May 28, 14 12:02:32 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
