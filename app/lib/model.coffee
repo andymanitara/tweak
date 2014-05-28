@@ -1,5 +1,4 @@
 ###
-  ----- MODEL -----
   The model is simply a way of storing some data, with event triggering on changes to the model
   In common MVC concept the Model is not always a database. So the controller should be used to get data from a database.
   The controller is normally the interface between the view and the models data.
@@ -8,39 +7,61 @@
   The model has its own history, so you can easily revert.
 ###
 class tweak.Model
+  # @property [Integer] Length of the models data
   length: 0
+  # @property [Object] Data in the model
+  data: {}
+  # @property [Array] History of the model data
+  history: []
+  # @property [Object] Default data to load into model when constructing the model
+  default: {}
   
   tweak.Extend(@, ['trigger', 'on', 'off', 'clone', 'reduced', 'same', 'init'], tweak.Common)
+
   ###
     Constructs the model ready for use
   ###
   construct: ->
-    @data = {}
-    @history = []
+    @reset()
     # Defaults are overriden completely when overriden by an extending model, however config model data is merged
     if @defaults? then @set @defaults, {quiet:true, store:false}
     data = @config or {}
     if data then @set data, {quiet:true, store:false}
   
   ###
-    Parameters:   property:String
-    Description:  returns whether or not the object exists or not
+    Returns if the model has a certain property
+    @param [String] property Property name to look for in model data
+    @return [Boolean] Returns true or false depending if the property exists in the model
   ###
   has: (property) -> @data[property]?
   
   ###
-    Parameters:   property:String
-    Description:  Get a models property
+    Returns a models property value
+    @param [String] property Property name to look for in model data
+    @return [*] Returns property value of property in model
   ###
   get: (property) -> @data[property]
   
   ###
-    Parameters:   properties: object, [params]
-    Description:  Set multiple properties or one property of the model by passing an object with object of the data you with to update.
-                  Pass options to control extra functionality
-                    quiet:Boolean to set whether to do it quiet or not. Default is false.
-                    store:Boolean is to set whether to store this change to the history. Default is true
-                  Each property set triggers an event. And triggers an event that the model has changed.
+    Set multiple properties or one property of the model by passing an object with object of the data you with to update.
+
+    @overload set(name, data, options)
+      Set an individual property in the model by name
+      @param [String] name The name of the property to set
+      @param [*] data Data to store in the property
+      @param [Object] options Options to detirmine extra functionality
+      @option options [Boolean] store Decide whether to store the change to the history. Default: true
+      @option options [Boolean] quiet Decide whether to trigger model changed events. Default: false
+
+    @overload set(properties, options)
+      Set an multiple properties in the model from an object
+      @param [Object] properties Key and property based object to store into model
+      @param [Object] options Options to detirmine extra functionality
+      @option options [Boolean] store Decide whether to store the change to the history. Default: true
+      @option options [Boolean] quiet Decide whether to trigger model changed events. Default: false
+
+    @event #{@name}:model:changed:#{key} Triggers an event and passes in changed property
+    @event #{@name}:model:changed Triggers a generic event that the model has been updated
   ###
   set: (properties, params...) ->
     options = params[0]
@@ -63,12 +84,14 @@ class tweak.Model
     return
 
   ###
-    Parameters:   properties:Object or String, options:Object
-    Description:  Remove a single property or many properties.
-                  Pass options to control extra functionality
-                    quiet:Boolean to set whether to do it quiet or not. Default is false.
-                    store:Boolean  is to set whether to store this change to the history. Default is true
-                  Each property removed triggers an event. And and triggers an event that the model has changed.
+    Remove a single property or many properties.
+    @param [String, Array<String>] properties Array of property names to remove from model, or single String of the name of the property to remove
+    @param [Object] options Options to detirmine extra functionality
+    @option options [Boolean] store Decide whether to store the change to the history. Default: true
+    @option options [Boolean] quiet Decide whether to trigger model events. Default: false
+
+    @event #{@name}:model:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@name}:model:changed Triggers a generic event that the model has been updated
   ###
   remove: (properties, options = {}) ->
     store = if options.store? then true else false
@@ -86,7 +109,21 @@ class tweak.Model
     return
   
   ###
-    Description:  Revert the model back to previous state in history, default is one previous version
+    Revert the model back to previous state in history, default is one previous version.
+    @overload revert(amount, options)
+      Revert the model data by specified amount of states with options provided
+      @param [Integer] amount The amount of states in the history to revert back by
+      @param [Object] options Options to detirmine extra functionality
+      @option options [Boolean] store Decide whether to store the change to the history. Default: true
+      @option options [Boolean] quiet Decide whether to trigger model events. Default: false
+
+    @overload revert(options)
+      Revert the data by one with options provided
+      @param [Object] options Options to detirmine extra functionality
+      @option options [Boolean] store Decide whether to store the change to the history. Default: true
+      @option options [Boolean] quiet Decide whether to trigger model events. Default: false
+
+    @event - Events triggered from set method functionality if quiet option is false
   ###
   revert: (params...) ->
     if typeof params[0] is 'object' then options = params[0]
@@ -104,7 +141,9 @@ class tweak.Model
     return
   
   ###
-    Description:  Returns the changed properties between the current model and a previous model state. Default is one state behind.
+     Returns the changed properties between the current model and a previous model state. Default is one state behind.
+     @param [Integer] position the amount of stated behind to compare to. Default: 1
+     @return [Object] Returns the changed properties and there values in an Object
   ###
   changed: (position) ->
     position ?= 1
@@ -121,7 +160,7 @@ class tweak.Model
     results
   
   ###
-    description:   Store the models data to the history
+    Store the models data to the history
   ###
   store: ->
     @history.push(@clone @data)
@@ -132,16 +171,17 @@ class tweak.Model
     return
   
   ###
-    description:  Reset the model back to defaults
+    Reset the model back to defaults
   ###
-  reset: (options = {}) ->
+  reset: ->
     @data = {}
     @history = []
-    @construct()
     return
 
   ###
-    Description: Get an element ad position of
+    Get an element at position of a given number
+    @param [Integer] position Position of property to return
+    @return [*] Returns data of property by given position
   ###
   at: (position) ->
     position = Number(position)
@@ -154,7 +194,11 @@ class tweak.Model
     null
   
   ###
-    Description:
+    Remove an element at a given position
+    @param [Integer] position Position of property to return
+    @param [Object] options Options to detirmine extra functionality
+    @option options [Boolean] store Decide whether to store the change to the history. Default: true
+    @option options [Boolean] quiet Decide whether to trigger model events. Default: false
   ###
   removeAt: (position, options = {}) ->
     element = @at position
@@ -163,11 +207,13 @@ class tweak.Model
     return
   
   ###
-    Description:
+    Returns an array of property names where the value is equal to the given value
+    @param [*] value Value to check
+    @return [Array<String>] Returns an array of property names where the value is equal to the given value
   ###
   where: (value) ->
     result = []
     data = @data
     for key, prop of data
-      if prop is value then result.push prop
+      if prop is value then result.push key
     return result
