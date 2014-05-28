@@ -3,27 +3,18 @@
   Common functions that are used in multiple places throughout the framework
   The aim of this is to reduce the size of the framework
 
-  Listed with required functions:
-    init
-    construct
-    require (relToAbs)
-    relToAbs
-    findModule (relToAbs)
-    trigger
-    on
-    off
-    clone
-    reduced
-    same
-    combine
-    splitComponents (relToAbs)
+  @mixin
 
 ###
 tweak.Common =
   ###
-    Empty reusable functions
+    Empty reusable function
   ###
   init: ->
+    
+  ###
+    Empty reusable functions
+  ###
   construct: ->
 
   ###

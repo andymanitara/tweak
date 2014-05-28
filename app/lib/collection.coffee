@@ -1,16 +1,19 @@
 ###
------ Collection -----
-
-Needs to be refactored from tweak.components
-
+  Needs to be refactored from tweak.components
 ###
 
 class tweak.Collection extends tweak.Model
 
+  ###
+    Description:
+  ###
   construct: ->
     @data = []
     @history = []
 
+  ###
+    Description:
+  ###
   build: (relation, data) ->
     @component = @relation = relation
     @config = data
@@ -74,6 +77,9 @@ class tweak.Collection extends tweak.Model
         if key is property and prop is value then result.push data
     return result
 
+  ###
+    Description:
+  ###
   remove: (properties, options = {}) ->
     store = if options.store? then true else false
     quiet = options.quiet
@@ -86,7 +92,10 @@ class tweak.Collection extends tweak.Model
     if store then @store()
     if not quiet then @trigger "#{@name}:#{@of}:changed"
     return
-
+    
+  ###
+    Description:
+  ###
   sort: ->
     result = []
     for key, item of @data
