@@ -2,4 +2,4 @@
 
 # Documentation
 For documentation see:
-[wiki.tweakjs.com](wiki.tweakjs.com)
+[http://docs.tweakjs.com](http://docs.tweakjs.com)
