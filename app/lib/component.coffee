@@ -184,14 +184,14 @@ class tweak.Component
         if name isnt item then prop?[item] = @[item]
 
     # Construct the modules after they have been added
-    for name in MODULES then @[name]?.construct()
+    for name in MODULES then @[name]?.construct?()
 
   ###
     initialise the component and its modules exept the view
   ###
   init: ->
     for name in MODULES
-      if name isnt "view" then @[name]?.construct()
+      if name isnt "view" then @[name]?.init?()
 
   componentRender = (type) ->
     @on("#{@name}:views:#{type}ed", =>

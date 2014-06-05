@@ -194,7 +194,7 @@ tweak.Common =
     arrayRegex = /^(.*)\[((\d*)\-(\d*)|(\d*))\]$/
     for item in str.split(" ")
       if item is " " then continue
-      name = name or @parentName or @relation.parentName or @name
+      name = name or @component.name
       item = @relToAbs(item, name)
       result = arrayRegex.exec(item)
       if result
