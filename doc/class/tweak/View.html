@@ -34,14 +34,32 @@
           <td>Defined in:</td>
           <td>app\lib\view.coffee</td>
         </tr>
+        <tr>
+          <td>Includes:</td>
+          <td>
+            tweak.Common.clone
+            tweak.Common.construct
+            tweak.Common.findModule
+            tweak.Common.init
+            tweak.Common.off
+            tweak.Common.on
+            tweak.Common.relToAbs
+            tweak.Common.require
+            tweak.Common.splitComponents
+            tweak.Common.trigger
+          </td>
+        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
   <div class='note todo'>
     <strong>TODO:</strong>
-    class documentation 
+    Reduce the complexity of the rendering functionality 
   </div>
-  
+  <p>The view is the DOM controller. This should be used for code that doesnt really control any logic but how the view is displayed. For example animations.
+The view uses a templating engine to provide the html to the DOM.
+The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
+The data in the model is passed into the views template, allowing for easy manipulation of the view.</p>
 </div>
 <div class='tags'>
 </div>
@@ -56,7 +74,7 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      Renders the view, using a html template engine. 
     </span>
   </li>
   <li>
@@ -68,32 +86,33 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      The view will be cleared then rendered again. 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#getChildren-dynamic'>
         #
-(void)
+(?)
 <b>getChildren</b><span>(parent)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      Description: 
+      @param [] 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#getComponentNode-dynamic'>
         #
-(void)
+(?)
 <b>getComponentNode</b><span>(parent, value)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
@@ -105,175 +124,181 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      Clears the view and removed event listeners of DOM elements 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#isRendered-dynamic'>
         #
-(void)
+(Boolean)
 <b>isRendered</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
-      Description: checks to see if the item is rendered; this is detirmined if the node has a parentNode 
+      Checks to see if the item is rendered; this is detirmined if the node has a parentNode 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#getParent-dynamic'>
         #
-(void)
+(?)
 <b>getParent</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#asyncInnerHTML-dynamic'>
         #
-(void)
+(?)
 <b>asyncInnerHTML</b><span>(HTML, callback)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#element-dynamic'>
         #
-(void)
+(?)
 <b>element</b><span>(element, root = @el)</span>
       </a>
     </span>
     <span class='desc'>
-      Tweak has an optional dependecy of any selector engine in the tweak.Selector object 
+      <p>Tweak has an optional dependecy of any selector engine in the tweak.Selector object @param []
+@param []</p>
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#height-dynamic'>
         #
-(void)
+(?)
 <b>height</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#insideHeight-dynamic'>
         #
-(void)
+(?)
 <b>insideHeight</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#width-dynamic'>
         #
-(void)
+(?)
 <b>width</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#insideWidth-dynamic'>
         #
-(void)
+(?)
 <b>insideWidth</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetFrom-dynamic'>
         #
-(void)
+(?)
 <b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo = window.document.body)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      <p>@param [] @param []
+@param []</p>
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetTop-dynamic'>
         #
-(void)
+(?)
 <b>offsetTop</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offestBottom-dynamic'>
         #
-(void)
+(?)
 <b>offestBottom</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetLeft-dynamic'>
         #
-(void)
+(?)
 <b>offsetLeft</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetRight-dynamic'>
         #
-(void)
+(?)
 <b>offsetRight</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#splitClasses-dynamic'>
         #
-(void)
+(?)
 <b>splitClasses</b><span>(classes)</span>
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] 
     </span>
   </li>
   <li>
@@ -285,7 +310,8 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
@@ -297,7 +323,8 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
   <li>
@@ -309,7 +336,8 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      <p>@param [] @param []
+@param []</p>
     </span>
   </li>
   <li>
@@ -321,7 +349,8 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      <p>@param [] @param []
+@param []</p>
     </span>
   </li>
   <li>
@@ -333,10 +362,54 @@
       </a>
     </span>
     <span class='desc'>
-      Description: 
+      @param [] @param []
+
     </span>
   </li>
 </ul>
+      <h2>
+        <small>Included Method Summary</small>
+      </h2>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.clone
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.construct
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.findModule
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.init
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.off
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.on
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.relToAbs
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.require
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.splitComponents
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.trigger
+      </h3>
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
@@ -347,9 +420,31 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Reduce the complexity of the rendering functionality 
+  </div>
+  <p>Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
+When the view has been rendered there is a event triggered. This allows an on ready for high components to be achieved, and to make sure that the DOM is available for access.
+The view wont be rendered until its parent view is rendered and any other components views that are waiting to be rendered.
+After the view is rendered the init method will be called.
+There is many options available for rendering through the view class, allowing for powerful rendering functionality.
+However this is quite a perfmormance heavy part of the framework so help tidiing things up would be much appreciated.</p>
 </div>
 <div class='tags'>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        &quot;#{@name}:view:rendered&quot;
+      </p>
+      <div class='docstring'>
+  <p>The event is called when the view has been rendered.</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+  </div>
 </div>
   </div>
   <div class='method_details'>
@@ -360,36 +455,72 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>The view will be cleared then rendered again.</p>
 </div>
 <div class='tags'>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        &quot;#{@name}:view:rerendered&quot;
+      </p>
+      <div class='docstring'>
+  <p>The event is called when the view has been rerendered.</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+  </div>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='getChildren-dynamic'>
       #
-(void)
+(?)
 <b>getChildren</b><span>(parent)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='getComponentNode-dynamic'>
       #
-(void)
+(?)
 <b>getComponentNode</b><span>(parent, value)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -400,7 +531,11 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    Is removing the event listeners needed, or will it clear from the memory automatically when it is cleared? 
+  </div>
+  <p>Clears the view and removed event listeners of DOM elements</p>
 </div>
 <div class='tags'>
 </div>
@@ -408,183 +543,347 @@
   <div class='method_details'>
     <p class='signature' id='isRendered-dynamic'>
       #
-(void)
+(Boolean)
 <b>isRendered</b><span>()</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description: checks to see if the item is rendered; this is detirmined if the node has a parentNode</p>
+  <p>Checks to see if the item is rendered; this is detirmined if the node has a parentNode</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Boolean</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns whether the view has been rendered. </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='getParent-dynamic'>
       #
-(void)
+(?)
 <b>getParent</b><span>()</span>
       <br>
     </p>
-    <div class='docstring'>
-  <p>Description:</p>
-</div>
-<div class='tags'>
+    <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='asyncInnerHTML-dynamic'>
       #
-(void)
+(?)
 <b>asyncInnerHTML</b><span>(HTML, callback)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    Would it be prefered to be asyncHTML? 
+  </div>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='element-dynamic'>
       #
-(void)
+(?)
 <b>element</b><span>(element, root = @el)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Tweak has an optional dependecy of any selector engine in the tweak.Selector object</p>
+  <p>Tweak has an optional dependecy of any selector engine in the tweak.Selector object
+@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='height-dynamic'>
       #
-(void)
+(?)
 <b>height</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='insideHeight-dynamic'>
       #
-(void)
+(?)
 <b>insideHeight</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='width-dynamic'>
       #
-(void)
+(?)
 <b>width</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='insideWidth-dynamic'>
       #
-(void)
+(?)
 <b>insideWidth</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='offsetFrom-dynamic'>
       #
-(void)
+(?)
 <b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo = window.document.body)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='offsetTop-dynamic'>
       #
-(void)
+(?)
 <b>offsetTop</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='offestBottom-dynamic'>
       #
-(void)
+(?)
 <b>offestBottom</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='offsetLeft-dynamic'>
       #
-(void)
+(?)
 <b>offsetLeft</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='offsetRight-dynamic'>
       #
-(void)
+(?)
 <b>offsetRight</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='splitClasses-dynamic'>
       #
-(void)
+(?)
 <b>splitClasses</b><span>(classes)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []</p>
 </div>
 <div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -595,7 +894,12 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    This could be achieved with cleaner code with REGEX? 
+  </div>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
 </div>
@@ -608,7 +912,12 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    This could be achieved with cleaner code with REGEX? 
+  </div>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
 </div>
@@ -621,7 +930,9 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []
+@param []</p>
 </div>
 <div class='tags'>
 </div>
@@ -634,7 +945,9 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []
+@param []</p>
 </div>
 <div class='tags'>
 </div>
@@ -647,7 +960,8 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>Description:</p>
+  <p>@param []
+@param []</p>
 </div>
 <div class='tags'>
 </div>
@@ -655,7 +969,7 @@
 </div>
     </div>
     <div id='footer'>
-  May 28, 14 14:31:59 by
+  June 05, 14 10:20:12 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

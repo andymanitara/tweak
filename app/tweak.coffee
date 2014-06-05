@@ -9,7 +9,7 @@
 
 ###
   All of the modules to the source code are seperated into the following files
-  The order of the merging is detirmined in the brunch-config.coffee file 
+  The order of the merging is detirmined in the brunch-config.coffee file
  
   lib/common.coffee - commonly used functions throughout framework
   lib/helpers.coffee - helpers for the framework
@@ -22,14 +22,14 @@
   lib/view.coffee - TweakJS view
   lib/router.coffee - TweakJS router
   lib/sync.coffee - TweakJS sync -  Wrapper for coverting component model into storable data and vice versa.
-                                    TweakJS storage plugins are required for making the interactions between the storage and the model. 
+                                    TweakJS storage plugins are required for making the interactions between the storage and the model.
                                     This will allow for mass ways to communicate to storage facilities.
                                     As the model is the data holder this should be the only thing that needs to sync; to sync between model and storage a sID (the identifier) needs to be set to the model.
 ###
 
 ###
   There isnt any requirements to TweakJS other than a JavaScript file and module loader.
-  I recomend using RequireJS for the moment in time, because that is what i have been testing and working with. 
+  I recomend using RequireJS for the moment in time, because that is what i have been testing and working with.
   A list of compatible module loaders will be added.
 ###
 

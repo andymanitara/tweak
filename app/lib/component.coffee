@@ -17,16 +17,16 @@
 
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
-  @include tweak.Common.require
-  @include tweak.Common.findModule
-  @include tweak.Common.trigger
-  @include tweak.Common.on
-  @include tweak.Common.off
   @include tweak.Common.clone
-  @include tweak.Common.same
   @include tweak.Common.combine
-  @include tweak.Common.splitComponents
+  @include tweak.Common.findModule
+  @include tweak.Common.off
+  @include tweak.Common.on
   @include tweak.Common.relToAbs
+  @include tweak.Common.require
+  @include tweak.Common.same
+  @include tweak.Common.splitComponents
+  @include tweak.Common.trigger
 ###
 class tweak.Component
   # Private constants
@@ -65,7 +65,7 @@ class tweak.Component
       # Start the construcion of the component
       @start()
 
-  tweak.Extend(@, ['require', 'findModule', 'trigger', 'on', 'off', 'clone', 'same', 'combine', 'splitComponents', 'relToAbs'], tweak.Common)
+  tweak.Extend(@, ['clone', 'combine', 'findModule', 'off', 'on', 'relToAbs', 'require', 'same', 'splitComponents', 'trigger'], tweak.Common)
 
   ###
     @param [Object] options Component options

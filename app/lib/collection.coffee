@@ -1,18 +1,18 @@
 ###
-  Needs to be refactored from tweak.components
+  collection
 ###
-
 class tweak.Collection extends tweak.Model
 
   ###
-    Description:
+    @note comment
   ###
   construct: ->
     @data = []
     @history = []
 
   ###
-    Description:
+    @param []
+    @param []
   ###
   build: (relation, data) ->
     @component = @relation = relation
@@ -21,21 +21,27 @@ class tweak.Collection extends tweak.Model
     @construct()
   
   ###
-    Description:
+    @param []
+    @option
+    @return []
   ###
   pop: (options = {}) ->
-    result = @data[length()-1]
+    result = @data[@length()-1]
     @remove result, options
     return result
   
   ###
-    Description:
+    @param []
+    @param []
+    @option
   ###
-  add: (data, options = {}) ->
-    @set "#{@length}", data, options
+  add: (data, options = {}) -> @set "#{@length}", data, options
   
   ###
-    Description:
+    @param []
+    @param []
+    @param []
+    @option
   ###
   place: (data, position, options = {}) ->
     options.data = options.data or {}
@@ -57,7 +63,8 @@ class tweak.Collection extends tweak.Model
     return
   
   ###
-    Description:
+    @param []
+    @return []
   ###
   pluck: (property) ->
     result = []
@@ -66,7 +73,9 @@ class tweak.Collection extends tweak.Model
     return result
 
   ###
-    Description:
+    @param []
+    @param []
+    @return []
   ###
   whereData: (property, value) ->
     result = []
@@ -78,7 +87,9 @@ class tweak.Collection extends tweak.Model
     return result
 
   ###
-    Description:
+    @param []
+    @param []
+    @option
   ###
   remove: (properties, options = {}) ->
     store = if options.store? then true else false
@@ -94,11 +105,10 @@ class tweak.Collection extends tweak.Model
     return
     
   ###
-    Description:
+    @note comment
   ###
   sort: ->
     result = []
     for key, item of @data
       result[result.length] = item
     @data = result
-    true

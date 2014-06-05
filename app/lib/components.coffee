@@ -1,17 +1,13 @@
 ###
------ Components -----
-
 Needs to be refactored into two parts, collection and components
 The collection should be usable to have a collection of anything like views, models and components.
-
 ###
-
 class tweak.Components extends tweak.Collection
   of:'components'
   tweak.Extend(@, ['splitComponents', 'findModule', 'relToAbs'], tweak.Common)
   
   ###
-    Description: Construct the Collection with given options from the config file
+   Construct the Collection with given options from the config file
   ###
   construct: ->
     @data = []
@@ -27,9 +23,9 @@ class tweak.Components extends tweak.Collection
       @add item, {quiet:true, store:false}
 
   ###
-    Rendering functionality to reduce code
+    Rendering and rererendering functionality to reduce code
   ###
-  componentRender = (type) ->
+  _componentRender = (type) ->
     if @length() is 0
       @trigger("#{@name}:#{@of}:ready")
       return
@@ -43,11 +39,11 @@ class tweak.Components extends tweak.Collection
       )
 
   ###
-    Description: Renders all of its components, also triggers ready state when all components are ready
+    Renders all of its components, also triggers ready state when all components are ready
   ###
-  render: -> componentRender("render")
+  render: -> _componentRender("render")
 
   ###
-    Description: rerender all of its components, also triggers ready state when all components are ready
+    Rerender all of its components, also triggers ready state when all components are ready
   ###
-  rerender: -> componentRender("rerender")
+  rerender: -> _componentRender("rerender")

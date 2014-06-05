@@ -34,16 +34,93 @@
           <td>Defined in:</td>
           <td>app\lib\controller.coffee</td>
         </tr>
+        <tr>
+          <td>Includes:</td>
+          <td>
+            tweak.Common.clone
+            tweak.Common.combine
+            tweak.Common.construct
+            tweak.Common.findModule
+            tweak.Common.init
+            tweak.Common.off
+            tweak.Common.on
+            tweak.Common.relToAbs
+            tweak.Common.require
+            tweak.Common.same
+            tweak.Common.splitComponents
+            tweak.Common.trigger
+          </td>
+        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>The controller should be used to control the logic and functionality between components modules.</p>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    reduce the amount of mixins. This will be easier once i know the commonly used functionality. Probably will end up being require, findModule, trigger, on, off, init, construct. 
+  </div>
+  <p>The controller should be used to control the logic and functionality between components modules.
+The controller allows for seperation for your logic. You can still use the view and the model ect to control logic, but think of this as your middle man/ blank canvas.
+By seperating the logic between the model and view you allow for much cleaner code. The view can still contain logic; but try keep this logic based on the interface between the user and view.</p><p>The view could be used to define the parts of interaction; and animating things.
+The model can be used for validating data on updateing of data allowing a simple continuous checking system seperate from your logic.
+Therefore the complex logic between what happens on certain interaction can remain in the controller; making it simpler to understand what happens where and when.
+It now keeps your code clean from long and extensive validation and animation logic; which can make code hard to understand when trying to debug why something wont happen after another thing.</p><p>The controller inherits a few mixins to allow for more controll in the framework; but in general it is very minimal.</p>
 </div>
 <div class='tags'>
 </div>
+      <h2>
+        <small>Included Method Summary</small>
+      </h2>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.clone
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.combine
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.construct
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.findModule
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.init
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.off
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.on
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.relToAbs
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.require
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.same
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.splitComponents
+      </h3>
+      <h3 class='inherited'>
+        Methods included from
+        tweak.Common.trigger
+      </h3>
     </div>
     <div id='footer'>
-  May 28, 14 14:31:59 by
+  June 05, 14 10:20:12 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
