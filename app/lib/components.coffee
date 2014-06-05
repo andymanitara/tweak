@@ -1,6 +1,8 @@
 ###
-Needs to be refactored into two parts, collection and components
-The collection should be usable to have a collection of anything like views, models and components.
+  The components collection is used to allow a component to have multiple sub components; allowing a extensive powerful heirachy system of components; which also allows for multiple areas of views.
+  For example a view may have to sections of user interaction that does two different things and gets two different sets of data, but its parent view is about a particular item.
+  This example shows the power of relations in the framework. As the two views are different with different data being fed in these can be two sub components, allowing seperation of code.
+  This allow reloading of views without affect other views, a bit like regions in backbone marionette. However your code can now be much more structured in this format and easier to understand where things are happening.
 ###
 class tweak.Components extends tweak.Collection
   of:'components'
