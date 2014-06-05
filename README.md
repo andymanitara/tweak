@@ -6,14 +6,14 @@ The list below is features in piority; of which will be implemented. Any help wi
 However i have been working blindly in the knowledge that what im doing should work as it did; once current documentation is done tests will be implemented and i will test it in my current projects using the framework to ensure that it still works well. 
 
 ## List of development piority
-Documentation current state
-Add basic unit tests to major functionality
-Add sync functionality - see [http://docs.tweakjs.com/class/tweak/Sync.html](http://docs.tweakjs.com/class/tweak/Sync.html)
-Add more indepth unit tests - ensuring major functionality works.
-Refactor parts for better performance.
-Documentation Improvements
-Include Examples
-Create website
+###Documentation current state
+###Add basic unit tests to major functionality
+###Add sync functionality - see [http://docs.tweakjs.com/class/tweak/Sync.html](http://docs.tweakjs.com/class/tweak/Sync.html)
+###Add more indepth unit tests - ensuring major functionality works.
+###Refactor parts for better performance.
+###Documentation Improvements
+###Include Examples
+###Create website
 
 # Floobits
 The floobits branch is the working branch for collaborative work; keeping everyone up to date. To use this branch you must be approved. 
