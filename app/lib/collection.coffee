@@ -1,5 +1,5 @@
 ###
-  collection
+  The collection is a extension of the model, with almost identical functionality. The collection has more functionality, as it provides for an array of data rather than and object of data.
 ###
 class tweak.Collection extends tweak.Model
 
