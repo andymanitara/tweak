@@ -15,6 +15,7 @@
   lib/helpers.coffee - helpers for the framework
   lib/events.coffee - TweakJS event system
   lib/component.coffee - TweakJS component
+  lib/store.coffee - data storage functionality, where collections and models main functionality sits.
   lib/collection.coffee - TweakJS collection
   lib/components.coffee - TweakJS components wrapper
   lib/controller.coffee - TweakJS controller

@@ -37,13 +37,26 @@
         <tr>
           <td>Inherits:</td>
           <td>
-            <a href='../../class/tweak/Model.html'>tweak.Model</a>
+            <a href='../../class/tweak/Store.html'>tweak.Store</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Includes:</td>
+          <td>
+            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
+            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
+            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
+            <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
           </td>
         </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>The collection is a extension of the model, with almost identical functionality. The collection has more functionality, as it provides for an array of data rather than and object of data.</p>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Update pluck to use new same functionality 
+  </div>
+  <p>A collection is where data can be stored, a default collection is an array based system. The model is a extension to the default collection; but based on an object.</p>
 </div>
 <div class='tags'>
 </div>
@@ -52,18 +65,43 @@
         <a href='../../class/tweak/Components.html'>tweak.Components</a>
       </p>
       <h2>Property Summary</h2>
+      <dl class='properties'>
+        <dt id='storeType-property'>
+          <span class='signature'>
+            (String)
+            <b>
+              storeType
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The type of storage, ie 'collection' or 'model'
+        </dd>
+      </dl>
       <h3 class='inherited'>
         Properties inherited from
-        <a href='../../class/tweak/Model.html'>tweak.Model</a>
+        <a href='../../class/tweak/Store.html'>tweak.Store</a>
       </h3>
       <p class='inherited'>
         <a href='[object Object]'>length</a>
         <a href='[object Object]'>data</a>
         <a href='[object Object]'>history</a>
-        <a href='[object Object]'>default</a>
+        <a href='[object Object]'>storeType</a>
       </p>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#clean-dynamic'>
+        #
+(void)
+<b>clean</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Removes empty keys 
+    </span>
+  </li>
   <li>
     <span class='signature'>
       <a href='#construct-dynamic'>
@@ -73,32 +111,19 @@
       </a>
     </span>
     <span class='desc'>
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#build-dynamic'>
-        #
-(void)
-<b>build</b><span>(relation, data)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      @param [] @param []
-
+      Construct the initial state of the collection 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#pop-dynamic'>
         #
-(?)
+(*)
 <b>pop</b><span>(options = {})</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @option
-
+      Pop the top data element in the collection 
     </span>
   </li>
   <li>
@@ -110,8 +135,7 @@
       </a>
     </span>
     <span class='desc'>
-      <p>@param [] @param []
-@option</p>
+      Add a new property to the end of the collection 
     </span>
   </li>
   <li>
@@ -123,34 +147,19 @@
       </a>
     </span>
     <span class='desc'>
-      <p>@param [] @param []
-@param []
-@option</p>
+      Inserts a new property into a certain position 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#pluck-dynamic'>
         #
-(?)
+(Array)
 <b>pluck</b><span>(property)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#whereData-dynamic'>
-        #
-(?)
-<b>whereData</b><span>(property, value)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      @param [] @param []
-
+      Looks through the collection for where the data matches. 
     </span>
   </li>
   <li>
@@ -162,19 +171,31 @@
       </a>
     </span>
     <span class='desc'>
-      <p>@param [] @param []
-@option</p>
+      Remove a single property or many properties. 
     </span>
   </li>
   <li>
     <span class='signature'>
-      <a href='#sort-dynamic'>
+      <a href='#at-dynamic'>
         #
-(void)
-<b>sort</b><span>()</span>
+(*)
+<b>at</b><span>(position)</span>
       </a>
     </span>
     <span class='desc'>
+      Get an element at position of a given number 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#reset-dynamic'>
+        #
+(void)
+<b>reset</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Reset the collection back to defaults 
     </span>
   </li>
 </ul>
@@ -182,25 +203,79 @@
         <small>Inherited Method Summary</small>
         <h3 class='inherited'>
           Methods inherited from
-          <a href='../../class/tweak/Model.html'>tweak.Model</a>
+          <a href='../../class/tweak/Store.html'>tweak.Store</a>
         </h3>
         <p class='inherited'>
-          <a href='../../class/tweak/Model.html#construct-dynamic'>#construct</a>
-          <a href='../../class/tweak/Model.html#has-dynamic'>#has</a>
-          <a href='../../class/tweak/Model.html#get-dynamic'>#get</a>
-          <a href='../../class/tweak/Model.html#set-dynamic'>#set</a>
-          <a href='../../class/tweak/Model.html#remove-dynamic'>#remove</a>
-          <a href='../../class/tweak/Model.html#revert-dynamic'>#revert</a>
-          <a href='../../class/tweak/Model.html#changed-dynamic'>#changed</a>
-          <a href='../../class/tweak/Model.html#store-dynamic'>#store</a>
-          <a href='../../class/tweak/Model.html#reset-dynamic'>#reset</a>
-          <a href='../../class/tweak/Model.html#at-dynamic'>#at</a>
-          <a href='../../class/tweak/Model.html#removeAt-dynamic'>#removeAt</a>
-          <a href='../../class/tweak/Model.html#where-dynamic'>#where</a>
+          <a href='../../class/tweak/Store.html#set-dynamic'>#set</a>
+          <a href='../../class/tweak/Store.html#get-dynamic'>#get</a>
+          <a href='../../class/tweak/Store.html#has-dynamic'>#has</a>
+          <a href='../../class/tweak/Store.html#pluck-dynamic'>#pluck</a>
+          <a href='../../class/tweak/Store.html#store-dynamic'>#store</a>
+          <a href='../../class/tweak/Store.html#removeAt-dynamic'>#removeAt</a>
+          <a href='../../class/tweak/Store.html#changed-dynamic'>#changed</a>
+          <a href='../../class/tweak/Store.html#revert-dynamic'>#revert</a>
+          <a href='../../class/tweak/Store.html#where-dynamic'>#where</a>
+          <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
+          <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
+          <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
+          <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
+          <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+          <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
+          <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
+          <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
         </p>
       </h2>
+      <h2>
+        <small>Included Method Summary</small>
+      </h2>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
+        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
+        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
+        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
+        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
+        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
+      </p>
       <h2>Instance Method Details</h2>
       <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='clean-dynamic'>
+      #
+(void)
+<b>clean</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Removes empty keys</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
   <div class='method_details'>
     <p class='signature' id='construct-dynamic'>
       #
@@ -209,25 +284,7 @@
       <br>
     </p>
     <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    comment 
-  </div>
-  
-</div>
-<div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='build-dynamic'>
-      #
-(void)
-<b>build</b><span>(relation, data)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <p>Construct the initial state of the collection</p>
 </div>
 <div class='tags'>
 </div>
@@ -235,24 +292,85 @@
   <div class='method_details'>
     <p class='signature' id='pop-dynamic'>
       #
-(?)
+(*)
 <b>pop</b><span>(options = {})</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@option</p>
+  <p>Pop the top data element in the collection</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Options to detirmine extra functionality </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>store</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to trigger collection events. Default: false </span>
+    </li>
+  </ul>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:removed:#{key}
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event based on what property has been removed</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers a generic event that the collection has been updated</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+  </div>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>*</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the data that was removed </span>
     </li>
   </ul>
 </div>
@@ -265,11 +383,81 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []
-@option</p>
+  <p>Add a new property to the end of the collection</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>data</span>
+      <span class='type'>
+        (
+          <tt>*</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Data to add to the end of the collection </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Options to detirmine extra functionality </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>store</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to trigger collection changed events. Default: false </span>
+    </li>
+  </ul>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:changed:#{key}
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event and passes in changed property</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers a generic event that the collection has been updated</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+  </div>
 </div>
   </div>
   <div class='method_details'>
@@ -280,59 +468,126 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []
-@param []
-@option</p>
+  <p>Inserts a new property into a certain position</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>data</span>
+      <span class='type'>
+        (
+          <tt>*</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Data to insert into the collection </span>
+    </li>
+    <li>
+      <span class='name'>position</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The position to insert the property at into the collection </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Options to detirmine extra functionality </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>store</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to trigger collection changed events. Default: false </span>
+    </li>
+  </ul>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:changed:#{key}
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event and passes in changed property</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers a generic event that the collection has been updated</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+  </div>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='pluck-dynamic'>
       #
-(?)
+(Array)
 <b>pluck</b><span>(property)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []</p>
+  <p>Looks through the collection for where the data matches.</p>
 </div>
 <div class='tags'>
-  <h3>Returns:</h3>
-  <ul class='return'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
     <li>
-      <span class='type'></span>
-      (
-        <tt>?</tt>
-      )
+      <span class='name'>property</span>
+      <span class='type'>
+        (
+          <tt>*</tt>
+        )
+      </span>
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>The property data to find a match against. </span>
     </li>
   </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='whereData-dynamic'>
-      #
-(?)
-<b>whereData</b><span>(property, value)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>@param []
-@param []</p>
-</div>
-<div class='tags'>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Array</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns an array of the positions of the data. </span>
     </li>
   </ul>
 </div>
@@ -345,26 +600,129 @@
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []
-@option</p>
+  <p>Remove a single property or many properties.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>properties</span>
+      <span class='type'>
+        (
+          <tt>String, Array&lt;String&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Array of property names to remove from collection, or single String of the name of the property to remove </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Options to detirmine extra functionality </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>store</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Decide whether to trigger collection events. Default: false </span>
+    </li>
+  </ul>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:removed:#{key}
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event based on what property has been removed</p>
 </div>
 <div class='tags'>
 </div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@name}:#{@storeType}:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers a generic event that the collection has been updated</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+  </div>
+</div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='sort-dynamic'>
+    <p class='signature' id='at-dynamic'>
       #
-(void)
-<b>sort</b><span>()</span>
+(*)
+<b>at</b><span>(position)</span>
       <br>
     </p>
     <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    comment 
+  <p>Get an element at position of a given number</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>position</span>
+      <span class='type'>
+        (
+          <tt>Integer</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Position of property to return </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>*</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns data of property by given position </span>
+    </li>
+  </ul>
+</div>
   </div>
-  
+  <div class='method_details'>
+    <p class='signature' id='reset-dynamic'>
+      #
+(void)
+<b>reset</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Reset the collection back to defaults</p>
 </div>
 <div class='tags'>
 </div>
@@ -372,7 +730,7 @@
 </div>
     </div>
     <div id='footer'>
-  June 05, 14 16:31:01 by
+  June 06, 14 12:57:24 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

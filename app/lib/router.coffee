@@ -2,14 +2,13 @@
   Router module
   @todo Document description
 
-  @include tweak.Common.init
-  @include tweak.Common.off
-  @include tweak.Common.on
-  @include tweak.Common.trigger
+  @include tweak.Common.Empty
+  @include tweak.Common.Events
 ###
 
 class tweak.Router
-  tweak.Extend(@, ['init', 'off', 'on', 'trigger'], tweak.Common)
+  tweak.Extend(@, tweak.Common.Empty)
+  tweak.Extend(@, tweak.Common.Events)
 
   # @private
   constructor: ->

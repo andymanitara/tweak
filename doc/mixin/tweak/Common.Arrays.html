@@ -19,44 +19,104 @@
       Index
     </a>
     &raquo;
-    <span class='title'>app\lib\view.coffee</span>
+    <span class='title'>tweak</span>
+    &raquo;
+    <span class='title'>Common</span>
+    &raquo;
+    <span class='title'>Arrays</span>
   </div>
 </div>
     <div id='content'>
       <h1>
-        File:
-        view.coffee
+        Mixin:
+        tweak.Common.Arrays
       </h1>
       <table class='box'>
         <tr>
           <td>Defined in:</td>
-          <td>app\lib</td>
+          <td>app\lib\common.coffee</td>
         </tr>
         <tr>
+          <td>Included in:</td>
           <td>
-            Classes:
-          </td>
-          <td>
-            <a href='../../class/tweak/View.html'>
-              tweak.View
-            </a>
+            <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
+            <a href='../../class/tweak/Component.html'>tweak.Component</a>
+            <a href='../../class/tweak/Components.html'>tweak.Components</a>
+            <a href='../../class/tweak/Controller.html'>tweak.Controller</a>
           </td>
         </tr>
       </table>
-      <h2>Variables Summary</h2>
-      <dl class='constants'>
-  <dt id='tweak.Viewable-variable'>
-    tweak.Viewable
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>{
-  width: window.innerWidth || (document.documentElement || document.documentElement.getElementsByTagName(&#39;body&#39;)[0]).clientWidth,
-  height: window.innerHeight || (document.documentElement || document.documentElement.getElementsByTagName(&#39;body&#39;)[0]).clientHeight
-}</code></pre>
-    
-  </dd>
-</dl>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>Common functions that are used for manipulating Arrays</p>
+</div>
+<div class='tags'>
+</div>
+      <h2>Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#reduced-'>
+        ~
+(Array)
+<b>reduced</b><span>(arr, length)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Reduce an array be remove elements from the front of the array and returning the new array 
+    </span>
+  </li>
+</ul>
+      <h2>Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='reduced-'>
+      ~
+(Array)
+<b>reduced</b><span>(arr, length)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Reduce an array be remove elements from the front of the array and returning the new array</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>arr</span>
+      <span class='type'>
+        (
+          <tt>Array</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Array to reduce </span>
+    </li>
+    <li>
+      <span class='name'>length</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The length that the array should be </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Array</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns reduced array </span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
     </div>
     <div id='footer'>
   June 06, 14 12:57:24 by

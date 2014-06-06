@@ -19,135 +19,100 @@
       Index
     </a>
     &raquo;
-    <span class='title'>app\lib\helpers.coffee</span>
+    <span class='title'>tweak</span>
+    &raquo;
+    <span class='title'>Common</span>
+    &raquo;
+    <span class='title'>Components</span>
   </div>
 </div>
     <div id='content'>
       <h1>
-        File:
-        helpers.coffee
+        Mixin:
+        tweak.Common.Components
       </h1>
       <table class='box'>
         <tr>
           <td>Defined in:</td>
-          <td>app\lib</td>
+          <td>app\lib\common.coffee</td>
+        </tr>
+        <tr>
+          <td>Included in:</td>
+          <td>
+            <a href='../../class/tweak/Component.html'>tweak.Component</a>
+            <a href='../../class/tweak/Components.html'>tweak.Components</a>
+            <a href='../../class/tweak/Controller.html'>tweak.Controller</a>
+          </td>
         </tr>
       </table>
+      <h2>Overview</h2>
+      <div class='docstring'>
+  <p>Common functions that are used for component functionality</p>
+</div>
+<div class='tags'>
+</div>
       <h2>Method Summary</h2>
       <ul class='summary'>
   <li>
     <span class='signature'>
-      <a href='#tweak.Extend-'>
+      <a href='#splitComponents-'>
         ~
-(void)
-<b>tweak.Extend</b><span>(context, selection, properties)</span>
+(Array&lt;String&gt;)
+<b>splitComponents</b><span>(str, name)</span>
       </a>
     </span>
     <span class='desc'>
-      Extend an objects prototype with functions. 
+      Reduce component names like ./cd[0-98] to an array of full path names 
     </span>
   </li>
 </ul>
       <h2>Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
-    <p class='signature' id='tweak.Extend-'>
+    <p class='signature' id='splitComponents-'>
       ~
-(void)
-<b>tweak.Extend</b><span>(context, selection, properties)</span>
-      <br>
-      ~
-(void)
-<b>tweak.Extend</b><span>(context, functions)</span>
+(Array&lt;String&gt;)
+<b>splitComponents</b><span>(str, name)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Extend an objects prototype with functions.</p>
-</div>
-<div class='tags'>
-  <div class='overloads'>
-    <h3>Overloads:</h3>
-    <div class='overload'>
-      <p class='signature'>
-        ~
-(void)
-<b>tweak.Extend</b><span>(context, selection, properties)</span>
-      </p>
-      <div class='docstring'>
-  <p>Extend an objects prototype with functions from another object, based on an array of names</p>
+  <p>Reduce component names like ./cd[0-98] to an array of full path names</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
   <ul class='param'>
     <li>
-      <span class='name'>context</span>
+      <span class='name'>str</span>
       <span class='type'>
         (
-          <tt>Object</tt>
+          <tt>String</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>context to apply the methods </span>
+      <span class='desc'>The string to split into seperate component names </span>
     </li>
     <li>
-      <span class='name'>selection</span>
+      <span class='name'>name</span>
       <span class='type'>
         (
-          <tt>Array&lt;String&gt;</tt>
+          <tt>String</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>An array of strings representing the names of function to apply to the context </span>
-    </li>
-    <li>
-      <span class='name'>properties</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>an object containing the functions to extend to the context </span>
+      <span class='desc'>The name to which the relative path should become absolute to </span>
     </li>
   </ul>
-</div>
-    </div>
-    <div class='overload'>
-      <p class='signature'>
-        ~
-(void)
-<b>tweak.Extend</b><span>(context, functions)</span>
-      </p>
-      <div class='docstring'>
-  <p>Extend an objects prototype with functions</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
+  <h3>Returns:</h3>
+  <ul class='return'>
     <li>
-      <span class='name'>context</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
+      <span class='type'></span>
+      (
+        <tt>Array&lt;String&gt;</tt>
+      )
       &mdash;
-      <span class='desc'>context to apply the methods </span>
-    </li>
-    <li>
-      <span class='name'>functions</span>
-      <span class='type'>
-        (
-          <tt>Array&lt;Function&gt;, Object&lt;Functions&gt;</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>to apply to an object </span>
+      <span class='desc'>Returns Array of full path names </span>
     </li>
   </ul>
-</div>
-    </div>
-  </div>
 </div>
   </div>
 </div>

@@ -21,185 +21,130 @@
     &raquo;
     <span class='title'>tweak</span>
     &raquo;
-    <span class='title'>EventSystem</span>
+    <span class='title'>Common</span>
+    &raquo;
+    <span class='title'>Events</span>
   </div>
 </div>
     <div id='content'>
       <h1>
-        Class:
-        tweak.EventSystem
+        Mixin:
+        tweak.Common.Events
       </h1>
       <table class='box'>
         <tr>
           <td>Defined in:</td>
-          <td>app\lib\events.coffee</td>
+          <td>app\lib\common.coffee</td>
+        </tr>
+        <tr>
+          <td>Included in:</td>
+          <td>
+            <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
+            <a href='../../class/tweak/Component.html'>tweak.Component</a>
+            <a href='../../class/tweak/Component.html'>tweak.Component</a>
+            <a href='../../class/tweak/Components.html'>tweak.Components</a>
+            <a href='../../class/tweak/Controller.html'>tweak.Controller</a>
+            <a href='../../class/tweak/Model.html'>tweak.Model</a>
+            <a href='../../class/tweak/Router.html'>tweak.Router</a>
+            <a href='../../class/tweak/Store.html'>tweak.Store</a>
+          </td>
         </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>The framework is driven by a powerful and simple event system.</p><p>The event system simply stores the callbacks in an object tree.
-The tree allows quick traversal of events, during interaction with the event API</p>
+  <p>Common functions that are used for event functionality</p>
 </div>
 <div class='tags'>
 </div>
-      <h2>Variables Summary</h2>
-      <dl class='constants'>
-  <dt id='events-variable'>
-    events
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>{}</code></pre>
-    <div class='docstring'>
-  <p>Initialise the event object</p>
-</div>
-<div class='tags'>
-</div>
-  </dd>
-</dl>
-      <h2>Instance Method Summary</h2>
+      <h2>Method Summary</h2>
       <ul class='summary'>
   <li>
     <span class='signature'>
-      <a href='#on-dynamic'>
-        #
-(Boolean)
-<b>on</b><span>(context, name, callback, maxCalls = null)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Add an event listener into the event system. 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#off-dynamic'>
-        #
-(Boolean)
-<b>off</b><span>(context, name, callback)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Remove from events by given name 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#trigger-dynamic'>
+      <a href='#on-'>
         ~
-(Boolean)
+(void)
+<b>on</b><span>(element, type, callback)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Event &#39;on&#39; handler for DOM and the Event API 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#off-'>
+        ~
+(void)
+<b>off</b><span>(element, type, callback)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Event &#39;off&#39; handler for DOM and the Event API 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#trigger-'>
+        ~
+(void)
 <b>trigger</b><span>(name, params)</span>
       </a>
     </span>
     <span class='desc'>
-      Trigger events by name 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#find-dynamic'>
-        #
-(Event, Null)
-<b>find</b><span>(name, build = false)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Iterate through the events to find given event 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#reset-dynamic'>
-        #
-(void)
-<b>reset</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Resets the events back to empty. 
+      Event &#39;trigger&#39; handler for DOM and the Event API, triggered in async 
     </span>
   </li>
 </ul>
-      <h2>Constructor Details</h2>
+      <h2>Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
-    <p class='signature' id='constructor-dynamic'>
-      #
+    <p class='signature' id='on-'>
+      ~
 (void)
-<b>constructor</b><span>()</span>
-      <span class='note private'>Private</span>
+<b>on</b><span>(element, type, callback)</span>
       <br>
-    </p>
-    <div class='tags'>
-</div>
-  </div>
-</div>
-      <h2>Instance Method Details</h2>
-      <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='on-dynamic'>
-      #
+      ~
 (Boolean)
-<b>on</b><span>(context, name, callback, maxCalls = null)</span>
+<b>on</b><span>(name, callback, maxCalls)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Add an event listener into the event system.
-The event system will store the object based on its event name</p>
-  <div class='examples'>
-    <h3>Examples:</h3>
-    <h4>
-      Sample Event (JS)
-    </h4>
-    <pre><code class='coffeescript'>tweak.Events.on(this, &quot;sample&#47;event&quot;, function(){
-  alert(&quot;Sample event triggered.&quot;)
-})</code></pre>
-    <h4>
-      Sample Event (CoffeeScript)
-    </h4>
-    <pre><code class='coffeescript'>tweak.Events.on @, &quot;sample&#47;event&quot;, -&gt;
-  alert &quot;Sample event triggered.&quot;</code></pre>
-    <h4>
-      Sample Event with Max Calls (JS)
-    </h4>
-    <pre><code class='coffeescript'>&#47;&#47; This example will allow the event to be called twice
-&#47;&#47; The event is automatically removed from the event object on max calls
-tweak.Events.on(this, &quot;sample&#47;event&quot;, function(){
-  alert(&quot;Sample event triggered.&quot;)
-}, 2)</code></pre>
-    <h4>
-      Sample Event (CoffeeScript)
-    </h4>
-    <pre><code class='coffeescript'>&#47;&#47; This example will allow the event to be called twice
-&#47;&#47; The event is automatically removed from the event object on max calls
-tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
-  alert &quot;Sample event triggered.&quot;
-,
-2)</code></pre>
-  </div>
+  <p>Event &#39;on&#39; handler for DOM and the Event API</p>
+</div>
+<div class='tags'>
+  <div class='overloads'>
+    <h3>Overloads:</h3>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>on</b><span>(element, type, callback)</span>
+      </p>
+      <div class='docstring'>
+  <p>Adding Dom Event</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
   <ul class='param'>
     <li>
-      <span class='name'>context</span>
+      <span class='name'>element</span>
       <span class='type'>
         (
-          <tt>Object</tt>
+          <tt>DomElement, String</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>The contextual object of which the event to be binded to </span>
+      <span class='desc'>A DomElement object to apply event to, or if using a selector engine pass a string with the selector based query (Selects object based on the el property of the view) </span>
     </li>
     <li>
-      <span class='name'>name</span>
+      <span class='name'>type</span>
       <span class='type'>
         (
           <tt>String</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>The event name; split on the / and : characters </span>
+      <span class='desc'>The type of event (For example &quot;click&quot;) </span>
     </li>
     <li>
       <span class='name'>callback</span>
@@ -209,7 +154,42 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
         )
       </span>
       &mdash;
-      <span class='desc'>The event callback </span>
+      <span class='desc'>The callback function </span>
+    </li>
+  </ul>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(Boolean)
+<b>on</b><span>(name, callback, maxCalls)</span>
+      </p>
+      <div class='docstring'>
+  <p>Adding event from the Event API</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name, split on the / and : characters, to add </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The callback function; if you do not include this then all events under the name will be removed </span>
     </li>
     <li>
       <span class='name'>maxCalls</span>
@@ -219,7 +199,7 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
         )
       </span>
       &mdash;
-      <span class='desc'>Default=null. The maximum calls allowed on the event listener </span>
+      <span class='desc'>The maximum amount of calls the event can be triggered. </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -230,43 +210,62 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
         <tt>Boolean</tt>
       )
       &mdash;
-      <span class='desc'>Returns true if added, or false if not added </span>
+      <span class='desc'>Returns whether the event is added </span>
     </li>
   </ul>
 </div>
+    </div>
+  </div>
+</div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='off-dynamic'>
-      #
+    <p class='signature' id='off-'>
+      ~
+(void)
+<b>off</b><span>(element, type, callback)</span>
+      <br>
+      ~
 (Boolean)
-<b>off</b><span>(context, name, callback)</span>
+<b>off</b><span>(name, callback)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Remove from events by given name</p>
+  <p>Event &#39;off&#39; handler for DOM and the Event API</p>
+</div>
+<div class='tags'>
+  <div class='overloads'>
+    <h3>Overloads:</h3>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>off</b><span>(element, type, callback)</span>
+      </p>
+      <div class='docstring'>
+  <p>Removing Dom Event</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
   <ul class='param'>
     <li>
-      <span class='name'>context</span>
+      <span class='name'>element</span>
       <span class='type'>
         (
-          <tt>Object</tt>
+          <tt>DomElement, String</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>The contextual object of which the event is binded to </span>
+      <span class='desc'>A DomElement object that an event is applied to or if using a selector engine pass a string with the selector based query (Selects object based on the el property of the view) </span>
     </li>
     <li>
-      <span class='name'>name</span>
+      <span class='name'>type</span>
       <span class='type'>
         (
           <tt>String</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>The event name; split on the / and : characters </span>
+      <span class='desc'>The type of event (For example &quot;click&quot;) </span>
     </li>
     <li>
       <span class='name'>callback</span>
@@ -276,7 +275,42 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
         )
       </span>
       &mdash;
-      <span class='desc'>(optional) The callback function of the event. If no specific callback is given then all the events under event name are removed </span>
+      <span class='desc'>The callback function </span>
+    </li>
+  </ul>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(Boolean)
+<b>off</b><span>(name, callback)</span>
+      </p>
+      <div class='docstring'>
+  <p>Removing event from the Event Api</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name, split on the / and : characters, to remove </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(optional) The callback function; if you do not include this then all events under the name will be removed </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -287,24 +321,35 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
         <tt>Boolean</tt>
       )
       &mdash;
-      <span class='desc'>Returns true if event(s) are removed, or false if no event are removed </span>
+      <span class='desc'>Returns whether the event is removed </span>
     </li>
   </ul>
 </div>
+    </div>
+  </div>
+</div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='trigger-dynamic'>
+    <p class='signature' id='trigger-'>
       ~
-(Boolean)
+(void)
 <b>trigger</b><span>(name, params)</span>
       <br>
       ~
-(Boolean)
+(void)
 <b>trigger</b><span>(obj, params)</span>
+      <br>
+      ~
+(void)
+<b>trigger</b><span>(element, type)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Trigger events by name</p>
+  <div class='note todo'>
+    <strong>TODO:</strong>
+    Think of a way to get DOM Event trigger to accept string aswell 
+  </div>
+  <p>Event &#39;trigger&#39; handler for DOM and the Event API, triggered in async</p>
 </div>
 <div class='tags'>
   <div class='overloads'>
@@ -312,11 +357,12 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
     <div class='overload'>
       <p class='signature'>
         ~
-(Boolean)
+(void)
 <b>trigger</b><span>(name, params)</span>
       </p>
       <div class='docstring'>
-  <p>Trigger events by name only</p>
+  <p>Triggering Dom Event
+Trigger events by name only</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
@@ -342,27 +388,17 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
       <span class='desc'>Params to pass into the callback function </span>
     </li>
   </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Boolean</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns true if event is triggered and false if nothing is triggered </span>
-    </li>
-  </ul>
 </div>
     </div>
     <div class='overload'>
       <p class='signature'>
         ~
-(Boolean)
+(void)
 <b>trigger</b><span>(obj, params)</span>
       </p>
       <div class='docstring'>
-  <p>Trigger events by name and context</p>
+  <p>Triggering Dom Event
+Trigger events by name and context</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
@@ -388,80 +424,44 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
       <span class='desc'>Params to pass into the callback function </span>
     </li>
   </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Boolean</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns true if event is triggered and false if nothing is triggered </span>
-    </li>
-  </ul>
 </div>
     </div>
-  </div>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='find-dynamic'>
-      #
-(Event, Null)
-<b>find</b><span>(name, build = false)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Iterate through the events to find given event</p>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>trigger</b><span>(element, type)</span>
+      </p>
+      <div class='docstring'>
+  <p>Triggering event from the Event API</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
   <ul class='param'>
     <li>
-      <span class='name'>name</span>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>DomElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DomElement object to apply event to </span>
+    </li>
+    <li>
+      <span class='name'>type</span>
       <span class='type'>
         (
           <tt>String</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>The event name; split on the / and : characters </span>
-    </li>
-    <li>
-      <span class='name'>build</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Default = true. If set to true the event object will be built by the name if can be found. </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Event, Null</tt>
-      )
-      &mdash;
-      <span class='desc'>If event object is found/created then it is returned. </span>
+      <span class='desc'>The type of event (For example &quot;click&quot;) </span>
     </li>
   </ul>
 </div>
+    </div>
   </div>
-  <div class='method_details'>
-    <p class='signature' id='reset-dynamic'>
-      #
-(void)
-<b>reset</b><span>()</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Resets the events back to empty.</p>
-</div>
-<div class='tags'>
 </div>
   </div>
 </div>

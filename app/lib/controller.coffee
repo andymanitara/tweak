@@ -12,18 +12,18 @@
 
   @todo reduce the amount of mixins. This will be easier once i know the commonly used functionality. Probably will end up being require, findModule, trigger, on, off, init, construct.
 
-  @include tweak.Common.clone
-  @include tweak.Common.combine
-  @include tweak.Common.construct
-  @include tweak.Common.findModule
-  @include tweak.Common.init
-  @include tweak.Common.off
-  @include tweak.Common.on
-  @include tweak.Common.relToAbs
-  @include tweak.Common.require
-  @include tweak.Common.same
-  @include tweak.Common.splitComponents
-  @include tweak.Common.trigger
+  @include tweak.Common.Empty
+  @include tweak.Common.Events
+  @include tweak.Common.Collections
+  @include tweak.Common.Arrays
+  @include tweak.Common.Modules
+  @include tweak.Common.Components
 ###
 class tweak.Controller
-  tweak.Extend(@, ['clone', 'combine', 'construct', 'findModule', 'init', 'off', 'on', 'relToAbs', 'require', 'same', 'splitComponents', 'trigger'], tweak.Common)
+  tweak.Extend(@, tweak.Common.Empty)
+  tweak.Extend(@, tweak.Common.Events)
+  tweak.Extend(@, tweak.Common.Modules)
+  tweak.Extend(@, tweak.Common.Collections)
+  tweak.Extend(@, tweak.Common.Arrays)
+  tweak.Extend(@, tweak.Common.Modules)
+  tweak.Extend(@, tweak.Common.Components)

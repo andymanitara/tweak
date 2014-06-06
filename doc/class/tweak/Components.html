@@ -40,6 +40,17 @@
             <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
           </td>
         </tr>
+        <tr>
+          <td>Includes:</td>
+          <td>
+            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
+            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
+            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
+            <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
+            <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
+            <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
+          </td>
+        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
@@ -56,10 +67,10 @@ This allow reloading of views without affect other views, a bit like regions in 
         <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
       </h3>
       <p class='inherited'>
+        <a href='[object Object]'>storeType</a>
         <a href='[object Object]'>length</a>
         <a href='[object Object]'>data</a>
         <a href='[object Object]'>history</a>
-        <a href='[object Object]'>default</a>
       </p>
       <h2>Variables Summary</h2>
       <dl class='constants'>
@@ -110,6 +121,19 @@ This allow reloading of views without affect other views, a bit like regions in 
       Rerender all of its components, also triggers ready state when all components are ready 
     </span>
   </li>
+  <li>
+    <span class='signature'>
+      <a href='#whereData-dynamic'>
+        #
+(?)
+<b>whereData</b><span>(property, value)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      @param [] @param []
+
+    </span>
+  </li>
 </ul>
       <h2>
         <small>Inherited Method Summary</small>
@@ -118,27 +142,85 @@ This allow reloading of views without affect other views, a bit like regions in 
           <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
         </h3>
         <p class='inherited'>
+          <a href='../../class/tweak/Collection.html#clean-dynamic'>#clean</a>
           <a href='../../class/tweak/Collection.html#construct-dynamic'>#construct</a>
-          <a href='../../class/tweak/Collection.html#build-dynamic'>#build</a>
           <a href='../../class/tweak/Collection.html#pop-dynamic'>#pop</a>
           <a href='../../class/tweak/Collection.html#add-dynamic'>#add</a>
           <a href='../../class/tweak/Collection.html#place-dynamic'>#place</a>
           <a href='../../class/tweak/Collection.html#pluck-dynamic'>#pluck</a>
-          <a href='../../class/tweak/Collection.html#whereData-dynamic'>#whereData</a>
           <a href='../../class/tweak/Collection.html#remove-dynamic'>#remove</a>
-          <a href='../../class/tweak/Collection.html#sort-dynamic'>#sort</a>
-          <a href='../../class/tweak/Model.html#has-dynamic'>#has</a>
-          <a href='../../class/tweak/Model.html#get-dynamic'>#get</a>
-          <a href='../../class/tweak/Model.html#set-dynamic'>#set</a>
-          <a href='../../class/tweak/Model.html#revert-dynamic'>#revert</a>
-          <a href='../../class/tweak/Model.html#changed-dynamic'>#changed</a>
-          <a href='../../class/tweak/Model.html#store-dynamic'>#store</a>
-          <a href='../../class/tweak/Model.html#reset-dynamic'>#reset</a>
-          <a href='../../class/tweak/Model.html#at-dynamic'>#at</a>
-          <a href='../../class/tweak/Model.html#removeAt-dynamic'>#removeAt</a>
-          <a href='../../class/tweak/Model.html#where-dynamic'>#where</a>
+          <a href='../../class/tweak/Collection.html#at-dynamic'>#at</a>
+          <a href='../../class/tweak/Collection.html#reset-dynamic'>#reset</a>
+          <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
+          <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
+          <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
+          <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+          <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
+          <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
+          <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
+          <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
+          <a href='../../class/tweak/Store.html#set-dynamic'>#set</a>
+          <a href='../../class/tweak/Store.html#get-dynamic'>#get</a>
+          <a href='../../class/tweak/Store.html#has-dynamic'>#has</a>
+          <a href='../../class/tweak/Store.html#store-dynamic'>#store</a>
+          <a href='../../class/tweak/Store.html#removeAt-dynamic'>#removeAt</a>
+          <a href='../../class/tweak/Store.html#changed-dynamic'>#changed</a>
+          <a href='../../class/tweak/Store.html#revert-dynamic'>#revert</a>
+          <a href='../../class/tweak/Store.html#where-dynamic'>#where</a>
         </p>
       </h2>
+      <h2>
+        <small>Included Method Summary</small>
+      </h2>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
+        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
+        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
+        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
+        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
+        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Modules.html#findModule-dynamic'>#findModule</a>
+        <a href='../../mixin/tweak/Common.Modules.html#relToAbs-dynamic'>#relToAbs</a>
+        <a href='../../mixin/tweak/Common.Modules.html#require-dynamic'>#require</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Components.html#splitComponents-dynamic'>#splitComponents</a>
+      </p>
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
@@ -180,10 +262,35 @@ This allow reloading of views without affect other views, a bit like regions in 
 <div class='tags'>
 </div>
   </div>
+  <div class='method_details'>
+    <p class='signature' id='whereData-dynamic'>
+      #
+(?)
+<b>whereData</b><span>(property, value)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>@param []
+@param []</p>
+</div>
+<div class='tags'>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>?</tt>
+      )
+      &mdash;
+      <span class='desc'>[] </span>
+    </li>
+  </ul>
+</div>
+  </div>
 </div>
     </div>
     <div id='footer'>
-  June 05, 14 16:31:01 by
+  June 06, 14 12:57:24 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

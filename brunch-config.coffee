@@ -15,6 +15,7 @@ exports.config =
           'app/lib/events.coffee',
           'app/lib/model.coffee',
           'app/lib/component.coffee',
+          'app/lib/store.coffee',
           'app/lib/collection.coffee',
           'app/lib/components.coffee',
           'app/lib/controller.coffee',

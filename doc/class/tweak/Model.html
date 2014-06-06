@@ -34,6 +34,20 @@
           <td>Defined in:</td>
           <td>app\lib\model.coffee</td>
         </tr>
+        <tr>
+          <td>Inherits:</td>
+          <td>
+            <a href='../../class/tweak/Store.html'>tweak.Store</a>
+          </td>
+        </tr>
+        <tr>
+          <td>Includes:</td>
+          <td>
+            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
+            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
+            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
+          </td>
+        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
@@ -46,23 +60,8 @@ The model has its own history, so you can easily revert.</p>
 </div>
 <div class='tags'>
 </div>
-      <h2>Direct Known Subclasses</h2>
-      <p class='children'>
-        <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
-      </p>
       <h2>Property Summary</h2>
       <dl class='properties'>
-        <dt id='length-property'>
-          <span class='signature'>
-            (Integer)
-            <b>
-              length
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          Length of the models data
-        </dd>
         <dt id='data-property'>
           <span class='signature'>
             (Object)
@@ -72,18 +71,7 @@ The model has its own history, so you can easily revert.</p>
           </span>
         </dt>
         <dd class='desc'>
-          Data in the model
-        </dd>
-        <dt id='history-property'>
-          <span class='signature'>
-            (Array)
-            <b>
-              history
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          History of the model data
+          Data storage holder, for a model this is an object
         </dd>
         <dt id='default-property'>
           <span class='signature'>
@@ -96,7 +84,28 @@ The model has its own history, so you can easily revert.</p>
         <dd class='desc'>
           Default data to load into model when constructing the model
         </dd>
+        <dt id='dataType-property'>
+          <span class='signature'>
+            (String)
+            <b>
+              dataType
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The type of collection this is
+        </dd>
       </dl>
+      <h3 class='inherited'>
+        Properties inherited from
+        <a href='../../class/tweak/Store.html'>tweak.Store</a>
+      </h3>
+      <p class='inherited'>
+        <a href='[object Object]'>length</a>
+        <a href='[object Object]'>data</a>
+        <a href='[object Object]'>history</a>
+        <a href='[object Object]'>storeType</a>
+      </p>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -113,42 +122,6 @@ The model has its own history, so you can easily revert.</p>
   </li>
   <li>
     <span class='signature'>
-      <a href='#has-dynamic'>
-        #
-(Boolean)
-<b>has</b><span>(property)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns if the model has a certain property 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#get-dynamic'>
-        #
-(*)
-<b>get</b><span>(property)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns a models property value 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#set-dynamic'>
-        ~
-(void)
-<b>set</b><span>(name, data, options)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Set multiple properties or one property of the model by passing an object with object of the data you with to update. 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
       <a href='#remove-dynamic'>
         #
 (void)
@@ -157,54 +130,6 @@ The model has its own history, so you can easily revert.</p>
     </span>
     <span class='desc'>
       Remove a single property or many properties. 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#revert-dynamic'>
-        ~
-(void)
-<b>revert</b><span>(amount, options)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Revert the model back to previous state in history, default is one previous version. 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#changed-dynamic'>
-        #
-(Object)
-<b>changed</b><span>(position)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns the changed properties between the current model and a previous model state. 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#store-dynamic'>
-        #
-(void)
-<b>store</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Store the models data to the history 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#reset-dynamic'>
-        #
-(void)
-<b>reset</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Reset the model back to defaults 
     </span>
   </li>
   <li>
@@ -221,29 +146,72 @@ The model has its own history, so you can easily revert.</p>
   </li>
   <li>
     <span class='signature'>
-      <a href='#removeAt-dynamic'>
+      <a href='#reset-dynamic'>
         #
 (void)
-<b>removeAt</b><span>(position, options = {})</span>
+<b>reset</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
-      Remove an element at a given position 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#where-dynamic'>
-        #
-(Array&lt;String&gt;)
-<b>where</b><span>(value)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns an array of property names where the value is equal to the given value 
+      Reset the model back to defaults 
     </span>
   </li>
 </ul>
+      <h2>
+        <small>Inherited Method Summary</small>
+        <h3 class='inherited'>
+          Methods inherited from
+          <a href='../../class/tweak/Store.html'>tweak.Store</a>
+        </h3>
+        <p class='inherited'>
+          <a href='../../class/tweak/Store.html#set-dynamic'>#set</a>
+          <a href='../../class/tweak/Store.html#get-dynamic'>#get</a>
+          <a href='../../class/tweak/Store.html#has-dynamic'>#has</a>
+          <a href='../../class/tweak/Store.html#pluck-dynamic'>#pluck</a>
+          <a href='../../class/tweak/Store.html#store-dynamic'>#store</a>
+          <a href='../../class/tweak/Store.html#removeAt-dynamic'>#removeAt</a>
+          <a href='../../class/tweak/Store.html#changed-dynamic'>#changed</a>
+          <a href='../../class/tweak/Store.html#revert-dynamic'>#revert</a>
+          <a href='../../class/tweak/Store.html#where-dynamic'>#where</a>
+          <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
+          <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
+          <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
+          <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
+          <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+          <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
+          <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
+          <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
+        </p>
+      </h2>
+      <h2>
+        <small>Included Method Summary</small>
+      </h2>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
+        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
+        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
+        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+      </p>
+      <h3 class='inherited'>
+        Methods included from
+        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
+        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
+        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
+      </p>
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
@@ -257,255 +225,6 @@ The model has its own history, so you can easily revert.</p>
   <p>Constructs the model ready for use</p>
 </div>
 <div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='has-dynamic'>
-      #
-(Boolean)
-<b>has</b><span>(property)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns if the model has a certain property</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>property</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Property name to look for in model data </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Boolean</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns true or false depending if the property exists in the model </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='get-dynamic'>
-      #
-(*)
-<b>get</b><span>(property)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns a models property value</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>property</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Property name to look for in model data </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>*</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns property value of property in model </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='set-dynamic'>
-      ~
-(void)
-<b>set</b><span>(name, data, options)</span>
-      <br>
-      ~
-(void)
-<b>set</b><span>(properties, options)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Set multiple properties or one property of the model by passing an object with object of the data you with to update.</p>
-</div>
-<div class='tags'>
-  <div class='events'>
-    <h3>Events:</h3>
-    <div class='event'>
-      <p class='signature'>
-        #{@name}:model:changed:#{key}
-      </p>
-      <div class='docstring'>
-  <p>Triggers an event and passes in changed property</p>
-</div>
-<div class='tags'>
-</div>
-    </div>
-    <div class='event'>
-      <p class='signature'>
-        #{@name}:model:changed
-      </p>
-      <div class='docstring'>
-  <p>Triggers a generic event that the model has been updated</p>
-</div>
-<div class='tags'>
-</div>
-    </div>
-  </div>
-  <div class='overloads'>
-    <h3>Overloads:</h3>
-    <div class='overload'>
-      <p class='signature'>
-        ~
-(void)
-<b>set</b><span>(name, data, options)</span>
-      </p>
-      <div class='docstring'>
-  <p>Set an individual property in the model by name</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>name</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The name of the property to set </span>
-    </li>
-    <li>
-      <span class='name'>data</span>
-      <span class='type'>
-        (
-          <tt>*</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Data to store in the property </span>
-    </li>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
-    </li>
-    <li>
-      <span class='name'>quiet</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to trigger model changed events. Default: false </span>
-    </li>
-  </ul>
-</div>
-    </div>
-    <div class='overload'>
-      <p class='signature'>
-        ~
-(void)
-<b>set</b><span>(properties, options)</span>
-      </p>
-      <div class='docstring'>
-  <p>Set an multiple properties in the model from an object</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>properties</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Key and property based object to store into model </span>
-    </li>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
-    </li>
-    <li>
-      <span class='name'>quiet</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to trigger model changed events. Default: false </span>
-    </li>
-  </ul>
-</div>
-    </div>
-  </div>
 </div>
   </div>
   <div class='method_details'>
@@ -594,214 +313,6 @@ The model has its own history, so you can easily revert.</p>
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='revert-dynamic'>
-      ~
-(void)
-<b>revert</b><span>(amount, options)</span>
-      <br>
-      ~
-(void)
-<b>revert</b><span>(options)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Revert the model back to previous state in history, default is one previous version.</p>
-</div>
-<div class='tags'>
-  <div class='events'>
-    <h3>Events:</h3>
-    <div class='event'>
-      <p class='signature'>
-        -
-      </p>
-      <div class='docstring'>
-  <p>Events triggered from set method functionality if quiet option is false</p>
-</div>
-<div class='tags'>
-</div>
-    </div>
-  </div>
-  <div class='overloads'>
-    <h3>Overloads:</h3>
-    <div class='overload'>
-      <p class='signature'>
-        ~
-(void)
-<b>revert</b><span>(amount, options)</span>
-      </p>
-      <div class='docstring'>
-  <p>Revert the model data by specified amount of states with options provided</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>amount</span>
-      <span class='type'>
-        (
-          <tt>Integer</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The amount of states in the history to revert back by </span>
-    </li>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
-    </li>
-    <li>
-      <span class='name'>quiet</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to trigger model events. Default: false </span>
-    </li>
-  </ul>
-</div>
-    </div>
-    <div class='overload'>
-      <p class='signature'>
-        ~
-(void)
-<b>revert</b><span>(options)</span>
-      </p>
-      <div class='docstring'>
-  <p>Revert the data by one with options provided</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
-    </li>
-    <li>
-      <span class='name'>quiet</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to trigger model events. Default: false </span>
-    </li>
-  </ul>
-</div>
-    </div>
-  </div>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='changed-dynamic'>
-      #
-(Object)
-<b>changed</b><span>(position)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns the changed properties between the current model and a previous model state. Default is one state behind.</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>position</span>
-      <span class='type'>
-        (
-          <tt>Integer</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>the amount of stated behind to compare to. Default: 1 </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Object</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the changed properties and there values in an Object </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='store-dynamic'>
-      #
-(void)
-<b>store</b><span>()</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Store the models data to the history</p>
-</div>
-<div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='reset-dynamic'>
-      #
-(void)
-<b>reset</b><span>()</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Reset the model back to defaults</p>
-</div>
-<div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
     <p class='signature' id='at-dynamic'>
       #
 (*)
@@ -839,108 +350,22 @@ The model has its own history, so you can easily revert.</p>
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='removeAt-dynamic'>
+    <p class='signature' id='reset-dynamic'>
       #
 (void)
-<b>removeAt</b><span>(position, options = {})</span>
+<b>reset</b><span>()</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Remove an element at a given position</p>
+  <p>Reset the model back to defaults</p>
 </div>
 <div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>position</span>
-      <span class='type'>
-        (
-          <tt>Integer</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Position of property to return </span>
-    </li>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
-    </li>
-    <li>
-      <span class='name'>quiet</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to trigger model events. Default: false </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='where-dynamic'>
-      #
-(Array&lt;String&gt;)
-<b>where</b><span>(value)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns an array of property names where the value is equal to the given value</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>value</span>
-      <span class='type'>
-        (
-          <tt>*</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Value to check </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Array&lt;String&gt;</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns an array of property names where the value is equal to the given value </span>
-    </li>
-  </ul>
 </div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  June 05, 14 16:31:02 by
+  June 06, 14 12:57:24 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

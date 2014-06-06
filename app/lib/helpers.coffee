@@ -9,7 +9,7 @@
   @overload tweak.Extend(context, functions)
     Extend an objects prototype with functions
     @param [Object] context context to apply the methods
-    @param [Array<Function>] functions to apply to an object
+    @param [Array<Function>, Object<Functions>] functions to apply to an object
 ###
 tweak.Extend = (context, selection, properties) ->
   propertiesExist = if properties? then true else false
