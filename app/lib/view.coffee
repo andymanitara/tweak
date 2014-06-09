@@ -10,20 +10,22 @@ tweak.Viewable = {
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
 
   @todo Reduce the complexity of the rendering functionality
-  @include tweak.Common.clone
-  @include tweak.Common.construct
-  @include tweak.Common.findModule
-  @include tweak.Common.init
-  @include tweak.Common.off
-  @include tweak.Common.on
-  @include tweak.Common.relToAbs
-  @include tweak.Common.require
-  @include tweak.Common.splitComponents
-  @include tweak.Common.trigger
+  @include tweak.Common.Empty
+  @include tweak.Common.Events
+  @include tweak.Common.Collections
+  @include tweak.Common.Arrays
+  @include tweak.Common.Modules
+  @include tweak.Common.Components
 ###
 class tweak.View
 
-  tweak.Extend(@, ['clone', 'construct', 'findModule', 'init', 'off', 'on', 'relToAbs', 'require', 'splitComponents', 'trigger'], tweak.Common)
+  tweak.Extend(@, tweak.Common.Empty)
+  tweak.Extend(@, tweak.Common.Events)
+  tweak.Extend(@, tweak.Common.Modules)
+  tweak.Extend(@, tweak.Common.Collections)
+  tweak.Extend(@, tweak.Common.Arrays)
+  tweak.Extend(@, tweak.Common.Modules)
+  tweak.Extend(@, tweak.Common.Components)
 
   ###
     Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
@@ -48,14 +50,13 @@ class tweak.View
     template = if @config.template then @require(@config.template) else @findModule(@component.paths, 'template')
     template = template(@model.data)
     
-    @asyncInnerHTML(template, (template) =>
+    @asyncHTML(template, (template) =>
 
       # adds a unique class to the element based on the component name
       addClass = (element) =>
         if not element then return
         if not element.className? then element.className = ""
         element.className += " #{@model.get('id')}"
-
 
       # Attach nodes to the dome
       # It can either replace whats is in its parent node, or append after or be inserted before.
@@ -113,8 +114,9 @@ class tweak.View
     )
 
   ###
-    @param []
-    @return []
+    Get the chidlren nodes of an element
+    @param [DOMElement] parent The element to get the children nodes of
+    @return [Array<DOMElement>] Returns an array of children nodes from a parent Element
   ###
   getChildren: (parent) =>
     nodes = []
@@ -137,9 +139,10 @@ class tweak.View
     nodes
 
   ###
-    @param []
-    @param []
-    @return []
+    Find a component node by a value (attribute to apply on html is tweak-component)
+    @param [DOMElment] parent The parent DOMElement to search through to find a given component node
+    @param [String] value The component name to look for in the tweak-component attribute
+    @return [DOMElement] Returns the dom element with matching critera
   ###
   getComponentNode: (parent, value) ->
     nodes = @getChildren(parent)
@@ -148,7 +151,7 @@ class tweak.View
       components = ''
       if child then break
       try
-        components = prop.getAttribute('tweak-components') or ''
+        components = prop.getAttribute('tweak-component') or ''
       catch e
       if components is " " then continue
       for val in @splitComponents(components)
@@ -174,7 +177,9 @@ class tweak.View
   isRendered: -> if @el?.parentNode then true else false
   
   ###
-    @return []
+    Find the parent DOMElement to this view
+    @return [DOMElement] Returns the parent DOMElement
+    @throw When looking for a parrent Element and there is not a returnable element you will recieve the following error - "Unable to find view parent for #{@name} (#{name})"
   ###
   getParent: ->
     view = @component.parent?.view
@@ -184,12 +189,11 @@ class tweak.View
     @getComponentNode(parent, name) or view?.el or throw new Error("Unable to find view parent for #{@name} (#{name})")
   
   ###
-    @param []
-    @param []
-    @return []
-    @note Would it be prefered to be asyncHTML?
+    Async html to a function, this allows dynamic building of components without holding up parts of the system
+    @param [String] HTML A String containing html to build into a dom object
+    @param [Function] callback A method to pass the built up dom object to
   ###
-  asyncInnerHTML: (HTML, callback) ->
+  asyncHTML: (HTML, callback) ->
     setTimeout(->
       temp = document.createElement("div")
       frag = document.createDocumentFragment()
@@ -197,11 +201,13 @@ class tweak.View
       callback temp.firstChild
     ,
     0)
+
   ###
     Tweak has an optional dependecy of any selector engine in the tweak.Selector object
-    @param []
-    @param []
-    @return []
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [DOMElement] root (Default = @el) The element root to search for elements with a selector engine
+    @return [Array<DOMElement>] Returns an array of DOMElements
+    @throw When trying to use a selector engine without having one assigned to the tweak.Selector property you will recieve the following error - "Trying to get element with selector engine, but none defined to tweak.Selector"
   ###
   element: (element, root= @el) ->
     if typeof element is 'string'
@@ -211,74 +217,83 @@ class tweak.View
     else [element]
 
   ###
-    @param []
-    @return []
+    Returns height of an element
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the of height an element
   ###
   height: (element) -> @element(element)[0].offsetHeight
 
   ###
-    @param []
-    @return []
+    Returns inside height of an element
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the of inside height an element
   ###
   insideHeight: (element) -> @element(element)[0].clientHeight
 
   ###
-    @param []
-    @return []
+    Returns width of an element
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the of width an element
   ###
   width: (element) -> @element(element)[0].offsetWidth
 
   ###
-    @param []
-    @return []
+    Returns inside width of an element
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the of inside width an element
   ###
   insideWidth: (element) -> @element(element)[0].clientWidth
 
   ###
-    @param []
-    @param []
-    @param []
-    @return []
+    Returns the offset from another element relative to another (or default to the body)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] from (default = "top") The direction to compare the offset
+    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the element offset value relative to another element
   ###
   offsetFrom:(element, from = "top", relativeTo = window.document.body) ->
+    relativeTo = @element(relativeTo)[0]
     element = @element(element)[0]
     elementBounds = element.getBoundingClientRect()
     relativeBounds = relativeTo.getBoundingClientRect()
     elementBounds[from] - relativeBounds[from]
   
   ###
-    @param []
-    @param []
-    @return []
+    Returns the top offset of an element relative to another element (or default to the body)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the top offset of an element relative to another element (or default to the body)
   ###
   offsetTop: (element, relativeTo) -> @offsetFrom(element, "top", relativeTo)
 
   ###
-    @param []
-    @param []
-    @return []
+    Returns the bottom offset of an element relative to another element (or default to the body)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the bottom offset of an element relative to another element (or default to the body)
   ###
   offestBottom: (element, relativeTo) -> @offsetFrom(element, "bottom", relativeTo)
   
   ###
-    @param []
-    @param []
-    @return []
+    Returns the left offset of an element relative to another element (or default to the body)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the left offset of an element relative to another element (or default to the body)
   ###
   offsetLeft: (element, relativeTo) -> @offsetFrom(element, "left", relativeTo)
   
   ###
-    @param []
-    @param []
-    @return []
+    Returns the right offset of an element relative to another element (or default to the body)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @return [Number] Returns the right offset of an element relative to another element (or default to the body)
   ###
   offsetRight: (element, relativeTo) -> @offsetFrom(element, "right", relativeTo)
 
   ###
-    @param []
-    @return []
+    Split classes from a string to an array
   ###
-  splitClasses: (classes) ->
+  _splitClasses = (classes) ->
     results = []
     if typeof classes isnt "string" then classes = ''
     for key, prop of classes.split(" ")
@@ -286,15 +301,15 @@ class tweak.View
     results
 
   ###
-    @param []
-    @param []
-    @note This could be achieved with cleaner code with REGEX?
+    Add a string of class names to an element(s)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to add to the element(s)
   ###
   addClass: (element, classes = '') ->
-    addingClasses = @splitClasses(classes)
+    addingClasses = _splitClasses(classes)
     for item in @element(element)
       if not item? then continue
-      currentClasses = @splitClasses(item.className)
+      currentClasses = _splitClasses(item.className)
       for addClass in addingClasses
         add = true
         for curClass in currentClasses
@@ -303,13 +318,12 @@ class tweak.View
       item.className = item.className.replace(/\s*/g,' ')
 
   ###
-    @param []
-    @param []
-    @note This could be achieved with cleaner code with REGEX?
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to remove to the element(s)
   ###
   removeClass: (element, classes = '') ->
     if @element(element).length is 0 then return
-    classes = @splitClasses(classes)
+    classes = _splitClasses(classes)
     for item in @element(element)
       if not item? then continue
       for prop in classes
@@ -317,9 +331,11 @@ class tweak.View
         item.className = item.className.replace(prop, '')
   
   ###
-    @param []
-    @param []
-    @param []
+    Apply event listener to element(s)
+    @note Use the on method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] type The type of event
+    @param [Function] callback The method to apply to the event listener
   ###
   DOMon: (element, type, callback) ->
     el = @el
@@ -330,9 +346,11 @@ class tweak.View
       , false)
 
   ###
-    @param []
-    @param []
-    @param []
+    Remove event listener to element(s)
+    @note Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] type The type of event
+    @param [Function] callback The method that was applied to the event listener
   ###
   DOMoff: (element, type, callback) ->
     elements = @element(element)
@@ -340,8 +358,10 @@ class tweak.View
       item.removeEventListener(type, callback, false)
 
   ###
-    @param []
-    @param []
+    Trigger event listener on element(s)
+    @note Use the trigger method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] type The type of event
   ###
   DOMtrigger: (element, type) ->
     elements = @element(element)

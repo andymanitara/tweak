@@ -37,16 +37,12 @@
         <tr>
           <td>Includes:</td>
           <td>
-            tweak.Common.clone
-            tweak.Common.construct
-            tweak.Common.findModule
-            tweak.Common.init
-            tweak.Common.off
-            tweak.Common.on
-            tweak.Common.relToAbs
-            tweak.Common.require
-            tweak.Common.splitComponents
-            tweak.Common.trigger
+            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
+            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
+            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
+            <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
+            <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
+            <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
           </td>
         </tr>
       </table>
@@ -93,26 +89,25 @@ The data in the model is passed into the views template, allowing for easy manip
     <span class='signature'>
       <a href='#getChildren-dynamic'>
         #
-(?)
+(Array&lt;DOMElement&gt;)
 <b>getChildren</b><span>(parent)</span>
       </a>
     </span>
     <span class='bound note title'>Bound</span>
     <span class='desc'>
-      @param [] 
+      Get the chidlren nodes of an element 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#getComponentNode-dynamic'>
         #
-(?)
+(DOMElement)
 <b>getComponentNode</b><span>(parent, value)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Find a component node by a value (attribute to apply on html is tweak-component) 
     </span>
   </li>
   <li>
@@ -143,162 +138,144 @@ The data in the model is passed into the views template, allowing for easy manip
     <span class='signature'>
       <a href='#getParent-dynamic'>
         #
-(?)
+(DOMElement)
 <b>getParent</b><span>()</span>
       </a>
     </span>
     <span class='desc'>
+      Find the parent DOMElement to this view 
     </span>
   </li>
   <li>
     <span class='signature'>
-      <a href='#asyncInnerHTML-dynamic'>
+      <a href='#asyncHTML-dynamic'>
         #
-(?)
-<b>asyncInnerHTML</b><span>(HTML, callback)</span>
+(void)
+<b>asyncHTML</b><span>(HTML, callback)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Async html to a function, this allows dynamic building of components without holding up parts of the system 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#element-dynamic'>
         #
-(?)
+(Array&lt;DOMElement&gt;)
 <b>element</b><span>(element, root = @el)</span>
       </a>
     </span>
     <span class='desc'>
-      <p>Tweak has an optional dependecy of any selector engine in the tweak.Selector object @param []
-@param []</p>
+      Tweak has an optional dependecy of any selector engine in the tweak.Selector object 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#height-dynamic'>
         #
-(?)
+(Number)
 <b>height</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] 
+      Returns height of an element 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#insideHeight-dynamic'>
         #
-(?)
+(Number)
 <b>insideHeight</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] 
+      Returns inside height of an element 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#width-dynamic'>
         #
-(?)
+(Number)
 <b>width</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] 
+      Returns width of an element 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#insideWidth-dynamic'>
         #
-(?)
+(Number)
 <b>insideWidth</b><span>(element)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] 
+      Returns inside width of an element 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetFrom-dynamic'>
         #
-(?)
+(Number)
 <b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo = window.document.body)</span>
       </a>
     </span>
     <span class='desc'>
-      <p>@param [] @param []
-@param []</p>
+      Returns the offset from another element relative to another (or default to the body) 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetTop-dynamic'>
         #
-(?)
+(Number)
 <b>offsetTop</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Returns the top offset of an element relative to another element (or default to the body) 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offestBottom-dynamic'>
         #
-(?)
+(Number)
 <b>offestBottom</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Returns the bottom offset of an element relative to another element (or default to the body) 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetLeft-dynamic'>
         #
-(?)
+(Number)
 <b>offsetLeft</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Returns the left offset of an element relative to another element (or default to the body) 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#offsetRight-dynamic'>
         #
-(?)
+(Number)
 <b>offsetRight</b><span>(element, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#splitClasses-dynamic'>
-        #
-(?)
-<b>splitClasses</b><span>(classes)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      @param [] 
+      Returns the right offset of an element relative to another element (or default to the body) 
     </span>
   </li>
   <li>
@@ -310,8 +287,7 @@ The data in the model is passed into the views template, allowing for easy manip
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Add a string of class names to an element(s) 
     </span>
   </li>
   <li>
@@ -323,8 +299,6 @@ The data in the model is passed into the views template, allowing for easy manip
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
     </span>
   </li>
   <li>
@@ -336,8 +310,7 @@ The data in the model is passed into the views template, allowing for easy manip
       </a>
     </span>
     <span class='desc'>
-      <p>@param [] @param []
-@param []</p>
+      Apply event listener to element(s) 
     </span>
   </li>
   <li>
@@ -349,8 +322,7 @@ The data in the model is passed into the views template, allowing for easy manip
       </a>
     </span>
     <span class='desc'>
-      <p>@param [] @param []
-@param []</p>
+      Remove event listener to element(s) 
     </span>
   </li>
   <li>
@@ -362,8 +334,7 @@ The data in the model is passed into the views template, allowing for easy manip
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Trigger event listener on element(s) 
     </span>
   </li>
 </ul>
@@ -372,44 +343,53 @@ The data in the model is passed into the views template, allowing for easy manip
       </h2>
       <h3 class='inherited'>
         Methods included from
-        tweak.Common.clone
+        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
       </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
+        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
+      </p>
       <h3 class='inherited'>
         Methods included from
-        tweak.Common.construct
+        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
       </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
+        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
+        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+      </p>
       <h3 class='inherited'>
         Methods included from
-        tweak.Common.findModule
+        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
       </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
+        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
+        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
+      </p>
       <h3 class='inherited'>
         Methods included from
-        tweak.Common.init
+        <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
       </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
+      </p>
       <h3 class='inherited'>
         Methods included from
-        tweak.Common.off
+        <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
       </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Modules.html#findModule-dynamic'>#findModule</a>
+        <a href='../../mixin/tweak/Common.Modules.html#relToAbs-dynamic'>#relToAbs</a>
+        <a href='../../mixin/tweak/Common.Modules.html#require-dynamic'>#require</a>
+      </p>
       <h3 class='inherited'>
         Methods included from
-        tweak.Common.on
+        <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
       </h3>
-      <h3 class='inherited'>
-        Methods included from
-        tweak.Common.relToAbs
-      </h3>
-      <h3 class='inherited'>
-        Methods included from
-        tweak.Common.require
-      </h3>
-      <h3 class='inherited'>
-        Methods included from
-        tweak.Common.splitComponents
-      </h3>
-      <h3 class='inherited'>
-        Methods included from
-        tweak.Common.trigger
-      </h3>
+      <p class='inherited'>
+        <a href='../../mixin/tweak/Common.Components.html#splitComponents-dynamic'>#splitComponents</a>
+      </p>
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
@@ -476,24 +456,37 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='getChildren-dynamic'>
       #
-(?)
+(Array&lt;DOMElement&gt;)
 <b>getChildren</b><span>(parent)</span>
       <span class='bound note'>Bound</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []</p>
+  <p>Get the chidlren nodes of an element</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>parent</span>
+      <span class='type'>
+        (
+          <tt>DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The element to get the children nodes of </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Array&lt;DOMElement&gt;</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns an array of children nodes from a parent Element </span>
     </li>
   </ul>
 </div>
@@ -501,24 +494,46 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='getComponentNode-dynamic'>
       #
-(?)
+(DOMElement)
 <b>getComponentNode</b><span>(parent, value)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <p>Find a component node by a value (attribute to apply on html is tweak-component)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>parent</span>
+      <span class='type'>
+        (
+          <tt>DOMElment</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The parent DOMElement to search through to find a given component node </span>
+    </li>
+    <li>
+      <span class='name'>value</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The component name to look for in the tweak-component attribute </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>DOMElement</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the dom element with matching critera </span>
     </li>
   </ul>
 </div>
@@ -567,49 +582,70 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='getParent-dynamic'>
       #
-(?)
+(DOMElement)
 <b>getParent</b><span>()</span>
       <br>
     </p>
-    <div class='tags'>
-  <h3>Returns:</h3>
-  <ul class='return'>
+    <div class='docstring'>
+  <p>Find the parent DOMElement to this view</p>
+</div>
+<div class='tags'>
+  <h3>Throws:</h3>
+  <ul class='throw'>
     <li>
       <span class='type'></span>
       (
         <tt>?</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>When looking for a parrent Element and there is not a returnable element you will recieve the following error - &quot;Unable to find view parent for #{@name} (#{name})&quot; </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>DOMElement</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns the parent DOMElement </span>
     </li>
   </ul>
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='asyncInnerHTML-dynamic'>
+    <p class='signature' id='asyncHTML-dynamic'>
       #
-(?)
-<b>asyncInnerHTML</b><span>(HTML, callback)</span>
+(void)
+<b>asyncHTML</b><span>(HTML, callback)</span>
       <br>
     </p>
     <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    Would it be prefered to be asyncHTML? 
-  </div>
-  <p>@param []
-@param []</p>
+  <p>Async html to a function, this allows dynamic building of components without holding up parts of the system</p>
 </div>
 <div class='tags'>
-  <h3>Returns:</h3>
-  <ul class='return'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
     <li>
-      <span class='type'></span>
-      (
-        <tt>?</tt>
-      )
+      <span class='name'>HTML</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>A String containing html to build into a dom object </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A method to pass the built up dom object to </span>
     </li>
   </ul>
 </div>
@@ -617,25 +653,57 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='element-dynamic'>
       #
-(?)
+(Array&lt;DOMElement&gt;)
 <b>element</b><span>(element, root = @el)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Tweak has an optional dependecy of any selector engine in the tweak.Selector object
-@param []
-@param []</p>
+  <p>Tweak has an optional dependecy of any selector engine in the tweak.Selector object</p>
 </div>
 <div class='tags'>
-  <h3>Returns:</h3>
-  <ul class='return'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>root</span>
+      <span class='type'>
+        (
+          <tt>DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(Default = @el) The element root to search for elements with a selector engine </span>
+    </li>
+  </ul>
+  <h3>Throws:</h3>
+  <ul class='throw'>
     <li>
       <span class='type'></span>
       (
         <tt>?</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>When trying to use a selector engine without having one assigned to the tweak.Selector property you will recieve the following error - &quot;Trying to get element with selector engine, but none defined to tweak.Selector&quot; </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Array&lt;DOMElement&gt;</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns an array of DOMElements </span>
     </li>
   </ul>
 </div>
@@ -643,23 +711,36 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='height-dynamic'>
       #
-(?)
+(Number)
 <b>height</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []</p>
+  <p>Returns height of an element</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the of height an element </span>
     </li>
   </ul>
 </div>
@@ -667,23 +748,36 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='insideHeight-dynamic'>
       #
-(?)
+(Number)
 <b>insideHeight</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []</p>
+  <p>Returns inside height of an element</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the of inside height an element </span>
     </li>
   </ul>
 </div>
@@ -691,23 +785,36 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='width-dynamic'>
       #
-(?)
+(Number)
 <b>width</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []</p>
+  <p>Returns width of an element</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the of width an element </span>
     </li>
   </ul>
 </div>
@@ -715,23 +822,36 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='insideWidth-dynamic'>
       #
-(?)
+(Number)
 <b>insideWidth</b><span>(element)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []</p>
+  <p>Returns inside width of an element</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the of inside width an element </span>
     </li>
   </ul>
 </div>
@@ -739,25 +859,56 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='offsetFrom-dynamic'>
       #
-(?)
+(Number)
 <b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo = window.document.body)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []
-@param []</p>
+  <p>Returns the offset from another element relative to another (or default to the body)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>from</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(default = &quot;top&quot;) The direction to compare the offset </span>
+    </li>
+    <li>
+      <span class='name'>relativeTo</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the element offset value relative to another element </span>
     </li>
   </ul>
 </div>
@@ -765,24 +916,46 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='offsetTop-dynamic'>
       #
-(?)
+(Number)
 <b>offsetTop</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <p>Returns the top offset of an element relative to another element (or default to the body)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>relativeTo</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the top offset of an element relative to another element (or default to the body) </span>
     </li>
   </ul>
 </div>
@@ -790,24 +963,46 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='offestBottom-dynamic'>
       #
-(?)
+(Number)
 <b>offestBottom</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <p>Returns the bottom offset of an element relative to another element (or default to the body)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>relativeTo</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the bottom offset of an element relative to another element (or default to the body) </span>
     </li>
   </ul>
 </div>
@@ -815,24 +1010,46 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='offsetLeft-dynamic'>
       #
-(?)
+(Number)
 <b>offsetLeft</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <p>Returns the left offset of an element relative to another element (or default to the body)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>relativeTo</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the left offset of an element relative to another element (or default to the body) </span>
     </li>
   </ul>
 </div>
@@ -840,48 +1057,46 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
   <div class='method_details'>
     <p class='signature' id='offsetRight-dynamic'>
       #
-(?)
+(Number)
 <b>offsetRight</b><span>(element, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <p>Returns the right offset of an element relative to another element (or default to the body)</p>
 </div>
 <div class='tags'>
-  <h3>Returns:</h3>
-  <ul class='return'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
     <li>
-      <span class='type'></span>
-      (
-        <tt>?</tt>
-      )
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>relativeTo</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
     </li>
   </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='splitClasses-dynamic'>
-      #
-(?)
-<b>splitClasses</b><span>(classes)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>@param []</p>
-</div>
-<div class='tags'>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Number</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>Returns the right offset of an element relative to another element (or default to the body) </span>
     </li>
   </ul>
 </div>
@@ -894,14 +1109,32 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
       <br>
     </p>
     <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    This could be achieved with cleaner code with REGEX? 
-  </div>
-  <p>@param []
-@param []</p>
+  <p>Add a string of class names to an element(s)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>classes</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A string of classes to add to the element(s) </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -911,15 +1144,30 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
 <b>removeClass</b><span>(element, classes = &#39;&#39;)</span>
       <br>
     </p>
-    <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    This could be achieved with cleaner code with REGEX? 
-  </div>
-  <p>@param []
-@param []</p>
-</div>
-<div class='tags'>
+    <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>classes</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A string of classes to remove to the element(s) </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -930,11 +1178,46 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []
-@param []</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    Use the on method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method. 
+  </div>
+  <p>Apply event listener to element(s)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>type</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The type of event </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The method to apply to the event listener </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -945,11 +1228,46 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []
-@param []</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method. 
+  </div>
+  <p>Remove event listener to element(s)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>type</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The type of event </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The method that was applied to the event listener </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -960,16 +1278,42 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <div class='note'>
+    <strong>Note:</strong>
+    Use the trigger method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method. 
+  </div>
+  <p>Trigger event listener on element(s)</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>type</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The type of event </span>
+    </li>
+  </ul>
 </div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  June 06, 14 12:57:24 by
+  June 09, 14 16:26:09 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

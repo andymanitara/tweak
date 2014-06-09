@@ -13,7 +13,12 @@
 
 ###
 class tweak.Components extends tweak.Collection
-  of:'components'
+  # @property [String] The type of storage
+  storeType: "components"
+  tweak.Extend(@, tweak.Common.Empty)
+  tweak.Extend(@, tweak.Common.Events)
+  tweak.Extend(@, tweak.Common.Collection)
+  tweak.Extend(@, tweak.Common.Arrays)
   tweak.Extend(@, tweak.Common.Modules)
   tweak.Extend(@, tweak.Common.Components)
   
@@ -38,7 +43,7 @@ class tweak.Components extends tweak.Collection
   ###
   _componentRender = (type) ->
     if @length() is 0
-      @trigger("#{@name}:#{@of}:ready")
+      @trigger("#{@name}:#{@storeType}:ready")
       return
     total = 0
     totalItems = @data.length
@@ -46,7 +51,7 @@ class tweak.Components extends tweak.Collection
       item[type]()
       @on("#{item.name}:views:#{type}d", =>
         total++
-        if total >= totalItems then @trigger("#{@name}:#{@of}:ready")
+        if total >= totalItems then @trigger("#{@name}:#{@storeType}:ready")
       )
 
   ###
@@ -60,9 +65,10 @@ class tweak.Components extends tweak.Collection
   rerender: -> _componentRender("rerender")
 
   ###
-    @param []
-    @param []
-    @return []
+    Find component with matching data in model
+    @param [String] property The property to find matching value against
+    @param [*] value Data to compare to
+    @return [Array] An array of matching components
   ###
   whereData: (property, value) ->
     result = []

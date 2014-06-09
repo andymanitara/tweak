@@ -62,6 +62,19 @@ This allow reloading of views without affect other views, a bit like regions in 
 <div class='tags'>
 </div>
       <h2>Property Summary</h2>
+      <dl class='properties'>
+        <dt id='storeType-property'>
+          <span class='signature'>
+            (String)
+            <b>
+              storeType
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The type of storage
+        </dd>
+      </dl>
       <h3 class='inherited'>
         Properties inherited from
         <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
@@ -72,17 +85,6 @@ This allow reloading of views without affect other views, a bit like regions in 
         <a href='[object Object]'>data</a>
         <a href='[object Object]'>history</a>
       </p>
-      <h2>Variables Summary</h2>
-      <dl class='constants'>
-  <dt id='of-variable'>
-    of
-    =
-  </dt>
-  <dd>
-    <pre><code class='coffeescript'>&#39;components&#39;</code></pre>
-    
-  </dd>
-</dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -125,13 +127,12 @@ This allow reloading of views without affect other views, a bit like regions in 
     <span class='signature'>
       <a href='#whereData-dynamic'>
         #
-(?)
+(Array)
 <b>whereData</b><span>(property, value)</span>
       </a>
     </span>
     <span class='desc'>
-      @param [] @param []
-
+      Find component with matching data in model 
     </span>
   </li>
 </ul>
@@ -265,24 +266,46 @@ This allow reloading of views without affect other views, a bit like regions in 
   <div class='method_details'>
     <p class='signature' id='whereData-dynamic'>
       #
-(?)
+(Array)
 <b>whereData</b><span>(property, value)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>@param []
-@param []</p>
+  <p>Find component with matching data in model</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>property</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The property to find matching value against </span>
+    </li>
+    <li>
+      <span class='name'>value</span>
+      <span class='type'>
+        (
+          <tt>*</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Data to compare to </span>
+    </li>
+  </ul>
   <h3>Returns:</h3>
   <ul class='return'>
     <li>
       <span class='type'></span>
       (
-        <tt>?</tt>
+        <tt>Array</tt>
       )
       &mdash;
-      <span class='desc'>[] </span>
+      <span class='desc'>An array of matching components </span>
     </li>
   </ul>
 </div>
@@ -290,7 +313,7 @@ This allow reloading of views without affect other views, a bit like regions in 
 </div>
     </div>
     <div id='footer'>
-  June 06, 14 12:57:24 by
+  June 09, 14 16:26:09 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
