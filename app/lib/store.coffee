@@ -15,6 +15,9 @@
   @include tweak.Common.Collections
 ###
 class tweak.Store
+
+  # @property [Object] The config object of this module
+  config: {}
   # @property [Integer] Length of the stores data
   length: 0
   # @property [Object, Array] Data holder for the store

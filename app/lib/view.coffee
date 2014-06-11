@@ -151,7 +151,7 @@ class tweak.View
       components = ''
       if child then break
       try
-        components = prop.getAttribute('tweak-component') or ''
+        components = prop.getAttribute('tweak-components') or ''
       catch e
       if components is " " then continue
       for val in @splitComponents(components)

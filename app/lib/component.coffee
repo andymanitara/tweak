@@ -26,6 +26,15 @@
   @include tweak.Common.Events
 ###
 class tweak.Component
+
+  tweak.Extend(@, tweak.Common.Empty)
+  tweak.Extend(@, tweak.Common.Events)
+  tweak.Extend(@, tweak.Common.Modules)
+  tweak.Extend(@, tweak.Common.Collections)
+  tweak.Extend(@, tweak.Common.Arrays)
+  tweak.Extend(@, tweak.Common.Modules)
+  tweak.Extend(@, tweak.Common.Components)
+
   # Private constants
   MODULES = ["model", "view", "components", "controller", "router"]
   
@@ -62,13 +71,7 @@ class tweak.Component
       # Start the construcion of the component
       @start()
 
-  tweak.Extend(@, tweak.Common.Empty)
-  tweak.Extend(@, tweak.Common.Events)
-  tweak.Extend(@, tweak.Common.Modules)
-  tweak.Extend(@, tweak.Common.Collections)
-  tweak.Extend(@, tweak.Common.Arrays)
-  tweak.Extend(@, tweak.Common.Modules)
-  tweak.Extend(@, tweak.Common.Components)
+
 
   ###
     @param [Object] options Component options
@@ -183,6 +186,8 @@ class tweak.Component
     # Add references to the the modules
     for name in MODULES
       prop = @[name]
+      prop?.component = @
+      prop?.name = @name
       for item in MODULES
         if name isnt item then prop?[item] = @[item]
 
@@ -196,8 +201,8 @@ class tweak.Component
     for name in MODULES
       if name isnt "view" then @[name]?.init?()
 
-  componentRender = (type) ->
-    @on("#{@name}:views:#{type}ed", =>
+  _componentRender: (type) ->
+    @on("#{@name}:view:#{type}ed", =>
       @on("#{@name}:components:ready", => @trigger("#{@name}:ready", @name))
       @components[type]()
     )
@@ -207,13 +212,13 @@ class tweak.Component
     Renders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rendered
   ###
-  render: -> componentRender("render")
+  render: -> @_componentRender("render")
 
   ###
     Rerenders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rerendered
   ###
-  rerender: -> componentRender("rerender")
+  rerender: -> @_componentRender("rerender")
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one

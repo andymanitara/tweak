@@ -1,3 +1,4 @@
+tweak.Common = {}
 ###
   Common EMpty functions that are used in multiple places throughout the framework.
   @mixin

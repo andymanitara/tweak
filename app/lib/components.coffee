@@ -15,6 +15,8 @@
 class tweak.Components extends tweak.Collection
   # @property [String] The type of storage
   storeType: "components"
+  # @property [Object] The config object of this module
+  config: []
   tweak.Extend(@, tweak.Common.Empty)
   tweak.Extend(@, tweak.Common.Events)
   tweak.Extend(@, tweak.Common.Collection)
@@ -41,12 +43,12 @@ class tweak.Components extends tweak.Collection
   ###
     Rendering and rererendering functionality to reduce code
   ###
-  _componentRender = (type) ->
-    if @length() is 0
+  _componentRender: (type) ->
+    if @length is 0
       @trigger("#{@name}:#{@storeType}:ready")
       return
     total = 0
-    totalItems = @data.length
+    totalItems = @length
     for item in @data
       item[type]()
       @on("#{item.name}:views:#{type}d", =>
@@ -57,12 +59,12 @@ class tweak.Components extends tweak.Collection
   ###
     Renders all of its components, also triggers ready state when all components are ready
   ###
-  render: -> _componentRender("render")
+  render: -> @_componentRender("render")
 
   ###
     Rerender all of its components, also triggers ready state when all components are ready
   ###
-  rerender: -> _componentRender("rerender")
+  rerender: -> @_componentRender("rerender")
 
   ###
     Find component with matching data in model
