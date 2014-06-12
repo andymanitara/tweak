@@ -151,7 +151,6 @@ class tweak.View
 
   ###
     Clears the view and removed event listeners of DOM elements
-    @note Is removing the event listeners needed, or will it clear from the memory automatically when it is cleared?
   ###
   clear: ->
     if @parent
@@ -279,6 +278,7 @@ class tweak.View
   offsetRight: (element, relativeTo) -> @offsetFrom(element, "right", relativeTo)
 
   ###
+    @private
     Split classes from a string to an array
   ###
   _splitClasses = (classes) ->

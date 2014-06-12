@@ -202,6 +202,9 @@ class tweak.Component
     for name in MODULES
       if name isnt "view" then @[name]?.init?()
 
+  ###
+    @private
+  ###
   _componentRender: (type) ->
     @on("#{@name}:view:#{type}ed", =>
       @on("#{@name}:components:ready", =>

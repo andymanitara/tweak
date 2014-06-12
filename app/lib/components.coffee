@@ -41,6 +41,7 @@ class tweak.Components extends tweak.Collection
       @add item, {quiet:true, store:false}
 
   ###
+    @private
     Rendering and rererendering functionality to reduce code
   ###
   _componentRender: (type) ->
