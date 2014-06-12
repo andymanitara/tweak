@@ -51,13 +51,6 @@ class tweak.View
     template = template(@model.data)
     
     @asyncHTML(template, (template) =>
-
-      # adds a unique class to the element based on the component name
-      addClass = (element) =>
-        if not element then return
-        if not element.className? then element.className = ""
-        element.className += " #{@model.get('id')}"
-
       # Attach nodes to the dome
       # It can either replace whats is in its parent node, or append after or be inserted before.
       attach = =>
@@ -65,11 +58,9 @@ class tweak.View
         switch @config.attachment or 'after'
           when 'bottom', 'after'
             @parent.appendChild(template)
-            addClass(@parent.lastElementChild)
             @el = @parent.lastElementChild
           when 'top', 'before'
             @parent.insertBefore(template, @parent.firstChild)
-            addClass(@parent.firstElementChild)
             @el = @parent.firstElementChild
           when 'replace'
             for item in @parent.children
@@ -77,9 +68,9 @@ class tweak.View
                 @parent.removeChild item
               catch e
             @parent.appendChild template
-            addClass(@parent.firstElementChild)
             @el = @parent.firstElementChild
 
+        @addClass(@el, @model.get("id"))
         @model.set("rendering", false)
         @trigger("#{@name}:view:rendered")
         @init()
@@ -164,9 +155,6 @@ class tweak.View
   ###
   clear: ->
     if @parent
-      for node in @getChildren(@parent)
-        @off(node)
-
       @parent.innerHTML = ''
       @el = null
 
@@ -315,7 +303,9 @@ class tweak.View
         for curClass in currentClasses
           if curClass is addClass then add = false
         if add then item.className += " #{addClass}"
-      item.className = item.className.replace(/\s*/g,' ')
+      item.className = item.className
+        .replace /\s{2,}/g,' '
+        .replace /(^\s*|\s*$)/g,''
 
   ###
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine

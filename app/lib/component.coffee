@@ -186,6 +186,7 @@ class tweak.Component
     # Add references to the the modules
     for name in MODULES
       prop = @[name]
+      prop?.parent = @parent
       prop?.component = @
       prop?.name = @name
       for item in MODULES
@@ -203,7 +204,9 @@ class tweak.Component
 
   _componentRender: (type) ->
     @on("#{@name}:view:#{type}ed", =>
-      @on("#{@name}:components:ready", => @trigger("#{@name}:ready", @name))
+      @on("#{@name}:components:ready", =>
+        @trigger("#{@name}:ready", @name)
+      )
       @components[type]()
     )
     @view[type]()

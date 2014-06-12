@@ -92,8 +92,8 @@ class tweak.Router
   set: (obj, quiet = false) ->
     location = ''
     for key, item of obj
-      if tyepof(item) is 'boolean' and item
-        location += "#{item}/"
+      if typeof(item) is 'boolean' and item
+        location += "#{key}/"
       else
         location += "#{key}:#{item}/"
     @ignore = quiet

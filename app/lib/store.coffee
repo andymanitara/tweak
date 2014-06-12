@@ -66,7 +66,7 @@ class tweak.Store
     for key, prop of properties
       @data[key] = prop
       @length++
-      if not quiet then @trigger "#{@name}:#{@storeType}:changed:#{key}", prop
+      if not quiet then @trigger "#{@name}:#{@storeType}:changed:#{key}", prop, options
 
     if not quiet then @trigger "#{@name}:#{@storeType}:changed"
 

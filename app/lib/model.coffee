@@ -17,7 +17,7 @@ class tweak.Model extends tweak.Store
   # @property [Object] Default data to load into model when constructing the model
   default: {}
   # @property [String] The type of collection this is
-  dataType: "model"
+  storeType: "model"
     
   ###
     Constructs the model ready for use
