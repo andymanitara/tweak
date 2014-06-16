@@ -6,7 +6,7 @@
   The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps.
 
   TweakJS wraps its Models, Views, Templates, and Controllers into a component module.
-  The component module acts inteliigently to build up your application with simple config files.
+  The component module acts inteligently to build up your application with simple config files.
   Each component its built through a config object; this allows for powerfull configuration with tonnes of flexibity.
 
   Each component can have sub components which are accessible in both directions; although it is recommended to keep functionality seperate
