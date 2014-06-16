@@ -191,15 +191,13 @@ tweak.Common.Modules =
         return require "#{path}/#{module}"
       catch e
         ###
-          Detirmine if the error is to do with module not being found
-          switch statement probably needed for supporting other error messages made by other module loaders
+          If the error thrown isnt a direct call on "Error" Then the module was found however there was an internal error in the module
         ###
-        reg = /["]([^"]*)["]\B$/
-        regResult = reg.exec(e.message)
-        errorPath = regResult[1] if regResult
-        if e.message isnt "Cannot find module \"#{path}/#{module}\" from \"#{errorPath}\""
-          e.message = "Found module (#{module}) for component #{@name} but there was an error: #{e.message}"
+        if e.name isnt "Error"
+          e.message = "Module (#{"#{path}/#{module}"}) found although encountered #{e.name}: #{e.message}"
           throw e
+
+        
 
     return surrogate if surrogate?
     # If no paths are found then throw an error
