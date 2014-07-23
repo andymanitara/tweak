@@ -36,7 +36,7 @@ class tweak.Component
   tweak.Extend(@, tweak.Common.Components)
 
   # Private constants
-  MODULES = ["model", "view", "components", "controller", "router"]
+  MODULES = ["model", "view", "controller", "components", "router"]
   
   # @property [Object]
   model: null
