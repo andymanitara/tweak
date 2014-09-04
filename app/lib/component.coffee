@@ -231,6 +231,6 @@ class tweak.Component
     @param [Object] options (optional) Options = {store:true, quiet:false}
   ###
   destroy: (options = {}) ->
-    @views.clear()
+    @view.clear()
     components = @relation.components
     if components? then components.remove @name, options
