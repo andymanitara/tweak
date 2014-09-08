@@ -40,7 +40,7 @@ class tweak.Components extends tweak.Collection
       data[key] = new tweak.Component(@, prop)
     
     for key, item of data
-      @add item, {quiet:true, store:false}
+      @add item, true
 
   ###
     @private

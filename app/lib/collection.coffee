@@ -29,57 +29,47 @@ class tweak.Collection extends tweak.Store
   
   ###
     Pop the top data element in the collection
-    @param [Object] options Options to detirmine extra functionality
-    @option options [Boolean] store Decide whether to store the change to the history. Default: true
-    @option options [Boolean] quiet Decide whether to trigger collection events. Default: false
+    @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
     @return [*] Returns the data that was removed
   ###
-  pop: (options = {}) ->
+  pop: (quiet) ->
     result = @data[@length-1]
-    @remove result, options
+    @remove result, quiet
     result
   
   ###
     Add a new property to the end of the collection
-    @param [*] data Data to add to the end of the collection
-    @param [Object] options Options to detirmine extra functionality
-    @option options [Boolean] store Decide whether to store the change to the history. Default: true
-    @option options [Boolean] quiet Decide whether to trigger collection changed events. Default: false
+    @param [*] data Data to add to the end of the collection    
+    @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
   ###
-  add: (data, options = {}) -> @set "#{@length}", data, options
+  add: (data, quiet = true) -> @set "#{@length}", data, quiet
   
   ###
     Inserts a new property into a certain position
     @param [*] data Data to insert into the collection
     @param [Number] position The position to insert the property at into the collection
-
-    @param [Object] options Options to detirmine extra functionality
-    @option options [Boolean] store Decide whether to store the change to the history. Default: true
-    @option options [Boolean] quiet Decide whether to trigger collection changed events. Default: false
+    @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
   ###
-  place: (data, position, options = {}) ->
-    options.data = options.data or {}
-    quiet = @options.quiet
-    store = if options.store? then true else false
+  place: (data, position, quiet = true) ->
     result = []
+    @history = @data
     for prop in @data
       if position is _i then break
       result.push @data[_i]
     result.push data
-    for data in @datas
+    for data in @data
       if _j < position then continue
       result.push @data[_j]
     @data = result
-    if store then @store()
     if not quiet
       @trigger "#{@name}:#{@storeType}:changed"
       @trigger "#{@name}:#{@storeType}:changed:#{position}"
@@ -98,10 +88,8 @@ class tweak.Collection extends tweak.Store
 
   ###
     Remove a single property or many properties.
-    @param [String, Array<String>] properties Array of property names to remove from collection, or single String of the name of the property to remove
-    @param [Object] options Options to detirmine extra functionality
-    @option options [Boolean] store Decide whether to store the change to the history. Default: true
-    @option options [Boolean] quiet Decide whether to trigger collection events. Default: false
+    @param [String, Array<String>] properties Array of property names to remove from collection, or single String of the name of the property to remove    
+    @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
@@ -111,11 +99,11 @@ class tweak.Collection extends tweak.Store
     quiet = options.quiet
     if typeof properties is 'string' then properties = [properties]
     for property in properties
+      @history[property] = @data[property]
       delete @data[property]
       @trigger "#{@name}:#{@storeType}:removed:#{property}"
     
     @clean()
-    if store then @store()
     if not quiet then @trigger "#{@name}:#{@storeType}:changed"
     return
 

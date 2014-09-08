@@ -39,36 +39,33 @@ class tweak.Store
     @overload set(name, data, options)
       Set an individual property in the store by name
       @param [String] name The name of the property to set
-      @param [*] data Data to store in the property
-      @param [Object] options Options to detirmine extra functionality
-      @option options [Boolean] store Decide whether to store the change to the history. Default: true
-      @option options [Boolean] quiet Decide whether to trigger store changed events. Default: false
+      @param [*] data Data to store in the property      
+      @param [Boolean] quiet Setting to trigger change events
+
 
     @overload set(properties, options)
       Set an multiple properties in the store from an object
-      @param [Object] properties Key and property based object to store into store
-      @param [Object] options Options to detirmine extra functionality
-      @option options [Boolean] store Decide whether to store the change to the history. Default: true
-      @option options [Boolean] quiet Decide whether to trigger store changed events. Default: false
+      @param [Object] properties Key and property based object to store into store      
+      @param [Boolean] quiet Setting to trigger change events
+
 
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the store has been updated
   ###
   set: (properties, params...) ->
-    options = params[0]
+    quiet = params[0]
     if typeof properties is 'string'
       prevProps = properties
       properties = {}
       properties[prevProps] = params[0]
-      options = params[1]
-    options or= {}
-    store = if options.store? then options.store else true
-    quiet = options.quiet
-    if store then @store()
+      quiet = params[1]
+    quiet ?= false
     for key, prop of properties
+      prev = @data[key]
+      if prev then @history[key] = prev
       @data[key] = prop
       @length++
-      if not quiet then @trigger "#{@name}:#{@storeType}:changed:#{key}", prop, options
+      if not quiet then @trigger "#{@name}:#{@storeType}:changed:#{key}", prop
 
     if not quiet then @trigger "#{@name}:#{@storeType}:changed"
 
@@ -100,79 +97,42 @@ class tweak.Store
     result
 
   ###
-    Store the data to the history
-  ###
-  store: ->
-    @history.push(@clone @data)
-    memLength = @relation.memoryLength
-    history = @history
-    historyLength = history.length
-    if memLength? and memLength < historyLength then @reduced(memLength)
-    return
-  
-  ###
     Remove an element at a given position
     @param [Integer] position Position of property to return
-    @param [Object] options Options to detirmine extra functionality
-    @option options [Boolean] store Decide whether to store the change to the history. Default: true
-    @option options [Boolean] quiet Decide whether to trigger store events. Default: false
+    @param [Boolean] quiet Setting to trigger change events
+
   ###
-  removeAt: (position, options = {}) ->
+  removeAt: (position, quiet = true) ->
     element = @at position
     removed = null
     for key, prop of element
-      @remove key, options
+      @remove key, quiet
     return
 
   ###
-     Returns the changed properties between the current store and a previous store state. Default is one state behind.
-     @param [Integer] position the amount of stated behind to compare to. Default: 1
-     @return [Object] Returns the changed properties and there values in an Object
+    Get previous value of a property from the history
+    @param [String] previous property value
+    @return [*] returns the previous property value
   ###
-  changed: (position) ->
-    position ?= 1
-    if position > @history.length then position = @history.length
-    state = @history[@history.length - position]
-    data = @data
-    results = {}
-    for key, prop of data
-      if not state[key]? then results[key] = prop
-      for prevKey, prevProp of state
-        if not data[prevKey]? then results[prevKey] = prevProp
-        if key is prevKey
-          if prop isnt prevProp then results[key] = prevProp
-    results
+  previous: (property) -> return @history[property]
 
   ###
     Revert the store back to previous state in history, default is one previous version.
-    @overload revert(amount, options)
-      Revert the store data by specified amount of states with options provided
-      @param [Integer] amount The amount of states in the history to revert back by
-      @param [Object] options Options to detirmine extra functionality
-      @option options [Boolean] store Decide whether to store the change to the history. Default: true
-      @option options [Boolean] quiet Decide whether to trigger store events. Default: false
-
-    @overload revert(options)
-      Revert the data by one with options provided
-      @param [Object] options Options to detirmine extra functionality
-      @option options [Boolean] store Decide whether to store the change to the history. Default: true
-      @option options [Boolean] quiet Decide whether to trigger store events. Default: false
+    
+    @param [Array<String>, String] props Property or Properties to revert
+    @param [Boolean] quiet Setting to trigger change events
 
     @event - Events triggered from set method functionality if quiet option is false
   ###
-  revert: (params...) ->
-    if typeof params[0] is 'object' then options = params[0]
-    else
-      amount = params[0]
-      options = params[1]
-    options or= {}
-    amount ?= 1
-    history = @history
-    historyLength = history.length
-    if amount > historyLength then amount = historyLength
-    state = history[historyLength - amount]
-    @data = {}
-    @set @clone(state), options
+  revert: (props, quiet) ->
+    props = if props instanceof Array then props else [props]
+    quiet ?= true
+    for key in props
+      val = @history[key]
+      if val 
+        @set key, val, quiet
+      else 
+        @remove key, quiet
     return
   
   ###

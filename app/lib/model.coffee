@@ -25,33 +25,29 @@ class tweak.Model extends tweak.Store
   construct: ->
     @reset()
     # Defaults are overriden completely when overriden by an extending model, however config model data is merged
-    if @defaults? then @set @defaults, {quiet:true, store:false}
+    if @defaults? then @set @defaults, true
     data = @config or {}
-    if data then @set data, {quiet:true, store:false}
+    if data then @set data, true
   
 
   ###
     Remove a single property or many properties.
     @param [String, Array<String>] properties Array of property names to remove from model, or single String of the name of the property to remove
-    @param [Object] options Options to detirmine extra functionality
-    @option options [Boolean] store Decide whether to store the change to the history. Default: true
-    @option options [Boolean] quiet Decide whether to trigger model events. Default: false
+    @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:model:removed:#{key} Triggers an event based on what property has been removed
     @event #{@name}:model:changed Triggers a generic event that the model has been updated
   ###
-  remove: (properties, options = {}) ->
-    store = if options.store? then true else false
-    quiet = options.quiet
+  remove: (properties, quiet = true) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       for key, prop of data
         if key is property
           @length--
+          @history[key] = @data[key]
           delete @data[key]
-          @trigger "#{@name}:#{@storeType}:removed:#{key}"
-    
-    if store then @store()
+          if not quiet then @trigger "#{@name}:#{@storeType}:removed:#{key}"
+
     if not quiet then @trigger "#{@name}:#{@storeType}:changed"
     return
   
