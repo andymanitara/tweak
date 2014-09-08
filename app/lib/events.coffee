@@ -5,6 +5,10 @@
   The tree allows quick traversal of events, during interaction with the event API
 ###
 class tweak.EventSystem
+
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
+  
   # Split regex for event name
   splitEventName = (name) ->
     if typeof name is "string"

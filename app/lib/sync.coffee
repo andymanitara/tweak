@@ -3,4 +3,8 @@
 	@note Any help with this functionality will be greatly appreciated. Or any suggestion on how to best achieve this will be helpful. Should it be extensive to all components, such as the configuartion so it can be retrived and dynamic building of components can be accomplished along with the data of models?
 ###
 class tweak.Sync
+
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
+  
   tweak.Extend(@, ['init'], tweak.Common)

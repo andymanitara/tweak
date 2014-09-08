@@ -18,6 +18,9 @@ tweak.Viewable = {
   @include tweak.Common.Components
 ###
 class tweak.View
+  
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
 
   tweak.Extend @, [
     tweak.Common.Empty,

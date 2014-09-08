@@ -26,6 +26,9 @@ class tweak.Store
   history: []
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: 'BASE'
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
+
 
   tweak.Extend @, [
     tweak.Common.Empty

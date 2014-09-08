@@ -17,6 +17,7 @@ class tweak.Components extends tweak.Collection
   storeType: "components"
   # @property [Object] The config object of this module
   config: []
+
   tweak.Extend @, [
     tweak.Common.Empty,
     tweak.Common.Events,

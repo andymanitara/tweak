@@ -50,6 +50,8 @@ class tweak.Component
   controller: null
   # @property [Object]
   router: null
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
 
   ###
     @param [Object] relation Relation to the component
@@ -67,6 +69,8 @@ class tweak.Component
     @name = name or ""
 
     @config = @buildConfig(config) or {}
+
+    @uid = tweak.uidCount++
 
     # The config file can prevent automatic build and start of componets
     if not @config.preventStart
@@ -176,8 +180,7 @@ class tweak.Component
   construct: ->
     # Router is optional as it is perfomance heavy
     # So it needs to be explicility defind in the config for the component that it should be used
-    if @config.router
-      @addRouter()
+    if @config.router then @addRouter()
 
     # Add modules to the component
     @addModel()
