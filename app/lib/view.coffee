@@ -154,7 +154,7 @@ class tweak.View
   ###
   clear: ->
     if @parent
-      @parent.innerHTML = ''
+      @parent.removeChild @el
       @el = null
 
   ###
