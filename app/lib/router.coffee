@@ -7,8 +7,10 @@
 ###
 
 class tweak.Router
-  tweak.Extend(@, tweak.Common.Empty)
-  tweak.Extend(@, tweak.Common.Events)
+  tweak.Extend @, [
+    tweak.Common.Empty, 
+    tweak.Common.Events
+  ]
 
   # @private
   constructor: ->

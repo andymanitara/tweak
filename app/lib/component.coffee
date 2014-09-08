@@ -27,13 +27,15 @@
 ###
 class tweak.Component
 
-  tweak.Extend(@, tweak.Common.Empty)
-  tweak.Extend(@, tweak.Common.Events)
-  tweak.Extend(@, tweak.Common.Modules)
-  tweak.Extend(@, tweak.Common.Collections)
-  tweak.Extend(@, tweak.Common.Arrays)
-  tweak.Extend(@, tweak.Common.Modules)
-  tweak.Extend(@, tweak.Common.Components)
+  tweak.Extend @, [
+    tweak.Common.Empty,
+    tweak.Common.Events,
+    tweak.Common.Modules,
+    tweak.Common.Collections,
+    tweak.Common.Arrays,
+    tweak.Common.Modules,
+    tweak.Common.Components
+  ]
 
   # Private constants
   MODULES = ["model", "view", "controller", "components", "router"]

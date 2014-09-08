@@ -17,12 +17,14 @@ class tweak.Components extends tweak.Collection
   storeType: "components"
   # @property [Object] The config object of this module
   config: []
-  tweak.Extend(@, tweak.Common.Empty)
-  tweak.Extend(@, tweak.Common.Events)
-  tweak.Extend(@, tweak.Common.Collection)
-  tweak.Extend(@, tweak.Common.Arrays)
-  tweak.Extend(@, tweak.Common.Modules)
-  tweak.Extend(@, tweak.Common.Components)
+  tweak.Extend @, [
+    tweak.Common.Empty,
+    tweak.Common.Events,
+    tweak.Common.Collection,
+    tweak.Common.Arrays,
+    tweak.Common.Modules,
+    tweak.Common.Components
+  ]
   
   ###
    Construct the Collection with given options from the config file

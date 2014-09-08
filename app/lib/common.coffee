@@ -65,23 +65,15 @@ tweak.Common.Collections =
     # Handle Array
     if ref instanceof Array
       copy = []
-      i = 0
-      len = ref.length
-
-      while i < len
-        copy[i] = @clone(ref[i])
-        i++
-      return copy
+    else if typeof ref is "object"
+      copy = {}
+    else
+      throw new Error("Unable to copy object its type isnt supported")
 
     # Handle Object
-    if ref instanceof Object
-      copy = {}
-      for attr of ref
-        copy[attr] = @clone(ref[attr])  if ref.hasOwnProperty(attr)
-      return copy
-    throw new Error("Unable to copy object its type isnt supported")
-
-    return
+    for attr of ref
+      copy[attr] = @clone(ref[attr])  if ref.hasOwnProperty(attr)
+    return copy
 
 ###
   Common functions that are used for manipulating Arrays

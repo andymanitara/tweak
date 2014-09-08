@@ -15,9 +15,13 @@ tweak.Extend = (context, selection, properties) ->
   propertiesExist = if properties? then true else false
   proto = context::
   proto ?= context.__proto__
-  for key, prop of selection
-    if propertiesExist
-      proto[prop] ?= properties[prop]
-    else
-      proto[key] = prop
+  selection = if selection instanceof Array then selection else [selection]
+
+  for item in selection
+    for key, prop of item
+      if propertiesExist
+        proto[prop] ?= properties[prop]
+      else
+        proto[key] = prop
+  
   return

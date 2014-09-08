@@ -27,9 +27,11 @@ class tweak.Store
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: 'BASE'
 
-  tweak.Extend(@, tweak.Common.Empty)
-  tweak.Extend(@, tweak.Common.Events)
-  tweak.Extend(@, tweak.Common.Collections)
+  tweak.Extend @, [
+    tweak.Common.Empty
+    tweak.Common.Events
+    tweak.Common.Collections
+  ]
 
   ###
     Set multiple properties or one property of the store by passing an object with object of the data you with to update.

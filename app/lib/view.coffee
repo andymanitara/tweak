@@ -19,13 +19,15 @@ tweak.Viewable = {
 ###
 class tweak.View
 
-  tweak.Extend(@, tweak.Common.Empty)
-  tweak.Extend(@, tweak.Common.Events)
-  tweak.Extend(@, tweak.Common.Modules)
-  tweak.Extend(@, tweak.Common.Collections)
-  tweak.Extend(@, tweak.Common.Arrays)
-  tweak.Extend(@, tweak.Common.Modules)
-  tweak.Extend(@, tweak.Common.Components)
+  tweak.Extend @, [
+    tweak.Common.Empty,
+    tweak.Common.Events,
+    tweak.Common.Modules,
+    tweak.Common.Collections,
+    tweak.Common.Arrays,
+    tweak.Common.Modules,
+    tweak.Common.Components
+  ]
 
   ###
     Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
