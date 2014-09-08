@@ -70,8 +70,6 @@ class tweak.Component
 
     @config = @buildConfig(config) or {}
 
-    @uid = tweak.uidCount++
-
     # The config file can prevent automatic build and start of componets
     if not @config.preventStart
       # Start the construcion of the component
@@ -233,9 +231,15 @@ class tweak.Component
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
-    @param [Object] options (optional) Options = {store:true, quiet:false}
+    @param [Boolean] quiet Setting to trigger change events
   ###
-  destroy: (options = {}) ->
+  destroy: (quiet) ->
     @view.clear()
     components = @relation.components
-    if components? then components.remove @name, options
+    if components?
+      i = 0 
+      for item in components.data
+        if item.uid is @uid
+          components.remove i, quiet
+          return
+        i++

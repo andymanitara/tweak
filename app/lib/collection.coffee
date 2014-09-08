@@ -48,7 +48,7 @@ class tweak.Collection extends tweak.Store
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
   ###
-  add: (data, quiet = true) -> @set "#{@length}", data, quiet
+  add: (data, quiet) -> @set "#{@length}", data, quiet
   
   ###
     Inserts a new property into a certain position
@@ -59,7 +59,7 @@ class tweak.Collection extends tweak.Store
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
   ###
-  place: (data, position, quiet = true) ->
+  place: (data, position, quiet) ->
     result = []
     @history = @data
     for prop in @data
@@ -94,9 +94,7 @@ class tweak.Collection extends tweak.Store
     @event #{@name}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
   ###
-  remove: (properties, options = {}) ->
-    store = if options.store? then true else false
-    quiet = options.quiet
+  remove: (properties, quiet) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       @history[property] = @data[property]
@@ -120,3 +118,4 @@ class tweak.Collection extends tweak.Store
   reset: ->
     @data = []
     @history = []
+    @length = 0

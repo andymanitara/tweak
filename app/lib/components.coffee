@@ -84,3 +84,8 @@ class tweak.Components extends tweak.Collection
       for key, prop of modelData
         if key is property and prop is value then result.push data
     result
+
+  reset: ->
+    for item in @data
+      item.view?.clear()
+    super() 

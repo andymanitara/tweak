@@ -159,8 +159,9 @@ class tweak.View
   ###
   clear: ->
     if @parent
-      @parent.removeChild @el
-      @el = null
+      try
+        @parent.removeChild @el
+        @el = null
 
   ###
     Checks to see if the item is rendered; this is detirmined if the node has a parentNode
