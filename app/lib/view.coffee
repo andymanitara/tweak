@@ -18,6 +18,9 @@ tweak.Viewable = {
   @include tweak.Common.Components
 ###
 class tweak.View
+  
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
 
   tweak.Extend @, [
     tweak.Common.Empty,
@@ -156,8 +159,9 @@ class tweak.View
   ###
   clear: ->
     if @parent
-      @parent.removeChild @el
-      @el = null
+      try
+        @parent.removeChild @el
+        @el = null
 
   ###
     Checks to see if the item is rendered; this is detirmined if the node has a parentNode

@@ -7,6 +7,10 @@
 ###
 
 class tweak.Router
+
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
+  
   tweak.Extend @, [
     tweak.Common.Empty, 
     tweak.Common.Events

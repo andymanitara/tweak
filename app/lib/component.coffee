@@ -50,6 +50,8 @@ class tweak.Component
   controller: null
   # @property [Object]
   router: null
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
 
   ###
     @param [Object] relation Relation to the component
@@ -176,8 +178,7 @@ class tweak.Component
   construct: ->
     # Router is optional as it is perfomance heavy
     # So it needs to be explicility defind in the config for the component that it should be used
-    if @config.router
-      @addRouter()
+    if @config.router then @addRouter()
 
     # Add modules to the component
     @addModel()
@@ -230,9 +231,15 @@ class tweak.Component
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
-    @param [Object] options (optional) Options = {store:true, quiet:false}
+    @param [Boolean] quiet Setting to trigger change events
   ###
-  destroy: (options = {}) ->
+  destroy: (quiet) ->
     @view.clear()
     components = @relation.components
-    if components? then components.remove @name, options
+    if components?
+      i = 0 
+      for item in components.data
+        if item.uid is @uid
+          components.remove i, quiet
+          return
+        i++

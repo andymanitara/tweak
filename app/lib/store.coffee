@@ -26,6 +26,9 @@ class tweak.Store
   history: []
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: 'BASE'
+  # @property [Interger] The uid of this object - for unique reference
+  uid: tweak.uid++
+
 
   tweak.Extend @, [
     tweak.Common.Empty
@@ -36,14 +39,14 @@ class tweak.Store
   ###
     Set multiple properties or one property of the store by passing an object with object of the data you with to update.
 
-    @overload set(name, data, options)
+    @overload set(name, data, quiet)
       Set an individual property in the store by name
       @param [String] name The name of the property to set
       @param [*] data Data to store in the property      
       @param [Boolean] quiet Setting to trigger change events
 
 
-    @overload set(properties, options)
+    @overload set(properties, quiet)
       Set an multiple properties in the store from an object
       @param [Object] properties Key and property based object to store into store      
       @param [Boolean] quiet Setting to trigger change events
@@ -59,7 +62,6 @@ class tweak.Store
       properties = {}
       properties[prevProps] = params[0]
       quiet = params[1]
-    quiet ?= false
     for key, prop of properties
       prev = @data[key]
       if prev then @history[key] = prev
@@ -102,7 +104,7 @@ class tweak.Store
     @param [Boolean] quiet Setting to trigger change events
 
   ###
-  removeAt: (position, quiet = true) ->
+  removeAt: (position, quiet) ->
     element = @at position
     removed = null
     for key, prop of element
@@ -126,7 +128,6 @@ class tweak.Store
   ###
   revert: (props, quiet) ->
     props = if props instanceof Array then props else [props]
-    quiet ?= true
     for key in props
       val = @history[key]
       if val 
