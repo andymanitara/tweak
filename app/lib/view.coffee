@@ -302,7 +302,7 @@ class tweak.View
     for item in elements
       if not item? then continue
       currentClasses = _splitClasses(item.className)
-      for className in addingClasses
+      for className in currentClasses
         if not @hasClass element, classes then item.className += " #{className}"
       item.className = item.className
         .replace /\s{2,}/g,' '
