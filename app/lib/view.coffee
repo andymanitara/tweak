@@ -302,7 +302,7 @@ class tweak.View
     for item in elements
       if not item? then continue
       currentClasses = _splitClasses(item.className)
-      for className in addingClasses
+      for className in currentClasses
         if not @hasClass element, classes then item.className += " #{className}"
       item.className = item.className
         .replace /\s{2,}/g,' '
@@ -321,7 +321,7 @@ class tweak.View
       if not item? then continue
       for prop in classes
         if prop is ' ' then continue
-        item.className = (" #{item.className} ").split(" #{prop} ").replace ' '
+        item.className = (" #{item.className} ").split(" #{prop} ").join ' '
  
   ###
     Check of a string of class names is in an element(s) class
@@ -352,7 +352,7 @@ class tweak.View
       i = 0
       for prop in orig
         if prop is ' ' then continue
-        item.className = (" #{item.className} ").split(" #{prop} ").replace " #{classes[i++]} "
+        item.className = (" #{item.className} ").split(" #{prop} ").join " #{classes[i++]} "
 
     
   
