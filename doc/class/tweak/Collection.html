@@ -120,7 +120,7 @@
       <a href='#pop-dynamic'>
         #
 (*)
-<b>pop</b><span>(options = {})</span>
+<b>pop</b><span>(quiet)</span>
       </a>
     </span>
     <span class='desc'>
@@ -132,7 +132,7 @@
       <a href='#add-dynamic'>
         #
 (void)
-<b>add</b><span>(data, options = {})</span>
+<b>add</b><span>(data, quiet)</span>
       </a>
     </span>
     <span class='desc'>
@@ -144,7 +144,7 @@
       <a href='#place-dynamic'>
         #
 (void)
-<b>place</b><span>(data, position, options = {})</span>
+<b>place</b><span>(data, position, quiet)</span>
       </a>
     </span>
     <span class='desc'>
@@ -168,7 +168,7 @@
       <a href='#remove-dynamic'>
         #
 (void)
-<b>remove</b><span>(properties, options = {})</span>
+<b>remove</b><span>(properties, quiet)</span>
       </a>
     </span>
     <span class='desc'>
@@ -211,9 +211,8 @@
           <a href='../../class/tweak/Store.html#get-dynamic'>#get</a>
           <a href='../../class/tweak/Store.html#has-dynamic'>#has</a>
           <a href='../../class/tweak/Store.html#pluck-dynamic'>#pluck</a>
-          <a href='../../class/tweak/Store.html#store-dynamic'>#store</a>
           <a href='../../class/tweak/Store.html#removeAt-dynamic'>#removeAt</a>
-          <a href='../../class/tweak/Store.html#changed-dynamic'>#changed</a>
+          <a href='../../class/tweak/Store.html#previous-dynamic'>#previous</a>
           <a href='../../class/tweak/Store.html#revert-dynamic'>#revert</a>
           <a href='../../class/tweak/Store.html#where-dynamic'>#where</a>
           <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
@@ -294,7 +293,7 @@
     <p class='signature' id='pop-dynamic'>
       #
 (*)
-<b>pop</b><span>(options = {})</span>
+<b>pop</b><span>(quiet)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -304,32 +303,6 @@
   <h3>Parameters:</h3>
   <ul class='param'>
     <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
-    </li>
-    <li>
       <span class='name'>quiet</span>
       <span class='type'>
         (
@@ -337,7 +310,7 @@
         )
       </span>
       &mdash;
-      <span class='desc'>Decide whether to trigger collection events. Default: false </span>
+      <span class='desc'>Setting to trigger change events </span>
     </li>
   </ul>
   <div class='events'>
@@ -380,7 +353,7 @@
     <p class='signature' id='add-dynamic'>
       #
 (void)
-<b>add</b><span>(data, options = {})</span>
+<b>add</b><span>(data, quiet)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -397,33 +370,7 @@
         )
       </span>
       &mdash;
-      <span class='desc'>Data to add to the end of the collection </span>
-    </li>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
+      <span class='desc'>Data to add to the end of the collection     </span>
     </li>
     <li>
       <span class='name'>quiet</span>
@@ -433,7 +380,7 @@
         )
       </span>
       &mdash;
-      <span class='desc'>Decide whether to trigger collection changed events. Default: false </span>
+      <span class='desc'>Setting to trigger change events </span>
     </li>
   </ul>
   <div class='events'>
@@ -465,7 +412,7 @@
     <p class='signature' id='place-dynamic'>
       #
 (void)
-<b>place</b><span>(data, position, options = {})</span>
+<b>place</b><span>(data, position, quiet)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -495,32 +442,6 @@
       <span class='desc'>The position to insert the property at into the collection </span>
     </li>
     <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
-    </li>
-    <li>
       <span class='name'>quiet</span>
       <span class='type'>
         (
@@ -528,7 +449,7 @@
         )
       </span>
       &mdash;
-      <span class='desc'>Decide whether to trigger collection changed events. Default: false </span>
+      <span class='desc'>Setting to trigger change events </span>
     </li>
   </ul>
   <div class='events'>
@@ -597,7 +518,7 @@
     <p class='signature' id='remove-dynamic'>
       #
 (void)
-<b>remove</b><span>(properties, options = {})</span>
+<b>remove</b><span>(properties, quiet)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -614,33 +535,7 @@
         )
       </span>
       &mdash;
-      <span class='desc'>Array of property names to remove from collection, or single String of the name of the property to remove </span>
-    </li>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Options to detirmine extra functionality </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>store</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Decide whether to store the change to the history. Default: true </span>
+      <span class='desc'>Array of property names to remove from collection, or single String of the name of the property to remove     </span>
     </li>
     <li>
       <span class='name'>quiet</span>
@@ -650,7 +545,7 @@
         )
       </span>
       &mdash;
-      <span class='desc'>Decide whether to trigger collection events. Default: false </span>
+      <span class='desc'>Setting to trigger change events </span>
     </li>
   </ul>
   <div class='events'>
@@ -731,7 +626,7 @@
 </div>
     </div>
     <div id='footer'>
-  June 12, 14 15:30:00 by
+  September 17, 14 09:24:47 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

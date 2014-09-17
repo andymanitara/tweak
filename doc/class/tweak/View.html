@@ -299,6 +299,31 @@ The data in the model is passed into the views template, allowing for easy manip
       </a>
     </span>
     <span class='desc'>
+      Remove a string of class names of an element(s) 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#hasClass-dynamic'>
+        #
+(void)
+<b>hasClass</b><span>(element, name)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Check of a string of class names is in an element(s) class 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#replaceClass-dynamic'>
+        #
+(void)
+<b>replaceClass</b><span>(element, orig, classes)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Replace of a string of class names in element(s) 
     </span>
   </li>
   <li>
@@ -1140,7 +1165,82 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
 <b>removeClass</b><span>(element, classes = &#39;&#39;)</span>
       <br>
     </p>
-    <div class='tags'>
+    <div class='docstring'>
+  <p>Remove a string of class names of an element(s)</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>classes</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A string of classes to remove to the element(s) </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='hasClass-dynamic'>
+      #
+(void)
+<b>hasClass</b><span>(element, name)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Check of a string of class names is in an element(s) class</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>element</span>
+      <span class='type'>
+        (
+          <tt>String, DOMElement</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
+    </li>
+    <li>
+      <span class='name'>classes</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>A string of classes to remove to the element(s) </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='replaceClass-dynamic'>
+      #
+(void)
+<b>replaceClass</b><span>(element, orig, classes)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Replace of a string of class names in element(s)</p>
+</div>
+<div class='tags'>
   <h3>Parameters:</h3>
   <ul class='param'>
     <li>
@@ -1309,7 +1409,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
 </div>
     </div>
     <div id='footer'>
-  June 12, 14 15:30:00 by
+  September 17, 14 09:24:47 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

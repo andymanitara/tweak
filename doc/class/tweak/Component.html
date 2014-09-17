@@ -52,7 +52,7 @@
   <p>TweakJS has its own unique twist to the MVC concept.</p><p>The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
 For example you can plug &quot;Web Components&quot; into your static site; like sliders, accordians.
 The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps.</p><p>TweakJS wraps its Models, Views, Templates, and Controllers into a component module.
-The component module acts inteliigently to build up your application with simple config files.
+The component module acts inteligently to build up your application with simple config files.
 Each component its built through a config object; this allows for powerfull configuration with tonnes of flexibity.</p><p>Each component can have sub components which are accessible in both directions; although it is recommended to keep functionality seperate
 it sometimes comes in handy to have access to other parts of the application.</p><p>Each component can extend another component, which will then inheret the models, views, templates, and controllers directly from that component.
 If you however want to extend a component yet using a different Model you can simply overrite that model, or extend the functionality to the components model.</p><p>The config objects are extremely handy for making components reusable, with easy accessable configuration settings.</p>
@@ -281,7 +281,7 @@ If you however want to extend a component yet using a different Model you can si
       <a href='#destroy-dynamic'>
         #
 (void)
-<b>destroy</b><span>(options = {})</span>
+<b>destroy</b><span>(quiet)</span>
       </a>
     </span>
     <span class='desc'>
@@ -784,7 +784,7 @@ It inteligently iherits modules, and configuration settings from its extending c
     <p class='signature' id='destroy-dynamic'>
       #
 (void)
-<b>destroy</b><span>(options = {})</span>
+<b>destroy</b><span>(quiet)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -794,14 +794,14 @@ It inteligently iherits modules, and configuration settings from its extending c
   <h3>Parameters:</h3>
   <ul class='param'>
     <li>
-      <span class='name'>options</span>
+      <span class='name'>quiet</span>
       <span class='type'>
         (
-          <tt>Object</tt>
+          <tt>Boolean</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>(optional) Options = {store:true, quiet:false} </span>
+      <span class='desc'>Setting to trigger change events </span>
     </li>
   </ul>
 </div>
@@ -809,7 +809,7 @@ It inteligently iherits modules, and configuration settings from its extending c
 </div>
     </div>
     <div id='footer'>
-  June 12, 14 15:30:00 by
+  September 17, 14 09:24:47 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
