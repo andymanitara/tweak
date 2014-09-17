@@ -44,10 +44,7 @@ class tweak.View
     @event "#{@name}:view:rendered" The event is called when the view has been rendered.
   ###
   render: ->
-    # Triggers event so you an do some configurations before it renders
-    @trigger("#{@name}:view:prerender")
-
-    @model.set("rendering", true)
+    @model.set "rendering", true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
     @model.set "id",  @config.className or @name.replace(/\//g, "-")
@@ -86,7 +83,7 @@ class tweak.View
       for item in comps
         if item is @component then break
         previousComponent = item
-      if previousComponent isnt -1 and previousComponent.model?.get("rendering")
+      if previousComponent isnt -1 and previousComponent.model?.get "rendering"
         @on("#{previousComponent.name}:model:changed:rendering", (render) ->
           if not render then attach()
         )
@@ -300,31 +297,64 @@ class tweak.View
     @param [String] classes A string of classes to add to the element(s)
   ###
   addClass: (element, classes = '') ->
-    addingClasses = _splitClasses(classes)
-    for item in @element(element)
+    elements = @element(element)
+    if elements.length is 0 then return
+    for item in elements
       if not item? then continue
       currentClasses = _splitClasses(item.className)
-      for addClass in addingClasses
-        add = true
-        for curClass in currentClasses
-          if curClass is addClass then add = false
-        if add then item.className += " #{addClass}"
+      for className in addingClasses
+        if not @hasClass element, classes then item.className += " #{className}"
       item.className = item.className
         .replace /\s{2,}/g,' '
         .replace /(^\s*|\s*$)/g,''
 
   ###
+    Remove a string of class names of an element(s)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] classes A string of classes to remove to the element(s)
   ###
   removeClass: (element, classes = '') ->
-    if @element(element).length is 0 then return
+    elements = @element(element)
+    if elements.length is 0 then return
     classes = _splitClasses(classes)
-    for item in @element(element)
+    for item in elements
       if not item? then continue
       for prop in classes
         if prop is ' ' then continue
-        item.className = item.className.replace(prop, '')
+        item.className = (" #{item.className} ").split(" #{prop} ").replace ' '
+ 
+  ###
+    Check of a string of class names is in an element(s) class
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to remove to the element(s)
+  ###
+  hasClass: (element, name) ->
+    elements = @element(element)
+    if elements.length is 0 then return
+    for item in elements
+      if not item? then continue
+      if (" #{item.className} ").indexOf(" #{name} ") is -1 then return false
+    true
+
+
+  ###
+    Replace of a string of class names in element(s)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to remove to the element(s)
+  ###
+  replaceClass: (element, orig, classes) ->
+    elements = @element(element)
+    if elements.length is 0 then return
+    classes = _splitClasses(classes)
+    orig = _splitClasses(orig)
+    for item in elements
+      if not item? then continue
+      i = 0
+      for prop in orig
+        if prop is ' ' then continue
+        item.className = (" #{item.className} ").split(" #{prop} ").replace " #{classes[i++]} "
+
+    
   
   ###
     Apply event listener to element(s)
