@@ -297,16 +297,17 @@ class tweak.View
     @param [String] classes A string of classes to add to the element(s)
   ###
   addClass: (element, classes = '') ->
-    elements = @element(element)
+    elements = @element element
     if elements.length is 0 then return
+    classes = _splitClasses classes
     for item in elements
       if not item? then continue
-      currentClasses = _splitClasses(item.className)
-      for className in currentClasses
-        if not @hasClass element, classes then item.className += " #{className}"
-      item.className = item.className
-        .replace /\s{2,}/g,' '
-        .replace /(^\s*|\s*$)/g,''
+      for prop in classes
+        className = item.className
+        if not @hasClass item, prop then className += " #{prop}"
+        item.className = className
+          .replace /\s{2,}/g,' '
+          .replace /(^\s*|\s*$)/g,''
 
   ###
     Remove a string of class names of an element(s)
@@ -314,9 +315,9 @@ class tweak.View
     @param [String] classes A string of classes to remove to the element(s)
   ###
   removeClass: (element, classes = '') ->
-    elements = @element(element)
+    elements = @element element
     if elements.length is 0 then return
-    classes = _splitClasses(classes)
+    classes = _splitClasses classes
     for item in elements
       if not item? then continue
       for prop in classes
