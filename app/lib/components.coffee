@@ -85,7 +85,10 @@ class tweak.Components extends tweak.Collection
         if key is property and prop is value then result.push data
     result
 
+  ###
+    Reset components - clears the views
+  ###
   reset: ->
     for item in @data
       item.view?.clear()
-    super() 
+    super()
