@@ -4,7 +4,6 @@
   The controller is normally the interface between the view and the models data.
   When the model updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the model quietly aswell.
-  The model has its own history, so you can easily revert.
 
   @include tweak.Common.Empty
   @include tweak.Common.Events
@@ -44,7 +43,6 @@ class tweak.Model extends tweak.Store
       for key, prop of data
         if key is property
           @length--
-          @history[key] = @data[key]
           delete @data[key]
           if not quiet then @trigger "#{@name}:#{@storeType}:removed:#{key}"
 
@@ -71,4 +69,3 @@ class tweak.Model extends tweak.Store
   ###
   reset: ->
     @data = {}
-    @history = []

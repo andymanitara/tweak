@@ -7,7 +7,6 @@
   The controller is normally the interface between the view and the stores data.
   When the store updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the store quietly aswell.
-  The store has its own history, so you can easily revert.
 
   @todo Update pluck to use new same functionality
   @include tweak.Common.Empty
@@ -22,8 +21,6 @@ class tweak.Store
   length: 0
   # @property [Object, Array] Data holder for the store
   data: []
-  # @property [Array] History of the data store
-  history: []
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: 'BASE'
   # @property [Interger] The uid of this object - for unique reference
@@ -42,13 +39,13 @@ class tweak.Store
     @overload set(name, data, quiet)
       Set an individual property in the store by name
       @param [String] name The name of the property to set
-      @param [*] data Data to store in the property      
+      @param [*] data Data to store in the property
       @param [Boolean] quiet Setting to trigger change events
 
 
     @overload set(properties, quiet)
       Set an multiple properties in the store from an object
-      @param [Object] properties Key and property based object to store into store      
+      @param [Object] properties Key and property based object to store into store
       @param [Boolean] quiet Setting to trigger change events
 
 
@@ -64,9 +61,9 @@ class tweak.Store
       quiet = params[1]
     for key, prop of properties
       prev = @data[key]
-      if prev then @history[key] = prev
+      if not prev? then @length++
       @data[key] = prop
-      @length++
+      
       if not quiet then @trigger "#{@name}:#{@storeType}:changed:#{key}", prop
 
     if not quiet then @trigger "#{@name}:#{@storeType}:changed"
@@ -111,31 +108,6 @@ class tweak.Store
       @remove key, quiet
     return
 
-  ###
-    Get previous value of a property from the history
-    @param [String] previous property value
-    @return [*] returns the previous property value
-  ###
-  previous: (property) -> return @history[property]
-
-  ###
-    Revert the store back to previous state in history, default is one previous version.
-    
-    @param [Array<String>, String] props Property or Properties to revert
-    @param [Boolean] quiet Setting to trigger change events
-
-    @event - Events triggered from set method functionality if quiet option is false
-  ###
-  revert: (props, quiet) ->
-    props = if props instanceof Array then props else [props]
-    for key in props
-      val = @history[key]
-      if val 
-        @set key, val, quiet
-      else 
-        @remove key, quiet
-    return
-  
   ###
     Returns an array of property names where the value is equal to the given value
     @param [*] value Value to check

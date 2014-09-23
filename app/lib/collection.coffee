@@ -61,7 +61,6 @@ class tweak.Collection extends tweak.Store
   ###
   place: (data, position, quiet) ->
     result = []
-    @history = @data
     for prop in @data
       if position is _i then break
       result.push @data[_i]
@@ -88,7 +87,7 @@ class tweak.Collection extends tweak.Store
 
   ###
     Remove a single property or many properties.
-    @param [String, Array<String>] properties Array of property names to remove from collection, or single String of the name of the property to remove    
+    @param [String, Array<String>] properties Array of property names to remove from collection, or single String of the name of the property to remove
     @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
@@ -97,7 +96,6 @@ class tweak.Collection extends tweak.Store
   remove: (properties, quiet) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
-      @history[property] = @data[property]
       delete @data[property]
       @trigger "#{@name}:#{@storeType}:removed:#{property}"
     
@@ -117,5 +115,4 @@ class tweak.Collection extends tweak.Store
   ###
   reset: ->
     @data = []
-    @history = []
     @length = 0
