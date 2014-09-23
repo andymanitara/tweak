@@ -54,8 +54,7 @@ A collection is where data can be stored. A collection is an array storage based
 In common MVC concept the store is not always a database. So the controller should be used to get data from a database.
 The controller is normally the interface between the view and the stores data.
 When the store updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
-You can update the store quietly aswell.
-The store has its own history, so you can easily revert.</p>
+You can update the store quietly aswell.</p>
 </div>
 <div class='tags'>
 </div>
@@ -75,7 +74,7 @@ The store has its own history, so you can easily revert.</p>
           </span>
         </dt>
         <dd class='desc'>
-          The config object of this module
+          The config object of this module 
         </dd>
         <dt id='length-property'>
           <span class='signature'>
@@ -86,7 +85,7 @@ The store has its own history, so you can easily revert.</p>
           </span>
         </dt>
         <dd class='desc'>
-          Length of the stores data
+          Length of the stores data 
         </dd>
         <dt id='data-property'>
           <span class='signature'>
@@ -97,18 +96,7 @@ The store has its own history, so you can easily revert.</p>
           </span>
         </dt>
         <dd class='desc'>
-          Data holder for the store
-        </dd>
-        <dt id='history-property'>
-          <span class='signature'>
-            (Array)
-            <b>
-              history
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          History of the data store
+          Data holder for the store 
         </dd>
         <dt id='storeType-property'>
           <span class='signature'>
@@ -119,7 +107,7 @@ The store has its own history, so you can easily revert.</p>
           </span>
         </dt>
         <dd class='desc'>
-          The type of storage, ie 'collection' or 'model'
+          The type of storage, ie &#39;collection&#39; or &#39;model&#39; 
         </dd>
       </dl>
       <h2>Instance Method Summary</h2>
@@ -182,30 +170,6 @@ The store has its own history, so you can easily revert.</p>
     </span>
     <span class='desc'>
       Remove an element at a given position 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#previous-dynamic'>
-        #
-(*)
-<b>previous</b><span>(property)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Get previous value of a property from the history 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#revert-dynamic'>
-        #
-(void)
-<b>revert</b><span>(props, quiet)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Revert the store back to previous state in history, default is one previous version. 
     </span>
   </li>
   <li>
@@ -322,7 +286,7 @@ The store has its own history, so you can easily revert.</p>
         )
       </span>
       &mdash;
-      <span class='desc'>Data to store in the property       </span>
+      <span class='desc'>Data to store in the property </span>
     </li>
     <li>
       <span class='name'>quiet</span>
@@ -357,7 +321,7 @@ The store has its own history, so you can easily revert.</p>
         )
       </span>
       &mdash;
-      <span class='desc'>Key and property based object to store into store       </span>
+      <span class='desc'>Key and property based object to store into store </span>
     </li>
     <li>
       <span class='name'>quiet</span>
@@ -523,92 +487,6 @@ The store has its own history, so you can easily revert.</p>
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='previous-dynamic'>
-      #
-(*)
-<b>previous</b><span>(property)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Get previous value of a property from the history</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>previous</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>property value </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>*</tt>
-      )
-      &mdash;
-      <span class='desc'>returns the previous property value </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='revert-dynamic'>
-      #
-(void)
-<b>revert</b><span>(props, quiet)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Revert the store back to previous state in history, default is one previous version.</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>props</span>
-      <span class='type'>
-        (
-          <tt>Array&lt;String&gt;, String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Property or Properties to revert </span>
-    </li>
-    <li>
-      <span class='name'>quiet</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Setting to trigger change events </span>
-    </li>
-  </ul>
-  <div class='events'>
-    <h3>Events:</h3>
-    <div class='event'>
-      <p class='signature'>
-        -
-      </p>
-      <div class='docstring'>
-  <p>Events triggered from set method functionality if quiet option is false</p>
-</div>
-<div class='tags'>
-</div>
-    </div>
-  </div>
-</div>
-  </div>
-  <div class='method_details'>
     <p class='signature' id='where-dynamic'>
       #
 (Array&lt;String&gt;)
@@ -648,11 +526,11 @@ The store has its own history, so you can easily revert.</p>
 </div>
     </div>
     <div id='footer'>
-  September 17, 14 09:24:47 by
+  September 23, 14 12:34:16 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
-  2.0.8
+  2.0.9
   &#10034;
   Press H to see the keyboard shortcuts
   &#10034;

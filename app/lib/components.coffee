@@ -32,7 +32,6 @@ class tweak.Components extends tweak.Collection
   ###
   construct: ->
     @data = []
-    @history = []
     data = @splitComponents(@config.join(" "), @name)
     for key, prop of data
       if prop is "" or prop is " "
