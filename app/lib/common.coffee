@@ -169,7 +169,7 @@ tweak.Common.Events =
     @param [...] params Params to pass into the callback function
 
   ###
-  __trigger: (path, args...) =>
+  __trigger: (path, args...) ->
     secondary = path.split ":"
     secondary.shift()
     @trigger "#{@name}:#{path}", args...
