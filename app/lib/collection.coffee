@@ -13,6 +13,7 @@ class tweak.Collection extends tweak.Store
 
   tweak.Extend @, tweak.Common.Arrays
 
+
   ###
     Removes empty keys
   ###
@@ -57,7 +58,12 @@ class tweak.Collection extends tweak.Store
     @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@component.uid}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@uid}:changed:#{key} Triggers an event and passes in changed property
+
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@component.uid}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@uid}:changed Triggers a generic event that the collection has been updated
   ###
   place: (data, position, quiet) ->
     result = []
@@ -70,8 +76,8 @@ class tweak.Collection extends tweak.Store
       result.push @data[_j]
     @data = result
     if not quiet
-      @trigger "#{@name}:#{@storeType}:changed"
-      @trigger "#{@name}:#{@storeType}:changed:#{position}"
+      @__trigger "#{@storeType}:changed"
+      @__trigger "#{@storeType}:changed:#{position}"
     return
   
   ###
@@ -91,16 +97,21 @@ class tweak.Collection extends tweak.Store
     @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@component.uid}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@uid}:removed:#{key} Triggers an event based on what property has been removed
+
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@component.uid}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@uid}:changed Triggers a generic event that the collection has been updated
   ###
   remove: (properties, quiet) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      @trigger "#{@name}:#{@storeType}:removed:#{property}"
+      @__trigger "#{@storeType}:removed:#{property}"
     
     @clean()
-    if not quiet then @trigger "#{@name}:#{@storeType}:changed"
+    if not quiet then @__trigger "#{@storeType}:changed"
     return
 
   ###

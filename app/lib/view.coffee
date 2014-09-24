@@ -19,8 +19,10 @@ tweak.Viewable = {
 ###
 class tweak.View
   
-  # @property [Interger] The uid of this object - for unique reference
+  # @property [Integer] The uid of this object - for unique reference
   uid: tweak.uid++
+  # @property [Integer] The component uid of this object - for unique reference of component
+  cuid: 0
   # @property [Component] The root component
   root: null
 
@@ -44,6 +46,8 @@ class tweak.View
 
     @todo Reduce the complexity of the rendering functionality
     @event "#{@name}:view:rendered" The event is called when the view has been rendered.
+    @event "#{@component.uid}:view:rendered" The event is called when the view has been rendered.
+    @event "#{@uid}:rendered" The event is called when the view has been rendered.
   ###
   render: ->
     @model.set "rendering", true
@@ -75,8 +79,8 @@ class tweak.View
             @el = @parent.firstElementChild
 
         @addClass(@el, @model.get("id"))
-        @model.set("rendering", false)
-        @trigger("#{@name}:view:rendered")
+        @model.set "rendering", false
+        @__trigger ":view:rendered"
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
@@ -86,7 +90,7 @@ class tweak.View
         if item is @component then break
         previousComponent = item
       if previousComponent isnt -1 and previousComponent.model?.get "rendering"
-        @on("#{previousComponent.name}:model:changed:rendering", (render) ->
+        @on("#{previousComponent.uid}:model:changed:rendering", (render) ->
           if not render then attach()
         )
       else attach()
@@ -100,12 +104,14 @@ class tweak.View
   ###
     The view will be cleared then rendered again.
     @event "#{@name}:view:rerendered" The event is called when the view has been rerendered.
+    @event "#{@component.uid}:view:rerendered" The event is called when the view has been rerendered.
+    @event "#{@uid}:rerendered" The event is called when the view has been rerendered.
   ###
   rerender: ->
     @clear()
     @render()
-    @on("#{@name}:view:rendered", =>
-      @trigger("#{@name}:view:rerendered")
+    @on("#{@uid}:rendered", ->
+      @__trigger "view:rerendered"
     )
 
   ###

@@ -23,6 +23,11 @@ class tweak.Controller
 
   # @property [Interger] The uid of this object - for unique reference
   uid: tweak.uid++
+  # @property [Integer] The component uid of this object - for unique reference of component
+  cuid: 0
+  # @property [Component] The root component
+  root: null
+
   
   tweak.Extend @, [
     tweak.Common.Empty,

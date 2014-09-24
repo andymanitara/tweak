@@ -23,10 +23,13 @@ class tweak.Store
   data: []
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: 'BASE'
-  # @property [Interger] The uid of this object - for unique reference
+  # @property [Integer] The uid of this object - for unique reference
   uid: tweak.uid++
+  # @property [Integer] The component uid of this object - for unique reference of component
+  cuid: 0
   # @property [Component] The root component
   root: null
+
 
 
   tweak.Extend @, [
@@ -52,7 +55,12 @@ class tweak.Store
 
 
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@component.uid}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@uid}:changed:#{key} Triggers an event and passes in changed property
+
     @event #{@name}:#{@storeType}:changed Triggers a generic event that the store has been updated
+    @event #{@component.uid}:#{@storeType}:changed Triggers a generic event that the store has been updated
+    @event #{@uid}:changed Triggers a generic event that the store has been updated
   ###
   set: (properties, params...) ->
     quiet = params[0]
@@ -66,9 +74,9 @@ class tweak.Store
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then @trigger "#{@name}:#{@storeType}:changed:#{key}", prop
+      if not quiet then @__trigger "#{@storeType}:changed:#{key}", prop
 
-    if not quiet then @trigger "#{@name}:#{@storeType}:changed"
+    if not quiet then @__trigger "#{@storeType}:changed"
 
     return
 

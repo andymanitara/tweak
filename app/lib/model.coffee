@@ -35,7 +35,12 @@ class tweak.Model extends tweak.Store
     @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:model:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@component.uid}:model:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@uid}:removed:#{key} Triggers an event based on what property has been removed
+
     @event #{@name}:model:changed Triggers a generic event that the model has been updated
+    @event #{@component.uid}:model:changed Triggers a generic event that the model has been updated
+    @event #{@uid}:model:changed Triggers a generic event that the model has been updated
   ###
   remove: (properties, quiet = true) ->
     if typeof properties is 'string' then properties = [properties]
@@ -44,9 +49,9 @@ class tweak.Model extends tweak.Store
         if key is property
           @length--
           delete @data[key]
-          if not quiet then @trigger "#{@name}:#{@storeType}:removed:#{key}"
+          if not quiet then @__trigger "#{@storeType}:removed:#{key}"
 
-    if not quiet then @trigger "#{@name}:#{@storeType}:changed"
+    if not quiet then @__trigger "#{@storeType}:changed"
     return
   
   ###

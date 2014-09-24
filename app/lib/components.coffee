@@ -48,15 +48,15 @@ class tweak.Components extends tweak.Collection
   ###
   _componentRender: (type) ->
     if @length is 0
-      @trigger("#{@name}:#{@storeType}:ready")
+      @__trigger "#{@storeType}:ready"
       return
     total = 0
     totalItems = @length
     for item in @data
       item[type]()
-      @on("#{item.name}:view:#{type}ed", =>
+      @on("#{item.uid}:view:#{type}ed", =>
         total++
-        if total >= totalItems then @trigger("#{@name}:#{@storeType}:ready")
+        if total >= totalItems then @__trigger "#{@storeType}:ready"
       )
 
   ###

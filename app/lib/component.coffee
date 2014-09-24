@@ -135,6 +135,7 @@ class tweak.Component
     Module = @findModule(@paths, name, surrogate)
     module = @[name] = new Module(params...)
     module.component = module.relation = @
+    module.cuid = @uid
     module.root = @root
     module.config = @config[name]
     module
@@ -211,9 +212,9 @@ class tweak.Component
     @private
   ###
   _componentRender: (type) ->
-    @on("#{@name}:view:#{type}ed", =>
-      @on("#{@name}:components:ready", =>
-        @trigger("#{@name}:ready", @name)
+    @on("#{@uid}:view:#{type}ed", =>
+      @on("#{@uid}:components:ready", =>
+        @trigger("#{@uid}:ready", @name)
       )
       @components[type]()
     )

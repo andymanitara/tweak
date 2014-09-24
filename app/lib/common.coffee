@@ -162,6 +162,19 @@ tweak.Common.Events =
     0)
     return
 
+  ###
+    Triggering API Events
+    Trigger name, component uid and uid events
+    @param [String] name The event name; split on the / and : characters
+    @param [...] params Params to pass into the callback function
+
+  ###
+  __trigger: (path, args...) =>
+    secondary = path.split ":"
+    secondary.shift()
+    @trigger "#{@name}:#{path}", args...
+    @trigger "#{@cuid}:#{path}", args...
+    @trigger "#{@uid}:#{secondary.join ':'}", args...
 ###
   Common functions that are used for module loading/finding
   @mixin

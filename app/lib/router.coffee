@@ -8,13 +8,17 @@
 
 class tweak.Router
 
-  # @property [Interger] The uid of this object - for unique reference
+  
+  # @property [Integer] The uid of this object - for unique reference
   uid: tweak.uid++
+  # @property [Integer] The component uid of this object - for unique reference of component
+  cuid: 0
   # @property [Component] The root component
   root: null
+
   
   tweak.Extend @, [
-    tweak.Common.Empty, 
+    tweak.Common.Empty,
     tweak.Common.Events
   ]
 
@@ -51,24 +55,29 @@ class tweak.Router
     @example hash url examples
       tweakjs.com/#search/safe/version=2
       triggers:
-        #{@name}:router:data:search
-        #{@name}:router:data:safe
-        #{@name}:router:data:version (passes in 2)
-        #{@name}:router:changed (passes in {search:true, safe:true, version:2})
+        #{@uid}:data:search
+        #{@uid}:data:safe
+        #{@uid}:data:version (passes in 2)
+        #{@uid}:changed (passes in {search:true, safe:true, version:2})
 
       tweakjs.com/#version:1/search/safe/version=2
       triggers:
-        #{@name}:router:data:version (passes in 1)
-        #{@name}:router:data:search
-        #{@name}:router:data:safe
-        #{@name}:router:data:version (passes in 2)
-        #{@name}:router:changed (passes in {search:true, safe:true, version:2})
+        #{@uid}:data:version (passes in 1)
+        #{@uid}:data:search
+        #{@uid}:data:safe
+        #{@uid}:data:version (passes in 2)
+        #{@uid}:changed (passes in {search:true, safe:true, version:2})
 
 
     @note event name is made up from the data in the url. The router data is split up by / \ per data set, and by : = between the key and data.
 
     @event #{@name}:router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+    @event #{@component.uid}:router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+    @event #{@uid}:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+
     @event #{@name}:router:changed Triggers an event and passes the data of the url back
+    @event #{@component.uid}:router:changed Triggers an event and passes the data of the url back
+    @event #{@uid}:changed Triggers an event and passes the data of the url back
   ###
   check: (quiet = false) ->
     hash = window.location.hash.substring 1
@@ -85,11 +94,11 @@ class tweak.Router
         itemArr = item.split(/[=:]/)
         if itemArr.length is 1
           hashObj[itemArr[0]] = true
-          if not quiet then @trigger "#{@name}:router:data:"+itemArr[0]
+          if not quiet then @__trigger "router:data:"+itemArr[0]
         else
           hashObj[itemArr[0]] = itemArr[1]
-          if not quiet then @trigger "#{@name}:router:data:"+itemArr[0], itemArr[1]
-      if not quiet then @trigger "#{@name}:router:changed", hashObj
+          if not quiet then @__trigger "router:data:"+itemArr[0], itemArr[1]
+      if not quiet then @__trigger "router:changed", hashObj
     return
   
   ###
