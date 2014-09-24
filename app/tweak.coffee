@@ -39,4 +39,4 @@ if typeof exports isnt 'undefined' then tweak = window.tweak = exports
 else tweak = window.tweak = {}
 
 # a count for the uid's
-tweak.uid = 0;
+tweak.uid = 0
