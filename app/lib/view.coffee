@@ -21,6 +21,8 @@ class tweak.View
   
   # @property [Interger] The uid of this object - for unique reference
   uid: tweak.uid++
+  # @property [Component] The root component
+  root: null
 
   tweak.Extend @, [
     tweak.Common.Empty,

@@ -65,6 +65,7 @@ class tweak.Component
     relation.relation ?= {}
     # Get parent component
     @parent = if relation instanceof tweak.Components then relation.relation else relation
+    @root = @parent.root or @
     # Set name of component
     @name = name or ""
 
@@ -134,6 +135,7 @@ class tweak.Component
     Module = @findModule(@paths, name, surrogate)
     module = @[name] = new Module(params...)
     module.component = module.relation = @
+    module.root = @root
     module.config = @config[name]
     module
 
