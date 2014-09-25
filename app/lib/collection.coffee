@@ -13,7 +13,10 @@ class tweak.Collection extends tweak.Store
 
   tweak.Extend @, tweak.Common.Arrays
 
-
+  # @private
+  constructor: ->
+    # Set uid
+    @uid = "cl_#{tweak.uids.cl++}"
   ###
     Removes empty keys
   ###

@@ -38,5 +38,35 @@
 if typeof exports isnt 'undefined' then tweak = window.tweak = exports
 else tweak = window.tweak = {}
 
-# a count for the uid's
-tweak.uid = 0
+###
+  a count for the uid's
+  multiple sets of uid codes so its more managable
+
+  c = component
+  cp = components
+  v = view
+  m = model
+  r = router
+  e = events
+  cl = collection
+  ct = controller
+  s = store
+###
+tweak.uids = {
+  c:0,
+  cp:0,
+  v:0,
+  m:0,
+  r:0,
+  e:0,
+  cl:0,
+  ct:0,
+  s:0
+}
+tweak.c_id = 0
+tweak.v_id = 0
+tweak.m_id = 0
+tweak.cp_id = 0
+tweak.ct_id = 0
+tweak.ct_id = 0
+tweak.ct_id = 0

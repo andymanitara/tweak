@@ -10,7 +10,7 @@ class tweak.Router
 
   
   # @property [Integer] The uid of this object - for unique reference
-  uid: tweak.uid++
+  uid: 0
   # @property [Integer] The component uid of this object - for unique reference of component
   cuid: 0
   # @property [Component] The root component
@@ -21,9 +21,10 @@ class tweak.Router
     tweak.Common.Empty,
     tweak.Common.Events
   ]
-
   # @private
-  constructor: ->
+  constructor: ->    # Set uid
+    
+    @uid = "r_#{tweak.uids.r++}"
     @before = '#'
     if history.pushState then history.pushState null, null, ''
 

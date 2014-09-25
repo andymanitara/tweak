@@ -109,6 +109,39 @@ You can update the store quietly aswell.</p>
         <dd class='desc'>
           The type of storage, ie &#39;collection&#39; or &#39;model&#39; 
         </dd>
+        <dt id='uid-property'>
+          <span class='signature'>
+            (Integer)
+            <b>
+              uid
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The uid of this object - for unique reference 
+        </dd>
+        <dt id='cuid-property'>
+          <span class='signature'>
+            (Integer)
+            <b>
+              cuid
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The component uid of this object - for unique reference of component 
+        </dd>
+        <dt id='root-property'>
+          <span class='signature'>
+            (Component)
+            <b>
+              root
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The root component 
+        </dd>
       </dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
@@ -204,6 +237,7 @@ You can update the store quietly aswell.</p>
         <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
         <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
         <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
       </p>
       <h3 class='inherited'>
         Methods included from
@@ -214,6 +248,20 @@ You can update the store quietly aswell.</p>
         <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
         <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
       </p>
+      <h2>Constructor Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='constructor-dynamic'>
+      #
+(void)
+<b>constructor</b><span>()</span>
+      <span class='note private'>Private</span>
+      <br>
+    </p>
+    <div class='tags'>
+</div>
+  </div>
+</div>
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
@@ -245,7 +293,47 @@ You can update the store quietly aswell.</p>
     </div>
     <div class='event'>
       <p class='signature'>
+        #{@component.uid}:#{@storeType}:changed:#{key}
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event and passes in changed property</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@uid}:changed:#{key}
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event and passes in changed property</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
         #{@name}:#{@storeType}:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers a generic event that the store has been updated</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@component.uid}:#{@storeType}:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers a generic event that the store has been updated</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@uid}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the store has been updated</p>
@@ -526,7 +614,7 @@ You can update the store quietly aswell.</p>
 </div>
     </div>
     <div id='footer'>
-  September 23, 14 12:34:16 by
+  September 25, 14 13:16:07 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

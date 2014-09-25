@@ -24,19 +24,22 @@ class tweak.Store
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: 'BASE'
   # @property [Integer] The uid of this object - for unique reference
-  uid: tweak.uid++
+  uid: 0
   # @property [Integer] The component uid of this object - for unique reference of component
   cuid: 0
   # @property [Component] The root component
   root: null
-
-
 
   tweak.Extend @, [
     tweak.Common.Empty
     tweak.Common.Events
     tweak.Common.Collections
   ]
+
+  # @private
+  constructor: ->
+    # Set uid
+    @uid = "s_#{tweak.uids.s++}"
 
   ###
     Set multiple properties or one property of the store by passing an object with object of the data you with to update.
