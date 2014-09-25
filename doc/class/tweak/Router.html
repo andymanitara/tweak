@@ -52,6 +52,42 @@
 </div>
 <div class='tags'>
 </div>
+      <h2>Property Summary</h2>
+      <dl class='properties'>
+        <dt id='uid-property'>
+          <span class='signature'>
+            (Integer)
+            <b>
+              uid
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The uid of this object - for unique reference 
+        </dd>
+        <dt id='cuid-property'>
+          <span class='signature'>
+            (Integer)
+            <b>
+              cuid
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The component uid of this object - for unique reference of component 
+        </dd>
+        <dt id='root-property'>
+          <span class='signature'>
+            (Component)
+            <b>
+              root
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The root component 
+        </dd>
+      </dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -134,6 +170,7 @@
         <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
         <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
         <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
+        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
       </p>
       <h2>Constructor Details</h2>
       <div class='methods'>
@@ -236,18 +273,18 @@
     </h4>
     <pre><code class='coffeescript'>tweakjs.com&#47;#search&#47;safe&#47;version=2
 triggers:
-  #{@name}:router:data:search
-  #{@name}:router:data:safe
-  #{@name}:router:data:version (passes in 2)
-  #{@name}:router:changed (passes in {search:true, safe:true, version:2})
+  #{@uid}:data:search
+  #{@uid}:data:safe
+  #{@uid}:data:version (passes in 2)
+  #{@uid}:changed (passes in {search:true, safe:true, version:2})
 
 tweakjs.com&#47;#version:1&#47;search&#47;safe&#47;version=2
 triggers:
-  #{@name}:router:data:version (passes in 1)
-  #{@name}:router:data:search
-  #{@name}:router:data:safe
-  #{@name}:router:data:version (passes in 2)
-  #{@name}:router:changed (passes in {search:true, safe:true, version:2})</code></pre>
+  #{@uid}:data:version (passes in 1)
+  #{@uid}:data:search
+  #{@uid}:data:safe
+  #{@uid}:data:version (passes in 2)
+  #{@uid}:changed (passes in {search:true, safe:true, version:2})</code></pre>
   </div>
 </div>
 <div class='tags'>
@@ -278,7 +315,47 @@ triggers:
     </div>
     <div class='event'>
       <p class='signature'>
+        #{@component.uid}:router:data:#{data
+      </p>
+      <div class='docstring'>
+  <p>key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@uid}:data:#{data
+      </p>
+      <div class='docstring'>
+  <p>key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
         #{@name}:router:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event and passes the data of the url back</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@component.uid}:router:changed
+      </p>
+      <div class='docstring'>
+  <p>Triggers an event and passes the data of the url back</p>
+</div>
+<div class='tags'>
+</div>
+    </div>
+    <div class='event'>
+      <p class='signature'>
+        #{@uid}:changed
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes the data of the url back</p>
@@ -354,7 +431,7 @@ triggers:
 </div>
     </div>
     <div id='footer'>
-  September 23, 14 12:34:16 by
+  September 25, 14 13:16:07 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

@@ -95,6 +95,19 @@
       Event &#39;trigger&#39; handler for DOM and the Event API, triggered in async 
     </span>
   </li>
+  <li>
+    <span class='signature'>
+      <a href='#__trigger-'>
+        ~
+(void)
+<b>__trigger</b><span>(path, args...)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Triggering API Events Trigger name, component uid and uid events
+
+    </span>
+  </li>
 </ul>
       <h2>Method Details</h2>
       <div class='methods'>
@@ -465,10 +478,47 @@ Trigger events by name and context</p>
   </div>
 </div>
   </div>
+  <div class='method_details'>
+    <p class='signature' id='__trigger-'>
+      ~
+(void)
+<b>__trigger</b><span>(path, args...)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Triggering API Events
+Trigger name, component uid and uid events</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name; split on the / and : characters </span>
+    </li>
+    <li>
+      <span class='name'>params</span>
+      <span class='type'>
+        (
+          <tt>...</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Params to pass into the callback function </span>
+    </li>
+  </ul>
+</div>
+  </div>
 </div>
     </div>
     <div id='footer'>
-  September 23, 14 12:34:16 by
+  September 25, 14 13:16:07 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
