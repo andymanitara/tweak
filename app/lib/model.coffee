@@ -17,6 +17,11 @@ class tweak.Model extends tweak.Store
   default: {}
   # @property [String] The type of collection this is
   storeType: "model"
+
+  # @private
+  constructor: ->
+    # Set uid
+    @uid = "m_#{tweak.uids.m++}"
     
   ###
     Constructs the model ready for use

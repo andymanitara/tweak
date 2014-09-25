@@ -22,7 +22,7 @@
 class tweak.Controller
 
   # @property [Interger] The uid of this object - for unique reference
-  uid: tweak.uid++
+  uid: 0
   # @property [Integer] The component uid of this object - for unique reference of component
   cuid: 0
   # @property [Component] The root component
@@ -38,3 +38,8 @@ class tweak.Controller
     tweak.Common.Modules,
     tweak.Common.Components
   ]
+
+  # @private
+  constructor: ->
+    # Set uid
+    @uid = "ct_#{tweak.uids.ct++}"

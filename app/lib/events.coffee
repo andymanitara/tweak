@@ -5,10 +5,8 @@
   The tree allows quick traversal of events, during interaction with the event API
 ###
 class tweak.EventSystem
-  
-  # @property [Integer] The uid of this object - for unique reference
-  uid: tweak.uid++
-  
+  # @property [Integer] The component uid of this object - for unique reference of component
+  uid: 0
   # Split regex for event name
   splitEventName = (name) ->
     if typeof name is "string"
@@ -21,7 +19,10 @@ class tweak.EventSystem
   events: {}
 
   # @private
-  constructor: -> @reset()
+  constructor: ->
+    # Set uid
+    @uid = "e_#{tweak.uids.e++}"
+    @reset()
 
   ###
     Add an event listener into the event system.

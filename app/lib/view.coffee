@@ -20,7 +20,7 @@ tweak.Viewable = {
 class tweak.View
   
   # @property [Integer] The uid of this object - for unique reference
-  uid: tweak.uid++
+  uid: 0
   # @property [Integer] The component uid of this object - for unique reference of component
   cuid: 0
   # @property [Component] The root component
@@ -35,6 +35,11 @@ class tweak.View
     tweak.Common.Modules,
     tweak.Common.Components
   ]
+
+  # @private
+  constructor: ->
+    # Set uid
+    @uid = "v_#{tweak.uids.v++}"
 
   ###
     Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
@@ -80,7 +85,7 @@ class tweak.View
 
         @addClass(@el, @model.get("id"))
         @model.set "rendering", false
-        @__trigger ":view:rendered"
+        @__trigger "view:rendered"
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
@@ -292,7 +297,7 @@ class tweak.View
     @private
     Split classes from a string to an array
   ###
-  _splitClasses = (classes) ->
+  splitClasses: (classes) ->
     results = []
     if typeof classes isnt "string" then classes = ''
     for key, prop of classes.split(" ")
@@ -307,7 +312,7 @@ class tweak.View
   addClass: (element, classes = '') ->
     elements = @element element
     if elements.length is 0 then return
-    classes = _splitClasses classes
+    classes = @splitClasses classes
     for item in elements
       if not item? then continue
       for prop in classes
@@ -325,7 +330,7 @@ class tweak.View
   removeClass: (element, classes = '') ->
     elements = @element element
     if elements.length is 0 then return
-    classes = _splitClasses classes
+    classes = @splitClasses classes
     for item in elements
       if not item? then continue
       for prop in classes
@@ -357,8 +362,8 @@ class tweak.View
   replaceClass: (element, orig, classes) ->
     elements = @element(element)
     if elements.length is 0 then return
-    classes = _splitClasses(classes)
-    orig = _splitClasses(orig)
+    classes = @splitClasses(classes)
+    orig = @splitClasses(orig)
     for item in elements
       if not item? then continue
       i = 0

@@ -26,6 +26,11 @@ class tweak.Components extends tweak.Collection
     tweak.Common.Modules,
     tweak.Common.Components
   ]
+
+  # @private
+  constructor: ->
+    # Set uid
+    @uid = "cp_#{tweak.uids.cp++}"
   
   ###
    Construct the Collection with given options from the config file

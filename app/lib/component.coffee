@@ -51,7 +51,7 @@ class tweak.Component
   # @property [Object]
   router: null
   # @property [Interger] The uid of this object - for unique reference
-  uid: tweak.uid++
+  uid: 0
 
   ###
     @param [Object] relation Relation to the component
@@ -59,6 +59,8 @@ class tweak.Component
     @param [Object] config (optional) Configuartion for the component
   ###
   constructor: (relation, name, config) ->
+    # Set uid
+    @uid = "c_#{tweak.uids.c++}"
     # Build relation if window and build its default properties
     # The relation is it direct caller
     relation = @relation = if relation is window then {} else relation
@@ -72,9 +74,8 @@ class tweak.Component
     @config = @buildConfig(config) or {}
 
     # The config file can prevent automatic build and start of componets
-    if not @config.preventStart
-      # Start the construcion of the component
-      @start()
+    # Start the construcion of the component
+    @construct()
 
 
 
@@ -116,13 +117,6 @@ class tweak.Component
     result.components ?= []
     result.events ?= {}
     result
-
-  ###
-    Initiates the construction and initialisation of the component.
-  ###
-  start: ->
-    @construct()
-    @init()
 
   ###
     Add a module to the component, if module can't be found then it will use a surrogate object
@@ -176,9 +170,14 @@ class tweak.Component
   addRouter: (params...) -> @addModule("router", tweak.Router, params...)
 
   ###
+    Function to call other function so the component can be impeded before starting
+  ###
+  construct: -> @init()
+
+  ###
     Constructs the component and its modules using the addModule method
   ###
-  construct: ->
+  init: ->
     # Router is optional as it is perfomance heavy
     # So it needs to be explicility defind in the config for the component that it should be used
     if @config.router then @addRouter()
@@ -201,13 +200,11 @@ class tweak.Component
     # Construct the modules after they have been added
     for name in MODULES then @[name]?.construct?()
 
-  ###
-    initialise the component and its modules exept the view
-  ###
-  init: ->
     for name in MODULES
       if name isnt "view" then @[name]?.init?()
 
+
+ 
   ###
     @private
   ###
@@ -240,7 +237,7 @@ class tweak.Component
     @view.clear()
     components = @relation.components
     if components?
-      i = 0 
+      i = 0
       for item in components.data
         if item.uid is @uid
           components.remove i, quiet
