@@ -275,7 +275,7 @@ class tweak.View
     @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the bottom offset of an element relative to another element (or default to the body)
   ###
-  offestBottom: (element, relativeTo) -> @offsetFrom(element, "bottom", relativeTo)
+  offsetBottom: (element, relativeTo) -> @offsetFrom(element, "bottom", relativeTo)
   
   ###
     Returns the left offset of an element relative to another element (or default to the body)
