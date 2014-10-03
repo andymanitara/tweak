@@ -93,7 +93,7 @@ class tweak.Component
     if options
       configs.push options
       paths.push @name
-      config = config.extends
+      config = options.extends
 
     # Gets all configs, by configs extension path
     while config

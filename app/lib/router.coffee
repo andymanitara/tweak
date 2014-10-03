@@ -122,4 +122,4 @@ class tweak.Router
     Masks the url hash with certain data without triggering events
     @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
   ###
-  mask: (obj) -> @set(obj, {quiet:true})
+  mask: (obj) -> @set(obj, true)

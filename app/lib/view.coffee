@@ -168,16 +168,16 @@ class tweak.View
     Clears the view and removed event listeners of DOM elements
   ###
   clear: ->
-    if @parent
+    if @el?.parentNode
       try
-        @parent.removeChild @el
+        @el.parentNode.removeChild @el
         @el = null
 
   ###
     Checks to see if the item is rendered; this is detirmined if the node has a parentNode
     @return [Boolean] Returns whether the view has been rendered.
   ###
-  isRendered: -> if @el?.parentNode then true else false
+  isRendered: -> if window.document.contains @el then true else false
   
   ###
     Find the parent DOMElement to this view

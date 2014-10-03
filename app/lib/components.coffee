@@ -37,15 +37,19 @@ class tweak.Components extends tweak.Collection
   ###
   construct: ->
     @data = []
-    data = @splitComponents(@config.join(" "), @name)
-    for key, prop of data
-      if prop is "" or prop is " "
-        delete data[key]
-        continue
-      data[key] = new tweak.Component(@, prop)
-    
-    for key, item of data
-      @add item, true
+    data = []
+    for item in @config or []
+      if item instanceof Array
+        names = @splitComponents item[0], @name
+        path = @relToAbs(item[1])
+        i = 0
+        for name in names
+          @add new tweak.Component(@, name, {extends:path}), true
+      else
+        if item is "" or item is " " then continue
+        data = @splitComponents item, @name
+        for prop in data
+          @add new tweak.Component(@, prop), true
 
   ###
     @private
