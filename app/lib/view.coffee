@@ -177,7 +177,7 @@ class tweak.View
     Checks to see if the item is rendered; this is detirmined if the node has a parentNode
     @return [Boolean] Returns whether the view has been rendered.
   ###
-  isRendered: -> if window.document.contains @el then true else false
+  isRendered: -> if document.body.contains @el then true else false
   
   ###
     Find the parent DOMElement to this view
