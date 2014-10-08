@@ -58,7 +58,7 @@ class tweak.View
     @model.set "rendering", true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
-    @model.set "id",  @config.className or @name.replace(/\//g, "-")
+    @model.set "id", @name.replace(/\//g, "-")
     # Build the template with the date from the model
     template = if @config.template then @require(@config.template) else @findModule(@component.paths, 'template')
     template = template(@model.data)
@@ -84,6 +84,7 @@ class tweak.View
             @el = @parent.firstElementChild
 
         @addClass(@el, @model.get("id"))
+        @addClass(@el, @config.class or "")
         @model.set "rendering", false
         @__trigger "view:rendered"
         @init()
