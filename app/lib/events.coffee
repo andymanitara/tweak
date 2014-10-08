@@ -63,13 +63,14 @@ class tweak.EventSystem
     # If there is no callback then return from function
     if not callback? then return false
     # Find the event / build the event path
-    event = @find(name, true)
-    # Convert callback to string;
-    # This is used as a saftey device to prevent multiple events being added which call the same function
+    event = @find name, true
+    # Convert callback to string, to check if to replace current event
     callbackString = callback.toString()
-    for item in event.__callbacks ?= []
-      if item? and context is item.context and item.callback.toString() is callbackString then return false
-    event.__callbacks.push({context, callback, maxCalls, calls:0})
+    replace = null
+    for key, item of event.__callbacks ?= []
+      if context is item.context and item.callback.toString() is callbackString then replace = key; break
+    obj = {context, callback, maxCalls, calls:0}
+    if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
 
   ###
