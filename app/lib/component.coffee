@@ -89,20 +89,21 @@ class tweak.Component
     configs = []
     paths = @paths = []
 
-    config = @name
+    extension = @name
     if options
       configs.push options
       paths.push @name
-      config = options.extends
+      configs.push @clone options
+      extension = options.extends
 
     # Gets all configs, by configs extension path
-    while config
+    while extension
       requested = @require "#{config}/config"
       # Store all the paths
       paths.push config
       # Push a clone of the config file to remove reference
       configs.push @clone(requested)
-      config = requested.extends
+      extension = requested.extends
 
     # Combine all the config files into one
     # The values of the config files from lower down the chain have piortiy
