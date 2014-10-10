@@ -98,9 +98,9 @@ class tweak.Component
 
     # Gets all configs, by configs extension path
     while extension
-      requested = @require "#{config}/config"
+      requested = @require "#{extension}/config"
       # Store all the paths
-      paths.push config
+      paths.push extension
       # Push a clone of the config file to remove reference
       configs.push @clone(requested)
       extension = requested.extends
