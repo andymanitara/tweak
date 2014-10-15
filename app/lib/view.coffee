@@ -141,7 +141,8 @@ class tweak.View
         nodes.push(element)
     # If the parent is the body then put it is the nodes array
     # This allows full web apps that hook into the body
-    if parent.body is document.body then nodes.push document.body
+    html = document.getElementsByTagName("html")[0]
+    if parent.body is html then nodes.push html
     children(parent)
     nodes
 
@@ -178,7 +179,7 @@ class tweak.View
     Checks to see if the item is rendered; this is detirmined if the node has a parentNode
     @return [Boolean] Returns whether the view has been rendered.
   ###
-  isRendered: -> if document.body.contains @el then true else false
+  isRendered: -> if document.getElementsByTagName("html")[0].contains @el then true else false
   
   ###
     Find the parent DOMElement to this view
@@ -188,9 +189,10 @@ class tweak.View
   getParent: ->
     view = @component.parent?.view
     # The result is the parent el, or it will try to find a node to attach to in the DOM
-    parent = view?.el or document.body
+    html = document.getElementsByTagName("html")[0]
+    parent = view?.el or html
     name = @config.attachmentName or @name
-    @getComponentNode(parent, name) or view?.el or throw new Error("Unable to find view parent for #{@name} (#{name})")
+    @getComponentNode(parent, name) or @getComponentNode(html, name) or parent or throw new Error("Unable to find view parent for #{@name} (#{name})")
   
   ###
     Async html to a function, this allows dynamic building of components without holding up parts of the system
@@ -252,10 +254,11 @@ class tweak.View
     Returns the offset from another element relative to another (or default to the body)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] from (default = "top") The direction to compare the offset
-    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the element offset value relative to another element
   ###
-  offsetFrom:(element, from = "top", relativeTo = window.document.body) ->
+  offsetFrom:(element, from = "top", relativeTo) ->
+    relativeTo ?= document.getElementsByTagName("html")[0]
     relativeTo = @element(relativeTo)[0]
     element = @element(element)[0]
     elementBounds = element.getBoundingClientRect()
@@ -265,7 +268,7 @@ class tweak.View
   ###
     Returns the top offset of an element relative to another element (or default to the body)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
-    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the top offset of an element relative to another element (or default to the body)
   ###
   offsetTop: (element, relativeTo) -> @offsetFrom(element, "top", relativeTo)
@@ -273,7 +276,7 @@ class tweak.View
   ###
     Returns the bottom offset of an element relative to another element (or default to the body)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
-    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the bottom offset of an element relative to another element (or default to the body)
   ###
   offsetBottom: (element, relativeTo) -> @offsetFrom(element, "bottom", relativeTo)
@@ -281,7 +284,7 @@ class tweak.View
   ###
     Returns the left offset of an element relative to another element (or default to the body)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
-    @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the left offset of an element relative to another element (or default to the body)
   ###
   offsetLeft: (element, relativeTo) -> @offsetFrom(element, "left", relativeTo)
