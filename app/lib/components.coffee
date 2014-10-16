@@ -39,17 +39,25 @@ class tweak.Components extends tweak.Collection
     @data = []
     data = []
     for item in @config or []
+      obj = {}
       if item instanceof Array
         names = @splitComponents item[0], @name
         path = @relToAbs(item[1])
         i = 0
         for name in names
           @add new tweak.Component(@, name, {extends:path}), true
-      else
-        if item is "" or item is " " then continue
+      else if typeof item is "string"
+        if name is "" or name is " " then continue
         data = @splitComponents item, @name
         for prop in data
           @add new tweak.Component(@, prop), true
+      else
+        name = obj.name
+        if name is "" or name is " " then continue
+        data = @splitComponents name, @name
+        for prop in data
+          obj.name = prop
+          @add new tweak.Component(@, prop, obj), true
 
   ###
     @private
