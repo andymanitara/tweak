@@ -34,6 +34,12 @@ exports.config =
 
   server:
     port: 3455
+
+  overrides:
+    production:
+      optimize: false
+      sourceMaps: true
+      plugins: autoReload: enabled: false
   
   modules:
     definition:false
@@ -42,4 +48,4 @@ exports.config =
     ;\n(function(window){
     #{data}
     })(window); \n\n
-      """    
+      """
