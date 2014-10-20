@@ -42,7 +42,7 @@ class tweak.Components extends tweak.Collection
       obj = {}
       if item instanceof Array
         names = @splitComponents item[0], @name
-        path = @relToAbs(item[1])
+        path = @relToAbs(item[1], @name)
         i = 0
         for name in names
           @add new tweak.Component(@, name, {extends:path}), true
@@ -52,9 +52,11 @@ class tweak.Components extends tweak.Collection
         for prop in data
           @add new tweak.Component(@, prop), true
       else
+        obj = item
         name = obj.name
-        if name is "" or name is " " then continue
+        if not name? or name is "" or name is " " then continue
         data = @splitComponents name, @name
+        obj.extends = @relToAbs(obj.extends, @name)
         for prop in data
           obj.name = prop
           @add new tweak.Component(@, prop, obj), true
