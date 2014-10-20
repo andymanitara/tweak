@@ -20,9 +20,7 @@
     "javascript-brunch": "*",
     "coffee-script-brunch": "*",
     "css-brunch": "*",
-    "uglify-js-brunch": "*",
-    "auto-reload-brunch": "*",
-    "after-brunch": "*"
+    "auto-reload-brunch": "*"
   },
   "main": "public/tweak.js",
   "directories": {

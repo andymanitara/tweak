@@ -34,12 +34,6 @@ exports.config =
 
   server:
     port: 3455
-
-  overrides:
-    production:
-      optimize: false
-      sourceMaps: true
-      plugins: autoReload: enabled: false
   
   modules:
     definition:false
@@ -49,3 +43,9 @@ exports.config =
     #{data}
     })(window); \n\n
       """
+
+  overrides:
+    production:
+      optimize: false
+      sourceMaps: true
+      plugins: autoReload: enabled: false
