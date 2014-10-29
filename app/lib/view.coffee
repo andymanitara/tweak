@@ -147,9 +147,9 @@ class tweak.View
     nodes
 
   ###
-    Find a component node by a value (attribute to apply on html is tweak-component)
+    Find a component node by a value (attribute to apply on html is data-attach)
     @param [DOMElment] parent The parent DOMElement to search through to find a given component node
-    @param [String] value The component name to look for in the tweak-component attribute
+    @param [String] value The component name to look for in the data-attach attribute
     @return [DOMElement] Returns the dom element with matching critera
   ###
   getComponentNode: (parent, value) ->
@@ -159,7 +159,7 @@ class tweak.View
       components = ''
       if child then break
       try
-        components = prop.getAttribute('tweak-components') or ''
+        components = prop.getAttribute('data-attach') or ''
       catch e
       if components is " " then continue
       for val in @splitComponents(components)
