@@ -391,9 +391,7 @@ class tweak.View
     el = @el
     elements = @element(element)
     for item in elements
-      item.addEventListener(type, (e) ->
-        callback e, element
-      , false)
+      item.addEventListener type, callback, false
 
   ###
     Remove event listener to element(s)
@@ -405,7 +403,7 @@ class tweak.View
   DOMoff: (element, type, callback) ->
     elements = @element(element)
     for item in elements
-      item.removeEventListener(type, callback, false)
+      item.removeEventListener type, callback, false
 
   ###
     Trigger event listener on element(s)
