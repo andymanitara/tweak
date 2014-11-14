@@ -74,6 +74,17 @@
     wrapper: function(path, data) {
       return &quot;;\n(function(window){\n})(window); \n\n&quot;;
     }
+  },
+  overrides: {
+    production: {
+      optimize: false,
+      sourceMaps: true,
+      plugins: {
+        autoReload: {
+          enabled: false
+        }
+      }
+    }
   }
 }</code></pre>
     
@@ -81,7 +92,7 @@
 </dl>
     </div>
     <div id='footer'>
-  October 13, 14 16:25:49 by
+  November 14, 14 16:09:31 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

@@ -143,7 +143,7 @@ The data in the model is passed into the views template, allowing for easy manip
       </a>
     </span>
     <span class='desc'>
-      Find a component node by a value (attribute to apply on html is tweak-component) 
+      Find a component node by a value (attribute to apply on html is data-attach) 
     </span>
   </li>
   <li>
@@ -259,7 +259,7 @@ The data in the model is passed into the views template, allowing for easy manip
       <a href='#offsetFrom-dynamic'>
         #
 (Number)
-<b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo = window.document.body)</span>
+<b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo)</span>
       </a>
     </span>
     <span class='desc'>
@@ -380,7 +380,7 @@ The data in the model is passed into the views template, allowing for easy manip
       <a href='#DOMon-dynamic'>
         #
 (void)
-<b>DOMon</b><span>(element, type, callback)</span>
+<b>DOMon</b><span>(element, type, callback, capture = false)</span>
       </a>
     </span>
     <span class='desc'>
@@ -392,11 +392,12 @@ The data in the model is passed into the views template, allowing for easy manip
       <a href='#DOMoff-dynamic'>
         #
 (void)
-<b>DOMoff</b><span>(element, type, callback)</span>
+<b>DOMoff</b><span>(element, type, callback, capture = false)</span>
       </a>
     </span>
     <span class='desc'>
-      Remove event listener to element(s) 
+      Remove event listener to element(s)                         Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
+
     </span>
   </li>
   <li>
@@ -404,7 +405,7 @@ The data in the model is passed into the views template, allowing for easy manip
       <a href='#DOMtrigger-dynamic'>
         #
 (void)
-<b>DOMtrigger</b><span>(element, type)</span>
+<b>DOMtrigger</b><span>(element, type, options)</span>
       </a>
     </span>
     <span class='desc'>
@@ -628,7 +629,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
       <br>
     </p>
     <div class='docstring'>
-  <p>Find a component node by a value (attribute to apply on html is tweak-component)</p>
+  <p>Find a component node by a value (attribute to apply on html is data-attach)</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
@@ -651,7 +652,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
         )
       </span>
       &mdash;
-      <span class='desc'>The component name to look for in the tweak-component attribute </span>
+      <span class='desc'>The component name to look for in the data-attach attribute </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -985,7 +986,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
     <p class='signature' id='offsetFrom-dynamic'>
       #
 (Number)
-<b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo = window.document.body)</span>
+<b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -1022,7 +1023,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
         )
       </span>
       &mdash;
-      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -1069,7 +1070,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
         )
       </span>
       &mdash;
-      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -1116,7 +1117,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
         )
       </span>
       &mdash;
-      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -1163,7 +1164,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
         )
       </span>
       &mdash;
-      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
+      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -1388,7 +1389,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
     <p class='signature' id='DOMon-dynamic'>
       #
 (void)
-<b>DOMon</b><span>(element, type, callback)</span>
+<b>DOMon</b><span>(element, type, callback, capture = false)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -1431,6 +1432,16 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
       &mdash;
       <span class='desc'>The method to apply to the event listener </span>
     </li>
+    <li>
+      <span class='name'>capture</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>if true it indicates to initiate capture to the registered listener first. </span>
+    </li>
   </ul>
 </div>
   </div>
@@ -1438,7 +1449,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
     <p class='signature' id='DOMoff-dynamic'>
       #
 (void)
-<b>DOMoff</b><span>(element, type, callback)</span>
+<b>DOMoff</b><span>(element, type, callback, capture = false)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -1446,7 +1457,8 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
     <strong>Note:</strong>
     Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method. 
   </div>
-  <p>Remove event listener to element(s)</p>
+  <p>Remove event listener to element(s)
+                        Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
@@ -1472,14 +1484,14 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
       <span class='desc'>The type of event </span>
     </li>
     <li>
-      <span class='name'>callback</span>
+      <span class='name'>capture</span>
       <span class='type'>
         (
-          <tt>Function</tt>
+          <tt>Boolean</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>The method that was applied to the event listener </span>
+      <span class='desc'>If a listener was registered twice, one with capture and one without, each must be removed separately. </span>
     </li>
   </ul>
 </div>
@@ -1488,7 +1500,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
     <p class='signature' id='DOMtrigger-dynamic'>
       #
 (void)
-<b>DOMtrigger</b><span>(element, type)</span>
+<b>DOMtrigger</b><span>(element, type, options)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -1527,7 +1539,7 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
 </div>
     </div>
     <div id='footer'>
-  October 13, 14 16:25:49 by
+  November 14, 14 16:09:30 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
