@@ -58,7 +58,7 @@ class tweak.Component
     @param [Object] options Configuartion for the component
   ###
   constructor: (relation, options) ->
-    if not options? then return
+    if not options? then throw new Error "No options given"
 
     # Set uid
     @uid = "c_#{tweak.uids.c++}"
@@ -70,11 +70,10 @@ class tweak.Component
     @parent = if relation instanceof tweak.Components then relation.relation else relation
     @root = @parent.root or @
     # Set name of component
-    @name = options.name or options.extends
-    if not @name? then throw new Error "No name specified"
+    @name = options.name
+    if not @name? then throw new Error "No name given"
 
     @config = @buildConfig(options) or {}
-
     # The config file can prevent automatic build and start of componets
     # Start the construcion of the component
     @construct()
@@ -93,10 +92,9 @@ class tweak.Component
 
     extension = @name
     if options
-      configs.push options
       paths.push @name
       configs.push @clone options
-      extension = options.extends
+      if options.extends then extension = options.extends
 
     # Gets all configs, by configs extension path
     while extension
