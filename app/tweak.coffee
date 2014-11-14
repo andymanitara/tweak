@@ -1,5 +1,5 @@
 ###
-  tweak.js 0.7.3
+  tweak.js 0.7.8
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
