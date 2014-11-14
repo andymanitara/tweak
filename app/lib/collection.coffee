@@ -46,7 +46,7 @@ class tweak.Collection extends tweak.Store
   
   ###
     Add a new property to the end of the collection
-    @param [*] data Data to add to the end of the collection    
+    @param [*] data Data to add to the end of the collection
     @param [Boolean] quiet Setting to trigger change events
 
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
