@@ -55,10 +55,11 @@ class tweak.Component
 
   ###
     @param [Object] relation Relation to the component
-    @param [string] name Name of the component
-    @param [Object] config (optional) Configuartion for the component
+    @param [Object] options Configuartion for the component
   ###
-  constructor: (relation, name, config) ->
+  constructor: (relation, options) ->
+    if not options? then return
+
     # Set uid
     @uid = "c_#{tweak.uids.c++}"
     # Build relation if window and build its default properties
@@ -69,9 +70,10 @@ class tweak.Component
     @parent = if relation instanceof tweak.Components then relation.relation else relation
     @root = @parent.root or @
     # Set name of component
-    @name = name or ""
+    @name = options.name or options.extends
+    if not @name? then throw new Error "No name specified"
 
-    @config = @buildConfig(config) or {}
+    @config = @buildConfig(options) or {}
 
     # The config file can prevent automatic build and start of componets
     # Start the construcion of the component
