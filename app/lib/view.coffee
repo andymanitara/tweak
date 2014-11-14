@@ -55,6 +55,7 @@ class tweak.View
     @event "#{@uid}:rendered" The event is called when the view has been rendered.
   ###
   render: ->
+    @config.attach ?= {}
     @model.set "rendering", true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
@@ -68,7 +69,7 @@ class tweak.View
       # It can either replace whats is in its parent node, or append after or be inserted before.
       attach = =>
         @parent = parent = @getParent()
-        switch @config.attachment or 'after'
+        switch @config.attach.method or 'after'
           when 'bottom', 'after'
             @parent.appendChild(template)
             @el = @parent.lastElementChild
@@ -191,7 +192,7 @@ class tweak.View
     # The result is the parent el, or it will try to find a node to attach to in the DOM
     html = document.getElementsByTagName("html")[0]
     parent = view?.el or html
-    name = @config.attachmentName or @name
+    name = @config.attach?.name or @name
     @getComponentNode(parent, name) or @getComponentNode(html, name) or parent or throw new Error("Unable to find view parent for #{@name} (#{name})")
   
   ###
