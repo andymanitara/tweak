@@ -386,24 +386,26 @@ class tweak.View
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] type The type of event
     @param [Function] callback The method to apply to the event listener
+    @param [Boolean] capture if true it indicates to initiate capture to the registered listener first.
   ###
-  DOMon: (element, type, callback) ->
+  DOMon: (element, type, callback, capture = false) ->
     el = @el
     elements = @element(element)
     for item in elements
-      item.addEventListener type, callback, false
+      item.addEventListener type, callback, capture
 
   ###
     Remove event listener to element(s)
     @note Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] type The type of event
-    @param [Function] callback The method that was applied to the event listener
+    @param [Boolean] capture If a listener was registered twice, one with capture and one without, each must be removed separately.
+                            Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
   ###
-  DOMoff: (element, type, callback) ->
+  DOMoff: (element, type, callback, capture = false) ->
     elements = @element(element)
     for item in elements
-      item.removeEventListener type, callback, false
+      item.removeEventListener type, callback, capture
 
   ###
     Trigger event listener on element(s)
@@ -411,8 +413,8 @@ class tweak.View
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] type The type of event
   ###
-  DOMtrigger: (element, type) ->
+  DOMtrigger: (element, type, options) ->
     elements = @element(element)
-    e = new Event(type)
+    e = new Event(type, options or {})
     for item in elements
       item.dispatchEvent(e)
