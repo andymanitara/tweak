@@ -50,12 +50,10 @@ class tweak.Store
       @param [*] data Data to store in the property
       @param [Boolean] quiet Setting to trigger change events
 
-
     @overload set(properties, quiet)
       Set an multiple properties in the store from an object
       @param [Object] properties Key and property based object to store into store
       @param [Boolean] quiet Setting to trigger change events
-
 
     @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
     @event #{@component.uid}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
@@ -80,7 +78,6 @@ class tweak.Store
       if not quiet then @__trigger "#{@storeType}:changed:#{key}", prop
 
     if not quiet then @__trigger "#{@storeType}:changed"
-
     return
 
   ###
