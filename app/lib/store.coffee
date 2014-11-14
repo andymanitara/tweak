@@ -2,8 +2,8 @@
   This is the base Object for dynamic storage based modules. This will contain the core functionality for these type of functions
   A collection is where data can be stored. A collection is an array storage based system. A model is an object storage based system.
 
-  The store is simply a way of storing some data, with event triggering on changes to the store
-  In common MVC concept the store is not always a database. So the controller should be used to get data from a database.
+  The store is simply a way of storing some data, with event triggering on changes to the store.
+  In common MVC concept the store is not always a database. Therefore a store in TweakJS is a temporary storage of data. So the controller should be used to get/set data from/to a database.
   The controller is normally the interface between the view and the stores data.
   When the store updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the store quietly aswell.
