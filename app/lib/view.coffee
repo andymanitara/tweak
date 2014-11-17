@@ -379,8 +379,6 @@ class tweak.View
           .replace /\s{2,}/g,' '
           .replace /(^\s*|\s*$)/g,''
 
-    
-  
   ###
     Apply event listener to element(s)
     @note Use the on method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
@@ -392,9 +390,17 @@ class tweak.View
   DOMon: (element, type, callback, capture = false) ->
     el = @el
     elements = @element(element)
+    _callback = (e) ->
+      targ = _callback.targ
+      e.targ = targ
+      _callback.fn e, targ
+    _callback.fn = callback
+    _callback.targ = element
+    event = {type, callback, _callback, capture}
     for item in elements
-      item.addEventListener type, callback, capture
-
+      item._events ?= []
+      item.addEventListener type, _callback, capture
+      item._events.push event
   ###
     Remove event listener to element(s)
     @note Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
@@ -406,7 +412,9 @@ class tweak.View
   DOMoff: (element, type, callback, capture = false) ->
     elements = @element(element)
     for item in elements
-      item.removeEventListener type, callback, capture
+      for evt in item._events or []
+        if evt.type is type and evt.capture is capture and callback is evt.callback
+          item.removeEventListener type, evt._callback, capture
 
   ###
     Trigger event listener on element(s)
@@ -414,7 +422,7 @@ class tweak.View
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] type The type of event
   ###
-  DOMtrigger: (element, type, options) ->
+  DOMtrigger: (element, type, options = {}) ->
     elements = @element(element)
     e = new Event(type, options or {})
     for item in elements
