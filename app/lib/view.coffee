@@ -387,8 +387,7 @@ class tweak.View
     @param [Function] callback The method to apply to the event listener
     @param [Boolean] capture if true it indicates to initiate capture to the registered listener first.
   ###
-  DOMon: (element, type, callback, capture = false) ->
-    el = @el
+  DOMon: (element = @el, type, callback, capture = false) ->
     elements = @element(element)
     _callback = (e) -> _callback.fn e, _callback.targ
     _callback.fn = callback
@@ -406,7 +405,7 @@ class tweak.View
     @param [Boolean] capture If a listener was registered twice, one with capture and one without, each must be removed separately.
                             Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
   ###
-  DOMoff: (element, type, callback, capture = false) ->
+  DOMoff: (element = @el, type, callback, capture = false) ->
     elements = @element(element)
     for item in elements
       for evt in item._events or []
@@ -419,7 +418,7 @@ class tweak.View
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] type The type of event
   ###
-  DOMtrigger: (element, type, options = {}) ->
+  DOMtrigger: (element = @el, type, options = {}) ->
     elements = @element(element)
     e = new Event(type, options or {})
     for item in elements
