@@ -65,10 +65,9 @@ class tweak.EventSystem
     # Find the event / build the event path
     event = @find name, true
     # Convert callback to string, to check if to replace current event
-    callbackString = callback.toString()
     replace = null
     for key, item of event.__callbacks ?= []
-      if context is item.context and item.callback.toString() is callbackString then replace = key; break
+      if context is item.context and item.callback is callback then replace = key; break
     obj = {context, callback, maxCalls, calls:0}
     if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
@@ -92,9 +91,8 @@ class tweak.EventSystem
 
     # Check to see if the callback matches
     # If event matches critera then delete and return true
-    callbackString = callback.toString()
     for key, item of event.__callbacks
-      if context is item.context and callbackString is item.callback.toString()
+      if context is item.context and callback is item.callback
         delete event.__callbacks[key]
         return true
     false
