@@ -390,10 +390,7 @@ class tweak.View
   DOMon: (element, type, callback, capture = false) ->
     el = @el
     elements = @element(element)
-    _callback = (e) ->
-      targ = _callback.targ
-      e.targ = targ
-      _callback.fn e, targ
+    _callback = (e) -> _callback.fn e, _callback.targ
     _callback.fn = callback
     _callback.targ = element
     event = {type, callback, _callback, capture}
