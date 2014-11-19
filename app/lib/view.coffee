@@ -416,10 +416,9 @@ class tweak.View
     Trigger event listener on element(s)
     @note Use the trigger method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
-    @param [String] type The type of event
+    @param [Event] event an evet to trigger
   ###
-  DOMtrigger: (element = @el, type, options = {}) ->
+  DOMtrigger: (element = @el, event) ->
     elements = @element(element)
-    e = new Event(type, options or {})
     for item in elements
-      item.dispatchEvent(e)
+      item.dispatchEvent event
