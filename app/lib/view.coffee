@@ -192,7 +192,7 @@ class tweak.View
     # The result is the parent el, or it will try to find a node to attach to in the DOM
     html = document.getElementsByTagName("html")[0]
     parent = view?.el or html
-    name = @config.attach?.name or @name
+    name = @config.attach?.to or @config.attach?.name or @name
     @getComponentNode(parent, name) or @getComponentNode(html, name) or parent or throw new Error("Unable to find view parent for #{@name} (#{name})")
   
   ###
