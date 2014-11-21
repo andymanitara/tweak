@@ -21,10 +21,8 @@ class tweak.Components extends tweak.Collection
   tweak.Extend @, [
     tweak.Common.Empty,
     tweak.Common.Events,
-    tweak.Common.Collection,
     tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
+    tweak.Common.Modules
   ]
 
   # @private

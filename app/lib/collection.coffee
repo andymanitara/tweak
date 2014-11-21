@@ -11,7 +11,11 @@ class tweak.Collection extends tweak.Store
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: "collection"
 
-  tweak.Extend @, tweak.Common.Arrays
+  tweak.Extend @, [
+    tweak.Common.Arrays,
+    tweak.Common.JSON,
+    tweak.Common.Collection
+  ]
 
   # @private
   constructor: ->

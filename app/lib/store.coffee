@@ -81,6 +81,17 @@ class tweak.Store
     return
 
   ###
+    Returns whether two object are the same (similar)
+    @param [Object, Array] one Object to compare
+    @param [Object, Array] two Object to compare
+    @return [Boolean] Returns whether two object are the same (similar)
+  ###
+  same: (one, two) ->
+    for key, prop of one
+      if not two[key]? or two[key] isnt prop then return false
+    return true
+    
+  ###
     Returns a stores property value
     @param [String] property Property name to look for in store data
     @return [*] Returns property value of property in store

@@ -18,6 +18,13 @@ class tweak.Model extends tweak.Store
   # @property [String] The type of collection this is
   storeType: "model"
 
+  tweak.Extend @, [
+    tweak.Common.Empty,
+    tweak.Common.Events,
+    tweak.Common.JSON
+  ]
+
+
   # @private
   constructor: ->
     # Set uid
@@ -58,7 +65,7 @@ class tweak.Model extends tweak.Store
 
     if not quiet then @__trigger "#{@storeType}:changed"
     return
-  
+
   ###
     Get an element at position of a given number
     @param [Integer] position Position of property to return
@@ -79,3 +86,7 @@ class tweak.Model extends tweak.Store
   ###
   reset: ->
     @data = {}
+
+  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet
+
+  export: (restrict) -> @parse @data, restrict

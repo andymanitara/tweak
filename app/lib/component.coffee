@@ -31,7 +31,6 @@ class tweak.Component
     tweak.Common.Empty,
     tweak.Common.Events,
     tweak.Common.Modules,
-    tweak.Common.Collections,
     tweak.Common.Arrays,
     tweak.Common.Modules,
     tweak.Common.Components

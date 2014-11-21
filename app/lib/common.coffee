@@ -1,26 +1,4 @@
-tweak.Common = {}
-###
-  Common EMpty functions that are used in multiple places throughout the framework.
-  @mixin
-###
-tweak.Common.Empty =
-  ###
-    Empty reusable function
-  ###
-  init: ->
-
-  ###
-    Empty reusable function
-  ###
-  construct: ->
-
-###
-  Common functions that are used  for manipulating collections (Arrays and Objects)
-  @todo Update same to check more data types
-
-  @mixin
-###
-tweak.Common.Collections =
+tweak.Common = {
   ###
     Merge properites from object from one object to another. (Reversed first object is the object to take on the properties from another)
     @param [Object, Array] one The Object/Array to combine properties into
@@ -35,17 +13,6 @@ tweak.Common.Collections =
       else
         one[key] = prop
     one
-
-  ###
-    Returns whether two object are the same (similar)
-    @param [Object, Array] one Object to compare
-    @param [Object, Array] two Object to compare
-    @return [Boolean] Returns whether two object are the same (similar)
-  ###
-  same: (one, two) ->
-    for key, prop of one
-      if not two[key]? or two[key] isnt prop then return false
-    return true
 
   ###
     Clone an object to remove reference to original object or simply to copy it.
@@ -74,6 +41,61 @@ tweak.Common.Collections =
     for attr of ref
       copy[attr] = @clone(ref[attr])  if ref.hasOwnProperty(attr)
     return copy
+}
+
+###
+  Common EMpty functions that are used in multiple places throughout the framework.
+  @mixin
+###
+tweak.Common.Empty =
+  ###
+    Empty reusable function
+  ###
+  init: ->
+
+  ###
+    Empty reusable function
+  ###
+  construct: ->
+
+tweak.Common.JSON =
+  ###
+    Convert a simple JSON string/object
+    @param [JSONString, JSONObject] data JSON data to convert.
+    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @return [JSONObject, JSONString] Returns JSON data of the opposite data type
+  ###
+  parse: (data, restrict) ->
+    _restrict = (obj) ->
+      if not restrict then return obj
+      res = {}
+      for item in restict
+        res[item] = obj[item]
+      res
+    if typeof data is string
+      _restrict(JSON.parse data)
+    else
+      JSON.stringify(_restrict data)
+
+
+tweak.Common.Collection =
+  import: (data, options = {}) ->
+    data = @parse data, options.restict
+    overwrite = options.overwrite ?= true
+    for key, item of data
+      if not overwrite
+        if item instanceof tweak.Model
+          @data[key].set item
+        else @data[key] = new tweak.Model(@, item)
+      else @data.add new tweak.Model(@, item), options.quiet
+
+  export: (restrict) ->
+    res = {}
+    for key, item of @data
+      if item instanceof tweak.Model
+        res[key] = item.data
+      else res[key] = {}
+    @parse res, restict
 
 ###
   Common functions that are used for manipulating Arrays
