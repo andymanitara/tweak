@@ -11,7 +11,6 @@ exports.config =
         before: [
           'app/tweak.coffee',
           'app/lib/common.coffee',
-          'app/lib/helpers.coffee',
           'app/lib/events.coffee',
           'app/lib/store.coffee',
           'app/lib/model.coffee',

@@ -111,25 +111,27 @@ class tweak.EventSystem
       @return [Boolean] Returns true if event is triggered and false if nothing is triggered
   ###
   trigger: (name, params...) ->
-    if typeof name is "object"
-      context = name.context
-      name = name.name or name.event or ""
+    setTimeout(=>
+      tweak.Events.trigger "#{@name}:#{path}", args...
+    
+      if typeof name is "object"
+        context = name.context
+        name = name.name or name.event or ""
 
-    event = @find(name)
-    return false if not event?.__callbacks
-    callbacks = event.__callbacks
-    called = false
-    for key, item of callbacks
-      if context and item.context isnt context then continue
-      item.callback.call item.context, params...
-      called = true
-      # Check to see if the event has reached its call limit
-      # Delete event if reached call limit
-      if item.maxCalls?
-        item.calls++
-        if item.calls >= item.maxCalls
-          delete callbacks[key]
-    called
+      event = @find(name)
+      return false if not event?.__callbacks
+      callbacks = event.__callbacks
+      for key, item of callbacks
+        if context and item.context isnt context then continue
+        item.callback.call item.context, params...
+        # Check to see if the event has reached its call limit
+        # Delete event if reached call limit
+        if item.maxCalls?
+          item.calls++
+          if item.calls >= item.maxCalls
+            delete callbacks[key]
+    ,0)  
+    return
   
   ###
     Iterate through the events to find given event

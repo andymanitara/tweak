@@ -17,25 +17,8 @@
 
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
-  @include tweak.Common.Modules
-  @include tweak.Common.Components
-  @include tweak.Common.Events
 ###
 class tweak.Component
-
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events,
-    tweak.Common.Modules,
-    tweak.Common.Collections,
-    tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
-  ]
 
   # Private constants
   MODULES = ["model", "view", "controller", "components", "router"]
@@ -52,6 +35,11 @@ class tweak.Component
   router: null
   # @property [Interger] The uid of this object - for unique reference
   uid: 0
+
+  require: tweak.Common.require
+  clone: tweak.Common.clone
+  combine: tweak.Common.combine
+  findModule: tweak.Common.findModule
 
   ###
     @param [Object] relation Relation to the component
@@ -77,8 +65,6 @@ class tweak.Component
     # The config file can prevent automatic build and start of componets
     # Start the construcion of the component
     @construct()
-
-
 
   ###
     @param [Object] options Component options
@@ -140,35 +126,35 @@ class tweak.Component
     @param [...] params Parameters passed to into the view constructor
     @return [Object] View
   ###
-  addView: (params...) -> @addModule("view", tweak.View, params...)
+  addView: (params...) -> @addModule "view", tweak.View, params...
 
   ###
     Shortcut method to adding Model using the addModule method
     @param [...] params Parameters passed to into the model constructor
     @return [Object] Model
   ###
-  addModel: (params...) -> @addModule("model", tweak.Model, params...)
+  addModel: (params...) -> @addModule "model", tweak.Model, params...
 
   ###
     Shortcut method to adding controller using the addModule method
     @param [...] params Parameters passed to into the controller constructor
     @return [Object] Controller
   ###
-  addController: (params...) -> @addModule("controller", tweak.Controller, params...)
+  addController: (params...) -> @addModule "controller", tweak.Controller, params...
 
   ###
     Shortcut method to adding components using the addModule method
     @param [...] params Parameters passed to into the components constructor
     @return [Object] Components
   ###
-  addComponents: (params...) -> @addModule("components", tweak.Components, params...)
+  addComponents: (params...) -> @addModule "components", tweak.Components, params...
 
   ###
     Shortcut method to adding router using the addModule method
     @param [...] params Parameters passed to into the router constructor
     @return [Object] Router
   ###
-  addRouter: (params...) -> @addModule("router", tweak.Router, params...)
+  addRouter: (params...) -> @addModule "router", tweak.Router, params...
 
   ###
     Function to call other function so the component can be impeded before starting
@@ -204,18 +190,14 @@ class tweak.Component
     for name in MODULES
       if name isnt "view" then @[name]?.init?()
 
-
- 
   ###
     @private
   ###
   _componentRender: (type) ->
-    @on("#{@uid}:view:#{type}ed", =>
-      @on("#{@uid}:components:ready", =>
-        @trigger("#{@uid}:ready", @name)
-      )
-      @components[type]()
-    )
+    tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
+      tweak.Events.on @, "#{@uid}:components:ready", =>
+        tweak.Events.trigger "#{@uid}:ready", @name
+      @components[type]()  
     @view[type]()
 
   ###

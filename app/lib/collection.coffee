@@ -11,12 +11,21 @@ class tweak.Collection extends tweak.Store
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: "collection"
 
-  tweak.Extend @, tweak.Common.Arrays
-
   # @private
   constructor: ->
     # Set uid
     @uid = "cl_#{tweak.uids.cl++}"
+
+  ###
+    Reduce an array be remove elements from the front of the array and returning the new array
+    @param [Array] arr Array to reduce
+    @param [Number] length The length that the array should be
+    @return [Array] Returns reduced array
+  ###
+  reduced: (arr, length) ->
+    start = arr.length - length
+    for [start..length] then arr[_i]
+    
   ###
     Removes empty keys
   ###
@@ -79,8 +88,8 @@ class tweak.Collection extends tweak.Store
       result.push @data[_j]
     @data = result
     if not quiet
-      @__trigger "#{@storeType}:changed"
-      @__trigger "#{@storeType}:changed:#{position}"
+      tweak.Common.__trigger "#{@storeType}:changed"
+      tweak.Common.__trigger "#{@storeType}:changed:#{position}"
     return
   
   ###
@@ -111,10 +120,10 @@ class tweak.Collection extends tweak.Store
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      @__trigger "#{@storeType}:removed:#{property}"
+      tweak.Common.__trigger "#{@storeType}:removed:#{property}"
     
     @clean()
-    if not quiet then @__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return
 
   ###

@@ -8,16 +8,6 @@
   Therefore the complex logic between what happens on certain interaction can remain in the controller; making it simpler to understand what happens where and when.
   It now keeps your code clean from long and extensive validation and animation logic; which can make code hard to understand when trying to debug why something wont happen after another thing.
 
-  The controller inherits a few mixins to allow for more controll in the framework; but in general it is very minimal.
-
-  @todo reduce the amount of mixins. This will be easier once i know the commonly used functionality. Probably will end up being require, findModule, trigger, on, off, init, construct.
-
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
-  @include tweak.Common.Modules
-  @include tweak.Common.Components
 ###
 class tweak.Controller
 
@@ -28,18 +18,31 @@ class tweak.Controller
   # @property [Component] The root component
   root: null
 
-  
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events,
-    tweak.Common.Modules,
-    tweak.Common.Collections,
-    tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
-  ]
-
   # @private
   constructor: ->
     # Set uid
     @uid = "ct_#{tweak.uids.ct++}"
+
+  ###
+    Event 'on' handler for DOM and the Event API
+    @param [String] name The event name, split on the / and : characters, to add
+    @param [Function] callback  The callback function; if you do not include this then all events under the name will be removed
+    @param [Number] maxCalls The maximum amount of calls the event can be triggered.
+    @return [Boolean] Returns whether the event is added
+  ###
+  on: (params...) -> tweak.Events.on @, params...
+
+  ###
+    Event 'off' handler Event API
+    @param [String] name The event name, split on the / and : characters, to remove
+    @param [Function] callback (optional) The callback function; if you do not include this then all events under the name will be removed
+    @return [Boolean] Returns whether the event is removed
+  ###
+  off: (params...) -> tweak.Events.off @, params...
+
+  ###
+    Event 'trigger' handler for DOM and the Event API, triggered in async
+    @param [String] name The event name, split on the / and : characters, to trigger
+    @param [...] params Parameters to pass into the callback function
+  ###
+  trigger: (params...) -> tweak.Events.trigger params...

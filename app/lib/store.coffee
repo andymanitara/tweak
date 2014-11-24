@@ -7,11 +7,6 @@
   The controller is normally the interface between the view and the stores data.
   When the store updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the store quietly aswell.
-
-  @todo Update pluck to use new same functionality
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
 ###
 class tweak.Store
 
@@ -30,11 +25,7 @@ class tweak.Store
   # @property [Component] The root component
   root: null
 
-  tweak.Extend @, [
-    tweak.Common.Empty
-    tweak.Common.Events
-    tweak.Common.Collections
-  ]
+  coreTrigger: tweak.Common.coreTrigger
 
   # @private
   constructor: ->
@@ -75,9 +66,9 @@ class tweak.Store
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then @__trigger "#{@storeType}:changed:#{key}", prop
+      if not quiet then @coreTrigger "#{@storeType}:changed:#{key}", prop
 
-    if not quiet then @__trigger "#{@storeType}:changed"
+    if not quiet then @coretrigger "#{@storeType}:changed"
     return
 
   ###

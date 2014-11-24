@@ -8,17 +8,9 @@ tweak.Viewable = {
   The view uses a templating engine to provide the html to the DOM.
   The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
-
-  @todo Reduce the complexity of the rendering functionality
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
-  @include tweak.Common.Modules
-  @include tweak.Common.Components
 ###
 class tweak.View
-  
+ 
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
   # @property [Integer] The component uid of this object - for unique reference of component
@@ -26,20 +18,20 @@ class tweak.View
   # @property [Component] The root component
   root: null
 
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events,
-    tweak.Common.Modules,
-    tweak.Common.Collections,
-    tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
-  ]
+  require: tweak.Common.require  
+  coreTrigger: tweak.Common.coreTrigger
+  findModule: tweak.Common.findModule
+
 
   # @private
   constructor: ->
     # Set uid
     @uid = "v_#{tweak.uids.v++}"
+
+
+  init: ->
+
+  construct: ->
 
   ###
     Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
@@ -64,7 +56,7 @@ class tweak.View
     template = if @config.template then @require(@config.template) else @findModule(@component.paths, 'template')
     template = template(@model.data)
     
-    @asyncHTML(template, (template) =>
+    @asyncHTML template, (template) =>
       # Attach nodes to the dome
       # It can either replace whats is in its parent node, or append after or be inserted before.
       attach = =>
@@ -84,10 +76,10 @@ class tweak.View
             @parent.appendChild template
             @el = @parent.firstElementChild
 
-        @addClass(@el, @model.get("id"))
-        @addClass(@el, @config.class or "")
+        @addClass @el, @model.get "id"
+        @addClass @el, @config.class or ""
         @model.set "rendering", false
-        @__trigger "view:rendered"
+        @coreTrigger "view:rendered"
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
@@ -97,11 +89,9 @@ class tweak.View
         if item is @component then break
         previousComponent = item
       if previousComponent isnt -1 and previousComponent.model?.get "rendering"
-        @on("#{previousComponent.uid}:model:changed:rendering", (render) ->
+        tweak.Events.on @, "#{previousComponent.uid}:model:changed:rendering", (render) ->
           if not render then attach()
-        )
-      else attach()
-    )
+      else attach()    
 
     # Set viewable height and width
     @viewable = tweak.Viewable
@@ -117,10 +107,7 @@ class tweak.View
   rerender: ->
     @clear()
     @render()
-    @on("#{@uid}:rendered", ->
-      @__trigger "view:rerendered"
-    )
-
+    tweak.Events.on @, "#{@uid}:rendered", -> @coreTrigger "view:rerendered"
   ###
     Get the chidlren nodes of an element
     @param [DOMElement] parent The element to get the children nodes of
@@ -163,7 +150,7 @@ class tweak.View
         components = prop.getAttribute('data-attach') or ''
       catch e
       if components is " " then continue
-      for val in @splitComponents(components)
+      for val in tweak.Common.splitComponents components
         if value is val then child = prop
     child
 
@@ -387,7 +374,7 @@ class tweak.View
     @param [Function] callback The method to apply to the event listener
     @param [Boolean] capture if true it indicates to initiate capture to the registered listener first.
   ###
-  DOMon: (element = @el, type, callback, capture = false) ->
+  on: (element = @el, type, callback, capture = false) ->
     elements = @element(element)
     _callback = (e) -> _callback.fn e, _callback.targ
     _callback.fn = callback
@@ -405,7 +392,7 @@ class tweak.View
     @param [Boolean] capture If a listener was registered twice, one with capture and one without, each must be removed separately.
                             Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
   ###
-  DOMoff: (element = @el, type, callback, capture = false) ->
+  off: (element = @el, type, callback, capture = false) ->
     elements = @element(element)
     for item in elements
       for evt in item._events or []
@@ -418,7 +405,7 @@ class tweak.View
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [Event] event an evet to trigger
   ###
-  DOMtrigger: (element = @el, event) ->
+  trigger: (element = @el, event) ->
     elements = @element(element)
     for item in elements
       item.dispatchEvent event
