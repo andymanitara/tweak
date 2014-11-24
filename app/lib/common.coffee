@@ -8,9 +8,15 @@ class tweak.Common
   ___trigger: (path, args...) ->
     secondary = path.split ":"
     secondary.shift()
-    tweak.Events.trigger "#{@name}:#{path}", args...
-    tweak.Events.trigger "#{@cuid}:#{path}", args...
-    tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
+   	setTimeout(->
+      tweak.Events.trigger "#{@name}:#{path}", args...
+    ,0)
+   	setTimeout(->
+       tweak.Events.trigger "#{@cuid}:#{path}", args...
+    ,0)
+   	setTimeout(->
+       tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
+    ,0)
 
   ###
     Reduce component names like ./cd[0-98] to an array of full path names
@@ -21,11 +27,11 @@ class tweak.Common
   splitComponents: (str, name) ->
     values = []
     arrayRegex = /^(.*)\[((\d*)\-(\d*)|(\d*))\]$/
-    for item in str.split(" ")
+    for item in str.split " "
       if item is " " then continue
       name = name or @component.name
-      item = @relToAbs(item, name)
-      result = arrayRegex.exec(item)
+      item = tweak.Common.relToAbs item, name
+      result = arrayRegex.exec item
       if result
         prefix = result[1]
         min = 1
@@ -34,7 +40,7 @@ class tweak.Common
           min = result[3]
           max = result[4]
         for i in [min..max]
-          values.push("#{prefix}#{i}")
+          values.push "#{prefix}#{i}"
       else values.push item
     values
 
@@ -48,7 +54,7 @@ class tweak.Common
     for key, prop of two
       if typeof prop is 'object'
         one[key] ?= if prop instanceof Array then [] else {}
-        one[key] = @combine(one[key], prop)
+        one[key] = @combine one[key], prop
       else
         one[key] = prop
     one
@@ -78,7 +84,7 @@ class tweak.Common
 
     # Handle Object
     for attr of ref
-      copy[attr] = @clone(ref[attr])  if ref.hasOwnProperty(attr)
+      copy[attr] = @clone(ref[attr]) if ref.hasOwnProperty attr
     return copy
 
   ###
@@ -95,22 +101,23 @@ class tweak.Common
         res[item] = obj[item]
       res
     if typeof data is string
-      _restrict(JSON.parse data)
+      _restrict JSON.parse data
     else
-      JSON.stringify(_restrict data)
+      JSON.stringify _restrict data
 
   ###
     Try to find a module by name in multiple paths. If there is a surrogate, then if not found it will return this instead
     @param [Array<String>] paths An Array of Strings, the array contains paths to which to search for objects. The lower the key value the higher the piority
     @param [String] module The name of the module to search for
+    @param [String] name The name to which the relative path should become absolute to
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
     @return [Object] Returns an Object that has the highest piority.
     @throw When an object cannot be found and no surrogate is provided the following error message will appear - "Could not find a default module (#{module name}) for component #{component name}"
     @throw When an object is found but there is an error during processing the found object the following message will appear - "Found module (#{Module Name}) for component #{Component Name} but there was an error: #{Error Message}"
   ###
-  findModule: (paths, module, surrogate = null) ->
+  findModule: (paths, module, name, surrogate = null) ->
     for path in paths
-      path = @relToAbs(path, @name)
+      path = tweak.Common.relToAbs path, name
       try
         return require "#{path}/#{module}"
       catch e
@@ -133,14 +140,27 @@ class tweak.Common
     It will try to find specified modules; or default to tweaks default object
 
     @param [String] path The path to require with module loader
+    @param [String] name The name to which the relative path should become absolute to
     @return [Object] Returns required object
     @throw When module can not be loaded the following error message will appear - "Can not find path #{path}"
   ###
-  require: (path) ->
+  require: (path, name) ->
     # Convert path to absolute path
-    url = @relToAbs(path, @name)
+    url = tweak.Common.relToAbs path, name
     try
       result = require url
     catch error
       throw new Error "Can not find path #{url}"
     result
+
+
+  ###
+    convert relative path to an absolute path, relative path defined by ./ or .\
+    @note Might need a better name cant think of better though.
+    @param [String] path The relative path to convert to absolute path
+    @param [String] prefix The prefix path
+    @return [String] Absolute path
+  ###
+  relToAbs: (path, prefix) -> path.replace /^\.[\/\\]/, "#{prefix}/"
+
+tweak.Common = new tweak.Common()

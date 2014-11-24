@@ -1,10 +1,10 @@
 ###
-  tweak.js 0.8.5
+	tweak.js 0.8.5
 
-  (c) 2014 Blake Newman.
-  TweakJS may be freely distributed under the MIT license.
-  For all details and documentation:
-  http://tweakjs.com
+	(c) 2014 Blake Newman.
+	TweakJS may be freely distributed under the MIT license.
+	For all details and documentation:
+	http://tweakjs.com
 ###
 
 ###
@@ -14,10 +14,8 @@
   lib/common.coffee - commonly used functions throughout framework
   lib/helpers.coffee - helpers for the framework
   lib/events.coffee - TweakJS event system
-  lib/component.coffee - TweakJS component
   lib/store.coffee - data storage functionality, where collections and models main functionality sits.
   lib/collection.coffee - TweakJS collection
-  lib/components.coffee - TweakJS components wrapper
   lib/controller.coffee - TweakJS controller
   lib/model.coffee - TweakJS model
   lib/view.coffee - TweakJS view

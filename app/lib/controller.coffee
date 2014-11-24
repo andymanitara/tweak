@@ -45,4 +45,7 @@ class tweak.Controller
     @param [String] name The event name, split on the / and : characters, to trigger
     @param [...] params Parameters to pass into the callback function
   ###
-  trigger: (params...) -> tweak.Events.trigger params...
+  trigger: (params...) -> 
+    setTimeout(-> 
+      tweak.Events.trigger(params...)
+    ,0)

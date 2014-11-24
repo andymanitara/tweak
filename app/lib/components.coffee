@@ -10,6 +10,8 @@ class tweak.Components extends tweak.Collection
   # @property [Object] The config object of this module
   config: []
 
+  reltoAbs: tweak.Common.relToAbs
+
   # @private
   constructor: ->
     # Set uid
@@ -25,7 +27,7 @@ class tweak.Components extends tweak.Collection
       obj = {}
       if item instanceof Array
         names = tweak.Common.splitComponents item[0], @name
-        path = @relToAbs(item[1], @name)
+        path = @relToAbs item[1], @name
         i = 0
         for name in names
           @add new tweak.Component(@, {name, extends:path}), true
@@ -39,19 +41,10 @@ class tweak.Components extends tweak.Collection
         name = obj.name
         if not name? or name is "" or name is " " then continue
         data = tweak.Common.splitComponents name, @name
-        obj.extends = @relToAbs(obj.extends, @name)
+        obj.extends = @relToAbs obj.extends, @name
         for prop in data
           obj.name = prop
           @add new tweak.Component(@, obj), true
-
-  ###
-    convert relative path to an absolute path, relative path defined by ./ or .\
-    @note Might need a better name cant think of better though.
-    @param [String] path The relative path to convert to absolute path
-    @param [String] prefix The prefix path
-    @return [String] Absolute path
-  ###
-  relToAbs: (path, prefix) -> path.replace /^\.[\/\\]/, "#{prefix}/"
 
   ###
     @private

@@ -1,4 +1,13 @@
 ###
+	tweak.component.js 0.8.5
+
+	(c) 2014 Blake Newman.
+	TweakJS may be freely distributed under the MIT license.
+	For all details and documentation:
+	http://tweakjs.com
+###
+
+###
   TweakJS has its own unique twist to the MVC concept.
 
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
@@ -84,7 +93,7 @@ class tweak.Component
 
     # Gets all configs, by configs extension path
     while extension
-      requested = @require "#{extension}/config"
+      requested = @require "#{extension}/config", @name
       # Store all the paths
       paths.push extension
       # Push a clone of the config file to remove reference
@@ -113,7 +122,7 @@ class tweak.Component
     @return [Object] Constructed object
   ###
   addModule: (name, surrogate, params...) ->
-    Module = @findModule(@paths, name, surrogate)
+    Module = @findModule(@paths, name, @name, surrogate)
     module = @[name] = new Module(params...)
     module.component = module.relation = @
     module.cuid = @uid

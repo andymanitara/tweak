@@ -31,7 +31,7 @@ class tweak.EventSystem
     @param [Object] context The contextual object of which the event to be binded to
     @param [String] name The event name; split on the / and : characters
     @param [Function] callback The event callback
-    @param [Number] maxCalls Default=null. The maximum calls allowed on the event listener
+    @param [Number] max Default=null. The maximum calls allowed on the event listener
 
     @example Sample Event (JS)
       tweak.Events.on(this, "sample/event", function(){
@@ -59,16 +59,15 @@ class tweak.EventSystem
 
     @return [Boolean] Returns true if added, or false if not added
   ###
-  on: (context, name, callback, maxCalls = null) ->
+  on: (context, name, callback, max = null) ->
     # If there is no callback then return from function
     if not callback? then return false
     # Find the event / build the event path
     event = @find name, true
-    # Convert callback to string, to check if to replace current event
-    replace = null
+    # Check if to replace current event
     for key, item of event.__callbacks ?= []
       if context is item.context and item.callback is callback then replace = key; break
-    obj = {context, callback, maxCalls, calls:0}
+    obj = {context, callback, max, calls:0, listen:false}
     if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
 
@@ -77,7 +76,7 @@ class tweak.EventSystem
     @param [Object] context The contextual object of which the event is binded to
     @param [String] name The event name; split on the / and : characters
     @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the events under event name are removed
-    @return [Boolean] Returns true if event(s) are removed, or false if no event are removed
+    @return [Boolean] Returns true if event(s) are removed, or false if no events are removed
   ###
   off: (context, name, callback) ->
     event = @find(name)
@@ -103,35 +102,27 @@ class tweak.EventSystem
       Trigger events by name only
       @param [String] name The event name; split on the / and : characters
       @param [...] params Params to pass into the callback function
-      @return [Boolean] Returns true if event is triggered and false if nothing is triggered
     @overload trigger(obj, params)
       Trigger events by name and context
       @param [Object] obj {name:String (name of the event), context:Object (context of the event)}
       @param [...] params Params to pass into the callback function
-      @return [Boolean] Returns true if event is triggered and false if nothing is triggered
   ###
   trigger: (name, params...) ->
-    setTimeout(=>
-      tweak.Events.trigger "#{@name}:#{path}", args...
-    
-      if typeof name is "object"
-        context = name.context
-        name = name.name or name.event or ""
-
-      event = @find(name)
-      return false if not event?.__callbacks
-      callbacks = event.__callbacks
-      for key, item of callbacks
-        if context and item.context isnt context then continue
-        item.callback.call item.context, params...
-        # Check to see if the event has reached its call limit
-        # Delete event if reached call limit
-        if item.maxCalls?
-          item.calls++
-          if item.calls >= item.maxCalls
-            delete callbacks[key]
-    ,0)  
-    return
+    if typeof name is "object"
+      context = name.context
+      name = name.name or name.event or ""
+    event = @find name
+    return if not event?.__callbacks
+    callbacks = event.__callbacks
+    for key, item of callbacks
+      if not item.listen and context and item.context isnt context then continue
+      item.callback.call item.context, params...
+      # Check to see if the event has reached its call limit
+      # Delete event if reached call limit
+      if item.max?
+        item.calls++
+        if item.calls >= item.max
+          delete callbacks[key]
   
   ###
     Iterate through the events to find given event
@@ -155,7 +146,24 @@ class tweak.EventSystem
       event = event[item]
     # Return the event object
     event
-  
+
+  ###
+    Toggle events listening state limited by name and options (callback, context and max calls)
+    @param [String] name The event name; split on the / and : characters
+    @param [Object] options The limits to check events to
+  ###
+  toggle: (name, options = {}) ->
+    event = @find name
+    return if not event?.__callbacks
+    callbacks = event.__callbacks
+    c = options.context
+    ca = options.callback
+    m = options.max
+    l = options.listen
+    for key, item of callbacks
+      if (l? and item.listen is l) or (c and item.context isnt c) or (ca and item.callback isnt ca) or (m and item.max isnt m) then continue
+      item.paused = not if l? then l else item.paused
+
   ###
     Resets the events back to empty.
   ###
