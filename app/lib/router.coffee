@@ -1,14 +1,9 @@
 ###
   Router module
   @todo Document description
-
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
 ###
 
 class tweak.Router
-
-  
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
   # @property [Integer] The component uid of this object - for unique reference of component
@@ -16,18 +11,12 @@ class tweak.Router
   # @property [Component] The root component
   root: null
 
-  
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events
-  ]
   # @private
-  constructor: ->    # Set uid
-    
+  constructor: ->    
+    # Set uid    
     @uid = "r_#{tweak.uids.r++}"
     @before = '#'
     if history.pushState then history.pushState null, null, ''
-
 
   ###
     Start watching the roouter for changes, options for speed and whether to be quiet
@@ -40,14 +29,13 @@ class tweak.Router
     quiet = if options.quiet then true else false
     check = @check
     @watch = setInterval =>
-      @check(quiet)
+      @check quiet
     , speed
-    return
   
   ###
     Stop watching the router for changes
   ###
-  stop: -> clearInterval(@watch); return
+  stop: -> clearInterval @watch
   
   ###
     Check the window location, if there is an update from previous url then trigger an event
@@ -95,11 +83,11 @@ class tweak.Router
         itemArr = item.split(/[=:]/)
         if itemArr.length is 1
           hashObj[itemArr[0]] = true
-          if not quiet then @__trigger "router:data:"+itemArr[0]
+          if not quiet then tweak.Common.__trigger "router:data:"+itemArr[0]
         else
           hashObj[itemArr[0]] = itemArr[1]
-          if not quiet then @__trigger "router:data:"+itemArr[0], itemArr[1]
-      if not quiet then @__trigger "router:changed", hashObj
+          if not quiet then tweak.Common.__trigger "router:data:"+itemArr[0], itemArr[1]
+      if not quiet then tweak.Common.__trigger "router:changed", hashObj
     return
   
   ###
@@ -122,4 +110,4 @@ class tweak.Router
     Masks the url hash with certain data without triggering events
     @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
   ###
-  mask: (obj) -> @set(obj, true)
+  mask: (obj) -> @set obj, true

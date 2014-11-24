@@ -1,4 +1,13 @@
 ###
+	tweak.component.js 0.8.5
+
+	(c) 2014 Blake Newman.
+	TweakJS may be freely distributed under the MIT license.
+	For all details and documentation:
+	http://tweakjs.com
+###
+
+###
   TweakJS has its own unique twist to the MVC concept.
 
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
@@ -17,25 +26,8 @@
 
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
-  @include tweak.Common.Modules
-  @include tweak.Common.Components
-  @include tweak.Common.Events
 ###
 class tweak.Component
-
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events,
-    tweak.Common.Modules,
-    tweak.Common.Collections,
-    tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
-  ]
 
   # Private constants
   MODULES = ["model", "view", "controller", "components", "router"]
@@ -52,6 +44,11 @@ class tweak.Component
   router: null
   # @property [Interger] The uid of this object - for unique reference
   uid: 0
+
+  require: tweak.Common.require
+  clone: tweak.Common.clone
+  combine: tweak.Common.combine
+  findModule: tweak.Common.findModule
 
   ###
     @param [Object] relation Relation to the component
@@ -78,8 +75,6 @@ class tweak.Component
     # Start the construcion of the component
     @construct()
 
-
-
   ###
     @param [Object] options Component options
     @return [Object] returns combined config based on the configs extending inheritance
@@ -98,11 +93,11 @@ class tweak.Component
 
     # Gets all configs, by configs extension path
     while extension
-      requested = @require "#{extension}/config"
+      requested = @require "#{extension}/config", @name
       # Store all the paths
       paths.push extension
       # Push a clone of the config file to remove reference
-      configs.push @clone(requested)
+      configs.push @clone requested
       extension = requested.extends
 
     # Combine all the config files into one
@@ -127,8 +122,8 @@ class tweak.Component
     @return [Object] Constructed object
   ###
   addModule: (name, surrogate, params...) ->
-    Module = @findModule(@paths, name, surrogate)
-    module = @[name] = new Module(params...)
+    Module = @findModule @paths, name, @name, surrogate
+    module = @[name] = new Module params...
     module.component = module.relation = @
     module.cuid = @uid
     module.root = @root
@@ -140,35 +135,35 @@ class tweak.Component
     @param [...] params Parameters passed to into the view constructor
     @return [Object] View
   ###
-  addView: (params...) -> @addModule("view", tweak.View, params...)
+  addView: (params...) -> @addModule "view", tweak.View, params...
 
   ###
     Shortcut method to adding Model using the addModule method
     @param [...] params Parameters passed to into the model constructor
     @return [Object] Model
   ###
-  addModel: (params...) -> @addModule("model", tweak.Model, params...)
+  addModel: (params...) -> @addModule "model", tweak.Model, params...
 
   ###
     Shortcut method to adding controller using the addModule method
     @param [...] params Parameters passed to into the controller constructor
     @return [Object] Controller
   ###
-  addController: (params...) -> @addModule("controller", tweak.Controller, params...)
+  addController: (params...) -> @addModule "controller", tweak.Controller, params...
 
   ###
     Shortcut method to adding components using the addModule method
     @param [...] params Parameters passed to into the components constructor
     @return [Object] Components
   ###
-  addComponents: (params...) -> @addModule("components", tweak.Components, params...)
+  addComponents: (params...) -> @addModule "components", tweak.Components, params...
 
   ###
     Shortcut method to adding router using the addModule method
     @param [...] params Parameters passed to into the router constructor
     @return [Object] Router
   ###
-  addRouter: (params...) -> @addModule("router", tweak.Router, params...)
+  addRouter: (params...) -> @addModule "router", tweak.Router, params...
 
   ###
     Function to call other function so the component can be impeded before starting
@@ -204,31 +199,27 @@ class tweak.Component
     for name in MODULES
       if name isnt "view" then @[name]?.init?()
 
-
- 
   ###
     @private
   ###
   _componentRender: (type) ->
-    @on("#{@uid}:view:#{type}ed", =>
-      @on("#{@uid}:components:ready", =>
-        @trigger("#{@uid}:ready", @name)
-      )
-      @components[type]()
-    )
+    tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
+      tweak.Events.on @, "#{@uid}:components:ready", =>
+        tweak.Events.trigger "#{@uid}:ready", @name
+      @components[type]()  
     @view[type]()
 
   ###
     Renders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rendered
   ###
-  render: -> @_componentRender("render")
+  render: -> @_componentRender "render"
 
   ###
     Rerenders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rerendered
   ###
-  rerender: -> @_componentRender("rerender")
+  rerender: -> @_componentRender "rerender"
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one

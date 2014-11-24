@@ -4,10 +4,6 @@
   The controller is normally the interface between the view and the models data.
   When the model updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the model quietly aswell.
-
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
 ###
 class tweak.Model extends tweak.Store
   
@@ -54,11 +50,11 @@ class tweak.Model extends tweak.Store
         if key is property
           @length--
           delete @data[key]
-          if not quiet then @__trigger "#{@storeType}:removed:#{key}"
+          if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{key}"
 
-    if not quiet then @__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return
-  
+
   ###
     Get an element at position of a given number
     @param [Integer] position Position of property to return
@@ -79,3 +75,7 @@ class tweak.Model extends tweak.Store
   ###
   reset: ->
     @data = {}
+
+  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet
+
+  export: (restrict) -> @parse @data, restrict

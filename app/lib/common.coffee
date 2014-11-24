@@ -1,26 +1,49 @@
-tweak.Common = {}
-###
-  Common EMpty functions that are used in multiple places throughout the framework.
-  @mixin
-###
-tweak.Common.Empty =
+class tweak.Common
   ###
-    Empty reusable function
+    Triggering API Events
+    Trigger name, component uid and uid events
+    @param [String] name The event name; split on the / and : characters
+    @param [...] params Params to pass into the callback function
   ###
-  init: ->
+  ___trigger: (path, args...) ->
+    secondary = path.split ":"
+    secondary.shift()
+   	setTimeout(->
+      tweak.Events.trigger "#{@name}:#{path}", args...
+    ,0)
+   	setTimeout(->
+       tweak.Events.trigger "#{@cuid}:#{path}", args...
+    ,0)
+   	setTimeout(->
+       tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
+    ,0)
 
   ###
-    Empty reusable function
+    Reduce component names like ./cd[0-98] to an array of full path names
+    @param [String] str The string to split into seperate component names
+    @param [String] name The name to which the relative path should become absolute to
+    @return [Array<String>] Returns Array of full path names
   ###
-  construct: ->
+  splitComponents: (str, name) ->
+    values = []
+    arrayRegex = /^(.*)\[((\d*)\-(\d*)|(\d*))\]$/
+    for item in str.split " "
+      if item is " " then continue
+      name = name or @component.name
+      item = tweak.Common.relToAbs item, name
+      result = arrayRegex.exec item
+      if result
+        prefix = result[1]
+        min = 1
+        max = result[5]
+        if not max?
+          min = result[3]
+          max = result[4]
+        for i in [min..max]
+          values.push "#{prefix}#{i}"
+      else values.push item
+    values
 
-###
-  Common functions that are used  for manipulating collections (Arrays and Objects)
-  @todo Update same to check more data types
-
-  @mixin
-###
-tweak.Common.Collections =
   ###
     Merge properites from object from one object to another. (Reversed first object is the object to take on the properties from another)
     @param [Object, Array] one The Object/Array to combine properties into
@@ -31,21 +54,10 @@ tweak.Common.Collections =
     for key, prop of two
       if typeof prop is 'object'
         one[key] ?= if prop instanceof Array then [] else {}
-        one[key] = @combine(one[key], prop)
+        one[key] = @combine one[key], prop
       else
         one[key] = prop
     one
-
-  ###
-    Returns whether two object are the same (similar)
-    @param [Object, Array] one Object to compare
-    @param [Object, Array] two Object to compare
-    @return [Boolean] Returns whether two object are the same (similar)
-  ###
-  same: (one, two) ->
-    for key, prop of one
-      if not two[key]? or two[key] isnt prop then return false
-    return true
 
   ###
     Clone an object to remove reference to original object or simply to copy it.
@@ -68,130 +80,44 @@ tweak.Common.Collections =
     else if typeof ref is "object"
       copy = {}
     else
-      throw new Error("Unable to copy object its type isnt supported")
+      throw new Error "Unable to copy object its type isnt supported"
 
     # Handle Object
     for attr of ref
-      copy[attr] = @clone(ref[attr])  if ref.hasOwnProperty(attr)
+      copy[attr] = @clone(ref[attr]) if ref.hasOwnProperty attr
     return copy
 
-###
-  Common functions that are used for manipulating Arrays
-  @mixin
-###
-tweak.Common.Arrays =
   ###
-    Reduce an array be remove elements from the front of the array and returning the new array
-    @param [Array] arr Array to reduce
-    @param [Number] length The length that the array should be
-    @return [Array] Returns reduced array
+    Convert a simple JSON string/object
+    @param [JSONString, JSONObject] data JSON data to convert.
+    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
-  reduced: (arr, length) ->
-    start = arr.length - length
-    for [start..length] then arr[_i]
+  parse: (data, restrict) ->
+    _restrict = (obj) ->
+      if not restrict then return obj
+      res = {}
+      for item in restict
+        res[item] = obj[item]
+      res
+    if typeof data is string
+      _restrict JSON.parse data
+    else
+      JSON.stringify _restrict data
 
-###
-  Common functions that are used for event functionality
-  @mixin
-###
-tweak.Common.Events =
-  ###
-    Event 'on' handler for DOM and the Event API
-    @overload on(element, type, callback)
-      Adding Dom Event
-      @param [DomElement, String] element A DomElement object to apply event to, or if using a selector engine pass a string with the selector based query (Selects object based on the el property of the view)
-      @param [String] type The type of event (For example "click")
-      @param [Function] callback The callback function
-
-    @overload on(name, callback, maxCalls)
-      Adding event from the Event API
-      @param [String] name The event name, split on the / and : characters, to add
-      @param [Function] callback  The callback function; if you do not include this then all events under the name will be removed
-      @param [Number] maxCalls The maximum amount of calls the event can be triggered.
-      @return [Boolean] Returns whether the event is added
-  ###
-  on: (params...) ->
-    if typeof params[1] is "string"
-      (@view or @).DOMon params...
-    else tweak.Events.on @, params...
-
-  ###
-    Event 'off' handler for DOM and the Event API
-    @overload off(element, type, callback)
-      Removing Dom Event
-      @param [DomElement, String] element A DomElement object that an event is applied to or if using a selector engine pass a string with the selector based query (Selects object based on the el property of the view)
-      @param [String] type The type of event (For example "click")
-      @param [Function] callback The callback function
-
-    @overload off(name, callback)
-      Removing event from the Event Api
-      @param [String] name The event name, split on the / and : characters, to remove
-      @param [Function] callback (optional) The callback function; if you do not include this then all events under the name will be removed
-      @return [Boolean] Returns whether the event is removed
-  ###
-  off: (params...) ->
-    if params[2]? then (@view or @).DOMoff params...
-    else tweak.Events.off @, params...
-
-  ###
-    Event 'trigger' handler for DOM and the Event API, triggered in async
-    @todo Think of a way to get DOM Event trigger to accept string aswell
-    @overload trigger(name, params)
-      Triggering Dom Event
-      Trigger events by name only
-      @param [String] name The event name; split on the / and : characters
-      @param [...] params Params to pass into the callback function
-
-    @overload trigger(obj, params)
-      Triggering Dom Event
-      Trigger events by name and context
-      @param [Object] obj {name:String (name of the event), context:Object (context of the event)}
-      @param [...] params Params to pass into the callback function
-    
-    @overload trigger(element, type)
-      Triggering event from the Event API
-      @param [DomElement] element A DomElement object to apply event to
-      @param [String] type The type of event (For example "click")
-  ###
-  trigger: (params...) ->
-    setTimeout(=>
-      if 1 is params[0].nodeType
-        (@view or @).DOMtrigger params...
-      else tweak.Events.trigger params...
-    ,
-    0)
-    return
-
-  ###
-    Triggering API Events
-    Trigger name, component uid and uid events
-    @param [String] name The event name; split on the / and : characters
-    @param [...] params Params to pass into the callback function
-
-  ###
-  __trigger: (path, args...) ->
-    secondary = path.split ":"
-    secondary.shift()
-    @trigger "#{@name}:#{path}", args...
-    @trigger "#{@cuid}:#{path}", args...
-    @trigger "#{@uid}:#{secondary.join ':'}", args...
-###
-  Common functions that are used for module loading/finding
-  @mixin
-###
-tweak.Common.Modules =
   ###
     Try to find a module by name in multiple paths. If there is a surrogate, then if not found it will return this instead
     @param [Array<String>] paths An Array of Strings, the array contains paths to which to search for objects. The lower the key value the higher the piority
     @param [String] module The name of the module to search for
+    @param [String] name The name to which the relative path should become absolute to
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
     @return [Object] Returns an Object that has the highest piority.
     @throw When an object cannot be found and no surrogate is provided the following error message will appear - "Could not find a default module (#{module name}) for component #{component name}"
     @throw When an object is found but there is an error during processing the found object the following message will appear - "Found module (#{Module Name}) for component #{Component Name} but there was an error: #{Error Message}"
   ###
-  findModule: (paths, module, surrogate = null) ->
+  findModule: (paths, module, name, surrogate = null) ->
     for path in paths
-      path = @relToAbs(path, @name)
+      path = tweak.Common.relToAbs path, name
       try
         return require "#{path}/#{module}"
       catch e
@@ -209,59 +135,32 @@ tweak.Common.Modules =
     throw new Error "Could not find a default module (#{module}) for component #{paths[0]}"
 
   ###
-    convert relative path to an absolute path, relative path defined by ./ or .\
-    @note Might need a better name cant think of better though.
-    @param [String] path The relative path to convert to absolute path
-    @param [String] prefix The prefix path
-    @return [String] Absolute path
-  ###
-  relToAbs: (path, prefix) -> path.replace(/^\.[\/\\]/, "#{prefix}/")
-
-  ###
     If using require; this function will find the specified modules.
     This is used when building controllers and collections dynamically.
     It will try to find specified modules; or default to tweaks default object
 
     @param [String] path The path to require with module loader
+    @param [String] name The name to which the relative path should become absolute to
     @return [Object] Returns required object
     @throw When module can not be loaded the following error message will appear - "Can not find path #{path}"
   ###
-  require: (path) ->
+  require: (path, name) ->
     # Convert path to absolute path
-    url = @relToAbs(path, @name)
+    url = tweak.Common.relToAbs path, name
     try
       result = require url
     catch error
       throw new Error "Can not find path #{url}"
     result
 
-###
-  Common functions that are used for component functionality
-  @mixin
-###
-tweak.Common.Components =
+
   ###
-    Reduce component names like ./cd[0-98] to an array of full path names
-    @param [String] str The string to split into seperate component names
-    @param [String] name The name to which the relative path should become absolute to
-    @return [Array<String>] Returns Array of full path names
+    convert relative path to an absolute path, relative path defined by ./ or .\
+    @note Might need a better name cant think of better though.
+    @param [String] path The relative path to convert to absolute path
+    @param [String] prefix The prefix path
+    @return [String] Absolute path
   ###
-  splitComponents: (str, name) ->
-    values = []
-    arrayRegex = /^(.*)\[((\d*)\-(\d*)|(\d*))\]$/
-    for item in str.split(" ")
-      if item is " " then continue
-      name = name or @component.name
-      item = @relToAbs(item, name)
-      result = arrayRegex.exec(item)
-      if result
-        prefix = result[1]
-        min = 1
-        max = result[5]
-        if not max?
-          min = result[3]
-          max = result[4]
-        for i in [min..max]
-          values.push("#{prefix}#{i}")
-      else values.push item
-    values
+  relToAbs: (path, prefix) -> path.replace /^\.[\/\\]/, "#{prefix}/"
+
+tweak.Common = new tweak.Common()

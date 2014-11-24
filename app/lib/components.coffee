@@ -3,14 +3,6 @@
   For example a view may have to sections of user interaction that does two different things and gets two different sets of data, but its parent view is about a particular item.
   This example shows the power of relations in the framework. As the two views are different with different data being fed in these can be two sub components, allowing seperation of code.
   This allow reloading of views without affect other views, a bit like regions in backbone marionette. However your code can now be much more structured in this format and easier to understand where things are happening.
-  
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
-  @include tweak.Common.Modules
-  @include tweak.Common.Components
-
 ###
 class tweak.Components extends tweak.Collection
   # @property [String] The type of storage
@@ -18,14 +10,7 @@ class tweak.Components extends tweak.Collection
   # @property [Object] The config object of this module
   config: []
 
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events,
-    tweak.Common.Collection,
-    tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
-  ]
+  reltoAbs: tweak.Common.relToAbs
 
   # @private
   constructor: ->
@@ -41,22 +26,22 @@ class tweak.Components extends tweak.Collection
     for item in @config or []
       obj = {}
       if item instanceof Array
-        names = @splitComponents item[0], @name
-        path = @relToAbs(item[1], @name)
+        names = tweak.Common.splitComponents item[0], @name
+        path = @relToAbs item[1], @name
         i = 0
         for name in names
           @add new tweak.Component(@, {name, extends:path}), true
       else if typeof item is "string"
         if name is "" or name is " " then continue
-        data = @splitComponents item, @name
+        data = tweak.Common.splitComponents item, @name
         for name in data
           @add new tweak.Component(@, {name}), true
       else
         obj = item
         name = obj.name
         if not name? or name is "" or name is " " then continue
-        data = @splitComponents name, @name
-        obj.extends = @relToAbs(obj.extends, @name)
+        data = tweak.Common.splitComponents name, @name
+        obj.extends = @relToAbs obj.extends, @name
         for prop in data
           obj.name = prop
           @add new tweak.Component(@, obj), true
@@ -67,26 +52,25 @@ class tweak.Components extends tweak.Collection
   ###
   _componentRender: (type) ->
     if @length is 0
-      @__trigger "#{@storeType}:ready"
+      tweak.Common.__trigger "#{@storeType}:ready"
       return
     total = 0
     totalItems = @length
     for item in @data
       item[type]()
-      @on("#{item.uid}:view:#{type}ed", =>
+      tweak.Events.on @, "#{item.uid}:view:#{type}ed", =>
         total++
-        if total >= totalItems then @__trigger "#{@storeType}:ready"
-      )
+        if total >= totalItems then tweak.Common.__trigger "#{@storeType}:ready"
 
   ###
     Renders all of its components, also triggers ready state when all components are ready
   ###
-  render: -> @_componentRender("render")
+  render: -> @_componentRender "render"
 
   ###
     Rerender all of its components, also triggers ready state when all components are ready
   ###
-  rerender: -> @_componentRender("rerender")
+  rerender: -> @_componentRender "rerender"
 
   ###
     Find component with matching data in model

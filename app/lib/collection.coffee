@@ -1,30 +1,29 @@
 ###
   A collection is where data can be stored, a default collection is an array based system. The model is a extension to the default collection; but based on an object.
-  @todo Update pluck to use new same functionality
-
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
 ###
 class tweak.Collection extends tweak.Store
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: "collection"
 
-  tweak.Extend @, tweak.Common.Arrays
-
   # @private
   constructor: ->
     # Set uid
     @uid = "cl_#{tweak.uids.cl++}"
+
+  ###
+    Reduce an array be remove elements from the front of the array and returning the new array
+    @param [Array] arr Array to reduce
+    @param [Number] length The length that the array should be
+    @return [Array] Returns reduced array
+  ###
+  reduced: (arr, length) ->
+    start = arr.length - length
+    for [start..length] then arr[_i]
+    
   ###
     Removes empty keys
   ###
-  clean: ->
-    result = []
-    for key, item of @data
-      result[result.length] = item
-    @data = result
+  clean: -> @data = for key, item of @data then item
   
   ###
     Construct the initial state of the collection
@@ -79,8 +78,8 @@ class tweak.Collection extends tweak.Store
       result.push @data[_j]
     @data = result
     if not quiet
-      @__trigger "#{@storeType}:changed"
-      @__trigger "#{@storeType}:changed:#{position}"
+      tweak.Common.__trigger "#{@storeType}:changed"
+      tweak.Common.__trigger "#{@storeType}:changed:#{position}"
     return
   
   ###
@@ -89,10 +88,8 @@ class tweak.Collection extends tweak.Store
     @return [Array] Returns an array of the positions of the data.
   ###
   pluck: (property) ->
-    result = []
     for key, prop of @data
-      if prop is property then result.push key
-    result
+      if prop is property then key
 
   ###
     Remove a single property or many properties.
@@ -111,10 +108,10 @@ class tweak.Collection extends tweak.Store
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      @__trigger "#{@storeType}:removed:#{property}"
+      tweak.Common.__trigger "#{@storeType}:removed:#{property}"
     
     @clean()
-    if not quiet then @__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return
 
   ###
@@ -130,3 +127,21 @@ class tweak.Collection extends tweak.Store
   reset: ->
     @data = []
     @length = 0
+
+  import: (data, options = {}) ->
+    data = @parse data, options.restict
+    overwrite = options.overwrite ?= true
+    for key, item of data
+      if not overwrite
+        if item instanceof tweak.Model
+          @data[key].set item
+        else @data[key] = new tweak.Model @, item
+      else @data.add new tweak.Model(@, item), options.quiet
+
+  export: (restrict) ->
+    res = {}
+    for key, item of @data
+      if item instanceof tweak.Model
+        res[key] = item.data
+      else res[key] = {}
+    @parse res, restict
