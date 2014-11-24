@@ -50,11 +50,11 @@ class tweak.Model extends tweak.Store
         if key is property
           @length--
           delete @data[key]
-          if not quiet then @coreTrigger "#{@storeType}:removed:#{key}"
+          if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{key}"
 
-    if not quiet then @coreTrigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return
-  
+
   ###
     Get an element at position of a given number
     @param [Integer] position Position of property to return
@@ -75,3 +75,7 @@ class tweak.Model extends tweak.Store
   ###
   reset: ->
     @data = {}
+
+  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet
+
+  export: (restrict) -> @parse @data, restrict

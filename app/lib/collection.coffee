@@ -82,8 +82,8 @@ class tweak.Collection extends tweak.Store
       result.push @data[_j]
     @data = result
     if not quiet
-      @__trigger "#{@storeType}:changed"
-      @__trigger "#{@storeType}:changed:#{position}"
+      tweak.Common.__trigger "#{@storeType}:changed"
+      tweak.Common.__trigger "#{@storeType}:changed:#{position}"
     return
   
   ###
@@ -114,10 +114,10 @@ class tweak.Collection extends tweak.Store
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      @__trigger "#{@storeType}:removed:#{property}"
+      tweak.Common.__trigger "#{@storeType}:removed:#{property}"
     
     @clean()
-    if not quiet then @__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return
 
   ###
@@ -133,3 +133,21 @@ class tweak.Collection extends tweak.Store
   reset: ->
     @data = []
     @length = 0
+
+  import: (data, options = {}) ->
+    data = @parse data, options.restict
+    overwrite = options.overwrite ?= true
+    for key, item of data
+      if not overwrite
+        if item instanceof tweak.Model
+          @data[key].set item
+        else @data[key] = new tweak.Model(@, item)
+      else @data.add new tweak.Model(@, item), options.quiet
+
+  export: (restrict) ->
+    res = {}
+    for key, item of @data
+      if item instanceof tweak.Model
+        res[key] = item.data
+      else res[key] = {}
+    @parse res, restict

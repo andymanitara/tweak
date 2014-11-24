@@ -1,5 +1,4 @@
 class tweak.Common
-
   ###
     Triggering API Events
     Trigger name, component uid and uid events
@@ -55,17 +54,6 @@ class tweak.Common
     one
 
   ###
-    Returns whether two object are the same (similar)
-    @param [Object, Array] one Object to compare
-    @param [Object, Array] two Object to compare
-    @return [Boolean] Returns whether two object are the same (similar)
-  ###
-  same: (one, two) ->
-    for key, prop of one
-      if not two[key]? or two[key] isnt prop then return false
-    return true
-
-  ###
     Clone an object to remove reference to original object or simply to copy it.
     @param [Object, Array] ref Reference object to clone
     @return [Object, Array] Returns the copied object, while removing object references.
@@ -92,6 +80,24 @@ class tweak.Common
     for attr of ref
       copy[attr] = @clone(ref[attr])  if ref.hasOwnProperty(attr)
     return copy
+
+  ###
+    Convert a simple JSON string/object
+    @param [JSONString, JSONObject] data JSON data to convert.
+    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @return [JSONObject, JSONString] Returns JSON data of the opposite data type
+  ###
+  parse: (data, restrict) ->
+    _restrict = (obj) ->
+      if not restrict then return obj
+      res = {}
+      for item in restict
+        res[item] = obj[item]
+      res
+    if typeof data is string
+      _restrict(JSON.parse data)
+    else
+      JSON.stringify(_restrict data)
 
   ###
     Try to find a module by name in multiple paths. If there is a surrogate, then if not found it will return this instead

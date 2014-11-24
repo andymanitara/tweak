@@ -25,7 +25,7 @@ class tweak.Store
   # @property [Component] The root component
   root: null
 
-  __triger: tweak.Common.__trigger
+  parse: tweak.Common.parse
 
   # @private
   constructor: ->
@@ -66,11 +66,22 @@ class tweak.Store
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then @__trigger "#{@storeType}:changed:#{key}", prop
+      if not quiet then tweak.Common.__trigger "#{@storeType}:changed:#{key}", prop
 
-    if not quiet then @__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return
 
+  ###
+    Returns whether two object are the same (similar)
+    @param [Object, Array] one Object to compare
+    @param [Object, Array] two Object to compare
+    @return [Boolean] Returns whether two object are the same (similar)
+  ###
+  same: (one, two) ->
+    for key, prop of one
+      if not two[key]? or two[key] isnt prop then return false
+    return true
+    
   ###
     Returns a stores property value
     @param [String] property Property name to look for in store data
