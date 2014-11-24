@@ -53,7 +53,7 @@ describe "Event System", ->
   it "should be able to tigger only events matching context", ->
     obj = {}
     tweak.Events.on obj, "one/two/three", -> expect(false).to.equal true
-    tweak.Events.trigger {name:"one/two/three", context:obj}
+    tweak.Events.trigger {name:"one/two/three", context:window}
 
   afterEach ->    
     tweak.Events.off window, "one/two/three"
