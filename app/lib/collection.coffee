@@ -23,11 +23,7 @@ class tweak.Collection extends tweak.Store
   ###
     Removes empty keys
   ###
-  clean: ->
-    result = []
-    for key, item of @data
-      result[result.length] = item
-    @data = result
+  clean: -> @data = for key, item of @data then item
   
   ###
     Construct the initial state of the collection
@@ -92,10 +88,8 @@ class tweak.Collection extends tweak.Store
     @return [Array] Returns an array of the positions of the data.
   ###
   pluck: (property) ->
-    result = []
     for key, prop of @data
-      if prop is property then result.push key
-    result
+      if prop is property then key
 
   ###
     Remove a single property or many properties.
@@ -141,7 +135,7 @@ class tweak.Collection extends tweak.Store
       if not overwrite
         if item instanceof tweak.Model
           @data[key].set item
-        else @data[key] = new tweak.Model(@, item)
+        else @data[key] = new tweak.Model @, item
       else @data.add new tweak.Model(@, item), options.quiet
 
   export: (restrict) ->

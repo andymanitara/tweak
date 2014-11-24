@@ -97,7 +97,7 @@ class tweak.Component
       # Store all the paths
       paths.push extension
       # Push a clone of the config file to remove reference
-      configs.push @clone(requested)
+      configs.push @clone requested
       extension = requested.extends
 
     # Combine all the config files into one
@@ -122,8 +122,8 @@ class tweak.Component
     @return [Object] Constructed object
   ###
   addModule: (name, surrogate, params...) ->
-    Module = @findModule(@paths, name, @name, surrogate)
-    module = @[name] = new Module(params...)
+    Module = @findModule @paths, name, @name, surrogate
+    module = @[name] = new Module params...
     module.component = module.relation = @
     module.cuid = @uid
     module.root = @root

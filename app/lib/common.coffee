@@ -80,7 +80,7 @@ class tweak.Common
     else if typeof ref is "object"
       copy = {}
     else
-      throw new Error("Unable to copy object its type isnt supported")
+      throw new Error "Unable to copy object its type isnt supported"
 
     # Handle Object
     for attr of ref

@@ -29,7 +29,7 @@ class tweak.Router
     quiet = if options.quiet then true else false
     check = @check
     @watch = setInterval =>
-      @check(quiet)
+      @check quiet
     , speed
   
   ###
@@ -110,4 +110,4 @@ class tweak.Router
     Masks the url hash with certain data without triggering events
     @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
   ###
-  mask: (obj) -> @set(obj, true)
+  mask: (obj) -> @set obj, true

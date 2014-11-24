@@ -29,7 +29,7 @@ class tweak.AdvancedView extends tweak.View
   element: (element, root= @el) ->
     if typeof element is 'string'
       if tweak.Selector
-        tweak.Selector(element, root)
+        tweak.Selector element, root
       else throw new Error("Trying to get element with selector engine, but none defined to tweak.Selector")
     else [element]
 
@@ -42,7 +42,7 @@ class tweak.AdvancedView extends tweak.View
     @param [Boolean] capture if true it indicates to initiate capture to the registered listener first.
   ###
   on: (element = @el, type, callback, capture = false) ->
-    elements = @element(element)
+    elements = @element element
     _callback = (e) -> _callback.fn e, _callback.targ
     _callback.fn = callback
     _callback.targ = element
@@ -60,7 +60,7 @@ class tweak.AdvancedView extends tweak.View
                             Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
   ###
   off: (element = @el, type, callback, capture = false) ->
-    elements = @element(element)
+    elements = @element element
     for item in elements
       for evt in item._events or []
         if evt.type is type and evt.capture is capture and callback is evt.callback
@@ -73,7 +73,7 @@ class tweak.AdvancedView extends tweak.View
     @param [Event] event an evet to trigger
   ###
   trigger: (element = @el, event) ->
-    elements = @element(element)
+    elements = @element element
     for item in elements
       item.dispatchEvent event
 
@@ -126,7 +126,7 @@ class tweak.AdvancedView extends tweak.View
     @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the top offset of an element relative to another element (or default to the body)
   ###
-  offsetTop: (element, relativeTo) -> @offsetFrom(element, "top", relativeTo)
+  offsetTop: (element, relativeTo) -> @offsetFrom element, "top", relativeTo
 
   ###
     Returns the bottom offset of an element relative to another element (or default to the body)
@@ -134,7 +134,7 @@ class tweak.AdvancedView extends tweak.View
     @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the bottom offset of an element relative to another element (or default to the body)
   ###
-  offsetBottom: (element, relativeTo) -> @offsetFrom(element, "bottom", relativeTo)
+  offsetBottom: (element, relativeTo) -> @offsetFrom element, "bottom", relativeTo
   
   ###
     Returns the left offset of an element relative to another element (or default to the body)
@@ -142,7 +142,7 @@ class tweak.AdvancedView extends tweak.View
     @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the left offset of an element relative to another element (or default to the body)
   ###
-  offsetLeft: (element, relativeTo) -> @offsetFrom(element, "left", relativeTo)
+  offsetLeft: (element, relativeTo) -> @offsetFrom element, "left", relativeTo
   
   ###
     Returns the right offset of an element relative to another element (or default to the body)
@@ -150,7 +150,7 @@ class tweak.AdvancedView extends tweak.View
     @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine
     @return [Number] Returns the right offset of an element relative to another element (or default to the body)
   ###
-  offsetRight: (element, relativeTo) -> @offsetFrom(element, "right", relativeTo)
+  offsetRight: (element, relativeTo) -> @offsetFrom element, "right", relativeTo
 
   ###
     @private
@@ -159,7 +159,7 @@ class tweak.AdvancedView extends tweak.View
   splitClasses: (classes) ->
     results = []
     if typeof classes isnt "string" then classes = ''
-    for key, prop of classes.split(" ")
+    for key, prop of classes.split " "
       if prop isnt "" then results.push prop
     results
 
@@ -205,7 +205,7 @@ class tweak.AdvancedView extends tweak.View
     @param [String] classes A string of classes to remove to the element(s)
   ###
   hasClass: (element, name) ->
-    elements = @element(element)
+    elements = @element element
     if elements.length is 0 then return
     for item in elements
       if not item? then continue
@@ -219,10 +219,10 @@ class tweak.AdvancedView extends tweak.View
     @param [String] classes A string of classes to remove to the element(s)
   ###
   replaceClass: (element, orig, classes) ->
-    elements = @element(element)
+    elements = @element element
     if elements.length is 0 then return
-    classes = @splitClasses(classes)
-    orig = @splitClasses(orig)
+    classes = @splitClasses classes
+    orig = @splitClasses orig
     for item in elements
       if not item? then continue
       i = 0

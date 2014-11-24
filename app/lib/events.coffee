@@ -10,7 +10,7 @@ class tweak.EventSystem
   # Split regex for event name
   splitEventName = (name) ->
     if typeof name is "string"
-      return name.split(/[\/:]/)
+      return name.split /[\/:]/
     else if name instanceof Array
       return name
     else throw new Error "Event name not parsable"
@@ -132,7 +132,7 @@ class tweak.EventSystem
   ###
   find: (name, build = false) ->
     # Split the name of event
-    name = splitEventName(name)
+    name = splitEventName name
     # Iterate through the event object
     event = @events
     for item in name

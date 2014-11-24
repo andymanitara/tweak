@@ -65,12 +65,12 @@ class tweak.Components extends tweak.Collection
   ###
     Renders all of its components, also triggers ready state when all components are ready
   ###
-  render: -> @_componentRender("render")
+  render: -> @_componentRender "render"
 
   ###
     Rerender all of its components, also triggers ready state when all components are ready
   ###
-  rerender: -> @_componentRender("rerender")
+  rerender: -> @_componentRender "rerender"
 
   ###
     Find component with matching data in model

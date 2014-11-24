@@ -43,7 +43,7 @@ class tweak.View
     # Makes sure that there is an id for this component set, either by the config or by its name
     @model.set "id", @name.replace(/\//g, "-")
     # Build the template with the date from the model
-    template = if @config.template then @require(@config.template, @name) else @findModule @component.paths, 'template', @name
+    template = if @config.template then @require @config.template, @name else @findModule @component.paths, 'template', @name
     template = template(@model.data)
     
     @asyncHTML template, (template) =>
@@ -53,10 +53,10 @@ class tweak.View
         @parent = parent = @getParent()
         switch @config.attach.method or 'after'
           when 'bottom', 'after'
-            @parent.appendChild(template)
+            @parent.appendChild template
             @el = @parent.lastElementChild
           when 'top', 'before'
-            @parent.insertBefore(template, @parent.firstChild)
+            @parent.insertBefore template, @parent.firstChild
             @el = @parent.firstElementChild
           when 'replace'
             for item in @parent.children
@@ -115,13 +115,13 @@ class tweak.View
         if par.components
           for component in par.components.data
             if component.view.el is element then continue
-        if element.children then children(element)
-        nodes.push(element)
+        if element.children then children element
+        nodes.push element
     # If the parent is the body then put it is the nodes array
     # This allows full web apps that hook into the body
     html = document.getElementsByTagName("html")[0]
     if parent.body is html then nodes.push html
-    children(parent)
+    children parent
     nodes
 
   ###
@@ -131,13 +131,13 @@ class tweak.View
     @return [DOMElement] Returns the dom element with matching critera
   ###
   getComponentNode: (parent, value) ->
-    nodes = @getChildren(parent)
+    nodes = @getChildren parent
     nodes.push parent
     for prop in nodes
       components = ''
       if child then break
       try
-        components = prop.getAttribute('data-attach') or ''
+        components = prop.getAttribute 'data-attach' or ''
       catch e
       if components is " " then continue
       for val in @splitComponents components
@@ -170,7 +170,7 @@ class tweak.View
     html = document.getElementsByTagName("html")[0]
     parent = view?.el or html
     name = @config.attach?.to or @config.attach?.name or @name
-    @getComponentNode(parent, name) or @getComponentNode(html, name) or parent or throw new Error("Unable to find view parent for #{@name} (#{name})")
+    @getComponentNode(parent, name) or @getComponentNode(html, name) or parent or throw new Error "Unable to find view parent for #{@name} (#{name})"
   
   ###
     Async html to a function, this allows dynamic building of components without holding up parts of the system
@@ -179,7 +179,7 @@ class tweak.View
   ###
   asyncHTML: (HTML, callback) ->
     setTimeout(->
-      temp = document.createElement("div")
+      temp = document.createElement "div"
       frag = document.createDocumentFragment()
       temp.innerHTML = HTML
       callback temp.firstChild
