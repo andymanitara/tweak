@@ -25,7 +25,7 @@ class tweak.Store
   # @property [Component] The root component
   root: null
 
-  coreTrigger: tweak.Common.coreTrigger
+  __triger: tweak.Common.__trigger
 
   # @private
   constructor: ->
@@ -66,9 +66,9 @@ class tweak.Store
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then @coreTrigger "#{@storeType}:changed:#{key}", prop
+      if not quiet then @__trigger "#{@storeType}:changed:#{key}", prop
 
-    if not quiet then @coretrigger "#{@storeType}:changed"
+    if not quiet then @__trigger "#{@storeType}:changed"
     return
 
   ###

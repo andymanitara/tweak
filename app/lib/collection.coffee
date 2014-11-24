@@ -1,11 +1,5 @@
 ###
   A collection is where data can be stored, a default collection is an array based system. The model is a extension to the default collection; but based on an object.
-  @todo Update pluck to use new same functionality
-
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
 ###
 class tweak.Collection extends tweak.Store
   # @property [String] The type of storage, ie 'collection' or 'model'
@@ -88,8 +82,8 @@ class tweak.Collection extends tweak.Store
       result.push @data[_j]
     @data = result
     if not quiet
-      tweak.Common.__trigger "#{@storeType}:changed"
-      tweak.Common.__trigger "#{@storeType}:changed:#{position}"
+      @__trigger "#{@storeType}:changed"
+      @__trigger "#{@storeType}:changed:#{position}"
     return
   
   ###
@@ -120,10 +114,10 @@ class tweak.Collection extends tweak.Store
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      tweak.Common.__trigger "#{@storeType}:removed:#{property}"
+      @__trigger "#{@storeType}:removed:#{property}"
     
     @clean()
-    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
+    if not quiet then @__trigger "#{@storeType}:changed"
     return
 
   ###

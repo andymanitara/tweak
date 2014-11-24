@@ -19,7 +19,7 @@ class tweak.View
   root: null
 
   require: tweak.Common.require  
-  coreTrigger: tweak.Common.coreTrigger
+  __trigger: tweak.Common.__trigger
   findModule: tweak.Common.findModule
 
 
@@ -79,7 +79,7 @@ class tweak.View
         @addClass @el, @model.get "id"
         @addClass @el, @config.class or ""
         @model.set "rendering", false
-        @coreTrigger "view:rendered"
+        @__trigger "view:rendered"
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
@@ -107,7 +107,7 @@ class tweak.View
   rerender: ->
     @clear()
     @render()
-    tweak.Events.on @, "#{@uid}:rendered", -> @coreTrigger "view:rerendered"
+    tweak.Events.on @, "#{@uid}:rendered", -> @__trigger "view:rerendered"
   ###
     Get the chidlren nodes of an element
     @param [DOMElement] parent The element to get the children nodes of

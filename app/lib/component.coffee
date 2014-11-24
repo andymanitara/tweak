@@ -204,13 +204,13 @@ class tweak.Component
     Renders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rendered
   ###
-  render: -> @_componentRender("render")
+  render: -> @_componentRender "render"
 
   ###
     Rerenders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rerendered
   ###
-  rerender: -> @_componentRender("rerender")
+  rerender: -> @_componentRender "rerender"
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one

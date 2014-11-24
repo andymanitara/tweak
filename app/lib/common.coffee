@@ -6,7 +6,7 @@ class tweak.Common
     @param [String] name The event name; split on the / and : characters
     @param [...] params Params to pass into the callback function
   ###
-  coretrigger: (path, args...) ->
+  ___trigger: (path, args...) ->
     secondary = path.split ":"
     secondary.shift()
     tweak.Events.trigger "#{@name}:#{path}", args...

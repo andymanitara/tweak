@@ -31,12 +31,11 @@ class tweak.Router
     @watch = setInterval =>
       @check(quiet)
     , speed
-    return
   
   ###
     Stop watching the router for changes
   ###
-  stop: -> clearInterval(@watch); return
+  stop: -> clearInterval @watch
   
   ###
     Check the window location, if there is an update from previous url then trigger an event
