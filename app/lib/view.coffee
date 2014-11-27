@@ -48,10 +48,10 @@ class tweak.View
     @model.data.rendering = true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
-    @model.data.id = @name.replace(/\//g, "-")
+    @model.data.id = @name.replace /\//g, "-"
     # Build the template with the date from the model
     template = if @config.template then @require @config.template, @name else @findModule @relation.paths, 'template', @name
-    template = template(@model.data)
+    template = template @model.data
     
     @asyncHTML template, (template) =>
       # Attach nodes to the dome

@@ -150,7 +150,11 @@ class tweak.EventSystem
   ###
     Toggle events listening state limited by name and options (callback, context and max calls)
     @param [String] name The event name; split on the / and : characters
-    @param [Object] options The limits to check events to
+    @param [Object] options The limits to check events to.
+    @option options [Object] context Context to limit to.
+    @option options [Function] callback Callback function to limit to.
+    @option options [Number] max Maximum calls to limit to.
+    @option options [Function] listen Whether to enable listening to event.
   ###
   toggle: (name, options = {}) ->
     event = @find name

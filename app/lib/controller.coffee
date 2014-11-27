@@ -54,5 +54,29 @@ class tweak.Controller
   ###
   trigger: (params...) ->
     setTimeout(->
-      tweak.Events.trigger(params...)
+      tweak.Events.trigger params...
     ,0)
+
+  ###
+    Set event to be listened to
+    @param [String] name The event name; split on the / and : characters
+    @param [Object] options The limits to check events to.
+    @option options [Object] context Context to limit to.
+    @option options [Function] callback Callback function to limit to.
+    @option options [Number] max Maximum calls to limit to.
+  ###
+  listen: (name, options = {}) ->
+    options.listen = true
+    tweak.Events.toggle name, options
+
+  ###
+    Set event to not be listened to
+    @param [String] name The event name; split on the / and : characters
+    @param [Object] options The limits to check events to.
+    @option options [Object] context Context to limit to.
+    @option options [Function] callback Callback function to limit to.
+    @option options [Number] max Maximum calls to limit to.
+  ###
+  noListen: (name, options = {}) ->
+    options.listen = false
+    tweak.Events.toggle name, options
