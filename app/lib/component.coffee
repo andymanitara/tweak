@@ -8,6 +8,26 @@
 ###
 
 ###
+  @private
+  Add extra functionality based on it now supports components
+###
+tweak.View.__renderable = (ctx) ->
+  comps = ctx.relation.parent?.components?.data or []
+  for item in comps
+    if item is ctx.relation then break
+    previousComponent = item
+  if previousComponent?.model?.data.rendering
+    tweak.Events.on ctx, "#{previousComponent.uid}:model:changed:rendering", (rendering) ->
+      if not rendering
+        setTimeout(->
+          tweak.Events.trigger "#{@uid}:renderable"
+        ,0)
+  else
+    setTimeout(->
+      tweak.Events.trigger "#{@uid}:renderable"
+    ,0)
+
+###
   TweakJS has its own unique twist to the MVC concept.
 
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website

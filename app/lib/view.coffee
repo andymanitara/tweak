@@ -43,13 +43,14 @@ class tweak.View
     @event "#{@uid}:rendered" The event is called when the view has been rendered.
   ###
   render: ->
+    if not @model? then throw new Error "There is no model attached to the view - cannot render"
     @config.attach ?= {}
-    @model.set "rendering", true
+    @model.data.rendering = true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
-    @model.set "id", @name.replace(/\//g, "-")
+    @model.data.id = @name.replace(/\//g, "-")
     # Build the template with the date from the model
-    template = if @config.template then @require @config.template, @name else @findModule @component.paths, 'template', @name
+    template = if @config.template then @require @config.template, @name else @findModule @relation.paths, 'template', @name
     template = template(@model.data)
     
     @asyncHTML template, (template) =>
@@ -79,19 +80,24 @@ class tweak.View
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
-      comps = @relation.parent?.components?.data or []
-      for item in comps
-        if item is @relation then break
-        previousComponent = item
-      if previousComponent?.model?.get "rendering"
-        tweak.Events.on @, "#{previousComponent.uid}:model:changed:rendering", (render) ->
-          if not render then attach()
-      else attach()
+      tweak.Events.on @, "#{@uid}:renderable", ->
+        attach()
+      @__renderable @
 
     # Set viewable height and width
     @viewable = tweak.Viewable
 
     return
+
+  ###
+    @private
+    Detirmine if view is ready to render
+    If renderable event is triggered to start rendering
+  ###
+  __renderable: (ctx) ->
+    setTimeout(->
+      tweak.Events.trigger "#{ctx.uid}:renderable"
+    ,0)
 
   ###
     The view will be cleared then rendered again.
@@ -103,6 +109,7 @@ class tweak.View
     @clear()
     @render()
     tweak.Events.on @, "#{@uid}:rendered", -> tweak.Common.__trigger "view:rerendered"
+
   ###
     Get the chidlren nodes of an element
     @param [DOMElement] parent The element to get the children nodes of
