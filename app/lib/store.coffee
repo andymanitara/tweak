@@ -35,6 +35,11 @@ class tweak.Store
     @name = config.name or relation.name
 
   ###
+    Default initialiser function
+  ###
+  init: ->
+    
+  ###
     Set multiple properties or one property of the store by passing an object with object of the data you with to update.
 
     @overload set(name, data, quiet)

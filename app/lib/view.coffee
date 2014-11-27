@@ -25,6 +25,11 @@ class tweak.View
     @name = config.name or relation.name
 
   ###
+    Default initialiser function - called when the view has rendered
+  ###
+  init: ->
+
+  ###
     Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
     When the view has been rendered there is a event triggered. This allows an on ready for high components to be achieved, and to make sure that the DOM is available for access.
     The view wont be rendered until its parent view is rendered and any other components views that are waiting to be rendered.

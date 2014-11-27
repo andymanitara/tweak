@@ -26,6 +26,11 @@ class tweak.Controller
     @name = config.name or relation.name
 
   ###
+    Default initialiser function
+  ###
+  init: ->
+
+  ###
     Event 'on' handler for DOM and the Event API
     @param [String] name The event name, split on the / and : characters, to add
     @param [Function] callback  The callback function; if you do not include this then all events under the name will be removed
