@@ -5,7 +5,7 @@ class tweak.Common
     @param [String] name The event name; split on the / and : characters
     @param [...] params Params to pass into the callback function
   ###
-  ___trigger: (path, args...) ->
+  __trigger: (path, args...) ->
     secondary = path.split ":"
     secondary.shift()
     setTimeout(=>
