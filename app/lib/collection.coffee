@@ -132,16 +132,17 @@ class tweak.Collection extends tweak.Store
     data = @parse data, options.restict
     overwrite = options.overwrite ?= true
     for key, item of data
+      prop = if item.type
+        new tweak[item.type](@, item.data)
+      else item
       if not overwrite
-        if item instanceof tweak.Model
-          @data[key].set item
-        else @data[key] = new tweak.Model @, item
-      else @data.add new tweak.Model(@, item), options.quiet
+        @data[key] = prop
+      else @data.add prop
 
   export: (restrict) ->
     res = {}
     for key, item of @data
-      if item instanceof tweak.Model
-        res[key] = item.data
-      else res[key] = {}
+      res[key] = if item.storeType
+        {type:item.storeType, data:item.data}
+      else item
     @parse res, restict
