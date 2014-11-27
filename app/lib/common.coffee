@@ -8,14 +8,15 @@ class tweak.Common
   ___trigger: (path, args...) ->
     secondary = path.split ":"
     secondary.shift()
-   	setTimeout(->
+    setTimeout(=>
       tweak.Events.trigger "#{@name}:#{path}", args...
     ,0)
-   	setTimeout(->
-       tweak.Events.trigger "#{@cuid}:#{path}", args...
-    ,0)
-   	setTimeout(->
-       tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
+    if @cuid
+      setTimeout(=>
+        tweak.Events.trigger "#{@cuid}:#{path}", args...
+      ,0)
+    setTimeout(=>
+      tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
     ,0)
 
   ###
