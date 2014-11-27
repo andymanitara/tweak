@@ -18,9 +18,11 @@ describe "Component", ->
   
   beforeEach ->
     component = new tweak.Component window, {name:"test", model:{test:"works"}}
+    component.init()
 
   describe "Models", ->
     it "should be able to get data from model built from config", ->
+      console.log component
       modelProperty = component.model.get "test"
       expect(modelProperty).to.equal "works"
 
