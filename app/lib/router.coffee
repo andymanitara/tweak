@@ -6,17 +6,17 @@
 class tweak.Router
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [Integer] The component uid of this object - for unique reference of component
-  cuid: 0
-  # @property [Component] The root component
+  # @property [*] The root relationship to this module
   root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "r_#{tweak.uids.r++}"
-    @before = '#'
-    if history.pushState then history.pushState null, null, ''
+    @root = relation.root or @
+    @name = config.name or relation.name
 
   ###
     Start watching the roouter for changes, options for speed and whether to be quiet

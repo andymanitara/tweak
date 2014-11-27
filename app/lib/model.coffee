@@ -9,25 +9,17 @@ class tweak.Model extends tweak.Store
   
   # @property [Object] Data storage holder, for a model this is an object
   data: {}
-  # @property [Object] Default data to load into model when constructing the model
-  default: {}
   # @property [String] The type of collection this is
   storeType: "model"
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
-    
-  ###
-    Constructs the model ready for use
-  ###
-  construct: ->
+    @root = relation.root or @
+    @name = config.name or relation.name
     @reset()
-    # Defaults are overriden completely when overriden by an extending model, however config model data is merged
-    if @defaults? then @set @defaults, true
-    data = @config or {}
-    if data then @set data, true
+    if @config then @set @config, true
   
 
   ###

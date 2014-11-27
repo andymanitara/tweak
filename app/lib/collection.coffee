@@ -6,9 +6,12 @@ class tweak.Collection extends tweak.Store
   storeType: "collection"
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "cl_#{tweak.uids.cl++}"
+    @root = relation.root or @
+    @name = config.name or relation.name
+    @reset()
 
   ###
     Reduce an array be remove elements from the front of the array and returning the new array
@@ -24,12 +27,7 @@ class tweak.Collection extends tweak.Store
     Removes empty keys
   ###
   clean: -> @data = for key, item of @data then item
-  
-  ###
-    Construct the initial state of the collection
-  ###
-  construct: -> @reset()
-  
+    
   ###
     Pop the top data element in the collection
     @param [Boolean] quiet Setting to trigger change events

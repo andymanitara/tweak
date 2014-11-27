@@ -11,7 +11,7 @@ class tweak.Common
     setTimeout(=>
       tweak.Events.trigger "#{@name}:#{path}", args...
     ,0)
-    if @cuid
+    if @cuid?
       setTimeout(=>
         tweak.Events.trigger "#{@cuid}:#{path}", args...
       ,0)

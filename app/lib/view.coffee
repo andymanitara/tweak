@@ -8,20 +8,21 @@ class tweak.View
  
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [Integer] The component uid of this object - for unique reference of component
-  cuid: 0
-  # @property [Component] The root component
+  # @property [*] The root relationship to this module
   root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   require: tweak.Common.require
   splitComponents: tweak.Common.splitComponents
   findModule: tweak.Common.findModule
 
-
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "v_#{tweak.uids.v++}"
+    @root = relation.root or @
+    @name = config.name or relation.name
 
   ###
     Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
@@ -81,7 +82,7 @@ class tweak.View
       if previousComponent isnt -1 and previousComponent.model?.get "rendering"
         tweak.Events.on @, "#{previousComponent.uid}:model:changed:rendering", (render) ->
           if not render then attach()
-      else attach()    
+      else attach()
 
     # Set viewable height and width
     @viewable = tweak.Viewable

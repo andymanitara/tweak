@@ -9,18 +9,26 @@ class tweak.Components extends tweak.Collection
   storeType: "components"
   # @property [Object] The config object of this module
   config: []
+  # @property [*] The root relationship to this module
+  root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   reltoAbs: tweak.Common.relToAbs
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "cp_#{tweak.uids.cp++}"
+
+    @config = config or []
+    @root = relation.root or @
+    @name = config.name or relation.name
   
   ###
    Construct the Collection with given options from the config file
   ###
-  construct: ->
+  init: ->
     @data = []
     data = []
     for item in @config or []

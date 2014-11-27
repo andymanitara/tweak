@@ -13,15 +13,17 @@ class tweak.Controller
 
   # @property [Interger] The uid of this object - for unique reference
   uid: 0
-  # @property [Integer] The component uid of this object - for unique reference of component
-  cuid: 0
-  # @property [Component] The root component
+  # @property [*] The root relationship to this module
   root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "ct_#{tweak.uids.ct++}"
+    @root = relation.root or @
+    @name = config.name or relation.name
 
   ###
     Event 'on' handler for DOM and the Event API
@@ -45,7 +47,7 @@ class tweak.Controller
     @param [String] name The event name, split on the / and : characters, to trigger
     @param [...] params Parameters to pass into the callback function
   ###
-  trigger: (params...) -> 
-    setTimeout(-> 
+  trigger: (params...) ->
+    setTimeout(->
       tweak.Events.trigger(params...)
     ,0)
