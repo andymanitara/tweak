@@ -76,6 +76,19 @@ class tweak.Model extends tweak.Store
   reset: ->
     @data = {}
 
+  ###
+    Import a JSONObject.
+    @param [JSONString] data JSONString to parse.
+    @param [Object] options Options to parse to method.
+    @option options [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @option options [Boolean] quiet If true then it wont trigger events
+    @return [Object] Returns the parsed JSONString as a raw object
+  ###
   import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet
 
+  ###
+    Export a JSONString of this models data.
+    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @return [Object] Returns a JSONString
+  ###
   export: (restrict) -> @parse @data, restrict
