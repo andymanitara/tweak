@@ -206,7 +206,7 @@ class tweak.Component
     tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
       tweak.Events.on @, "#{@uid}:components:ready", =>
         tweak.Events.trigger "#{@uid}:ready", @name
-      @components[type]()  
+      @components[type]()
     @view[type]()
 
   ###
