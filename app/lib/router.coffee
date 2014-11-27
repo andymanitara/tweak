@@ -12,8 +12,8 @@ class tweak.Router
   root: null
 
   # @private
-  constructor: ->    
-    # Set uid    
+  constructor: ->
+    # Set uid
     @uid = "r_#{tweak.uids.r++}"
     @before = '#'
     if history.pushState then history.pushState null, null, ''

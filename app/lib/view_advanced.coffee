@@ -1,10 +1,10 @@
 ###
-	tweak.view.advanced.js 0.8.5
+  tweak.view.advanced.js 0.8.5
 
-	(c) 2014 Blake Newman.
-	TweakJS may be freely distributed under the MIT license.
-	For all details and documentation:
-	http://tweakjs.com
+  (c) 2014 Blake Newman.
+  TweakJS may be freely distributed under the MIT license.
+  For all details and documentation:
+  http://tweakjs.com
 ###
 
 tweak.Viewable = {
