@@ -128,9 +128,6 @@ class tweak.Common
         if e.name isnt "Error"
           e.message = "Module (#{"#{path}/#{module}"}) found although encountered #{e.name}: #{e.message}"
           throw e
-
-        
-
     return surrogate if surrogate?
     # If no paths are found then throw an error
     throw new Error "Could not find a default module (#{module}) for component #{paths[0]}"
