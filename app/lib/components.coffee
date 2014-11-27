@@ -9,33 +9,41 @@ class tweak.Components extends tweak.Collection
   storeType: "components"
   # @property [Object] The config object of this module
   config: []
+  # @property [*] The root relationship to this module
+  root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   reltoAbs: tweak.Common.relToAbs
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "cp_#{tweak.uids.cp++}"
+
+    @config = config or []
+    @root = relation.root or @
+    @name = config.name or relation.name
   
   ###
    Construct the Collection with given options from the config file
   ###
-  construct: ->
+  init: ->
     @data = []
     data = []
-    for item in @config or []
+    for item in @config
       obj = {}
       if item instanceof Array
         names = tweak.Common.splitComponents item[0], @name
         path = @relToAbs item[1], @name
         i = 0
         for name in names
-          @add new tweak.Component(@, {name, extends:path}), true
+          @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
         if name is "" or name is " " then continue
         data = tweak.Common.splitComponents item, @name
         for name in data
-          @add new tweak.Component(@, {name}), true
+          @data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
@@ -44,7 +52,7 @@ class tweak.Components extends tweak.Collection
         obj.extends = @relToAbs obj.extends, @name
         for prop in data
           obj.name = prop
-          @add new tweak.Component(@, obj), true
+          @data.push new tweak.Component @, obj
 
   ###
     @private
@@ -83,8 +91,8 @@ class tweak.Components extends tweak.Collection
     componentData = @data
     for collectionKey, data of componentData
       modelData = data.model.data or model.data
-      for key, prop of modelData
-        if key is property and prop is value then result.push data
+      for key, prop of modelData when key is property and prop is value
+        result.push data
     result
 
   ###
@@ -94,3 +102,13 @@ class tweak.Components extends tweak.Collection
     for item in @data
       item.view?.clear()
     super()
+
+  ###
+    There is no default import mechanism for this module
+  ###
+  import: ->
+
+  ###
+    There is no default export mechanism for this module
+  ###
+  export: ->

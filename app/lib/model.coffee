@@ -9,26 +9,15 @@ class tweak.Model extends tweak.Store
   
   # @property [Object] Data storage holder, for a model this is an object
   data: {}
-  # @property [Object] Default data to load into model when constructing the model
-  default: {}
   # @property [String] The type of collection this is
   storeType: "model"
 
   # @private
-  constructor: ->
+  constructor: (@relation, @data = {}) ->
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
-    
-  ###
-    Constructs the model ready for use
-  ###
-  construct: ->
-    @reset()
-    # Defaults are overriden completely when overriden by an extending model, however config model data is merged
-    if @defaults? then @set @defaults, true
-    data = @config or {}
-    if data then @set data, true
-  
+    @root = relation.root or @
+    @name = config.name or relation.name
 
   ###
     Remove a single property or many properties.
@@ -46,11 +35,10 @@ class tweak.Model extends tweak.Store
   remove: (properties, quiet = true) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
-      for key, prop of data
-        if key is property
-          @length--
-          delete @data[key]
-          if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{key}"
+      for key, prop of data when key is property
+        @length--
+        delete @data[key]
+        if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{key}"
 
     if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return
@@ -61,7 +49,7 @@ class tweak.Model extends tweak.Store
     @return [*] Returns data of property by given position
   ###
   at: (position) ->
-    position = Number(position)
+    position = Number position
     data = @data
     i = 0
     for key, prop of data
@@ -76,6 +64,19 @@ class tweak.Model extends tweak.Store
   reset: ->
     @data = {}
 
-  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet
+  ###
+    Import a JSONObject.
+    @param [JSONString] data JSONString to parse.
+    @param [Object] options Options to parse to method.
+    @option options [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @option options [Boolean] quiet If true then it wont trigger events
+    @return [Object] Returns the parsed JSONString as a raw object
+  ###
+  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet or true
 
+  ###
+    Export a JSONString of this models data.
+    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @return [Object] Returns a JSONString
+  ###
   export: (restrict) -> @parse @data, restrict

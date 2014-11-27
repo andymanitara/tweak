@@ -5,17 +5,18 @@ class tweak.Common
     @param [String] name The event name; split on the / and : characters
     @param [...] params Params to pass into the callback function
   ###
-  ___trigger: (path, args...) ->
+  __trigger: (path, args...) ->
     secondary = path.split ":"
     secondary.shift()
-   	setTimeout(->
+    setTimeout(=>
       tweak.Events.trigger "#{@name}:#{path}", args...
     ,0)
-   	setTimeout(->
-       tweak.Events.trigger "#{@cuid}:#{path}", args...
-    ,0)
-   	setTimeout(->
-       tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
+    if @cuid?
+      setTimeout(=>
+        tweak.Events.trigger "#{@cuid}:#{path}", args...
+      ,0)
+    setTimeout(=>
+      tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
     ,0)
 
   ###
@@ -84,7 +85,7 @@ class tweak.Common
 
     # Handle Object
     for attr of ref
-      copy[attr] = @clone(ref[attr]) if ref.hasOwnProperty attr
+      if ref.hasOwnProperty(attr) then copy[attr] = @clone ref[attr]
     return copy
 
   ###
@@ -127,9 +128,6 @@ class tweak.Common
         if e.name isnt "Error"
           e.message = "Module (#{"#{path}/#{module}"}) found although encountered #{e.name}: #{e.message}"
           throw e
-
-        
-
     return surrogate if surrogate?
     # If no paths are found then throw an error
     throw new Error "Could not find a default module (#{module}) for component #{paths[0]}"

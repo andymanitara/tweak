@@ -20,18 +20,25 @@ class tweak.Store
   storeType: 'BASE'
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [Integer] The component uid of this object - for unique reference of component
-  cuid: 0
-  # @property [Component] The root component
+  # @property [*] The root relationship to this module
   root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   parse: tweak.Common.parse
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "s_#{tweak.uids.s++}"
+    @root = relation.root or @
+    @name = config.name or relation.name
 
+  ###
+    Default initialiser function
+  ###
+  init: ->
+    
   ###
     Set multiple properties or one property of the store by passing an object with object of the data you with to update.
 

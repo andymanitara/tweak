@@ -6,9 +6,12 @@ class tweak.Collection extends tweak.Store
   storeType: "collection"
 
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "cl_#{tweak.uids.cl++}"
+    @root = relation.root or @
+    @name = config.name or relation.name
+    @reset()
 
   ###
     Reduce an array be remove elements from the front of the array and returning the new array
@@ -24,12 +27,7 @@ class tweak.Collection extends tweak.Store
     Removes empty keys
   ###
   clean: -> @data = for key, item of @data then item
-  
-  ###
-    Construct the initial state of the collection
-  ###
-  construct: -> @reset()
-  
+    
   ###
     Pop the top data element in the collection
     @param [Boolean] quiet Setting to trigger change events
@@ -108,7 +106,7 @@ class tweak.Collection extends tweak.Store
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      tweak.Common.__trigger "#{@storeType}:removed:#{property}"
+      if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{property}"
     
     @clean()
     if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
@@ -119,7 +117,7 @@ class tweak.Collection extends tweak.Store
     @param [Integer] position Position of property to return
     @return [*] Returns data of property by given position
   ###
-  at: (position) -> @data[Number(position)]
+  at: (position) -> @data[Number position]
 
   ###
     Reset the collection back to defaults
@@ -127,21 +125,37 @@ class tweak.Collection extends tweak.Store
   reset: ->
     @data = []
     @length = 0
-
+  
+  ###
+    Import a JSONObject - imports to one depth only.
+    @param [JSONString] data JSONString to parse.
+    @param [Object] options Options to parse to method.
+    @option options [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @option options [Boolean] overwrite Default:true. If true existing properties in the key value will be replaced otherwise they are added to the collection
+    @option options [Boolean] quiet If true then it wont trigger events
+    @return [Object] Returns the parsed JSONString as a raw object
+  ###
   import: (data, options = {}) ->
     data = @parse data, options.restict
     overwrite = options.overwrite ?= true
     for key, item of data
-      if not overwrite
-        if item instanceof tweak.Model
-          @data[key].set item
-        else @data[key] = new tweak.Model @, item
-      else @data.add new tweak.Model(@, item), options.quiet
+      prop = if item.type
+        new tweak[item.type] @, item.data
+      else item
+      if not overwrite and @data[key]
+        @set {key:prop}, options.quiet
+      else @data.add prop, options.quiet
+    data
 
+  ###
+    Export a JSONString of this collections data.
+    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @return [Object] Returns a JSONString
+  ###
   export: (restrict) ->
     res = {}
     for key, item of @data
-      if item instanceof tweak.Model
-        res[key] = item.data
-      else res[key] = {}
+      res[key] = if item.storeType
+        {type:item.storeType, data:@parse item.export()}
+      else item
     @parse res, restict

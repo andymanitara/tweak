@@ -1,11 +1,35 @@
 ###
 	tweak.component.js 1.0.0
 
-	(c) 2014 Blake Newman.
-	TweakJS may be freely distributed under the MIT license.
-	For all details and documentation:
-	http://tweakjs.com
+  (c) 2014 Blake Newman.
+  TweakJS may be freely distributed under the MIT license.
+  For all details and documentation:
+  http://tweakjs.com
 ###
+
+
+class tweak.ComponentView extends tweak.View
+  ###
+    @private
+    Add extra functionality based on it now supports components
+  ###
+  __renderable = (ctx) ->
+    comps = ctx.relation.parent?.components?.data or []
+    for item in comps
+      if item is ctx.relation then break
+      previousComponent = item
+    if previousComponent?.model?.data.rendering
+      tweak.Events.on ctx, "#{previousComponent.uid}:model:changed:rendering", (rendering) ->
+        if not rendering
+          setTimeout(->
+            tweak.Events.trigger "#{@uid}:renderable"
+          ,0)
+    else
+      setTimeout(->
+        tweak.Events.trigger "#{@uid}:renderable"
+      ,0)
+      
+tweak.View = tweak.ComponentView
 
 ###
   TweakJS has its own unique twist to the MVC concept.
@@ -28,10 +52,7 @@
 
 ###
 class tweak.Component
-
-  # Private constants
-  MODULES = ["model", "view", "controller", "components", "router"]
-  
+ 
   # @property [Object]
   model: null
   # @property [Object]
@@ -71,9 +92,6 @@ class tweak.Component
     if not @name? then throw new Error "No name given"
 
     @config = @buildConfig(options) or {}
-    # The config file can prevent automatic build and start of componets
-    # Start the construcion of the component
-    @construct()
 
   ###
     @param [Object] options Component options
@@ -104,7 +122,7 @@ class tweak.Component
     # The values of the config files from lower down the chain have piortiy
     result = configs[configs.length-1]
     for i in [configs.length-2..0]
-      result = @combine(result, configs[i])
+      result = @combine result, configs[i]
 
     # Set initial values in config if they do not exist
     result.model ?= {}
@@ -123,11 +141,8 @@ class tweak.Component
   ###
   addModule: (name, surrogate, params...) ->
     Module = @findModule @paths, name, @name, surrogate
-    module = @[name] = new Module params...
-    module.component = module.relation = @
+    module = @[name] = new Module @, @config[name], params...
     module.cuid = @uid
-    module.root = @root
-    module.config = @config[name]
     module
 
   ###
@@ -166,11 +181,6 @@ class tweak.Component
   addRouter: (params...) -> @addModule "router", tweak.Router, params...
 
   ###
-    Function to call other function so the component can be impeded before starting
-  ###
-  construct: -> @init()
-
-  ###
     Constructs the component and its modules using the addModule method
   ###
   init: ->
@@ -184,19 +194,16 @@ class tweak.Component
     @addComponents()
     @addController()
 
+    modules = ["model", "view", "controller", "components", "router"]
     # Add references to the the modules
-    for name in MODULES
+    for name in modules
       prop = @[name]
       prop?.parent = @parent
       prop?.component = @
-      prop?.name = @name
-      for item in MODULES
+      for item in modules
         if name isnt item then prop?[item] = @[item]
 
-    # Construct the modules after they have been added
-    for name in MODULES then @[name]?.construct?()
-
-    for name in MODULES
+    for name in modules
       if name isnt "view" then @[name]?.init?()
 
   ###
@@ -205,8 +212,10 @@ class tweak.Component
   _componentRender: (type) ->
     tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
       tweak.Events.on @, "#{@uid}:components:ready", =>
-        tweak.Events.trigger "#{@uid}:ready", @name
-      @components[type]()  
+        setTimeout(=>
+          tweak.Events.trigger "#{@uid}:ready", @name
+        ,0)
+      @components[type]()
     @view[type]()
 
   ###

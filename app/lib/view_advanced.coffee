@@ -1,10 +1,10 @@
 ###
 	tweak.view.advanced.js 1.0.0
 
-	(c) 2014 Blake Newman.
-	TweakJS may be freely distributed under the MIT license.
-	For all details and documentation:
-	http://tweakjs.com
+  (c) 2014 Blake Newman.
+  TweakJS may be freely distributed under the MIT license.
+  For all details and documentation:
+  http://tweakjs.com
 ###
 
 tweak.Viewable = {
@@ -30,7 +30,7 @@ class tweak.AdvancedView extends tweak.View
     if typeof element is 'string'
       if tweak.Selector
         tweak.Selector element, root
-      else throw new Error("Trying to get element with selector engine, but none defined to tweak.Selector")
+      else throw new Error "Trying to get element with selector engine, but none defined to tweak.Selector"
     else [element]
 
   ###

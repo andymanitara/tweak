@@ -55,6 +55,6 @@ describe "Event System", ->
     tweak.Events.on obj, "one/two/three", -> expect(false).to.equal true
     tweak.Events.trigger {name:"one/two/three", context:window}
 
-  afterEach ->    
+  afterEach ->
     tweak.Events.off window, "one/two/three"
     totalCalls = 0

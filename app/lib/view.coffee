@@ -8,20 +8,26 @@ class tweak.View
  
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [Integer] The component uid of this object - for unique reference of component
-  cuid: 0
-  # @property [Component] The root component
+  # @property [*] The root relationship to this module
   root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   require: tweak.Common.require
   splitComponents: tweak.Common.splitComponents
   findModule: tweak.Common.findModule
 
-
   # @private
-  constructor: ->
+  constructor: (@relation, @config = {}) ->
     # Set uid
     @uid = "v_#{tweak.uids.v++}"
+    @root = relation.root or @
+    @name = config.name or relation.name
+
+  ###
+    Default initialiser function - called when the view has rendered
+  ###
+  init: ->
 
   ###
     Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
@@ -37,14 +43,15 @@ class tweak.View
     @event "#{@uid}:rendered" The event is called when the view has been rendered.
   ###
   render: ->
+    if not @model? then throw new Error "There is no model attached to the view - cannot render"
     @config.attach ?= {}
-    @model.set "rendering", true
+    @model.data.rendering = true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
-    @model.set "id", @name.replace(/\//g, "-")
+    @model.data.id = @name.replace /\//g, "-"
     # Build the template with the date from the model
-    template = if @config.template then @require @config.template, @name else @findModule @component.paths, 'template', @name
-    template = template(@model.data)
+    template = if @config.template then @require @config.template, @name else @findModule @relation.paths, 'template', @name
+    template = template @model.data
     
     @asyncHTML template, (template) =>
       # Attach nodes to the dome
@@ -73,20 +80,24 @@ class tweak.View
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
-      previousComponent = -1
-      comps = @component.parent.components?.data or []
-      for item in comps
-        if item is @component then break
-        previousComponent = item
-      if previousComponent isnt -1 and previousComponent.model?.get "rendering"
-        tweak.Events.on @, "#{previousComponent.uid}:model:changed:rendering", (render) ->
-          if not render then attach()
-      else attach()    
+      tweak.Events.on @, "#{@uid}:renderable", ->
+        attach()
+      @__renderable @
 
     # Set viewable height and width
     @viewable = tweak.Viewable
 
     return
+
+  ###
+    @private
+    Detirmine if view is ready to render
+    If renderable event is triggered to start rendering
+  ###
+  __renderable: (ctx) ->
+    setTimeout(->
+      tweak.Events.trigger "#{ctx.uid}:renderable"
+    ,0)
 
   ###
     The view will be cleared then rendered again.
@@ -98,6 +109,7 @@ class tweak.View
     @clear()
     @render()
     tweak.Events.on @, "#{@uid}:rendered", -> tweak.Common.__trigger "view:rerendered"
+
   ###
     Get the chidlren nodes of an element
     @param [DOMElement] parent The element to get the children nodes of

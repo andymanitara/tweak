@@ -6,17 +6,17 @@
 class tweak.Router
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [Integer] The component uid of this object - for unique reference of component
-  cuid: 0
-  # @property [Component] The root component
+  # @property [*] The root relationship to this module
   root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
   # @private
-  constructor: ->    
-    # Set uid    
+  constructor: (@relation, @config = {}) ->
+    # Set uid
     @uid = "r_#{tweak.uids.r++}"
-    @before = '#'
-    if history.pushState then history.pushState null, null, ''
+    @root = relation.root or @
+    @name = config.name or relation.name
 
   ###
     Start watching the roouter for changes, options for speed and whether to be quiet
@@ -79,8 +79,8 @@ class tweak.Router
         return
       @ignore = false
 
-      for item in hash.split(/[\\/]/)
-        itemArr = item.split(/[=:]/)
+      for item in hash.split /[\\/]/
+        itemArr = item.split /[=:]/
         if itemArr.length is 1
           hashObj[itemArr[0]] = true
           if not quiet then tweak.Common.__trigger "router:data:"+itemArr[0]
