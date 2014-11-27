@@ -79,12 +79,11 @@ class tweak.View
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
-      previousComponent = -1
-      comps = @component.parent.components?.data or []
+      comps = @relation.parent?.components?.data or []
       for item in comps
-        if item is @component then break
+        if item is @relation then break
         previousComponent = item
-      if previousComponent isnt -1 and previousComponent.model?.get "rendering"
+      if previousComponent?.model?.get "rendering"
         tweak.Events.on @, "#{previousComponent.uid}:model:changed:rendering", (render) ->
           if not render then attach()
       else attach()
