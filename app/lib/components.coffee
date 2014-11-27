@@ -94,3 +94,13 @@ class tweak.Components extends tweak.Collection
     for item in @data
       item.view?.clear()
     super()
+
+  ###
+    There is no default import mechanism for this module
+  ###
+  import: ->
+
+  ###
+    There is no default export mechanism for this module
+  ###
+  export: ->
