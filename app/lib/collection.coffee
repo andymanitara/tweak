@@ -117,7 +117,7 @@ class tweak.Collection extends tweak.Store
     @param [Integer] position Position of property to return
     @return [*] Returns data of property by given position
   ###
-  at: (position) -> @data[Number(position)]
+  at: (position) -> @data[Number position]
 
   ###
     Reset the collection back to defaults
@@ -140,7 +140,7 @@ class tweak.Collection extends tweak.Store
     overwrite = options.overwrite ?= true
     for key, item of data
       prop = if item.type
-        new tweak[item.type](@, item.data)
+        new tweak[item.type] @, item.data
       else item
       if not overwrite and @data[key]
         @set {key:prop}, options.quiet

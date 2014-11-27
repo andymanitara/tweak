@@ -85,7 +85,7 @@ class tweak.Common
 
     # Handle Object
     for attr of ref
-      copy[attr] = @clone(ref[attr]) if ref.hasOwnProperty attr
+      if ref.hasOwnProperty(attr) then copy[attr] = @clone ref[attr]
     return copy
 
   ###

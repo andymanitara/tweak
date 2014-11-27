@@ -66,7 +66,9 @@ class tweak.EventSystem
     event = @find name, true
     # Check if to replace current event
     for key, item of event.__callbacks ?= []
-      if context is item.context and item.callback is callback then replace = key; break
+      if context is item.context and item.callback is callback
+        replace = key
+        break
     obj = {context, callback, max, calls:0, listen:false}
     if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
@@ -79,7 +81,7 @@ class tweak.EventSystem
     @return [Boolean] Returns true if event(s) are removed, or false if no events are removed
   ###
   off: (context, name, callback) ->
-    event = @find(name)
+    event = @find name
     # Return false if there is no event
     return false if not event?.__callbacks
 

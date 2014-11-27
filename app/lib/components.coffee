@@ -38,12 +38,12 @@ class tweak.Components extends tweak.Collection
         path = @relToAbs item[1], @name
         i = 0
         for name in names
-          @add new tweak.Component(@, {name, extends:path}), true
+          @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
         if name is "" or name is " " then continue
         data = tweak.Common.splitComponents item, @name
         for name in data
-          @add new tweak.Component(@, {name}), true
+          @data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
@@ -52,7 +52,7 @@ class tweak.Components extends tweak.Collection
         obj.extends = @relToAbs obj.extends, @name
         for prop in data
           obj.name = prop
-          @add new tweak.Component(@, obj), true
+          @data.push new tweak.Component @, obj
 
   ###
     @private

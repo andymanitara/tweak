@@ -30,7 +30,7 @@ class tweak.AdvancedView extends tweak.View
     if typeof element is 'string'
       if tweak.Selector
         tweak.Selector element, root
-      else throw new Error("Trying to get element with selector engine, but none defined to tweak.Selector")
+      else throw new Error "Trying to get element with selector engine, but none defined to tweak.Selector"
     else [element]
 
   ###

@@ -13,14 +13,11 @@ class tweak.Model extends tweak.Store
   storeType: "model"
 
   # @private
-  constructor: (@relation, @config = {}) ->
+  constructor: (@relation, @data = {}) ->
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
     @root = relation.root or @
     @name = config.name or relation.name
-    @reset()
-    if @config then @set @config, true
-  
 
   ###
     Remove a single property or many properties.
@@ -53,7 +50,7 @@ class tweak.Model extends tweak.Store
     @return [*] Returns data of property by given position
   ###
   at: (position) ->
-    position = Number(position)
+    position = Number position
     data = @data
     i = 0
     for key, prop of data
@@ -76,7 +73,7 @@ class tweak.Model extends tweak.Store
     @option options [Boolean] quiet If true then it wont trigger events
     @return [Object] Returns the parsed JSONString as a raw object
   ###
-  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet
+  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet or true
 
   ###
     Export a JSONString of this models data.

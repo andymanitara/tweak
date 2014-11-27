@@ -52,10 +52,7 @@ tweak.View = tweak.ComponentView
 
 ###
 class tweak.Component
-
-  # Private constants
-  MODULES = ["model", "view", "controller", "components", "router"]
-  
+ 
   # @property [Object]
   model: null
   # @property [Object]
@@ -125,7 +122,7 @@ class tweak.Component
     # The values of the config files from lower down the chain have piortiy
     result = configs[configs.length-1]
     for i in [configs.length-2..0]
-      result = @combine(result, configs[i])
+      result = @combine result, configs[i]
 
     # Set initial values in config if they do not exist
     result.model ?= {}
@@ -197,16 +194,16 @@ class tweak.Component
     @addComponents()
     @addController()
 
+    modules = ["model", "view", "controller", "components", "router"]
     # Add references to the the modules
-    for name in MODULES
+    for name in modules
       prop = @[name]
       prop?.parent = @parent
       prop?.component = @
-      prop?.name = @name
-      for item in MODULES
+      for item in modules
         if name isnt item then prop?[item] = @[item]
 
-    for name in MODULES
+    for name in modules
       if name isnt "view" then @[name]?.init?()
 
   ###
