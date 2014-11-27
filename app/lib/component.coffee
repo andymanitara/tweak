@@ -1,10 +1,10 @@
 ###
-	tweak.component.js 0.8.5
+  tweak.component.js 0.8.5
 
-	(c) 2014 Blake Newman.
-	TweakJS may be freely distributed under the MIT license.
-	For all details and documentation:
-	http://tweakjs.com
+  (c) 2014 Blake Newman.
+  TweakJS may be freely distributed under the MIT license.
+  For all details and documentation:
+  http://tweakjs.com
 ###
 
 ###
@@ -71,9 +71,6 @@ class tweak.Component
     if not @name? then throw new Error "No name given"
 
     @config = @buildConfig(options) or {}
-    # The config file can prevent automatic build and start of componets
-    # Start the construcion of the component
-    @construct()
 
   ###
     @param [Object] options Component options
@@ -123,11 +120,8 @@ class tweak.Component
   ###
   addModule: (name, surrogate, params...) ->
     Module = @findModule @paths, name, @name, surrogate
-    module = @[name] = new Module params...
-    module.component = module.relation = @
+    module = @[name] = new Module @, @config[name], params...
     module.cuid = @uid
-    module.root = @root
-    module.config = @config[name]
     module
 
   ###
@@ -166,11 +160,6 @@ class tweak.Component
   addRouter: (params...) -> @addModule "router", tweak.Router, params...
 
   ###
-    Function to call other function so the component can be impeded before starting
-  ###
-  construct: -> @init()
-
-  ###
     Constructs the component and its modules using the addModule method
   ###
   init: ->
@@ -193,9 +182,6 @@ class tweak.Component
       for item in MODULES
         if name isnt item then prop?[item] = @[item]
 
-    # Construct the modules after they have been added
-    for name in MODULES then @[name]?.construct?()
-
     for name in MODULES
       if name isnt "view" then @[name]?.init?()
 
@@ -206,9 +192,9 @@ class tweak.Component
     tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
       tweak.Events.on @, "#{@uid}:components:ready", =>
         setTimeout(=>
-        tweak.Events.trigger "#{@uid}:ready", @name
+          tweak.Events.trigger "#{@uid}:ready", @name
         ,0)
-      @components[type]()  
+      @components[type]()
     @view[type]()
 
   ###
