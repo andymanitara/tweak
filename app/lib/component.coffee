@@ -205,7 +205,9 @@ class tweak.Component
   _componentRender: (type) ->
     tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
       tweak.Events.on @, "#{@uid}:components:ready", =>
+        setTimeout(=>
         tweak.Events.trigger "#{@uid}:ready", @name
+        ,0)
       @components[type]()  
     @view[type]()
 
