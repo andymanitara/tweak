@@ -106,7 +106,7 @@ class tweak.Collection extends tweak.Store
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      tweak.Common.__trigger "#{@storeType}:removed:#{property}"
+      if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{property}"
     
     @clean()
     if not quiet then tweak.Common.__trigger "#{@storeType}:changed"

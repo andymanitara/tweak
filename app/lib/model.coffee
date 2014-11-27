@@ -35,11 +35,10 @@ class tweak.Model extends tweak.Store
   remove: (properties, quiet = true) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
-      for key, prop of data
-        if key is property
-          @length--
-          delete @data[key]
-          if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{key}"
+      for key, prop of data when key is property
+        @length--
+        delete @data[key]
+        if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{key}"
 
     if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
     return

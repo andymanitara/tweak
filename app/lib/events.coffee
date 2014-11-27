@@ -69,6 +69,7 @@ class tweak.EventSystem
       if context is item.context and item.callback is callback
         replace = key
         break
+        
     obj = {context, callback, max, calls:0, listen:false}
     if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
@@ -92,11 +93,12 @@ class tweak.EventSystem
 
     # Check to see if the callback matches
     # If event matches critera then delete and return true
+    result = false
     for key, item of event.__callbacks
       if context is item.context and callback is item.callback
         delete event.__callbacks[key]
-        return true
-    false
+        result = true
+    result
 
   ###
     Trigger events by name

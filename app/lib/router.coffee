@@ -79,8 +79,8 @@ class tweak.Router
         return
       @ignore = false
 
-      for item in hash.split(/[\\/]/)
-        itemArr = item.split(/[=:]/)
+      for item in hash.split /[\\/]/
+        itemArr = item.split /[=:]/
         if itemArr.length is 1
           hashObj[itemArr[0]] = true
           if not quiet then tweak.Common.__trigger "router:data:"+itemArr[0]

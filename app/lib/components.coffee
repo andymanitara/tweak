@@ -31,7 +31,7 @@ class tweak.Components extends tweak.Collection
   init: ->
     @data = []
     data = []
-    for item in @config or []
+    for item in @config
       obj = {}
       if item instanceof Array
         names = tweak.Common.splitComponents item[0], @name
@@ -91,8 +91,8 @@ class tweak.Components extends tweak.Collection
     componentData = @data
     for collectionKey, data of componentData
       modelData = data.model.data or model.data
-      for key, prop of modelData
-        if key is property and prop is value then result.push data
+      for key, prop of modelData when key is property and prop is value
+        result.push data
     result
 
   ###
