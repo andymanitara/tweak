@@ -76,7 +76,7 @@ class tweak.View
         @addClass @el, @model.get "id"
         @addClass @el, @config.class or ""
         @model.set "rendering", false
-        tweak.Common.__trigger "view:rendered"
+        tweak.Common.__trigger @, "view:rendered"
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
@@ -108,7 +108,7 @@ class tweak.View
   rerender: ->
     @clear()
     @render()
-    tweak.Events.on @, "#{@uid}:rendered", -> tweak.Common.__trigger "view:rerendered"
+    tweak.Events.on @, "#{@uid}:rendered", -> tweak.Common.__trigger @, "view:rerendered"
 
   ###
     Get the chidlren nodes of an element
@@ -146,13 +146,12 @@ class tweak.View
     nodes = @getChildren parent
     nodes.push parent
     for prop in nodes
-      components = ''
       if child then break
       try
-        components = prop.getAttribute 'data-attach' or ''
+        component = prop.getAttribute 'data-attach' or ''
       catch e
-      if components is " " then continue
-      for val in @splitComponents components
+      if not component or component is ' ' then continue
+      for val in @splitComponents @, component
         if value is val then child = prop
     child
 

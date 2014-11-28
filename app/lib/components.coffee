@@ -14,7 +14,8 @@ class tweak.Components extends tweak.Collection
   # @property [*] The direct relationship to this module
   relation: null
 
-  reltoAbs: tweak.Common.relToAbs
+  relToAbs: tweak.Common.relToAbs
+  splitComponents: tweak.Common.splitComponents
 
   # @private
   constructor: (@relation, @config = {}) ->
@@ -34,25 +35,27 @@ class tweak.Components extends tweak.Collection
     for item in @config
       obj = {}
       if item instanceof Array
-        names = tweak.Common.splitComponents item[0], @name
+        names = @splitComponents @, item[0], @name
         path = @relToAbs item[1], @name
         i = 0
         for name in names
           @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
         if name is "" or name is " " then continue
-        data = tweak.Common.splitComponents item, @name
+        data = @splitComponents @, item, @name
         for name in data
           @data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
         if not name? or name is "" or name is " " then continue
-        data = tweak.Common.splitComponents name, @name
+        data = @splitComponents @, name, @name
         obj.extends = @relToAbs obj.extends, @name
         for prop in data
           obj.name = prop
           @data.push new tweak.Component @, obj
+      @data[@length++].init()
+
 
   ###
     @private
@@ -60,7 +63,7 @@ class tweak.Components extends tweak.Collection
   ###
   _componentRender: (type) ->
     if @length is 0
-      tweak.Common.__trigger "#{@storeType}:ready"
+      tweak.Common.__trigger @, "#{@storeType}:ready"
       return
     total = 0
     totalItems = @length
@@ -68,7 +71,7 @@ class tweak.Components extends tweak.Collection
       item[type]()
       tweak.Events.on @, "#{item.uid}:view:#{type}ed", =>
         total++
-        if total >= totalItems then tweak.Common.__trigger "#{@storeType}:ready"
+        if total >= totalItems then tweak.Common.__trigger @, "#{@storeType}:ready"
 
   ###
     Renders all of its components, also triggers ready state when all components are ready
