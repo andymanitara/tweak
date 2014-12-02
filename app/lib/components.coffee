@@ -67,8 +67,10 @@ class tweak.Components extends tweak.Collection
       return
     total = 0
     totalItems = @length
+
     for item in @data
       item[type]()
+
       tweak.Events.on @, "#{item.uid}:view:#{type}ed", =>
         total++
         if total >= totalItems then tweak.Common.__trigger @, "#{@storeType}:ready"

@@ -71,6 +71,8 @@ class tweak.Component
   combine: tweak.Common.combine
   findModule: tweak.Common.findModule
 
+  modules: ["model", "view", "components", "router", "controller"]
+
   ###
     @param [Object] relation Relation to the component
     @param [Object] options Configuartion for the component
@@ -92,6 +94,23 @@ class tweak.Component
     if not @name? then throw new Error "No name given"
 
     @config = @buildConfig(options) or {}
+    # Router is optional as it is perfomance heavy
+    # So it needs to be explicility defind in the config for the component that it should be used
+    if @config.router then @addRouter()
+
+    # Add modules to the component
+    @addModel()
+    @addView()
+    @addComponents()
+    @addController()
+
+    # Add references to the the modules
+    for name in @modules when prop = @[name]
+      prop.parent = @parent
+      prop.component = @
+      for name2 in @modules when name isnt name2 and prop2 = @[name2]
+        prop[name2] = prop2
+      prop.construct?()
 
   ###
     @param [Object] options Component options
@@ -184,27 +203,9 @@ class tweak.Component
     Constructs the component and its modules using the addModule method
   ###
   init: ->
-    # Router is optional as it is perfomance heavy
-    # So it needs to be explicility defind in the config for the component that it should be used
-    if @config.router then @addRouter()
-
-    # Add modules to the component
-    @addModel()
-    @addView()
-    @addComponents()
-    @addController()
-
-    modules = ["model", "view", "controller", "components", "router"]
-    # Add references to the the modules
-    for name in modules
-      prop = @[name]
-      prop?.parent = @parent
-      prop?.component = @
-      for item in modules
-        if name isnt item then prop?[item] = @[item]
-
-    for name in modules
-      if name isnt "view" then @[name]?.init?()
+    # Call init on all the modules
+    for name in @modules when name isnt "view" and item = @[name]
+      item.init?()
 
   ###
     @private

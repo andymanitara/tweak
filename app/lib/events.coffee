@@ -70,7 +70,7 @@ class tweak.EventSystem
         replace = key
         break
         
-    obj = {context, callback, max, calls:0, listen:false}
+    obj = {context, callback, max, calls:0, listen:true}
     if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
 
@@ -119,7 +119,7 @@ class tweak.EventSystem
     return if not event?.__callbacks
     callbacks = event.__callbacks
     for key, item of callbacks
-      if not item.listen and context and item.context isnt context then continue
+      if not item.listen or (context and item.context isnt context) then continue
       item.callback.call item.context, params...
       # Check to see if the event has reached its call limit
       # Delete event if reached call limit
