@@ -1,9 +1,13 @@
+###
+  This class contains common shared functionality.
+  I have decided to not use mixins as it crated a slight performance issues, as shese functions are used sparcly.
+###
 class tweak.Common
   ###
-    Triggering API Events
-    Trigger name, component uid and uid events
-    @param [String] name The event name; split on the / and : characters
-    @param [...] params Params to pass into the callback function
+    Triggering API calls in one hit - to reduce repetative code.
+    @param [*] ctx The context of the function
+    @param [String] name The event name; split on / and : characters
+    @param [...] args Callback function parameters
   ###
   __trigger: (ctx, path, args...) ->
     secondary = path.split ":"
@@ -161,9 +165,9 @@ class tweak.Common
     @throw When module can not be loaded the following error message will appear - "Can not find path #{path}"
   ###
   relToAbs: (path, prefix) ->
-    retract = path.split(/\.{2,}[/\/]/).length-1 or 0
-    reg = new Regex "([/\/][^[/\/]+){#{retract}}$"
+    retract = path.split(/\.{2,}[/\/]/).length-1
     if retract
+      reg = new Regex "([/\/][^[/\/]+){#{retract}}$"
       if prefix.match reg
         retract.replace reg, ''
       else throw new Error "Can not reduce path by #{retract} times"
