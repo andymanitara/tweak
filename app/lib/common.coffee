@@ -96,7 +96,7 @@ class tweak.Common
   ###
   parse: (data, restrict) ->
     _restrict = (obj) ->
-      if not restrict then return obj
+      if not restrict?.length > 0 then return obj
       res = {}
       for item in restict
         res[item] = obj[item]
