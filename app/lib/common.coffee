@@ -154,11 +154,20 @@ class tweak.Common
 
   ###
     convert relative path to an absolute path, relative path defined by ./ or .\
-    @note Might need a better name cant think of better though.
+    It will also reduce the prefix path per ../ by one
     @param [String] path The relative path to convert to absolute path
     @param [String] prefix The prefix path
     @return [String] Absolute path
+    @throw When module can not be loaded the following error message will appear - "Can not find path #{path}"
   ###
-  relToAbs: (path, prefix) -> path.replace /^\.[\/\\]/, "#{prefix}/"
+  relToAbs: (path, prefix) ->
+    retract = path.split(/\.{2,}[/\/]/).length-1 or 0
+    reg = new Regex "([/\/][^[/\/]+){#{retract}}$"
+    if retract
+      if prefix.match reg
+        retract.replace reg, ''
+      else throw new Error "Can not reduce path by #{retract} times"
+    path.replace /^(\.+[/\/])+/, "#{prefix}/"
+
 
 tweak.Common = new tweak.Common()
