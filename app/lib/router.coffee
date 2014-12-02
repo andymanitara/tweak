@@ -28,7 +28,6 @@ class tweak.Router
     speed = options.speed or 50
     quiet = if options.quiet then true else false
     check = @check
-    console.log 'router'
     @watch = setInterval =>
       @check quiet
     , speed
