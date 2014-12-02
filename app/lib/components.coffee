@@ -64,16 +64,19 @@ class tweak.Components extends tweak.Collection
   _componentRender: (type) ->
     if @length is 0
       tweak.Common.__trigger @, "#{@storeType}:ready"
-      return
-    total = 0
-    totalItems = @length
+    else
+      @total = 0
+      for item in @data
+        item[type]()
+        tweak.Events.off @, "#{item.uid}:view:#{type}ed", @_allRendered
+        tweak.Events.on @, "#{item.uid}:view:#{type}ed", @_allRendered, @length
 
-    for item in @data
-      item[type]()
-
-      tweak.Events.on @, "#{item.uid}:view:#{type}ed", =>
-        total++
-        if total >= totalItems then tweak.Common.__trigger @, "#{@storeType}:ready"
+  ###
+    @private
+    Callback for when an item is rendered
+  ###
+  _allRendered: =>
+    if @total++ is @length-1 then tweak.Common.__trigger @, "#{@storeType}:ready"
 
   ###
     Renders all of its components, also triggers ready state when all components are ready
