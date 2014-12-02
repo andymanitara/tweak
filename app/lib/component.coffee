@@ -7,8 +7,12 @@
   http://tweakjs.com
 ###
 
-
-class tweak.ComponentView extends tweak.View
+###
+  @private
+  Overrides tweak.View to contain additional rendering functionality.
+  With this override; components render in order.
+###
+class tweak.ViewComponent extends tweak.View
   ###
     @private
     Add extra functionality based on it now supports components
@@ -29,7 +33,7 @@ class tweak.ComponentView extends tweak.View
         tweak.Events.trigger "#{@uid}:renderable"
       ,0)
       
-tweak.View = tweak.ComponentView
+tweak.View = tweak.ViewComponent
 
 ###
   TweakJS has its own unique twist to the MVC concept.
@@ -66,9 +70,13 @@ class tweak.Component
   # @property [Interger] The uid of this object - for unique reference
   uid: 0
 
+  #@see tweak.Common.require
   require: tweak.Common.require
+  #@see tweak.Common.clone
   clone: tweak.Common.clone
+  #@see tweak.Common.combine
   combine: tweak.Common.combine
+  #@see tweak.Common.findModule
   findModule: tweak.Common.findModule
 
   modules: ["model", "view", "components", "router", "controller"]
