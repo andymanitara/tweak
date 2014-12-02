@@ -83,11 +83,11 @@ class tweak.Router
         itemArr = item.split /[=:]/
         if itemArr.length is 1
           hashObj[itemArr[0]] = true
-          if not quiet then tweak.Common.__trigger "router:data:"+itemArr[0]
+          if not quiet then tweak.Common.__trigger @, "router:data:"+itemArr[0]
         else
           hashObj[itemArr[0]] = itemArr[1]
-          if not quiet then tweak.Common.__trigger "router:data:"+itemArr[0], itemArr[1]
-      if not quiet then tweak.Common.__trigger "router:changed", hashObj
+          if not quiet then tweak.Common.__trigger @, "router:data:"+itemArr[0], itemArr[1]
+      if not quiet then tweak.Common.__trigger @, "router:changed", hashObj
     return
   
   ###

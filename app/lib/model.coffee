@@ -17,7 +17,7 @@ class tweak.Model extends tweak.Store
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
     @root = relation.root or @
-    @name = config.name or relation.name
+    @name = relation.name
 
   ###
     Remove a single property or many properties.
@@ -38,9 +38,9 @@ class tweak.Model extends tweak.Store
       for key, prop of data when key is property
         @length--
         delete @data[key]
-        if not quiet then tweak.Common.__trigger "#{@storeType}:removed:#{key}"
+        if not quiet then tweak.Common.__trigger @, "#{@storeType}:removed:#{key}"
 
-    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger @, "#{@storeType}:changed"
     return
 
   ###

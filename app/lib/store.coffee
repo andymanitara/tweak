@@ -73,9 +73,9 @@ class tweak.Store
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then tweak.Common.__trigger "#{@storeType}:changed:#{key}", prop
+      if not quiet then tweak.Common.__trigger @, "#{@storeType}:changed:#{key}", prop
 
-    if not quiet then tweak.Common.__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger @, "#{@storeType}:changed"
     return
 
   ###

@@ -5,18 +5,18 @@ class tweak.Common
     @param [String] name The event name; split on the / and : characters
     @param [...] params Params to pass into the callback function
   ###
-  __trigger: (path, args...) ->
+  __trigger: (ctx, path, args...) ->
     secondary = path.split ":"
     secondary.shift()
-    setTimeout(=>
-      tweak.Events.trigger "#{@name}:#{path}", args...
+    setTimeout(->
+      tweak.Events.trigger "#{ctx.name}:#{path}", args...
     ,0)
-    if @cuid?
-      setTimeout(=>
-        tweak.Events.trigger "#{@cuid}:#{path}", args...
+    if ctx.cuid?
+      setTimeout(->
+        tweak.Events.trigger "#{ctx.cuid}:#{path}", args...
       ,0)
-    setTimeout(=>
-      tweak.Events.trigger "#{@uid}:#{secondary.join ':'}", args...
+    setTimeout(->
+      tweak.Events.trigger "#{ctx.uid}:#{secondary.join ':'}", args...
     ,0)
 
   ###
@@ -25,12 +25,12 @@ class tweak.Common
     @param [String] name The name to which the relative path should become absolute to
     @return [Array<String>] Returns Array of full path names
   ###
-  splitComponents: (str, name) ->
+  splitComponents: (ctx, str, name) ->
     values = []
     arrayRegex = /^(.*)\[((\d*)\-(\d*)|(\d*))\]$/
     for item in str.split " "
       if item is " " then continue
-      name = name or @component.name
+      name = name or ctx.relation.name
       item = tweak.Common.relToAbs item, name
       result = arrayRegex.exec item
       if result
@@ -96,7 +96,7 @@ class tweak.Common
   ###
   parse: (data, restrict) ->
     _restrict = (obj) ->
-      if not restrict then return obj
+      if not restrict?.length > 0 then return obj
       res = {}
       for item in restict
         res[item] = obj[item]

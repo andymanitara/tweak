@@ -65,12 +65,14 @@ class tweak.EventSystem
     # Find the event / build the event path
     event = @find name, true
     # Check if to replace current event
+    # Convert callback to string for extra check for events that may be directly bound
+    callbackString = callback.toString()
     for key, item of event.__callbacks ?= []
-      if context is item.context and item.callback is callback
+      if context is item.context and (item.callback is callback or callbackString is item.callback.toString())
         replace = key
         break
         
-    obj = {context, callback, max, calls:0, listen:false}
+    obj = {context, callback, max, calls:0, listen:true}
     if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
 
@@ -93,9 +95,11 @@ class tweak.EventSystem
 
     # Check to see if the callback matches
     # If event matches critera then delete and return true
+    # Convert callback to string for extra check for events that may be directly bound
     result = false
+    callbackString = callback.toString()
     for key, item of event.__callbacks
-      if context is item.context and callback is item.callback
+      if context is item.context and (callback is item.callback or callbackString is item.callback.toString())
         delete event.__callbacks[key]
         result = true
     result
@@ -119,7 +123,7 @@ class tweak.EventSystem
     return if not event?.__callbacks
     callbacks = event.__callbacks
     for key, item of callbacks
-      if not item.listen and context and item.context isnt context then continue
+      if not item.listen or (context and item.context isnt context) then continue
       item.callback.call item.context, params...
       # Check to see if the event has reached its call limit
       # Delete event if reached call limit
