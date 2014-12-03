@@ -25,9 +25,9 @@ class tweak.Common
   ###
     Reduce component names like ./cd[0-98] to an array of all the module names
     @param [String] str The string to split into seperate component names
-    @return [Array<String>] Returns Array of full module names
+    @return [Array<String>] Returns Array of absolute module names
   ###
-  splitModuleNames = (str) ->
+  splitModuleName = (context, str) ->
     values = []
     reg1 = /\[(\d*)\-(\d*)\]$/
     reg2 = /\[(\d*)\]$/
@@ -46,7 +46,7 @@ class tweak.Common
           max = result[2]
         
         while min <= max
-          values.push "#{prefix}#{min++}"
+          values.push tweak.Common.relToAbs context, "#{prefix}#{min++}"
     values
 
   ###
