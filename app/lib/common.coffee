@@ -156,21 +156,16 @@ class tweak.Common
 
 
   ###
-    convert relative path to an absolute path, relative path defined by ./ or .\
+    convert relative path to an absolute path; relative path defined by ./ or .\
     It will also reduce the prefix path by one level per ../ in the path
-    @param [String] path The relative path to convert to absolute path
-    @param [String] prefix The prefix path
-    @return [String] Absolute path
-    @throw When the path cannot be reduced by the requsted amount - "Can not reduce path by #{amount} times"
+    @param [String] context The context path
+    @param [String] module The module path to convert to absolute path; based on the context path
+    @return [String] Absolute path to the module
   ###
-  relToAbs: (path, prefix) ->
-    amount = path.split(/\.{2,}[/\/]/).length-1
-    if amount
-      reg = new Regex "([/\/][^[/\/]+){#{amount}}$"
-      if prefix.match reg
-        prefix.replace reg, ''
-      else throw new Error "Can not reduce path by #{amount} times"
-    path.replace /^(\.+[/\/])+/, "#{prefix}/"
+  relToAbs: (context, module) ->
+    amount = module.split(/\.{2,}[\/\\]/).length-1 or 0
+    context.replace new Regex "([\/\\][^[\/\\]+){#{amount}}$", ''
+    module.replace /^(\.+[\/\\])+/, "#{context.replace /[\/\\]*$/, ''}/"
 
 
 tweak.Common = new tweak.Common()
