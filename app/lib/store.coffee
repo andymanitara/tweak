@@ -25,6 +25,7 @@ class tweak.Store
   # @property [*] The direct relationship to this module
   relation: null
 
+  #@see tweak.Common.parse
   parse: tweak.Common.parse
 
   # @private

@@ -12,9 +12,11 @@ class tweak.View
   root: null
   # @property [*] The direct relationship to this module
   relation: null
-
+  #@see tweak.Common.require
   require: tweak.Common.require
+  #@see tweak.Common.splitComponents
   splitComponents: tweak.Common.splitComponents
+  #@see tweak.Common.findModule
   findModule: tweak.Common.findModule
 
   # @private
@@ -88,16 +90,6 @@ class tweak.View
     @viewable = tweak.Viewable
 
     return
-
-  ###
-    @private
-    Detirmine if view is ready to render
-    If renderable event is triggered to start rendering
-  ###
-  __renderable: (ctx) ->
-    setTimeout(->
-      tweak.Events.trigger "#{ctx.uid}:renderable"
-    ,0)
 
   ###
     The view will be cleared then rendered again.
@@ -196,3 +188,13 @@ class tweak.View
       callback temp.firstChild
     ,
     0)
+
+  ###
+    @private
+    Detirmine if view is ready to render; by default it will start rendering the view.
+    @event "#{@uid}:rerendered" Event called to trigger the rendering of this view.
+  ###
+  __renderable: (ctx) ->
+    setTimeout(->
+      tweak.Events.trigger "#{ctx.uid}:renderable"
+    ,0)

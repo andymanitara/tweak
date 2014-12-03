@@ -14,7 +14,9 @@ class tweak.Components extends tweak.Collection
   # @property [*] The direct relationship to this module
   relation: null
 
+  #@see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
+  #@see tweak.Common.splitComponents
   splitComponents: tweak.Common.splitComponents
 
   # @private

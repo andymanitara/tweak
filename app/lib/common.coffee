@@ -1,6 +1,5 @@
 ###
-  This class contains common shared functionality.
-  I have decided to not use mixins as it crated a slight performance issues, as shese functions are used sparcly.
+  This class contains common shared functionality. The aim to reduce repeated code.
 ###
 class tweak.Common
   ###
@@ -158,19 +157,19 @@ class tweak.Common
 
   ###
     convert relative path to an absolute path, relative path defined by ./ or .\
-    It will also reduce the prefix path per ../ by one
+    It will also reduce the prefix path by one level per ../ in the path
     @param [String] path The relative path to convert to absolute path
     @param [String] prefix The prefix path
     @return [String] Absolute path
-    @throw When module can not be loaded the following error message will appear - "Can not find path #{path}"
+    @throw When the path cannot be reduced by the requsted amount - "Can not reduce path by #{amount} times"
   ###
   relToAbs: (path, prefix) ->
-    retract = path.split(/\.{2,}[/\/]/).length-1
-    if retract
-      reg = new Regex "([/\/][^[/\/]+){#{retract}}$"
+    amount = path.split(/\.{2,}[/\/]/).length-1
+    if amount
+      reg = new Regex "([/\/][^[/\/]+){#{amount}}$"
       if prefix.match reg
-        retract.replace reg, ''
-      else throw new Error "Can not reduce path by #{retract} times"
+        prefix.replace reg, ''
+      else throw new Error "Can not reduce path by #{amount} times"
     path.replace /^(\.+[/\/])+/, "#{prefix}/"
 
 

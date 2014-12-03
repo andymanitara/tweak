@@ -18,7 +18,7 @@ tweak.Viewable = {
   The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
 ###
-class tweak.AdvancedView extends tweak.View
+class tweak.ViewAdvanced extends tweak.View
   ###
     Tweak has an optional dependecy of any selector engine in the tweak.Selector object
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
@@ -233,4 +233,4 @@ class tweak.AdvancedView extends tweak.View
           .replace /\s{2,}/g,' '
           .replace /(^\s*|\s*$)/g,''
 
-tweak.View = tweak.AdvancedView
+tweak.View = tweak.ViewAdvanced
