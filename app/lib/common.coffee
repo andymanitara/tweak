@@ -116,7 +116,7 @@ class tweak.Common
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
     @return [Object] Returns an Object that has the highest piority.
     @throw When an object cannot be found and no surrogate is provided the following error message will appear - "Could not find a default module (#{module name}) for component #{component name}"
-    @throw When an object is found but there is an error during processing the found object the following message will appear - "Module (#{"#{path}"}) found. Encountered #{e.name}: #{e.message}"
+    @throw When an object is found but there is an error during processing the found object the following message will appear - "Module (#{path}) found. Encountered #{e.name}: #{e.message}"
   ###
   findModule: (contexts, module, surrogate = null) ->
     for context in contexts
@@ -132,7 +132,7 @@ class tweak.Common
           throw e
     return surrogate if surrogate?
     # If no paths are found then throw an error
-    throw new Error "Could not find a default module (#{module}) for component #{context}"
+    throw new Error "Could not find a default module (#{module}) for component #{contexts[0]}"
 
   ###
     Require method to find a module in a given context path and module path.
