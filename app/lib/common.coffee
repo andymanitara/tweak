@@ -110,30 +110,29 @@ class tweak.Common
       JSON.stringify _restrict data
 
   ###
-    Try to find a module by name in multiple paths. If there is a surrogate, then if not found it will return this instead
-    @param [Array<String>] paths An Array of Strings, the array contains paths to which to search for objects. The lower the key value the higher the piority
-    @param [String] module The name of the module to search for
-    @param [String] name The name to which the relative path should become absolute to
+    Try to find a module by name in multiple paths. A final surrogate if available will be returned if no module can be found.
+    @param [Array<String>] paths An array of context paths.
+    @param [String] module The module path to convert to absolute path; based on the context path.
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
     @return [Object] Returns an Object that has the highest piority.
     @throw When an object cannot be found and no surrogate is provided the following error message will appear - "Could not find a default module (#{module name}) for component #{component name}"
-    @throw When an object is found but there is an error during processing the found object the following message will appear - "Found module (#{Module Name}) for component #{Component Name} but there was an error: #{Error Message}"
+    @throw When an object is found but there is an error during processing the found object the following message will appear - "Module (#{"#{path}"}) found. Encountered #{e.name}: #{e.message}"
   ###
-  findModule: (paths, module, name, surrogate = null) ->
-    for path in paths
-      path = tweak.Common.relToAbs path, name
+  findModule: (contexts, module, surrogate = null) ->
+    for context in contexts
+      path = tweak.Common.relToAbs context, module
       try
-        return require "#{path}/#{module}"
+        return require path
       catch e
         ###
           If the error thrown isnt a direct call on "Error" Then the module was found however there was an internal error in the module
         ###
         if e.name isnt "Error"
-          e.message = "Module (#{"#{path}/#{module}"}) found although encountered #{e.name}: #{e.message}"
+          e.message = "Module (#{"#{path}"}) found. Encountered #{e.name}: #{e.message}"
           throw e
     return surrogate if surrogate?
     # If no paths are found then throw an error
-    throw new Error "Could not find a default module (#{module}) for component #{paths[0]}"
+    throw new Error "Could not find a default module (#{module}) for component #{context}"
 
   ###
     Require method to find a module in a given context path and module path.
