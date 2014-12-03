@@ -162,8 +162,9 @@ class tweak.Common
   ###
   relToAbs: (context, module) ->
     amount = module.split(/\.{2,}[\/\\]/).length-1 or 0
-    context.replace new Regex "([\/\\][^[\/\\]+){#{amount}}$", ''
-    module.replace /^(\.+[\/\\])+/, "#{context.replace /[\/\\]*$/, ''}/"
+    context = context.replace new RegExp("([\\\/\\\\]?[^\\\/\\\\]+){#{amount}}[\\\/\\\\]?$"), ''
+    module = module.replace /^(\.+[\/\\])+/, "#{context.replace /[\/\\]*$/, '/'}"
+    module.replace /^[\/\\]+/, ''
 
 
 tweak.Common = new tweak.Common()
