@@ -136,18 +136,16 @@ class tweak.Common
     throw new Error "Could not find a default module (#{module}) for component #{paths[0]}"
 
   ###
-    If using require; this function will find the specified modules.
-    This is used when building controllers and collections dynamically.
-    It will try to find specified modules; or default to tweaks default object
-
-    @param [String] path The path to require with module loader
-    @param [String] name The name to which the relative path should become absolute to
-    @return [Object] Returns required object
-    @throw When module can not be loaded the following error message will appear - "Can not find path #{path}"
+    Require method to find a module in a given context path and module path.
+    The context path and module path are merged together to create an absolute path.
+    @param [String] context The context path
+    @param [String] module The module path to convert to absolute path; based on the context path
+    @return [Object] Returns required object.
+    @throw When module can not be loaded the following error message will appear - "Can not find path #{url}"
   ###
-  require: (path, name) ->
+  require: (context, module) ->
     # Convert path to absolute path
-    url = tweak.Common.relToAbs path, name
+    url = tweak.Common.relToAbs context, module
     try
       result = require url
     catch error
