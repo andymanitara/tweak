@@ -138,9 +138,9 @@ class tweak.Component
 
     # Gets all configs, by configs extension path
     while extension
-      requested = @require "#{extension}/config", @name
+      requested = @require @name, "#{extension}/config"
       # Store all the paths
-      paths.push extension
+      paths.push @relToAbs @name, extension
       # Push a clone of the config file to remove reference
       configs.push @clone requested
       extension = requested.extends
@@ -167,7 +167,7 @@ class tweak.Component
     @return [Object] Constructed object
   ###
   addModule: (name, surrogate, params...) ->
-    Module = @findModule @paths, name, @name, surrogate
+    Module = @findModule @paths, name, surrogate
     module = @[name] = new Module @, @config[name], params...
     module.cuid = @uid
     module

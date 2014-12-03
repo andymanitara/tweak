@@ -14,8 +14,8 @@ class tweak.View
   relation: null
   #@see tweak.Common.require
   require: tweak.Common.require
-  #@see tweak.Common.splitComponents
-  splitComponents: tweak.Common.splitComponents
+  #@see tweak.Common.splitModuleName
+  splitModuleName: tweak.Common.splitModuleName
   #@see tweak.Common.findModule
   findModule: tweak.Common.findModule
 
@@ -50,13 +50,13 @@ class tweak.View
     @model.data.rendering = true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
-    @model.data.id = @name.replace /\//g, "-"
+    @model.data.id = @name.replace /\/\\/g, "-"
     # Build the template with the date from the model
-    template = if @config.template then @require @config.template, @name else @findModule @relation.paths, 'template', @name
+    template = if @config.template then @require @name, @config.template else @findModule @relation.paths, 'template'
     template = template @model.data
     
     @asyncHTML template, (template) =>
-      # Attach nodes to the dome
+      # Attach nodes to the dom
       # It can either replace whats is in its parent node, or append after or be inserted before.
       attach = =>
         @parent = parent = @getParent()
@@ -143,7 +143,7 @@ class tweak.View
         component = prop.getAttribute 'data-attach' or ''
       catch e
       if not component or component is ' ' then continue
-      for val in @splitComponents @, component
+      for val in @splitModuleName @name, component
         if value is val then child = prop
     child
 

@@ -17,7 +17,7 @@ class tweak.Components extends tweak.Collection
   #@see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
   #@see tweak.Common.splitComponents
-  splitComponents: tweak.Common.splitComponents
+  splitModuleName: tweak.Common.splitModuleName
 
   # @private
   constructor: (@relation, @config = {}) ->
@@ -37,27 +37,26 @@ class tweak.Components extends tweak.Collection
     for item in @config
       obj = {}
       if item instanceof Array
-        names = @splitComponents @, item[0], @name
-        path = @relToAbs item[1], @name
+        names = @splitModuleName @name, item[0]
+        path = @relToAbs @name, item[1]
         i = 0
         for name in names
           @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
         if name is "" or name is " " then continue
-        data = @splitComponents @, item, @name
+        data = @splitModuleName @name, item
         for name in data
           @data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
         if not name? or name is "" or name is " " then continue
-        data = @splitComponents @, name, @name
-        obj.extends = @relToAbs obj.extends, @name
+        data = @splitModuleName @name, name
+        obj.extends = @relToAbs @name, obj.extends
         for prop in data
           obj.name = prop
           @data.push new tweak.Component @, obj
       @data[@length++].init()
-
 
   ###
     @private
