@@ -23,29 +23,30 @@ class tweak.Common
     ,0)
 
   ###
-    Reduce component names like ./cd[0-98] to an array of full path names
+    Reduce component names like ./cd[0-98] to an array of all the module names
     @param [String] str The string to split into seperate component names
-    @param [String] name The name to which the relative path should become absolute to
-    @return [Array<String>] Returns Array of full path names
+    @return [Array<String>] Returns Array of full module names
   ###
-  splitComponents: (ctx, str, name) ->
+  splitModuleNames = (str) ->
     values = []
-    arrayRegex = /^(.*)\[((\d*)\-(\d*)|(\d*))\]$/
+    reg1 = /\[(\d*)\-(\d*)\]$/
+    reg2 = /\[(\d*)\]$/
+    reg3 = /^(.*)\[/
     for item in str.split " "
-      if item is " " then continue
-      name = name or ctx.relation.name
-      item = tweak.Common.relToAbs item, name
-      result = arrayRegex.exec item
-      if result
-        prefix = result[1]
-        min = 1
-        max = result[5]
-        if not max?
-          min = result[3]
-          max = result[4]
-        for i in [min..max]
-          values.push "#{prefix}#{i}"
-      else values.push item
+      prefix = reg3.exec(item)
+      if prefix
+        prefix = prefix[1]
+        min = 0
+        max = 0
+        if item.match reg2
+          max = reg2.exec(item)[1]
+        else if item.match reg1
+          result = reg1.exec item
+          min = result[1]
+          max = result[2]
+        
+        while min <= max
+          values.push "#{prefix}#{min++}"
     values
 
   ###
