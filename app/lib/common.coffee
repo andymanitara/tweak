@@ -50,9 +50,9 @@ class tweak.Common
     values
 
   ###
-    Merge properites from object from one object to another. (Reversed first object is the object to take on the properties from another)
-    @param [Object, Array] one The Object/Array to combine properties into
-    @param [Object, Array] two The Object/Array that shall be combined into the first object
+    Merge properites from object from one object to another. (First object is the object to take on the properties from another)
+    @param [Object, Array] one The Object/Array to combine properties into.
+    @param [Object, Array] two The Object/Array that shall be combined into the first object.
     @return [Object, Array] Returns the resulting combined object from two Object/Array
   ###
   combine: (one, two) ->
@@ -66,7 +66,7 @@ class tweak.Common
 
   ###
     Clone an object to remove reference to original object or simply to copy it.
-    @param [Object, Array] ref Reference object to clone
+    @param [Object, Array] ref Reference object to clone.
     @return [Object, Array] Returns the copied object, while removing object references.
   ###
   clone: (ref) ->
@@ -93,10 +93,10 @@ class tweak.Common
     return copy
 
   ###
-    Convert a simple JSON string/object
+    Convert a simple JSON string/object.
     @param [JSONString, JSONObject] data JSON data to convert.
     @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
-    @return [JSONObject, JSONString] Returns JSON data of the opposite data type
+    @return [JSONObject, JSONString] Returns JSON data of the opposite data type.
   ###
   parse: (data, restrict) ->
     _restrict = (obj) ->
