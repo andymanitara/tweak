@@ -12,6 +12,7 @@ exports.config =
       order:
         before: [
           'app/tweak.coffee',
+          'app/lib/class.coffee',
           'app/lib/common.coffee',
           'app/lib/events.coffee',
           'app/lib/store.coffee',
@@ -20,9 +21,9 @@ exports.config =
           'app/lib/controller.coffee',
           'app/lib/view.coffee',
           'app/lib/router.coffee',
-          'app/lib/sync.coffee',
           'app/lib/component.coffee',
-          'app/lib/components.coffee'
+          'app/lib/components.coffee',
+          'app/lib/view_advanced.coffee'
         ]
 
     stylesheets:

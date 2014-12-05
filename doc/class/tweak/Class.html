@@ -21,105 +21,90 @@
     &raquo;
     <span class='title'>tweak</span>
     &raquo;
-    <span class='title'>Common</span>
-    &raquo;
-    <span class='title'>Components</span>
+    <span class='title'>Class</span>
   </div>
 </div>
     <div id='content'>
       <h1>
-        Mixin:
-        tweak.Common.Components
+        Class:
+        tweak.Class
       </h1>
       <table class='box'>
         <tr>
           <td>Defined in:</td>
-          <td>app\lib\common.coffee</td>
-        </tr>
-        <tr>
-          <td>Included in:</td>
-          <td>
-            <a href='../../class/tweak/Component.html'>tweak.Component</a>
-            <a href='../../class/tweak/Components.html'>tweak.Components</a>
-            <a href='../../class/tweak/Controller.html'>tweak.Controller</a>
-            <a href='../../class/tweak/View.html'>tweak.View</a>
-          </td>
+          <td>app\lib\class.coffee</td>
         </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>Common functions that are used for component functionality</p>
+  <p>TweakJS was intitially designed in CoffeeScript for CoffeeScripters.
+It is much easier to use the framework in coffeescript; however those using JS the following helpers will provide extending features that coffeescipt possess
+These can also be used to reduce the file size of compiled coffeescript files.</p>
 </div>
 <div class='tags'>
 </div>
-      <h2>Method Summary</h2>
+      <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
     <span class='signature'>
-      <a href='#splitComponents-'>
-        ~
-(Array&lt;String&gt;)
-<b>splitComponents</b><span>(str, name)</span>
+      <a href='#extends-dynamic'>
+        #
+(void)
+<b>extends</b><span>(child, parent)</span>
       </a>
     </span>
     <span class='desc'>
-      Reduce component names like ./cd[0-98] to an array of full path names 
+      This is a dummy method - for documentation purposes only. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#super-dynamic'>
+        #
+(void)
+<b>super</b><span>(child, name)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      This is a dummy method - for documentation purposes only. 
     </span>
   </li>
 </ul>
-      <h2>Method Details</h2>
+      <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
-    <p class='signature' id='splitComponents-'>
-      ~
-(Array&lt;String&gt;)
-<b>splitComponents</b><span>(str, name)</span>
+    <p class='signature' id='extends-dynamic'>
+      #
+(void)
+<b>extends</b><span>(child, parent)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Reduce component names like ./cd[0-98] to an array of full path names</p>
+  <p>This is a dummy method - for documentation purposes only.
+To extend an object with JS use tweak.extends</p>
 </div>
 <div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>str</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The string to split into seperate component names </span>
-    </li>
-    <li>
-      <span class='name'>name</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The name to which the relative path should become absolute to </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Array&lt;String&gt;</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns Array of full path names </span>
-    </li>
-  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='super-dynamic'>
+      #
+(void)
+<b>super</b><span>(child, name)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>This is a dummy method - for documentation purposes only.
+To super a method with JS use this.super. 
+To add super to prototype of a custom object not within the TweakJS classes in JS; do {class}.prototype.super = tweak.super</p>
+</div>
+<div class='tags'>
 </div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  December 05, 14 16:49:52 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

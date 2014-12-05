@@ -12,12 +12,14 @@ class tweak.View
   root: null
   # @property [*] The direct relationship to this module
   relation: null
-  #@see tweak.Common.require
+  # @property [Method] see tweak.Common.require
   require: tweak.Common.require
-  #@see tweak.Common.splitModuleName
+  # @property [Method] see tweak.Common.splitModuleName
   splitModuleName: tweak.Common.splitModuleName
-  #@see tweak.Common.findModule
+  # @property [Method] see tweak.Common.findModule
   findModule: tweak.Common.findModule
+  # @property [Method] see tweak.super
+  super: tweak.Extends.super
 
   # @private
   constructor: (@relation, @config = {}) ->

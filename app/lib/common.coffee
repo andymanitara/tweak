@@ -166,5 +166,4 @@ class tweak.Common
     module = module.replace /^(\.+[\/\\])+/, "#{context.replace /[\/\\]*$/, '/'}"
     module.replace /^[\/\\]+/, ''
 
-
 tweak.Common = new tweak.Common()

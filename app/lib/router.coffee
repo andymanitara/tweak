@@ -10,6 +10,8 @@ class tweak.Router
   root: null
   # @property [*] The direct relationship to this module
   relation: null
+  
+  super: tweak.super
 
   # @private
   constructor: (@relation, @config = {}) ->

@@ -19,6 +19,8 @@ tweak.Viewable = {
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
 ###
 class tweak.ViewAdvanced extends tweak.View
+  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
+  
   ###
     Tweak has an optional dependecy of any selector engine in the tweak.Selector object
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine

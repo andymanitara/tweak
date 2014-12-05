@@ -25,8 +25,10 @@ class tweak.Store
   # @property [*] The direct relationship to this module
   relation: null
 
-  #@see tweak.Common.parse
+  # @property [Method] see tweak.Common.parse
   parse: tweak.Common.parse
+  
+  super: tweak.super
 
   # @private
   constructor: (@relation, @config = {}) ->
@@ -103,17 +105,6 @@ class tweak.Store
     @return [Boolean] Returns true or false depending if the property exists in the store
   ###
   has: (property) -> @data[property]?
-
-  ###
-    Looks through the store for where the data matches.
-    @param [*] property The property data to find a match against.
-    @return [Array] Returns an array of the positions of the data.
-  ###
-  pluck: (property) ->
-    result = []
-    for key, prop of @data
-      if prop is property then result.push key
-    result
 
   ###
     Remove an element at a given position

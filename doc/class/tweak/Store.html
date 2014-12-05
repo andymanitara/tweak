@@ -34,21 +34,9 @@
           <td>Defined in:</td>
           <td>app\lib\store.coffee</td>
         </tr>
-        <tr>
-          <td>Includes:</td>
-          <td>
-            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-          </td>
-        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <div class='note todo'>
-    <strong>TODO:</strong>
-    Update pluck to use new same functionality 
-  </div>
   <p>This is the base Object for dynamic storage based modules. This will contain the core functionality for these type of functions
 A collection is where data can be stored. A collection is an array storage based system. A model is an object storage based system.</p><p>The store is simply a way of storing some data, with event triggering on changes to the store.
 In common MVC concept the store is not always a database. Therefore a store in TweakJS is a temporary storage of data. So the controller should be used to get/set data from/to a database.
@@ -61,7 +49,6 @@ You can update the store quietly aswell.</p>
       <h2>Direct Known Subclasses</h2>
       <p class='children'>
         <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
-        <a href='../../class/tweak/Model.html'>tweak.Model</a>
       </p>
       <h2>Property Summary</h2>
       <dl class='properties'>
@@ -120,31 +107,65 @@ You can update the store quietly aswell.</p>
         <dd class='desc'>
           The uid of this object - for unique reference 
         </dd>
-        <dt id='cuid-property'>
-          <span class='signature'>
-            (Integer)
-            <b>
-              cuid
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The component uid of this object - for unique reference of component 
-        </dd>
         <dt id='root-property'>
           <span class='signature'>
-            (Component)
+            (*)
             <b>
               root
             </b>
           </span>
         </dt>
         <dd class='desc'>
-          The root component 
+          The root relationship to this module 
+        </dd>
+        <dt id='relation-property'>
+          <span class='signature'>
+            (*)
+            <b>
+              relation
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The direct relationship to this module 
+        </dd>
+        <dt id='parse-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              parse
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.parse 
         </dd>
       </dl>
+      <h2>Variables Summary</h2>
+      <dl class='constants'>
+  <dt id='super-variable'>
+    super
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>tweak</code></pre>
+    
+  </dd>
+</dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#init-dynamic'>
+        #
+(void)
+<b>init</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Default initialiser function 
+    </span>
+  </li>
   <li>
     <span class='signature'>
       <a href='#set-dynamic'>
@@ -155,6 +176,18 @@ You can update the store quietly aswell.</p>
     </span>
     <span class='desc'>
       Set multiple properties or one property of the store by passing an object with object of the data you with to update. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#same-dynamic'>
+        #
+(Boolean)
+<b>same</b><span>(one, two)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Returns whether two object are the same (similar) 
     </span>
   </li>
   <li>
@@ -183,18 +216,6 @@ You can update the store quietly aswell.</p>
   </li>
   <li>
     <span class='signature'>
-      <a href='#pluck-dynamic'>
-        #
-(Array)
-<b>pluck</b><span>(property)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Looks through the store for where the data matches. 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
       <a href='#removeAt-dynamic'>
         #
 (void)
@@ -218,43 +239,13 @@ You can update the store quietly aswell.</p>
     </span>
   </li>
 </ul>
-      <h2>
-        <small>Included Method Summary</small>
-      </h2>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
-      </p>
       <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>()</span>
+<b>constructor</b><span>(relation, config = {})</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -264,6 +255,19 @@ You can update the store quietly aswell.</p>
 </div>
       <h2>Instance Method Details</h2>
       <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='init-dynamic'>
+      #
+(void)
+<b>init</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Default initialiser function</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
   <div class='method_details'>
     <p class='signature' id='set-dynamic'>
       ~
@@ -428,6 +432,53 @@ You can update the store quietly aswell.</p>
 </div>
   </div>
   <div class='method_details'>
+    <p class='signature' id='same-dynamic'>
+      #
+(Boolean)
+<b>same</b><span>(one, two)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Returns whether two object are the same (similar)</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>one</span>
+      <span class='type'>
+        (
+          <tt>Object, Array</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Object to compare </span>
+    </li>
+    <li>
+      <span class='name'>two</span>
+      <span class='type'>
+        (
+          <tt>Object, Array</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Object to compare </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Boolean</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns whether two object are the same (similar) </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
     <p class='signature' id='get-dynamic'>
       #
 (*)
@@ -497,43 +548,6 @@ You can update the store quietly aswell.</p>
       )
       &mdash;
       <span class='desc'>Returns true or false depending if the property exists in the store </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='pluck-dynamic'>
-      #
-(Array)
-<b>pluck</b><span>(property)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Looks through the store for where the data matches.</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>property</span>
-      <span class='type'>
-        (
-          <tt>*</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The property data to find a match against. </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Array</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns an array of the positions of the data. </span>
     </li>
   </ul>
 </div>
@@ -614,7 +628,7 @@ You can update the store quietly aswell.</p>
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  December 05, 14 16:49:53 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

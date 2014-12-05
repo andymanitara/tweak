@@ -34,24 +34,9 @@
           <td>Defined in:</td>
           <td>app\lib\view.coffee</td>
         </tr>
-        <tr>
-          <td>Includes:</td>
-          <td>
-            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-            <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-            <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
-            <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
-          </td>
-        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <div class='note todo'>
-    <strong>TODO:</strong>
-    Reduce the complexity of the rendering functionality 
-  </div>
   <p>The view is the DOM controller. This should be used for code that doesnt really control any logic but how the view is displayed. For example animations.
 The view uses a templating engine to provide the html to the DOM.
 The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
@@ -59,6 +44,11 @@ The data in the model is passed into the views template, allowing for easy manip
 </div>
 <div class='tags'>
 </div>
+      <h2>Direct Known Subclasses</h2>
+      <p class='children'>
+        <a href='../../class/tweak/ViewComponent.html'>tweak.ViewComponent</a>
+        <a href='../../class/tweak/ViewAdvanced.html'>tweak.ViewAdvanced</a>
+      </p>
       <h2>Property Summary</h2>
       <dl class='properties'>
         <dt id='uid-property'>
@@ -72,31 +62,87 @@ The data in the model is passed into the views template, allowing for easy manip
         <dd class='desc'>
           The uid of this object - for unique reference 
         </dd>
-        <dt id='cuid-property'>
-          <span class='signature'>
-            (Integer)
-            <b>
-              cuid
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The component uid of this object - for unique reference of component 
-        </dd>
         <dt id='root-property'>
           <span class='signature'>
-            (Component)
+            (*)
             <b>
               root
             </b>
           </span>
         </dt>
         <dd class='desc'>
-          The root component 
+          The root relationship to this module 
+        </dd>
+        <dt id='relation-property'>
+          <span class='signature'>
+            (*)
+            <b>
+              relation
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The direct relationship to this module 
+        </dd>
+        <dt id='require-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              require
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.require 
+        </dd>
+        <dt id='splitModuleName-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              splitModuleName
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.splitModuleName 
+        </dd>
+        <dt id='findModule-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              findModule
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.findModule 
+        </dd>
+        <dt id='super-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              super
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.super 
         </dd>
       </dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#init-dynamic'>
+        #
+(void)
+<b>init</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Default initialiser function - called when the view has rendered 
+    </span>
+  </li>
   <li>
     <span class='signature'>
       <a href='#render-dynamic'>
@@ -196,283 +242,25 @@ The data in the model is passed into the views template, allowing for easy manip
   </li>
   <li>
     <span class='signature'>
-      <a href='#element-dynamic'>
-        #
-(Array&lt;DOMElement&gt;)
-<b>element</b><span>(element, root = @el)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Tweak has an optional dependecy of any selector engine in the tweak.Selector object 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#height-dynamic'>
-        #
-(Number)
-<b>height</b><span>(element)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns height of an element 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#insideHeight-dynamic'>
-        #
-(Number)
-<b>insideHeight</b><span>(element)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns inside height of an element 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#width-dynamic'>
-        #
-(Number)
-<b>width</b><span>(element)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns width of an element 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#insideWidth-dynamic'>
-        #
-(Number)
-<b>insideWidth</b><span>(element)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns inside width of an element 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#offsetFrom-dynamic'>
-        #
-(Number)
-<b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns the offset from another element relative to another (or default to the body) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#offsetTop-dynamic'>
-        #
-(Number)
-<b>offsetTop</b><span>(element, relativeTo)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns the top offset of an element relative to another element (or default to the body) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#offsetBottom-dynamic'>
-        #
-(Number)
-<b>offsetBottom</b><span>(element, relativeTo)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns the bottom offset of an element relative to another element (or default to the body) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#offsetLeft-dynamic'>
-        #
-(Number)
-<b>offsetLeft</b><span>(element, relativeTo)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns the left offset of an element relative to another element (or default to the body) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#offsetRight-dynamic'>
-        #
-(Number)
-<b>offsetRight</b><span>(element, relativeTo)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Returns the right offset of an element relative to another element (or default to the body) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#splitClasses-dynamic'>
+      <a href='#__renderable-dynamic'>
         #
 (void)
-<b>splitClasses</b><span>(classes)</span>
+<b>__renderable</b><span>(ctx)</span>
       </a>
     </span>
     <span class='note private title'>Private</span>
     <span class='desc'>
-      Split classes from a string to an array 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#addClass-dynamic'>
-        #
-(void)
-<b>addClass</b><span>(element, classes = &#39;&#39;)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Add a string of class names to an element(s) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#removeClass-dynamic'>
-        #
-(void)
-<b>removeClass</b><span>(element, classes = &#39;&#39;)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Remove a string of class names of an element(s) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#hasClass-dynamic'>
-        #
-(void)
-<b>hasClass</b><span>(element, name)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Check of a string of class names is in an element(s) class 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#replaceClass-dynamic'>
-        #
-(void)
-<b>replaceClass</b><span>(element, orig, classes)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Replace of a string of class names in element(s) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#DOMon-dynamic'>
-        #
-(void)
-<b>DOMon</b><span>(element, type, callback, capture = false)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Apply event listener to element(s) 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#DOMoff-dynamic'>
-        #
-(void)
-<b>DOMoff</b><span>(element, type, callback, capture = false)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Remove event listener to element(s)                         Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
-
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#DOMtrigger-dynamic'>
-        #
-(void)
-<b>DOMtrigger</b><span>(element, type, options)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Trigger event listener on element(s) 
+      Detirmine if view is ready to render; by default it will start rendering the view. 
     </span>
   </li>
 </ul>
-      <h2>
-        <small>Included Method Summary</small>
-      </h2>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Modules.html#findModule-dynamic'>#findModule</a>
-        <a href='../../mixin/tweak/Common.Modules.html#relToAbs-dynamic'>#relToAbs</a>
-        <a href='../../mixin/tweak/Common.Modules.html#require-dynamic'>#require</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Components.html#splitComponents-dynamic'>#splitComponents</a>
-      </p>
       <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>()</span>
+<b>constructor</b><span>(relation, config = {})</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -482,6 +270,19 @@ The data in the model is passed into the views template, allowing for easy manip
 </div>
       <h2>Instance Method Details</h2>
       <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='init-dynamic'>
+      #
+(void)
+<b>init</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Default initialiser function - called when the view has rendered</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
   <div class='method_details'>
     <p class='signature' id='render-dynamic'>
       #
@@ -777,769 +578,36 @@ However this is quite a perfmormance heavy part of the framework so help tidiing
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='element-dynamic'>
-      #
-(Array&lt;DOMElement&gt;)
-<b>element</b><span>(element, root = @el)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Tweak has an optional dependecy of any selector engine in the tweak.Selector object</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>root</span>
-      <span class='type'>
-        (
-          <tt>DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>(Default = @el) The element root to search for elements with a selector engine </span>
-    </li>
-  </ul>
-  <h3>Throws:</h3>
-  <ul class='throw'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>?</tt>
-      )
-      &mdash;
-      <span class='desc'>When trying to use a selector engine without having one assigned to the tweak.Selector property you will recieve the following error - &quot;Trying to get element with selector engine, but none defined to tweak.Selector&quot; </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Array&lt;DOMElement&gt;</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns an array of DOMElements </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='height-dynamic'>
-      #
-(Number)
-<b>height</b><span>(element)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns height of an element</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the of height an element </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='insideHeight-dynamic'>
-      #
-(Number)
-<b>insideHeight</b><span>(element)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns inside height of an element</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the of inside height an element </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='width-dynamic'>
-      #
-(Number)
-<b>width</b><span>(element)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns width of an element</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the of width an element </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='insideWidth-dynamic'>
-      #
-(Number)
-<b>insideWidth</b><span>(element)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns inside width of an element</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the of inside width an element </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='offsetFrom-dynamic'>
-      #
-(Number)
-<b>offsetFrom</b><span>(element, from = &quot;top&quot;, relativeTo)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns the offset from another element relative to another (or default to the body)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>from</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>(default = &quot;top&quot;) The direction to compare the offset </span>
-    </li>
-    <li>
-      <span class='name'>relativeTo</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the element offset value relative to another element </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='offsetTop-dynamic'>
-      #
-(Number)
-<b>offsetTop</b><span>(element, relativeTo)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns the top offset of an element relative to another element (or default to the body)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>relativeTo</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the top offset of an element relative to another element (or default to the body) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='offsetBottom-dynamic'>
-      #
-(Number)
-<b>offsetBottom</b><span>(element, relativeTo)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns the bottom offset of an element relative to another element (or default to the body)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>relativeTo</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the bottom offset of an element relative to another element (or default to the body) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='offsetLeft-dynamic'>
-      #
-(Number)
-<b>offsetLeft</b><span>(element, relativeTo)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns the left offset of an element relative to another element (or default to the body)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>relativeTo</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>(default = document.getElementsByTagName(&quot;html&quot;)[0]) A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the left offset of an element relative to another element (or default to the body) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='offsetRight-dynamic'>
-      #
-(Number)
-<b>offsetRight</b><span>(element, relativeTo)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Returns the right offset of an element relative to another element (or default to the body)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>relativeTo</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>(default = window.document.body) A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Number</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns the right offset of an element relative to another element (or default to the body) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='splitClasses-dynamic'>
+    <p class='signature' id='__renderable-dynamic'>
       #
 (void)
-<b>splitClasses</b><span>(classes)</span>
+<b>__renderable</b><span>(ctx)</span>
       <span class='note private'>Private</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Split classes from a string to an array</p>
+  <p>Detirmine if view is ready to render; by default it will start rendering the view.</p>
+</div>
+<div class='tags'>
+  <div class='events'>
+    <h3>Events:</h3>
+    <div class='event'>
+      <p class='signature'>
+        &quot;#{@uid}:rerendered&quot;
+      </p>
+      <div class='docstring'>
+  <p>Event called to trigger the rendering of this view.</p>
 </div>
 <div class='tags'>
 </div>
+    </div>
   </div>
-  <div class='method_details'>
-    <p class='signature' id='addClass-dynamic'>
-      #
-(void)
-<b>addClass</b><span>(element, classes = &#39;&#39;)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Add a string of class names to an element(s)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>classes</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A string of classes to add to the element(s) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='removeClass-dynamic'>
-      #
-(void)
-<b>removeClass</b><span>(element, classes = &#39;&#39;)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Remove a string of class names of an element(s)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>classes</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A string of classes to remove to the element(s) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='hasClass-dynamic'>
-      #
-(void)
-<b>hasClass</b><span>(element, name)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Check of a string of class names is in an element(s) class</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>classes</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A string of classes to remove to the element(s) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='replaceClass-dynamic'>
-      #
-(void)
-<b>replaceClass</b><span>(element, orig, classes)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Replace of a string of class names in element(s)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>classes</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A string of classes to remove to the element(s) </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='DOMon-dynamic'>
-      #
-(void)
-<b>DOMon</b><span>(element, type, callback, capture = false)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    Use the on method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method. 
-  </div>
-  <p>Apply event listener to element(s)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>type</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The type of event </span>
-    </li>
-    <li>
-      <span class='name'>callback</span>
-      <span class='type'>
-        (
-          <tt>Function</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The method to apply to the event listener </span>
-    </li>
-    <li>
-      <span class='name'>capture</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>if true it indicates to initiate capture to the registered listener first. </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='DOMoff-dynamic'>
-      #
-(void)
-<b>DOMoff</b><span>(element, type, callback, capture = false)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method. 
-  </div>
-  <p>Remove event listener to element(s)
-                        Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>type</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The type of event </span>
-    </li>
-    <li>
-      <span class='name'>capture</span>
-      <span class='type'>
-        (
-          <tt>Boolean</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>If a listener was registered twice, one with capture and one without, each must be removed separately. </span>
-    </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='DOMtrigger-dynamic'>
-      #
-(void)
-<b>DOMtrigger</b><span>(element, type, options)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <div class='note'>
-    <strong>Note:</strong>
-    Use the trigger method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method. 
-  </div>
-  <p>Trigger event listener on element(s)</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>element</span>
-      <span class='type'>
-        (
-          <tt>String, DOMElement</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>A DOMElement or a string represeting a selector query if using a selector engine </span>
-    </li>
-    <li>
-      <span class='name'>type</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The type of event </span>
-    </li>
-  </ul>
 </div>
   </div>
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  December 05, 14 16:49:53 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

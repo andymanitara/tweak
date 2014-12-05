@@ -34,18 +34,6 @@
           <td>Defined in:</td>
           <td>app\lib\component.coffee</td>
         </tr>
-        <tr>
-          <td>Includes:</td>
-          <td>
-            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-            <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-            <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
-            <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-          </td>
-        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
@@ -127,7 +115,81 @@ If you however want to extend a component yet using a different Model you can si
         <dd class='desc'>
           The uid of this object - for unique reference 
         </dd>
+        <dt id='require-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              require
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.require 
+        </dd>
+        <dt id='clone-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              clone
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.clone 
+        </dd>
+        <dt id='combine-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              combine
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.combine 
+        </dd>
+        <dt id='findModule-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              findModule
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.findModule 
+        </dd>
+        <dt id='relToAbs-property'>
+          <span class='signature'>
+            (Method)
+            <b>
+              relToAbs
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          see tweak.Common.relToAbs 
+        </dd>
       </dl>
+      <h2>Variables Summary</h2>
+      <dl class='constants'>
+  <dt id='super-variable'>
+    super
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>tweak</code></pre>
+    
+  </dd>
+  <dt id='modules-variable'>
+    modules
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>[&quot;model&quot;, &quot;view&quot;, &quot;components&quot;, &quot;router&quot;, &quot;controller&quot;]</code></pre>
+    
+  </dd>
+</dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -217,18 +279,6 @@ If you however want to extend a component yet using a different Model you can si
   </li>
   <li>
     <span class='signature'>
-      <a href='#construct-dynamic'>
-        #
-(void)
-<b>construct</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Function to call other function so the component can be impeded before starting 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
       <a href='#init-dynamic'>
         #
 (void)
@@ -288,69 +338,6 @@ If you however want to extend a component yet using a different Model you can si
     </span>
   </li>
 </ul>
-      <h2>
-        <small>Included Method Summary</small>
-      </h2>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Modules.html#findModule-dynamic'>#findModule</a>
-        <a href='../../mixin/tweak/Common.Modules.html#relToAbs-dynamic'>#relToAbs</a>
-        <a href='../../mixin/tweak/Common.Modules.html#require-dynamic'>#require</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Components.html#splitComponents-dynamic'>#splitComponents</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
       <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
@@ -670,19 +657,6 @@ It inteligently iherits modules, and configuration settings from its extending c
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='construct-dynamic'>
-      #
-(void)
-<b>construct</b><span>()</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Function to call other function so the component can be impeded before starting</p>
-</div>
-<div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
     <p class='signature' id='init-dynamic'>
       #
 (void)
@@ -787,7 +761,7 @@ It inteligently iherits modules, and configuration settings from its extending c
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  December 05, 14 16:49:53 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

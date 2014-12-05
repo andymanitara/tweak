@@ -13,6 +13,8 @@
   With this override; components render in order.
 ###
 class tweak.ViewComponent extends tweak.View
+  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
+
   ###
     @private
     Add extra functionality based on it now supports components
@@ -70,14 +72,18 @@ class tweak.Component
   # @property [Interger] The uid of this object - for unique reference
   uid: 0
 
-  #@see tweak.Common.require
+  # @property [Method] see tweak.Common.require
   require: tweak.Common.require
-  #@see tweak.Common.clone
+  # @property [Method] see tweak.Common.clone
   clone: tweak.Common.clone
-  #@see tweak.Common.combine
+  # @property [Method] see tweak.Common.combine
   combine: tweak.Common.combine
-  #@see tweak.Common.findModule
+  # @property [Method] see tweak.Common.findModule
   findModule: tweak.Common.findModule
+  # @property [Method] see tweak.Common.relToAbs
+  relToAbs: tweak.Common.relToAbs
+
+  super: tweak.super
 
   modules: ["model", "view", "components", "router", "controller"]
 

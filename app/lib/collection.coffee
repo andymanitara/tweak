@@ -2,6 +2,8 @@
   A collection is where data can be stored, a default collection is an array based system. The model is a extension to the default collection; but based on an object.
 ###
 class tweak.Collection extends tweak.Store
+  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
+    
   # @property [String] The type of storage, ie 'collection' or 'model'
   storeType: "collection"
 

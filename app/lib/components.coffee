@@ -5,6 +5,8 @@
   This allow reloading of views without affect other views, a bit like regions in backbone marionette. However your code can now be much more structured in this format and easier to understand where things are happening.
 ###
 class tweak.Components extends tweak.Collection
+  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
+    
   # @property [String] The type of storage
   storeType: "components"
   # @property [Object] The config object of this module
@@ -14,9 +16,9 @@ class tweak.Components extends tweak.Collection
   # @property [*] The direct relationship to this module
   relation: null
 
-  #@see tweak.Common.relToAbs
+  # @property [Method] see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
-  #@see tweak.Common.splitComponents
+  # @property [Method] see tweak.Common.splitComponents
   splitModuleName: tweak.Common.splitModuleName
 
   # @private

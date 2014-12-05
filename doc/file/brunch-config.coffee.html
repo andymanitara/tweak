@@ -45,13 +45,15 @@
     javascripts: {
       defaultExtension: &#39;coffee&#39;,
       joinTo: {
-        &#39;javascripts&#47;tweak.js&#39;: &#47;^app(\&#47;|\\)(?!(header|.*(_test)))&#47;,
-        &#39;javascripts&#47;tests.js&#39;: &#47;^app(\&#47;|\\).*(?=_test)&#47;,
-        &#39;javascripts&#47;header.js&#39;: &#47;^app(\&#47;|\\)(?=header)&#47;,
-        &#39;javascripts&#47;vendor.js&#39;: &#47;^(?!app)&#47;
+        &#39;javascripts&#47;tweak.js&#39;: &#47;^app(\&#47;|\\)(?!((lib(\&#47;|\\)(view_advanced|component|components))|header|.*(_test)))&#47;,
+        &#39;javascripts&#47;tweak.component.js&#39;: &#47;^app(\&#47;|\\)lib(\&#47;|\\)(component|components)&#47;,
+        &#39;javascripts&#47;tweak.view.advanced.js&#39;: &#47;^app(\&#47;|\\)lib(\&#47;|\\)view_advanced&#47;,
+        &#39;javascripts&#47;etc&#47;tests.js&#39;: &#47;^app(\&#47;|\\).*(?=_test)&#47;,
+        &#39;javascripts&#47;etc&#47;header.js&#39;: &#47;^app(\&#47;|\\)(?=header)&#47;,
+        &#39;javascripts&#47;etc&#47;vendor.js&#39;: &#47;^(?!app)&#47;
       },
       order: {
-        before: [&#39;app&#47;tweak.coffee&#39;, &#39;app&#47;lib&#47;common.coffee&#39;, &#39;app&#47;lib&#47;helpers.coffee&#39;, &#39;app&#47;lib&#47;events.coffee&#39;, &#39;app&#47;lib&#47;store.coffee&#39;, &#39;app&#47;lib&#47;model.coffee&#39;, &#39;app&#47;lib&#47;collection.coffee&#39;, &#39;app&#47;lib&#47;component.coffee&#39;, &#39;app&#47;lib&#47;components.coffee&#39;, &#39;app&#47;lib&#47;controller.coffee&#39;, &#39;app&#47;lib&#47;view.coffee&#39;, &#39;app&#47;lib&#47;router.coffee&#39;, &#39;app&#47;lib&#47;sync.coffee&#39;]
+        before: [&#39;app&#47;tweak.coffee&#39;, &#39;app&#47;lib&#47;class.coffee&#39;, &#39;app&#47;lib&#47;common.coffee&#39;, &#39;app&#47;lib&#47;events.coffee&#39;, &#39;app&#47;lib&#47;store.coffee&#39;, &#39;app&#47;lib&#47;model.coffee&#39;, &#39;app&#47;lib&#47;collection.coffee&#39;, &#39;app&#47;lib&#47;controller.coffee&#39;, &#39;app&#47;lib&#47;view.coffee&#39;, &#39;app&#47;lib&#47;router.coffee&#39;, &#39;app&#47;lib&#47;component.coffee&#39;, &#39;app&#47;lib&#47;components.coffee&#39;, &#39;app&#47;lib&#47;view_advanced.coffee&#39;]
       }
     },
     stylesheets: {
@@ -72,7 +74,7 @@
   modules: {
     definition: false,
     wrapper: function(path, data) {
-      return &quot;;\n(function(window){\n})(window); \n\n&quot;;
+      return &quot;;\n(function(window){\n    })(window); \n\n&quot;;
     }
   },
   overrides: {
@@ -92,7 +94,7 @@
 </dl>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  December 05, 14 16:49:53 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

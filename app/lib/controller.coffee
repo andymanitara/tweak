@@ -7,7 +7,6 @@
   The model can be used for validating data on updateing of data allowing a simple continuous checking system seperate from your logic.
   Therefore the complex logic between what happens on certain interaction can remain in the controller; making it simpler to understand what happens where and when.
   It now keeps your code clean from long and extensive validation and animation logic; which can make code hard to understand when trying to debug why something wont happen after another thing.
-
 ###
 class tweak.Controller
 

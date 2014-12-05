@@ -34,30 +34,15 @@
           <td>Defined in:</td>
           <td>app\lib\controller.coffee</td>
         </tr>
-        <tr>
-          <td>Includes:</td>
-          <td>
-            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-            <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-            <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
-            <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
-          </td>
-        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <div class='note todo'>
-    <strong>TODO:</strong>
-    reduce the amount of mixins. This will be easier once i know the commonly used functionality. Probably will end up being require, findModule, trigger, on, off, init, construct. 
-  </div>
   <p>The controller should be used to control the logic and functionality between components modules.
 The controller allows for seperation for your logic. You can still use the view and the model ect to control logic, but think of this as your middle man/ blank canvas.
 By seperating the logic between the model and view you allow for much cleaner code. The view can still contain logic; but try keep this logic based on the interface between the user and view.</p><p>The view could be used to define the parts of interaction; and animating things.
 The model can be used for validating data on updateing of data allowing a simple continuous checking system seperate from your logic.
 Therefore the complex logic between what happens on certain interaction can remain in the controller; making it simpler to understand what happens where and when.
-It now keeps your code clean from long and extensive validation and animation logic; which can make code hard to understand when trying to debug why something wont happen after another thing.</p><p>The controller inherits a few mixins to allow for more controll in the framework; but in general it is very minimal.</p>
+It now keeps your code clean from long and extensive validation and animation logic; which can make code hard to understand when trying to debug why something wont happen after another thing.</p>
 </div>
 <div class='tags'>
 </div>
@@ -74,89 +59,111 @@ It now keeps your code clean from long and extensive validation and animation lo
         <dd class='desc'>
           The uid of this object - for unique reference 
         </dd>
-        <dt id='cuid-property'>
-          <span class='signature'>
-            (Integer)
-            <b>
-              cuid
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The component uid of this object - for unique reference of component 
-        </dd>
         <dt id='root-property'>
           <span class='signature'>
-            (Component)
+            (*)
             <b>
               root
             </b>
           </span>
         </dt>
         <dd class='desc'>
-          The root component 
+          The root relationship to this module 
+        </dd>
+        <dt id='relation-property'>
+          <span class='signature'>
+            (*)
+            <b>
+              relation
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The direct relationship to this module 
         </dd>
       </dl>
-      <h2>
-        <small>Included Method Summary</small>
-      </h2>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Modules.html'>tweak.Common.Modules</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Modules.html#findModule-dynamic'>#findModule</a>
-        <a href='../../mixin/tweak/Common.Modules.html#relToAbs-dynamic'>#relToAbs</a>
-        <a href='../../mixin/tweak/Common.Modules.html#require-dynamic'>#require</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Components.html'>tweak.Common.Components</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Components.html#splitComponents-dynamic'>#splitComponents</a>
-      </p>
+      <h2>Instance Method Summary</h2>
+      <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#init-dynamic'>
+        #
+(void)
+<b>init</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Default initialiser function 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#on-dynamic'>
+        #
+(Boolean)
+<b>on</b><span>(params...)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Event &#39;on&#39; handler for DOM and the Event API 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#off-dynamic'>
+        #
+(Boolean)
+<b>off</b><span>(params...)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Event &#39;off&#39; handler Event API 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#trigger-dynamic'>
+        #
+(void)
+<b>trigger</b><span>(params...)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Event &#39;trigger&#39; handler for DOM and the Event API, triggered in async 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#listen-dynamic'>
+        #
+(void)
+<b>listen</b><span>(name, options = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Set event to be listened to 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#noListen-dynamic'>
+        #
+(void)
+<b>noListen</b><span>(name, options = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Set event to not be listened to 
+    </span>
+  </li>
+</ul>
       <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>()</span>
+<b>constructor</b><span>(relation, config = {})</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -164,9 +171,309 @@ It now keeps your code clean from long and extensive validation and animation lo
 </div>
   </div>
 </div>
+      <h2>Instance Method Details</h2>
+      <div class='methods'>
+  <div class='method_details'>
+    <p class='signature' id='init-dynamic'>
+      #
+(void)
+<b>init</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Default initialiser function</p>
+</div>
+<div class='tags'>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='on-dynamic'>
+      #
+(Boolean)
+<b>on</b><span>(params...)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Event &#39;on&#39; handler for DOM and the Event API</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name, split on the / and : characters, to add </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The callback function; if you do not include this then all events under the name will be removed </span>
+    </li>
+    <li>
+      <span class='name'>maxCalls</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The maximum amount of calls the event can be triggered. </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Boolean</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns whether the event is added </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='off-dynamic'>
+      #
+(Boolean)
+<b>off</b><span>(params...)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Event &#39;off&#39; handler Event API</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name, split on the / and : characters, to remove </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>(optional) The callback function; if you do not include this then all events under the name will be removed </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Boolean</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns whether the event is removed </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='trigger-dynamic'>
+      #
+(void)
+<b>trigger</b><span>(params...)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Event &#39;trigger&#39; handler for DOM and the Event API, triggered in async</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name, split on the / and : characters, to trigger </span>
+    </li>
+    <li>
+      <span class='name'>params</span>
+      <span class='type'>
+        (
+          <tt>...</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Parameters to pass into the callback function </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='listen-dynamic'>
+      #
+(void)
+<b>listen</b><span>(name, options = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Set event to be listened to</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name; split on the / and : characters </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The limits to check events to. </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Context to limit to. </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Callback function to limit to. </span>
+    </li>
+    <li>
+      <span class='name'>max</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Maximum calls to limit to. </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='noListen-dynamic'>
+      #
+(void)
+<b>noListen</b><span>(name, options = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Set event to not be listened to</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name; split on the / and : characters </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The limits to check events to. </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Context to limit to. </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Callback function to limit to. </span>
+    </li>
+    <li>
+      <span class='name'>max</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Maximum calls to limit to. </span>
+    </li>
+  </ul>
+</div>
+  </div>
+</div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  December 05, 14 16:49:53 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

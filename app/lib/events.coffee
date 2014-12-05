@@ -4,9 +4,12 @@
   The event system simply stores the callbacks in an object tree.
   The tree allows quick traversal of events, during interaction with the event API
 ###
-class tweak.EventSystem
+class tweak.Events
   # @property [Integer] The component uid of this object - for unique reference of component
   uid: 0
+
+  super: tweak.super
+  
   # Split regex for event name
   splitEventName = (name) ->
     if typeof name is "string"
@@ -19,10 +22,7 @@ class tweak.EventSystem
   events: {}
 
   # @private
-  constructor: ->
-    # Set uid
-    @uid = "e_#{tweak.uids.e++}"
-    @reset()
+  constructor: -> @reset()
 
   ###
     Add an event listener into the event system.
@@ -181,5 +181,8 @@ class tweak.EventSystem
   ###
   reset: -> @events = {}
 
-### Initialise EventSystem ###
-tweak.Events = new tweak.EventSystem()
+### 
+  Initialise Event System. This is only needed the once.
+  To stop multiple instances of it being declared it is overwritten as it constructed version.
+###
+tweak.Events = new tweak.Events()

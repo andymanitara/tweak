@@ -5,8 +5,9 @@
   When the model updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the model quietly aswell.
 ###
-class tweak.Model extends tweak.Store
-  
+class tweak.Model 
+  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
+
   # @property [Object] Data storage holder, for a model this is an object
   data: {}
   # @property [String] The type of collection this is
@@ -57,6 +58,17 @@ class tweak.Model extends tweak.Store
       i++
 
     null
+
+  ###
+    Looks through the store for where the data matches.
+    @param [*] property The property data to find a match against.
+    @return [Array] Returns an array of the positions of the data.
+  ###
+  pluck: (property) ->
+    result = []
+    for key, prop of @data
+      if prop is property then result.push key
+    result
 
   ###
     Reset the model back to defaults
