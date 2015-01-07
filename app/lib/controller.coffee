@@ -18,7 +18,9 @@ class tweak.Controller
   relation: null
 
   # @private
-  constructor: (@relation, @config = {}) ->
+  constructor: (relation, config) ->
+    @relation = relation ?= {}
+    @config = config ?= {}
     # Set uid
     @uid = "ct_#{tweak.uids.ct++}"
     @root = relation.root or @

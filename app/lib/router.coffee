@@ -18,7 +18,7 @@ class tweak.Router
     # Set uid
     @uid = "r_#{tweak.uids.r++}"
     @root = relation.root or @
-    @name = config.name or relation.name
+    @name = @config.name or relation.name
 
   ###
     Start watching the roouter for changes, options for speed and whether to be quiet

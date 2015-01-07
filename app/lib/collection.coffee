@@ -8,7 +8,9 @@ class tweak.Collection extends tweak.Store
   storeType: "collection"
 
   # @private
-  constructor: (@relation, @config = {}) ->
+  constructor: (relation, config) ->
+    @relation = relation ?= {}
+    @config = config ?= {}
     # Set uid
     @uid = "cl_#{tweak.uids.cl++}"
     @root = relation.root or @

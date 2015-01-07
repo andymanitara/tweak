@@ -22,11 +22,11 @@ class tweak.Components extends tweak.Collection
   splitModuleName: tweak.Common.splitModuleName
 
   # @private
-  constructor: (@relation, @config = {}) ->
+  constructor: (relation, config) ->
+    @relation = relation ?= {}
+    @config = config ?= []
     # Set uid
     @uid = "cp_#{tweak.uids.cp++}"
-
-    @config = config or []
     @root = relation.root or @
     @name = config.name or relation.name
   
@@ -41,14 +41,14 @@ class tweak.Components extends tweak.Collection
       if item instanceof Array
         names = @splitModuleName @name, item[0]
         path = @relToAbs @name, item[1]
-        i = 0
         for name in names
           @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
-        if name is "" or name is " " then continue
+        if item is "" or item is " " then continue
         data = @splitModuleName @name, item
+        console.log data
         for name in data
-          @data.push new tweak.Component @, {name}
+          @data.push new tweak.Component @, {name}    
       else
         obj = item
         name = obj.name

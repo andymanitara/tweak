@@ -17,12 +17,17 @@
     "test": "brunch test"
   },
   "dependencies": {
-    "javascript-brunch": "*",
+    "after-brunch": "0.0.4",
+    "auto-reload-brunch": "*",
     "coffee-script-brunch": "*",
     "css-brunch": "*",
-    "auto-reload-brunch": "*"
+    "javascript-brunch": "*"
   },
-  "main": ["public/javascripts/tweak.js","public/javascripts/tweak.component.js","public/javascripts/tweak.view.advanced.js"],
+  "main": [
+    "public/javascripts/tweak.js",
+    "public/javascripts/tweak.component.js",
+    "public/javascripts/tweak.view.advanced.js"
+  ],
   "directories": {
     "test": "test"
   },

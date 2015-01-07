@@ -31,7 +31,10 @@ class tweak.Store
   super: tweak.super
 
   # @private
-  constructor: (@relation, @config = {}) ->
+  constructor: (relation, config) ->
+    @relation = relation ?= {}
+    @config = config ?= {}
+
     # Set uid
     @uid = "s_#{tweak.uids.s++}"
     @root = relation.root or @

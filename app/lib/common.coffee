@@ -27,7 +27,7 @@ class tweak.Common
     @param [String] str The string to split into seperate component names
     @return [Array<String>] Returns Array of absolute module names
   ###
-  splitModuleName = (context, str) ->
+  splitModuleName: (context, str) ->
     values = []
     reg1 = /\[(\d*)\-(\d*)\]$/
     reg2 = /\[(\d*)\]$/
@@ -43,10 +43,12 @@ class tweak.Common
         else if item.match reg1
           result = reg1.exec item
           min = result[1]
-          max = result[2]
+          max = result[2]     
         
         while min <= max
-          values.push tweak.Common.relToAbs context, "#{prefix}#{min++}"
+          values.push tweak.Common.relToAbs context, "./#{prefix}#{min++}"
+      else
+        values.push tweak.Common.relToAbs context, str
     values
 
   ###

@@ -5,7 +5,7 @@
   When the model updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the model quietly aswell.
 ###
-class tweak.Model 
+class tweak.Model extends tweak.Store
   # Not using own tweak.extends method as codo doesnt detect that this is an extending class
 
   # @property [Object] Data storage holder, for a model this is an object
@@ -14,7 +14,8 @@ class tweak.Model
   storeType: "model"
 
   # @private
-  constructor: (@relation, @data = {}) ->
+  constructor: (relation, @data = {}) ->
+    @relation = relation ?= {}
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
     @root = relation.root or @
