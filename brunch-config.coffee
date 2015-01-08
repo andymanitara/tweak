@@ -33,9 +33,6 @@ exports.config =
     autoReload:
       port: [1234, 2345, 3456]
       delay: 200 if require('os').platform() is 'win32'
-    afterBrunch:[
-      'cp public/javascripts/*.js ../demo/vendor/scripts'
-    ]
 
   server:
     port: 3455
