@@ -11,13 +11,13 @@ class tweak.Model extends tweak.Store
   # @property [Object] Data storage holder, for a model this is an object
   data: {}
   # @property [String] The type of collection this is
-  storeType: "model"
+  _type: "model"
 
   # @private
   constructor: (relation, @data = {}) ->
-    @relation = relation ?= {}
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
+    @relation = relation ?= {}
     @root = relation.root or @
     @name = relation.name
 
@@ -40,9 +40,9 @@ class tweak.Model extends tweak.Store
       for key, prop of data when key is property
         @length--
         delete @data[key]
-        if not quiet then tweak.Common.__trigger @, "#{@storeType}:removed:#{key}"
+        if not quiet then tweak.Common.__trigger @, "#{@_type}:removed:#{key}"
 
-    if not quiet then tweak.Common.__trigger @, "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger @, "#{@_type}:changed"
     return
 
   ###

@@ -10,14 +10,14 @@
 ###
 class tweak.Store
 
+  # @property [String] The type of storage, ie 'collection' or 'model'
+  _type: 'BASE'
   # @property [Object] The config object of this module
   config: {}
   # @property [Integer] Length of the stores data
   length: 0
   # @property [Object, Array] Data holder for the store
   data: []
-  # @property [String] The type of storage, ie 'collection' or 'model'
-  storeType: 'BASE'
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
   # @property [*] The root relationship to this module
@@ -31,12 +31,10 @@ class tweak.Store
   super: tweak.super
 
   # @private
-  constructor: (relation, config) ->
-    @relation = relation ?= {}
-    @config = config ?= {}
-
+  constructor: (relation, config = {}) ->
     # Set uid
     @uid = "s_#{tweak.uids.s++}"
+    @relation = relation ?= {}
     @root = relation.root or @
     @name = config.name or relation.name
 
@@ -59,12 +57,12 @@ class tweak.Store
       @param [Object] properties Key and property based object to store into store
       @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@component.uid}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@component.uid}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
     @event #{@uid}:changed:#{key} Triggers an event and passes in changed property
 
-    @event #{@name}:#{@storeType}:changed Triggers a generic event that the store has been updated
-    @event #{@component.uid}:#{@storeType}:changed Triggers a generic event that the store has been updated
+    @event #{@name}:#{@_type}:changed Triggers a generic event that the store has been updated
+    @event #{@component.uid}:#{@_type}:changed Triggers a generic event that the store has been updated
     @event #{@uid}:changed Triggers a generic event that the store has been updated
   ###
   set: (properties, params...) ->
@@ -79,9 +77,9 @@ class tweak.Store
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then tweak.Common.__trigger @, "#{@storeType}:changed:#{key}", prop
+      if not quiet then tweak.Common.__trigger @, "#{@_type}:changed:#{key}", prop
 
-    if not quiet then tweak.Common.__trigger @, "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger @, "#{@_type}:changed"
     return
 
   ###

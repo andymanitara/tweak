@@ -5,17 +5,15 @@ class tweak.Collection extends tweak.Store
   # Not using own tweak.extends method as codo doesnt detect that this is an extending class
     
   # @property [String] The type of storage, ie 'collection' or 'model'
-  storeType: "collection"
+  _type: "collection"
 
   # @private
-  constructor: (relation, config) ->
-    @relation = relation ?= {}
-    @config = config ?= {}
+  constructor: (relation, @data = {}) ->
     # Set uid
     @uid = "cl_#{tweak.uids.cl++}"
+    @relation = relation ?= {}
     @root = relation.root or @
-    @name = config.name or relation.name
-    @reset()
+    @name = relation.name
 
   ###
     Reduce an array be remove elements from the front of the array and returning the new array
@@ -36,8 +34,8 @@ class tweak.Collection extends tweak.Store
     Pop the top data element in the collection
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
-    @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@name}:#{@_type}:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
     @return [*] Returns the data that was removed
   ###
   pop: (quiet) ->
@@ -50,8 +48,8 @@ class tweak.Collection extends tweak.Store
     @param [*] data Data to add to the end of the collection
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
   ###
   add: (data, quiet) -> @set "#{@length}", data, quiet
   
@@ -61,12 +59,12 @@ class tweak.Collection extends tweak.Store
     @param [Number] position The position to insert the property at into the collection
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@component.uid}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@component.uid}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
     @event #{@uid}:changed:#{key} Triggers an event and passes in changed property
 
-    @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
-    @event #{@component.uid}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
+    @event #{@component.uid}:#{@_type}:changed Triggers a generic event that the collection has been updated
     @event #{@uid}:changed Triggers a generic event that the collection has been updated
   ###
   place: (data, position, quiet) ->
@@ -80,8 +78,8 @@ class tweak.Collection extends tweak.Store
       result.push @data[_j]
     @data = result
     if not quiet
-      tweak.Common.__trigger @, "#{@storeType}:changed"
-      tweak.Common.__trigger @, "#{@storeType}:changed:#{position}"
+      tweak.Common.__trigger @, "#{@_type}:changed"
+      tweak.Common.__trigger @, "#{@_type}:changed:#{position}"
     return
   
   ###
@@ -98,22 +96,22 @@ class tweak.Collection extends tweak.Store
     @param [String, Array<String>] properties Array of property names to remove from collection, or single String of the name of the property to remove
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
-    @event #{@component.uid}:#{@storeType}:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@name}:#{@_type}:removed:#{key} Triggers an event based on what property has been removed
+    @event #{@component.uid}:#{@_type}:removed:#{key} Triggers an event based on what property has been removed
     @event #{@uid}:removed:#{key} Triggers an event based on what property has been removed
 
-    @event #{@name}:#{@storeType}:changed Triggers a generic event that the collection has been updated
-    @event #{@component.uid}:#{@storeType}:changed Triggers a generic event that the collection has been updated
+    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
+    @event #{@component.uid}:#{@_type}:changed Triggers a generic event that the collection has been updated
     @event #{@uid}:changed Triggers a generic event that the collection has been updated
   ###
   remove: (properties, quiet) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      if not quiet then tweak.Common.__trigger @, "#{@storeType}:removed:#{property}"
+      if not quiet then tweak.Common.__trigger @, "#{@_type}:removed:#{property}"
     
     @clean()
-    if not quiet then tweak.Common.__trigger @, "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger @, "#{@_type}:changed"
     return
 
   ###
@@ -159,7 +157,7 @@ class tweak.Collection extends tweak.Store
   export: (restrict) ->
     res = {}
     for key, item of @data
-      res[key] = if item.storeType
-        {type:item.storeType, data:@parse item.export()}
+      res[key] = if item._type
+        {type:item._type, data:@parse item.export()}
       else item
     @parse res, restict

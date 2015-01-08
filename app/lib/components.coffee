@@ -8,9 +8,8 @@ class tweak.Components extends tweak.Collection
   # Not using own tweak.extends method as codo doesnt detect that this is an extending class
     
   # @property [String] The type of storage
-  storeType: "components"
-  # @property [Object] The config object of this module
-  config: []
+  _type: "components"
+
   # @property [*] The root relationship to this module
   root: null
   # @property [*] The direct relationship to this module
@@ -23,10 +22,10 @@ class tweak.Components extends tweak.Collection
 
   # @private
   constructor: (relation, config) ->
-    @relation = relation ?= {}
-    @config = config ?= []
     # Set uid
     @uid = "cp_#{tweak.uids.cp++}"
+    @relation = relation ?= {}
+    @_config = config ?= []
     @root = relation.root or @
     @name = config.name or relation.name
   
@@ -36,7 +35,7 @@ class tweak.Components extends tweak.Collection
   init: ->
     @data = []
     data = []
-    for item in @config
+    for item in @_config
       obj = {}
       if item instanceof Array
         names = @splitModuleName @name, item[0]
@@ -46,7 +45,6 @@ class tweak.Components extends tweak.Collection
       else if typeof item is "string"
         if item is "" or item is " " then continue
         data = @splitModuleName @name, item
-        console.log data
         for name in data
           @data.push new tweak.Component @, {name}    
       else
@@ -60,26 +58,31 @@ class tweak.Components extends tweak.Collection
           @data.push new tweak.Component @, obj
       @data[@length++].init()
 
+      # Remove config as the data is no longer required
+      delete @_config
+
   ###
     @private
     Rendering and rererendering functionality to reduce code
   ###
   _componentRender: (type) ->
     if @length is 0
-      tweak.Common.__trigger @, "#{@storeType}:ready"
+      tweak.Common.__trigger @, "#{@_type}:ready"
     else
       @total = 0
       for item in @data
         item[type]()
-        tweak.Events.off @, "#{item.uid}:view:#{type}ed", @_allRendered
-        tweak.Events.on @, "#{item.uid}:view:#{type}ed", @_allRendered, @length
+        # Weird format to allow the _allRendered method to remain private
+        tweak.Events.off @, "#{item.uid}:view:#{type}ed", => @_allRendered @
+        tweak.Events.on @, "#{item.uid}:view:#{type}ed", => @_allRendered @, @length
 
   ###
     @private
     Callback for when an item is rendered
+    @param [context] context The context to apply to the function
   ###
-  _allRendered: =>
-    if @total++ is @length-1 then tweak.Common.__trigger @, "#{@storeType}:ready"
+  _allRendered: (context) ->
+    if context.total++ is context.length-1 then tweak.Common.__trigger context, "#{context._type}:ready"
 
   ###
     Renders all of its components, also triggers ready state when all components are ready
