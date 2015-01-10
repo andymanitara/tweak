@@ -53,11 +53,11 @@
       </p>
       <h2>Property Summary</h2>
       <dl class='properties'>
-        <dt id='storeType-property'>
+        <dt id='_type-property'>
           <span class='signature'>
             (String)
             <b>
-              storeType
+              _type
             </b>
           </span>
         </dt>
@@ -70,10 +70,10 @@
         <a href='../../class/tweak/Store.html'>tweak.Store</a>
       </h3>
       <p class='inherited'>
+        <a href='[object Object]'>_type</a>
         <a href='[object Object]'>config</a>
         <a href='[object Object]'>length</a>
         <a href='[object Object]'>data</a>
-        <a href='[object Object]'>storeType</a>
         <a href='[object Object]'>uid</a>
         <a href='[object Object]'>root</a>
         <a href='[object Object]'>relation</a>
@@ -245,7 +245,7 @@
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>(relation, config = {})</span>
+<b>constructor</b><span>(relation, data = {})</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -343,7 +343,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:removed:#{key}
+        #{@name}:#{@_type}:removed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event based on what property has been removed</p>
@@ -353,7 +353,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -413,7 +413,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed:#{key}
+        #{@name}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -423,7 +423,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -482,7 +482,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed:#{key}
+        #{@name}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -492,7 +492,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed:#{key}
+        #{@component.uid}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -512,7 +512,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -522,7 +522,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed
+        #{@component.uid}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -618,7 +618,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:removed:#{key}
+        #{@name}:#{@_type}:removed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event based on what property has been removed</p>
@@ -628,7 +628,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:removed:#{key}
+        #{@component.uid}:#{@_type}:removed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event based on what property has been removed</p>
@@ -648,7 +648,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -658,7 +658,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed
+        #{@component.uid}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -852,7 +852,7 @@
 </div>
     </div>
     <div id='footer'>
-  December 05, 14 16:49:52 by
+  January 10, 15 21:04:33 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

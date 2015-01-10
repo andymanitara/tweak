@@ -52,27 +52,16 @@ This allow reloading of views without affect other views, a bit like regions in 
 </div>
       <h2>Property Summary</h2>
       <dl class='properties'>
-        <dt id='storeType-property'>
+        <dt id='_type-property'>
           <span class='signature'>
             (String)
             <b>
-              storeType
+              _type
             </b>
           </span>
         </dt>
         <dd class='desc'>
           The type of storage 
-        </dd>
-        <dt id='config-property'>
-          <span class='signature'>
-            (Object)
-            <b>
-              config
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The config object of this module 
         </dd>
         <dt id='root-property'>
           <span class='signature'>
@@ -124,7 +113,7 @@ This allow reloading of views without affect other views, a bit like regions in 
         <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
       </h3>
       <p class='inherited'>
-        <a href='[object Object]'>storeType</a>
+        <a href='[object Object]'>_type</a>
         <a href='[object Object]'>config</a>
         <a href='[object Object]'>length</a>
         <a href='[object Object]'>data</a>
@@ -174,10 +163,9 @@ This allow reloading of views without affect other views, a bit like regions in 
       <a href='#_allRendered-dynamic'>
         #
 (void)
-<b>_allRendered</b><span>()</span>
+<b>_allRendered</b><span>(context)</span>
       </a>
     </span>
-    <span class='bound note title'>Bound</span>
     <span class='note private title'>Private</span>
     <span class='desc'>
       Callback for when an item is rendered 
@@ -289,7 +277,7 @@ This allow reloading of views without affect other views, a bit like regions in 
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>(relation, config = {})</span>
+<b>constructor</b><span>(relation, config)</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -330,8 +318,7 @@ This allow reloading of views without affect other views, a bit like regions in 
     <p class='signature' id='_allRendered-dynamic'>
       #
 (void)
-<b>_allRendered</b><span>()</span>
-      <span class='bound note'>Bound</span>
+<b>_allRendered</b><span>(context)</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -339,6 +326,19 @@ This allow reloading of views without affect other views, a bit like regions in 
   <p>Callback for when an item is rendered</p>
 </div>
 <div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>context</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The context to apply to the function </span>
+    </li>
+  </ul>
 </div>
   </div>
   <div class='method_details'>
@@ -456,7 +456,7 @@ This allow reloading of views without affect other views, a bit like regions in 
 </div>
     </div>
     <div id='footer'>
-  December 05, 14 16:49:53 by
+  January 10, 15 21:04:33 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

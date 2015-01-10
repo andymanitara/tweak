@@ -38,8 +38,6 @@ class tweak.ViewComponent extends tweak.View
 tweak.View = tweak.ViewComponent
 
 ###
-  TweakJS has its own unique twist to the MVC concept.
-
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
   For example you can plug "Web Components" into your static site; like sliders, accordians.
   The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps.

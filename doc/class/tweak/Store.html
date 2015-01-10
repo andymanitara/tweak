@@ -49,9 +49,21 @@ You can update the store quietly aswell.</p>
       <h2>Direct Known Subclasses</h2>
       <p class='children'>
         <a href='../../class/tweak/Collection.html'>tweak.Collection</a>
+        <a href='../../class/tweak/Model.html'>tweak.Model</a>
       </p>
       <h2>Property Summary</h2>
       <dl class='properties'>
+        <dt id='_type-property'>
+          <span class='signature'>
+            (String)
+            <b>
+              _type
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The type of storage, ie &#39;collection&#39; or &#39;model&#39; 
+        </dd>
         <dt id='config-property'>
           <span class='signature'>
             (Object)
@@ -84,17 +96,6 @@ You can update the store quietly aswell.</p>
         </dt>
         <dd class='desc'>
           Data holder for the store 
-        </dd>
-        <dt id='storeType-property'>
-          <span class='signature'>
-            (String)
-            <b>
-              storeType
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The type of storage, ie &#39;collection&#39; or &#39;model&#39; 
         </dd>
         <dt id='uid-property'>
           <span class='signature'>
@@ -287,7 +288,7 @@ You can update the store quietly aswell.</p>
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed:#{key}
+        #{@name}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -297,7 +298,7 @@ You can update the store quietly aswell.</p>
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed:#{key}
+        #{@component.uid}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -317,7 +318,7 @@ You can update the store quietly aswell.</p>
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the store has been updated</p>
@@ -327,7 +328,7 @@ You can update the store quietly aswell.</p>
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed
+        #{@component.uid}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the store has been updated</p>
@@ -628,7 +629,7 @@ You can update the store quietly aswell.</p>
 </div>
     </div>
     <div id='footer'>
-  December 05, 14 16:49:53 by
+  January 10, 15 21:04:33 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

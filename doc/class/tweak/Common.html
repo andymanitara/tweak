@@ -57,6 +57,18 @@
   </li>
   <li>
     <span class='signature'>
+      <a href='#splitModuleName-dynamic'>
+        #
+(Array&lt;String&gt;)
+<b>splitModuleName</b><span>(context, str)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Reduce component names like ./cd[0-98] to an array of all the module names 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
       <a href='#combine-dynamic'>
         #
 (Object, Array)
@@ -173,6 +185,43 @@
       </span>
       &mdash;
       <span class='desc'>Callback function parameters </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='splitModuleName-dynamic'>
+      #
+(Array&lt;String&gt;)
+<b>splitModuleName</b><span>(context, str)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Reduce component names like ./cd[0-98] to an array of all the module names</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>str</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The string to split into seperate component names </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Array&lt;String&gt;</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns Array of absolute module names </span>
     </li>
   </ul>
 </div>
@@ -494,7 +543,7 @@ It will also reduce the prefix path by one level per ../ in the path</p>
 </div>
     </div>
     <div id='footer'>
-  December 05, 14 16:49:52 by
+  January 10, 15 21:04:33 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>
