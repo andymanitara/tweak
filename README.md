@@ -2,21 +2,60 @@
 
 Tweak.js is a MVC framework built to help developers structure code; for use in web applications and web components. Tweak.js is also accompanied with extra features that advances typical MVC concepts. 
 
-Initially Tweak.js was primarily designed for CoffeeScripters, although JavaScripters can take advantage of some CoffeeScript features through the framework. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple.
+Initially Tweak.js was primarily designed for CoffeeScripters, although JavaScripters can take advantage of some CoffeeScript features through the framework. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple and effective.
 
-In addition to common MVC concepts Tweak.js introduces features like components. Components being used to dynamically create a set of linking modules like the typical Models, Views and Controllers. Tweak.js also includes Collections and Router modules like that of typical frameworks. Furthermore, to enhance the relationship between modules Tweak.js includes a powerful yet simple event API. The event API is aimed to be as simple as possible and available to link actions between the modules in a async and synchronous manner.
+In addition to common MVC concepts Tweak.js introduces features like components. Components are used to dynamically create a set of linking modules like the typical Models, Views and Controllers; that can be configured, extended, reused and organised. Tweak.js also includes Collection and Router modules like that of typical frameworks. Furthermore, to enhance the relationship between modules Tweak.js includes a powerful event API. The event API is simple and designed to link actions between the individual modules in a async and synchronous manner.
 
-Tweak.js is also built to be as independent as possible, removing needs for large frameworks such as jQuery. However use of these frameworks is possible, you can use them with this framework just as you would normally. Tweak.js is separated into three parts. This is to keep the core functionality separated to keep things light weight for simple use cases, the optional modules code can easily be included to further extend the functionality Tweak.js. A large benefit from separating the non core modules is to reduce file size; Tweak.js is also extremely small. 
+Tweak.js is also built to be as independent as possible, removing needs for large frameworks such as jQuery. However use of these frameworks is still possible, they can be used just as you would normally. To keep Tweak.js extremely light it is separated into three fundamental parts. The separation includes a core set of modules, needed for MVC. A set of modules to enable component based features, and a set of modules that extends the view to increase the view functionality. The extra view functionality can be used when you want to keep filesize lighter with DOM manipulation.
 
 For a full understanding to the framework please look at the [documentation](http://docs.tweakjs.com) or the source code.
 
 ## Use
 
+### Downloads
+
+This framework optionally depends on a **module loader** like [require.js](http://requirejs.org/). It can be used without a module loader however templates will need to be directly attached to a view.
+
 To download the framework visit the [downloads page](http://dl.tweakjs.com).
 
 * tweak.js (Models, View, Controller, Collection, Router, Event API, Classes)
+ * The view module depends on a **template engine** like [handlebars.js](http://handlebarsjs.com/)
 * tweak.components.js (Component and Components)
+ * When using this set of modules Tweak.js depends on a **module loader** like [require.js](http://requirejs.org/)
 * tweak.view.advanced.js (Additional view functionality)
+ * This module extension depends a **selector engine** like [sizzle.js](http://sizzlejs.com/)
+
+### Bower
+Tweak.js is not yet hosted through bower - I aim to host it through bower when a strong stable version is available.
+
+### Tags
+```html
+<!-- truncated -->
+  <!-- Optional - module loader  -->
+  <!-- Needed with tweak.components.js and if not directly attaching a template to a view  -->
+  <script src="js/require.js"></script>
+  <!-- Optional - module loader  -->
+
+  <!-- Core -->
+  <script src="js/handlebars-v1.3.0.js"></script>  <!-- For view module -->
+  <script src="js/tweak.js"></script>
+  <!-- Core -->
+  
+  <!-- Optional - Advanced View   -->
+  <script src="js/sizzle.js"></script>
+  <script src="js/tweak.view.advanced.js"></script>
+  <!-- Optional - Advanced View  -->
+
+  <!-- Optional - Components -->
+  <script src="js/tweak.components.js"></script>
+  <!-- Optional - Components  -->
+</body>
+<!-- truncated -->
+```
+
+### Templates/Skeletons
+A skeleton for Grunt, Brunch a Gulp will shortly be created
+
 
 ## Concepts
 ### Model
@@ -42,5 +81,3 @@ Tweak.js components provide functionality to dynamically create extendable set o
 
 ### Classes
 Classes core to the framework it provides an solution to keep code organised, reusable and extendable. If using CoffeeScript you should be well adapted the class concept and its functionality. For more information and those using pure JavaScript please look at the [documentation](http://docs.tweakjs.com) under the ['Class'](http://docs.tweakjs.com/class/tweak/Class.html) section.
-
-
