@@ -78,7 +78,7 @@ The tree allows quick traversal of events, during interaction with the event API
       <a href='#on-dynamic'>
         #
 (Boolean)
-<b>on</b><span>(context, name, callback, maxCalls = null)</span>
+<b>on</b><span>(context, name, callback, max = null)</span>
       </a>
     </span>
     <span class='desc'>
@@ -101,7 +101,7 @@ The tree allows quick traversal of events, during interaction with the event API
     <span class='signature'>
       <a href='#trigger-dynamic'>
         ~
-(Boolean)
+(void)
 <b>trigger</b><span>(name, params)</span>
       </a>
     </span>
@@ -119,6 +119,18 @@ The tree allows quick traversal of events, during interaction with the event API
     </span>
     <span class='desc'>
       Iterate through the events to find given event 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#toggle-dynamic'>
+        #
+(void)
+<b>toggle</b><span>(name, options = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Toggle events listening state limited by name and options (callback, context and max calls) 
     </span>
   </li>
   <li>
@@ -154,7 +166,7 @@ The tree allows quick traversal of events, during interaction with the event API
     <p class='signature' id='on-dynamic'>
       #
 (Boolean)
-<b>on</b><span>(context, name, callback, maxCalls = null)</span>
+<b>on</b><span>(context, name, callback, max = null)</span>
       <br>
     </p>
     <div class='docstring'>
@@ -226,7 +238,7 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
       <span class='desc'>The event callback </span>
     </li>
     <li>
-      <span class='name'>maxCalls</span>
+      <span class='name'>max</span>
       <span class='type'>
         (
           <tt>Number</tt>
@@ -301,7 +313,7 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
         <tt>Boolean</tt>
       )
       &mdash;
-      <span class='desc'>Returns true if event(s) are removed, or false if no event are removed </span>
+      <span class='desc'>Returns true if event(s) are removed, or false if no events are removed </span>
     </li>
   </ul>
 </div>
@@ -309,11 +321,11 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
   <div class='method_details'>
     <p class='signature' id='trigger-dynamic'>
       ~
-(Boolean)
+(void)
 <b>trigger</b><span>(name, params)</span>
       <br>
       ~
-(Boolean)
+(void)
 <b>trigger</b><span>(obj, params)</span>
       <br>
     </p>
@@ -326,7 +338,7 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
     <div class='overload'>
       <p class='signature'>
         ~
-(Boolean)
+(void)
 <b>trigger</b><span>(name, params)</span>
       </p>
       <div class='docstring'>
@@ -356,23 +368,12 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
       <span class='desc'>Params to pass into the callback function </span>
     </li>
   </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Boolean</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns true if event is triggered and false if nothing is triggered </span>
-    </li>
-  </ul>
 </div>
     </div>
     <div class='overload'>
       <p class='signature'>
         ~
-(Boolean)
+(void)
 <b>trigger</b><span>(obj, params)</span>
       </p>
       <div class='docstring'>
@@ -400,17 +401,6 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
       </span>
       &mdash;
       <span class='desc'>Params to pass into the callback function </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Boolean</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns true if event is triggered and false if nothing is triggered </span>
     </li>
   </ul>
 </div>
@@ -466,6 +456,88 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
 </div>
   </div>
   <div class='method_details'>
+    <p class='signature' id='toggle-dynamic'>
+      #
+(void)
+<b>toggle</b><span>(name, options = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Toggle events listening state limited by name and options (callback, context and max calls)</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name; split on the / and : characters </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The limits to check events to. </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Context to limit to. </span>
+    </li>
+    <li>
+      <span class='name'>callback</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Callback function to limit to. </span>
+    </li>
+    <li>
+      <span class='name'>max</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Maximum calls to limit to. </span>
+    </li>
+    <li>
+      <span class='name'>listen</span>
+      <span class='type'>
+        (
+          <tt>Function</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Whether to enable listening to event. </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
     <p class='signature' id='reset-dynamic'>
       #
 (void)
@@ -481,7 +553,7 @@ tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  December 05, 14 12:30:52 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

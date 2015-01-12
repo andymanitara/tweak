@@ -2,7 +2,7 @@
   "author": "Blake Newman",
   "name": "TweakJS",
   "description": "TweakJS MVC Framework",
-  "version": "0.8.5",
+  "version": "1.0.0",
   "homepage": "http://tweakjs.com",
   "repository": {
     "type": "git",
@@ -17,12 +17,16 @@
     "test": "brunch test"
   },
   "dependencies": {
-    "javascript-brunch": "*",
+    "auto-reload-brunch": "*",
     "coffee-script-brunch": "*",
     "css-brunch": "*",
-    "auto-reload-brunch": "*"
+    "javascript-brunch": "*"
   },
-  "main": "public/tweak.js",
+  "main": [
+    "public/javascripts/tweak.js",
+    "public/javascripts/tweak.component.js",
+    "public/javascripts/tweak.view.advanced.js"
+  ],
   "directories": {
     "test": "test"
   },

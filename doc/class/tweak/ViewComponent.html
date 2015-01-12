@@ -21,105 +21,70 @@
     &raquo;
     <span class='title'>tweak</span>
     &raquo;
-    <span class='title'>Common</span>
-    &raquo;
-    <span class='title'>Components</span>
+    <span class='title'>ViewComponent</span>
   </div>
 </div>
     <div id='content'>
       <h1>
-        Mixin:
-        tweak.Common.Components
+        Class:
+        tweak.ViewComponent
+        <span class='note private title'>Private</span>
       </h1>
       <table class='box'>
         <tr>
           <td>Defined in:</td>
-          <td>app\lib\common.coffee</td>
+          <td>app\lib\component.coffee</td>
         </tr>
         <tr>
-          <td>Included in:</td>
+          <td>Inherits:</td>
           <td>
-            <a href='../../class/tweak/Component.html'>tweak.Component</a>
-            <a href='../../class/tweak/Components.html'>tweak.Components</a>
-            <a href='../../class/tweak/Controller.html'>tweak.Controller</a>
             <a href='../../class/tweak/View.html'>tweak.View</a>
           </td>
         </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>Common functions that are used for component functionality</p>
+  <p>Overrides tweak.View to contain additional rendering functionality.
+With this override; components render in order.</p>
 </div>
 <div class='tags'>
 </div>
-      <h2>Method Summary</h2>
-      <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#splitComponents-'>
-        ~
-(Array&lt;String&gt;)
-<b>splitComponents</b><span>(str, name)</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Reduce component names like ./cd[0-98] to an array of full path names 
-    </span>
-  </li>
-</ul>
-      <h2>Method Details</h2>
-      <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='splitComponents-'>
-      ~
-(Array&lt;String&gt;)
-<b>splitComponents</b><span>(str, name)</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Reduce component names like ./cd[0-98] to an array of full path names</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
-    <li>
-      <span class='name'>str</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The string to split into seperate component names </span>
-    </li>
-    <li>
-      <span class='name'>name</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The name to which the relative path should become absolute to </span>
-    </li>
-  </ul>
-  <h3>Returns:</h3>
-  <ul class='return'>
-    <li>
-      <span class='type'></span>
-      (
-        <tt>Array&lt;String&gt;</tt>
-      )
-      &mdash;
-      <span class='desc'>Returns Array of full path names </span>
-    </li>
-  </ul>
-</div>
-  </div>
-</div>
+      <h2>Property Summary</h2>
+      <h3 class='inherited'>
+        Properties inherited from
+        <a href='../../class/tweak/View.html'>tweak.View</a>
+      </h3>
+      <p class='inherited'>
+        <a href='[object Object]'>uid</a>
+        <a href='[object Object]'>root</a>
+        <a href='[object Object]'>relation</a>
+        <a href='[object Object]'>require</a>
+        <a href='[object Object]'>splitModuleName</a>
+        <a href='[object Object]'>findModule</a>
+        <a href='[object Object]'>super</a>
+      </p>
+      <h2>
+        <small>Inherited Method Summary</small>
+        <h3 class='inherited'>
+          Methods inherited from
+          <a href='../../class/tweak/View.html'>tweak.View</a>
+        </h3>
+        <p class='inherited'>
+          <a href='../../class/tweak/View.html#init-dynamic'>#init</a>
+          <a href='../../class/tweak/View.html#render-dynamic'>#render</a>
+          <a href='../../class/tweak/View.html#rerender-dynamic'>#rerender</a>
+          <a href='../../class/tweak/View.html#getChildren-dynamic'>#getChildren</a>
+          <a href='../../class/tweak/View.html#getComponentNode-dynamic'>#getComponentNode</a>
+          <a href='../../class/tweak/View.html#clear-dynamic'>#clear</a>
+          <a href='../../class/tweak/View.html#isRendered-dynamic'>#isRendered</a>
+          <a href='../../class/tweak/View.html#getParent-dynamic'>#getParent</a>
+          <a href='../../class/tweak/View.html#asyncHTML-dynamic'>#asyncHTML</a>
+          <a href='../../class/tweak/View.html#__renderable-dynamic'>#__renderable</a>
+        </p>
+      </h2>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  January 12, 15 16:57:11 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

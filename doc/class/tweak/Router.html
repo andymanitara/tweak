@@ -34,13 +34,6 @@
           <td>Defined in:</td>
           <td>app\lib\router.coffee</td>
         </tr>
-        <tr>
-          <td>Includes:</td>
-          <td>
-            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-          </td>
-        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
@@ -65,29 +58,40 @@
         <dd class='desc'>
           The uid of this object - for unique reference 
         </dd>
-        <dt id='cuid-property'>
-          <span class='signature'>
-            (Integer)
-            <b>
-              cuid
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The component uid of this object - for unique reference of component 
-        </dd>
         <dt id='root-property'>
           <span class='signature'>
-            (Component)
+            (*)
             <b>
               root
             </b>
           </span>
         </dt>
         <dd class='desc'>
-          The root component 
+          The root relationship to this module 
+        </dd>
+        <dt id='relation-property'>
+          <span class='signature'>
+            (*)
+            <b>
+              relation
+            </b>
+          </span>
+        </dt>
+        <dd class='desc'>
+          The direct relationship to this module 
         </dd>
       </dl>
+      <h2>Variables Summary</h2>
+      <dl class='constants'>
+  <dt id='super-variable'>
+    super
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>tweak</code></pre>
+    
+  </dd>
+</dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
   <li>
@@ -151,34 +155,13 @@
     </span>
   </li>
 </ul>
-      <h2>
-        <small>Included Method Summary</small>
-      </h2>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
       <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>()</span>
+<b>constructor</b><span>(relation, config = {})</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -431,7 +414,7 @@ triggers:
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  January 12, 15 16:57:11 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

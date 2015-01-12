@@ -40,14 +40,6 @@
             <a href='../../class/tweak/Store.html'>tweak.Store</a>
           </td>
         </tr>
-        <tr>
-          <td>Includes:</td>
-          <td>
-            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-          </td>
-        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
@@ -72,22 +64,11 @@ You can update the model quietly aswell.</p>
         <dd class='desc'>
           Data storage holder, for a model this is an object 
         </dd>
-        <dt id='default-property'>
-          <span class='signature'>
-            (Object)
-            <b>
-              default
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          Default data to load into model when constructing the model 
-        </dd>
-        <dt id='storeType-property'>
+        <dt id='_type-property'>
           <span class='signature'>
             (String)
             <b>
-              storeType
+              _type
             </b>
           </span>
         </dt>
@@ -100,28 +81,26 @@ You can update the model quietly aswell.</p>
         <a href='../../class/tweak/Store.html'>tweak.Store</a>
       </h3>
       <p class='inherited'>
+        <a href='[object Object]'>_type</a>
         <a href='[object Object]'>config</a>
         <a href='[object Object]'>length</a>
         <a href='[object Object]'>data</a>
-        <a href='[object Object]'>storeType</a>
         <a href='[object Object]'>uid</a>
-        <a href='[object Object]'>cuid</a>
         <a href='[object Object]'>root</a>
+        <a href='[object Object]'>relation</a>
+        <a href='[object Object]'>parse</a>
+      </p>
+      <h2>Variables Summary</h2>
+      
+      <h3 class='inherited'>
+        Variable inherited from
+        <a href='../../class/tweak/Store.html'>tweak.Store</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../class/tweak/Store.html#super-variable'>super</a>
       </p>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#construct-dynamic'>
-        #
-(void)
-<b>construct</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Constructs the model ready for use 
-    </span>
-  </li>
   <li>
     <span class='signature'>
       <a href='#remove-dynamic'>
@@ -148,6 +127,18 @@ You can update the model quietly aswell.</p>
   </li>
   <li>
     <span class='signature'>
+      <a href='#pluck-dynamic'>
+        #
+(Array)
+<b>pluck</b><span>(property)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Looks through the store for where the data matches. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
       <a href='#reset-dynamic'>
         #
 (void)
@@ -158,6 +149,30 @@ You can update the model quietly aswell.</p>
       Reset the model back to defaults 
     </span>
   </li>
+  <li>
+    <span class='signature'>
+      <a href='#import-dynamic'>
+        #
+(Object)
+<b>import</b><span>(data, options = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Import a JSONObject. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#export-dynamic'>
+        #
+(Object)
+<b>export</b><span>(restrict)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Export a JSONString of this models data. 
+    </span>
+  </li>
 </ul>
       <h2>
         <small>Inherited Method Summary</small>
@@ -166,60 +181,22 @@ You can update the model quietly aswell.</p>
           <a href='../../class/tweak/Store.html'>tweak.Store</a>
         </h3>
         <p class='inherited'>
+          <a href='../../class/tweak/Store.html#init-dynamic'>#init</a>
           <a href='../../class/tweak/Store.html#set-dynamic'>#set</a>
+          <a href='../../class/tweak/Store.html#same-dynamic'>#same</a>
           <a href='../../class/tweak/Store.html#get-dynamic'>#get</a>
           <a href='../../class/tweak/Store.html#has-dynamic'>#has</a>
-          <a href='../../class/tweak/Store.html#pluck-dynamic'>#pluck</a>
           <a href='../../class/tweak/Store.html#removeAt-dynamic'>#removeAt</a>
           <a href='../../class/tweak/Store.html#where-dynamic'>#where</a>
-          <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-          <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-          <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-          <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-          <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-          <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-          <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-          <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-          <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
         </p>
       </h2>
-      <h2>
-        <small>Included Method Summary</small>
-      </h2>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
-      </p>
       <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>()</span>
+<b>constructor</b><span>(relation, data = {})</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -229,19 +206,6 @@ You can update the model quietly aswell.</p>
 </div>
       <h2>Instance Method Details</h2>
       <div class='methods'>
-  <div class='method_details'>
-    <p class='signature' id='construct-dynamic'>
-      #
-(void)
-<b>construct</b><span>()</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Constructs the model ready for use</p>
-</div>
-<div class='tags'>
-</div>
-  </div>
   <div class='method_details'>
     <p class='signature' id='remove-dynamic'>
       #
@@ -379,6 +343,43 @@ You can update the model quietly aswell.</p>
 </div>
   </div>
   <div class='method_details'>
+    <p class='signature' id='pluck-dynamic'>
+      #
+(Array)
+<b>pluck</b><span>(property)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Looks through the store for where the data matches.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>property</span>
+      <span class='type'>
+        (
+          <tt>*</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The property data to find a match against. </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Array</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns an array of the positions of the data. </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
     <p class='signature' id='reset-dynamic'>
       #
 (void)
@@ -391,10 +392,120 @@ You can update the model quietly aswell.</p>
 <div class='tags'>
 </div>
   </div>
+  <div class='method_details'>
+    <p class='signature' id='import-dynamic'>
+      #
+(Object)
+<b>import</b><span>(data, options = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Import a JSONObject.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>data</span>
+      <span class='type'>
+        (
+          <tt>JSONString</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>JSONString to parse. </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Options to parse to method. </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>restrict</span>
+      <span class='type'>
+        (
+          <tt>Array&lt;String&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Restrict which properties to convert. Default: all properties get converted. </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>If true then it wont trigger events </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Object</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns the parsed JSONString as a raw object </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='export-dynamic'>
+      #
+(Object)
+<b>export</b><span>(restrict)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Export a JSONString of this models data.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>restrict</span>
+      <span class='type'>
+        (
+          <tt>Array&lt;String&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Restrict which properties to convert. Default: all properties get converted. </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Object</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns a JSONString </span>
+    </li>
+  </ul>
+</div>
+  </div>
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  January 12, 15 16:57:11 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

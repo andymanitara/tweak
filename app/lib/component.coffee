@@ -1,6 +1,43 @@
 ###
-  TweakJS has its own unique twist to the MVC concept.
+  tweak.component.js 1.0.0
 
+  (c) 2014 Blake Newman.
+  TweakJS may be freely distributed under the MIT license.
+  For all details and documentation:
+  http://tweakjs.com
+###
+
+###
+  @private
+  Overrides tweak.View to contain additional rendering functionality.
+  With this override; components render in order.
+###
+class tweak.ViewComponent extends tweak.View
+  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
+
+  ###
+    @private
+    Add extra functionality based on it now supports components
+  ###
+  __renderable = (ctx) ->
+    comps = ctx.relation.parent?.components?.data or []
+    for item in comps
+      if item is ctx.relation then break
+      previousComponent = item
+    if previousComponent?.model?.data.rendering
+      tweak.Events.on ctx, "#{previousComponent.uid}:model:changed:rendering", (rendering) ->
+        if not rendering
+          setTimeout(->
+            tweak.Events.trigger "#{@uid}:renderable"
+          ,0)
+    else
+      setTimeout(->
+        tweak.Events.trigger "#{@uid}:renderable"
+      ,0)
+      
+tweak.View = tweak.ViewComponent
+
+###
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
   For example you can plug "Web Components" into your static site; like sliders, accordians.
   The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps.
@@ -17,29 +54,9 @@
 
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
-  @include tweak.Common.Modules
-  @include tweak.Common.Components
-  @include tweak.Common.Events
 ###
 class tweak.Component
-
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events,
-    tweak.Common.Modules,
-    tweak.Common.Collections,
-    tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
-  ]
-
-  # Private constants
-  MODULES = ["model", "view", "controller", "components", "router"]
-  
+ 
   # @property [Object]
   model: null
   # @property [Object]
@@ -52,6 +69,21 @@ class tweak.Component
   router: null
   # @property [Interger] The uid of this object - for unique reference
   uid: 0
+
+  # @property [Method] see tweak.Common.require
+  require: tweak.Common.require
+  # @property [Method] see tweak.Common.clone
+  clone: tweak.Common.clone
+  # @property [Method] see tweak.Common.combine
+  combine: tweak.Common.combine
+  # @property [Method] see tweak.Common.findModule
+  findModule: tweak.Common.findModule
+  # @property [Method] see tweak.Common.relToAbs
+  relToAbs: tweak.Common.relToAbs
+
+  super: tweak.super
+
+  modules: ["model", "view", "components", "router", "controller"]
 
   ###
     @param [Object] relation Relation to the component
@@ -74,11 +106,23 @@ class tweak.Component
     if not @name? then throw new Error "No name given"
 
     @config = @buildConfig(options) or {}
-    # The config file can prevent automatic build and start of componets
-    # Start the construcion of the component
-    @construct()
+    # Router is optional as it is perfomance heavy
+    # So it needs to be explicility defind in the config for the component that it should be used
+    if @config.router then @addRouter()
 
+    # Add modules to the component
+    @addModel()
+    @addView()
+    @addComponents()
+    @addController()
 
+    # Add references to the the modules
+    for name in @modules when prop = @[name]
+      prop.parent = @parent
+      prop.component = @
+      for name2 in @modules when name isnt name2 and prop2 = @[name2]
+        prop[name2] = prop2
+      prop.construct?()
 
   ###
     @param [Object] options Component options
@@ -97,19 +141,20 @@ class tweak.Component
       if options.extends then extension = options.extends
 
     # Gets all configs, by configs extension path
+    name = @parent?.name or @name
     while extension
-      requested = @require "#{extension}/config"
+      requested = @require name, "#{extension}/config"
       # Store all the paths
-      paths.push extension
+      paths.push @relToAbs name, extension
       # Push a clone of the config file to remove reference
-      configs.push @clone(requested)
+      configs.push @clone requested
       extension = requested.extends
 
     # Combine all the config files into one
     # The values of the config files from lower down the chain have piortiy
     result = configs[configs.length-1]
     for i in [configs.length-2..0]
-      result = @combine(result, configs[i])
+      result = @combine result, configs[i]
 
     # Set initial values in config if they do not exist
     result.model ?= {}
@@ -127,12 +172,9 @@ class tweak.Component
     @return [Object] Constructed object
   ###
   addModule: (name, surrogate, params...) ->
-    Module = @findModule(@paths, name, surrogate)
-    module = @[name] = new Module(params...)
-    module.component = module.relation = @
+    Module = @findModule @paths, "./#{name}", surrogate
+    module = @[name] = new Module @, @config[name], params...
     module.cuid = @uid
-    module.root = @root
-    module.config = @config[name]
     module
 
   ###
@@ -140,95 +182,67 @@ class tweak.Component
     @param [...] params Parameters passed to into the view constructor
     @return [Object] View
   ###
-  addView: (params...) -> @addModule("view", tweak.View, params...)
+  addView: (params...) -> @addModule "view", tweak.View, params...
 
   ###
     Shortcut method to adding Model using the addModule method
     @param [...] params Parameters passed to into the model constructor
     @return [Object] Model
   ###
-  addModel: (params...) -> @addModule("model", tweak.Model, params...)
+  addModel: (params...) -> @addModule "model", tweak.Model, params...
 
   ###
     Shortcut method to adding controller using the addModule method
     @param [...] params Parameters passed to into the controller constructor
     @return [Object] Controller
   ###
-  addController: (params...) -> @addModule("controller", tweak.Controller, params...)
+  addController: (params...) -> @addModule "controller", tweak.Controller, params...
 
   ###
     Shortcut method to adding components using the addModule method
     @param [...] params Parameters passed to into the components constructor
     @return [Object] Components
   ###
-  addComponents: (params...) -> @addModule("components", tweak.Components, params...)
+  addComponents: (params...) -> @addModule "components", tweak.Components, params...
 
   ###
     Shortcut method to adding router using the addModule method
     @param [...] params Parameters passed to into the router constructor
     @return [Object] Router
   ###
-  addRouter: (params...) -> @addModule("router", tweak.Router, params...)
-
-  ###
-    Function to call other function so the component can be impeded before starting
-  ###
-  construct: -> @init()
+  addRouter: (params...) -> @addModule "router", tweak.Router, params...
 
   ###
     Constructs the component and its modules using the addModule method
   ###
   init: ->
-    # Router is optional as it is perfomance heavy
-    # So it needs to be explicility defind in the config for the component that it should be used
-    if @config.router then @addRouter()
+    # Call init on all the modules
+    for name in @modules when name isnt "view" and item = @[name]
+      item.init?()
 
-    # Add modules to the component
-    @addModel()
-    @addView()
-    @addComponents()
-    @addController()
-
-    # Add references to the the modules
-    for name in MODULES
-      prop = @[name]
-      prop?.parent = @parent
-      prop?.component = @
-      prop?.name = @name
-      for item in MODULES
-        if name isnt item then prop?[item] = @[item]
-
-    # Construct the modules after they have been added
-    for name in MODULES then @[name]?.construct?()
-
-    for name in MODULES
-      if name isnt "view" then @[name]?.init?()
-
-
- 
   ###
     @private
   ###
   _componentRender: (type) ->
-    @on("#{@uid}:view:#{type}ed", =>
-      @on("#{@uid}:components:ready", =>
-        @trigger("#{@uid}:ready", @name)
-      )
+    tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
+      tweak.Events.on @, "#{@uid}:components:ready", =>
+        setTimeout(=>
+          tweak.Events.trigger "#{@uid}:ready", @name
+        ,0)
       @components[type]()
-    )
     @view[type]()
 
   ###
     Renders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rendered
   ###
-  render: -> @_componentRender("render")
+  render: -> @_componentRender "render"
 
   ###
     Rerenders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rerendered
   ###
-  rerender: -> @_componentRender("rerender")
+  rerender: -> @_componentRender "rerender"
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one

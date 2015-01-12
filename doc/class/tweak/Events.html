@@ -21,28 +21,24 @@
     &raquo;
     <span class='title'>tweak</span>
     &raquo;
-    <span class='title'>Controller</span>
+    <span class='title'>Events</span>
   </div>
 </div>
     <div id='content'>
       <h1>
         Class:
-        tweak.Controller
+        tweak.Events
       </h1>
       <table class='box'>
         <tr>
           <td>Defined in:</td>
-          <td>app\lib\controller.coffee</td>
+          <td>app\lib\events.coffee</td>
         </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <p>The controller should be used to control the logic and functionality between components modules.
-The controller allows for seperation for your logic. You can still use the view and the model ect to control logic, but think of this as your middle man/ blank canvas.
-By seperating the logic between the model and view you allow for much cleaner code. The view can still contain logic; but try keep this logic based on the interface between the user and view.</p><p>The view could be used to define the parts of interaction; and animating things.
-The model can be used for validating data on updateing of data allowing a simple continuous checking system seperate from your logic.
-Therefore the complex logic between what happens on certain interaction can remain in the controller; making it simpler to understand what happens where and when.
-It now keeps your code clean from long and extensive validation and animation logic; which can make code hard to understand when trying to debug why something wont happen after another thing.</p>
+  <p>The framework is driven by a powerful and simple event system.</p><p>The event system simply stores the callbacks in an object tree.
+The tree allows quick traversal of events, during interaction with the event API</p>
 </div>
 <div class='tags'>
 </div>
@@ -50,62 +46,51 @@ It now keeps your code clean from long and extensive validation and animation lo
       <dl class='properties'>
         <dt id='uid-property'>
           <span class='signature'>
-            (Interger)
+            (Integer)
             <b>
               uid
             </b>
           </span>
         </dt>
         <dd class='desc'>
-          The uid of this object - for unique reference 
-        </dd>
-        <dt id='root-property'>
-          <span class='signature'>
-            (*)
-            <b>
-              root
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The root relationship to this module 
-        </dd>
-        <dt id='relation-property'>
-          <span class='signature'>
-            (*)
-            <b>
-              relation
-            </b>
-          </span>
-        </dt>
-        <dd class='desc'>
-          The direct relationship to this module 
+          The component uid of this object - for unique reference of component 
         </dd>
       </dl>
+      <h2>Variables Summary</h2>
+      <dl class='constants'>
+  <dt id='super-variable'>
+    super
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>tweak</code></pre>
+    
+  </dd>
+  <dt id='events-variable'>
+    events
+    =
+  </dt>
+  <dd>
+    <pre><code class='coffeescript'>{}</code></pre>
+    <div class='docstring'>
+  <p>Initialise the event object</p>
+</div>
+<div class='tags'>
+</div>
+  </dd>
+</dl>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
-  <li>
-    <span class='signature'>
-      <a href='#init-dynamic'>
-        #
-(void)
-<b>init</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Default initialiser function 
-    </span>
-  </li>
   <li>
     <span class='signature'>
       <a href='#on-dynamic'>
         #
 (Boolean)
-<b>on</b><span>(params...)</span>
+<b>on</b><span>(context, name, callback, max = null)</span>
       </a>
     </span>
     <span class='desc'>
-      Event &#39;on&#39; handler for DOM and the Event API 
+      Add an event listener into the event system. 
     </span>
   </li>
   <li>
@@ -113,47 +98,59 @@ It now keeps your code clean from long and extensive validation and animation lo
       <a href='#off-dynamic'>
         #
 (Boolean)
-<b>off</b><span>(params...)</span>
+<b>off</b><span>(context, name, callback)</span>
       </a>
     </span>
     <span class='desc'>
-      Event &#39;off&#39; handler Event API 
+      Remove from events by given name 
     </span>
   </li>
   <li>
     <span class='signature'>
       <a href='#trigger-dynamic'>
-        #
+        ~
 (void)
-<b>trigger</b><span>(params...)</span>
+<b>trigger</b><span>(name, params)</span>
       </a>
     </span>
     <span class='desc'>
-      Event &#39;trigger&#39; handler for DOM and the Event API, triggered in async 
+      Trigger events by name 
     </span>
   </li>
   <li>
     <span class='signature'>
-      <a href='#listen-dynamic'>
+      <a href='#find-dynamic'>
         #
-(void)
-<b>listen</b><span>(name, options = {})</span>
+(Event, Null)
+<b>find</b><span>(name, build = false)</span>
       </a>
     </span>
     <span class='desc'>
-      Set event to be listened to 
+      Iterate through the events to find given event 
     </span>
   </li>
   <li>
     <span class='signature'>
-      <a href='#noListen-dynamic'>
+      <a href='#toggle-dynamic'>
         #
 (void)
-<b>noListen</b><span>(name, options = {})</span>
+<b>toggle</b><span>(name, options = {})</span>
       </a>
     </span>
     <span class='desc'>
-      Set event to not be listened to 
+      Toggle events listening state limited by name and options (callback, context and max calls) 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#reset-dynamic'>
+        #
+(void)
+<b>reset</b><span>()</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Resets the events back to empty. 
     </span>
   </li>
 </ul>
@@ -163,7 +160,7 @@ It now keeps your code clean from long and extensive validation and animation lo
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>(relation, config = {})</span>
+<b>constructor</b><span>()</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -174,31 +171,60 @@ It now keeps your code clean from long and extensive validation and animation lo
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
-    <p class='signature' id='init-dynamic'>
-      #
-(void)
-<b>init</b><span>()</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Default initialiser function</p>
-</div>
-<div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
     <p class='signature' id='on-dynamic'>
       #
 (Boolean)
-<b>on</b><span>(params...)</span>
+<b>on</b><span>(context, name, callback, max = null)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Event &#39;on&#39; handler for DOM and the Event API</p>
+  <p>Add an event listener into the event system.
+The event system will store the object based on its event name</p>
+  <div class='examples'>
+    <h3>Examples:</h3>
+    <h4>
+      Sample Event (JS)
+    </h4>
+    <pre><code class='coffeescript'>tweak.Events.on(this, &quot;sample&#47;event&quot;, function(){
+  alert(&quot;Sample event triggered.&quot;)
+})</code></pre>
+    <h4>
+      Sample Event (CoffeeScript)
+    </h4>
+    <pre><code class='coffeescript'>tweak.Events.on @, &quot;sample&#47;event&quot;, -&gt;
+  alert &quot;Sample event triggered.&quot;</code></pre>
+    <h4>
+      Sample Event with Max Calls (JS)
+    </h4>
+    <pre><code class='coffeescript'>&#47;&#47; This example will allow the event to be called twice
+&#47;&#47; The event is automatically removed from the event object on max calls
+tweak.Events.on(this, &quot;sample&#47;event&quot;, function(){
+  alert(&quot;Sample event triggered.&quot;)
+}, 2)</code></pre>
+    <h4>
+      Sample Event (CoffeeScript)
+    </h4>
+    <pre><code class='coffeescript'>&#47;&#47; This example will allow the event to be called twice
+&#47;&#47; The event is automatically removed from the event object on max calls
+tweak.Events.on(@, &quot;sample&#47;event&quot;, -&gt;
+  alert &quot;Sample event triggered.&quot;
+,
+2)</code></pre>
+  </div>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
   <ul class='param'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The contextual object of which the event to be binded to </span>
+    </li>
     <li>
       <span class='name'>name</span>
       <span class='type'>
@@ -207,7 +233,7 @@ It now keeps your code clean from long and extensive validation and animation lo
         )
       </span>
       &mdash;
-      <span class='desc'>The event name, split on the / and : characters, to add </span>
+      <span class='desc'>The event name; split on the / and : characters </span>
     </li>
     <li>
       <span class='name'>callback</span>
@@ -217,17 +243,17 @@ It now keeps your code clean from long and extensive validation and animation lo
         )
       </span>
       &mdash;
-      <span class='desc'>The callback function; if you do not include this then all events under the name will be removed </span>
+      <span class='desc'>The event callback </span>
     </li>
     <li>
-      <span class='name'>maxCalls</span>
+      <span class='name'>max</span>
       <span class='type'>
         (
           <tt>Number</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>The maximum amount of calls the event can be triggered. </span>
+      <span class='desc'>Default=null. The maximum calls allowed on the event listener </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -238,7 +264,7 @@ It now keeps your code clean from long and extensive validation and animation lo
         <tt>Boolean</tt>
       )
       &mdash;
-      <span class='desc'>Returns whether the event is added </span>
+      <span class='desc'>Returns true if added, or false if not added </span>
     </li>
   </ul>
 </div>
@@ -247,15 +273,25 @@ It now keeps your code clean from long and extensive validation and animation lo
     <p class='signature' id='off-dynamic'>
       #
 (Boolean)
-<b>off</b><span>(params...)</span>
+<b>off</b><span>(context, name, callback)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Event &#39;off&#39; handler Event API</p>
+  <p>Remove from events by given name</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
   <ul class='param'>
+    <li>
+      <span class='name'>context</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The contextual object of which the event is binded to </span>
+    </li>
     <li>
       <span class='name'>name</span>
       <span class='type'>
@@ -264,7 +300,7 @@ It now keeps your code clean from long and extensive validation and animation lo
         )
       </span>
       &mdash;
-      <span class='desc'>The event name, split on the / and : characters, to remove </span>
+      <span class='desc'>The event name; split on the / and : characters </span>
     </li>
     <li>
       <span class='name'>callback</span>
@@ -274,7 +310,7 @@ It now keeps your code clean from long and extensive validation and animation lo
         )
       </span>
       &mdash;
-      <span class='desc'>(optional) The callback function; if you do not include this then all events under the name will be removed </span>
+      <span class='desc'>(optional) The callback function of the event. If no specific callback is given then all the events under event name are removed </span>
     </li>
   </ul>
   <h3>Returns:</h3>
@@ -285,20 +321,36 @@ It now keeps your code clean from long and extensive validation and animation lo
         <tt>Boolean</tt>
       )
       &mdash;
-      <span class='desc'>Returns whether the event is removed </span>
+      <span class='desc'>Returns true if event(s) are removed, or false if no events are removed </span>
     </li>
   </ul>
 </div>
   </div>
   <div class='method_details'>
     <p class='signature' id='trigger-dynamic'>
-      #
+      ~
 (void)
-<b>trigger</b><span>(params...)</span>
+<b>trigger</b><span>(name, params)</span>
+      <br>
+      ~
+(void)
+<b>trigger</b><span>(obj, params)</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Event &#39;trigger&#39; handler for DOM and the Event API, triggered in async</p>
+  <p>Trigger events by name</p>
+</div>
+<div class='tags'>
+  <div class='overloads'>
+    <h3>Overloads:</h3>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>trigger</b><span>(name, params)</span>
+      </p>
+      <div class='docstring'>
+  <p>Trigger events by name only</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
@@ -311,7 +363,7 @@ It now keeps your code clean from long and extensive validation and animation lo
         )
       </span>
       &mdash;
-      <span class='desc'>The event name, split on the / and : characters, to trigger </span>
+      <span class='desc'>The event name; split on the / and : characters </span>
     </li>
     <li>
       <span class='name'>params</span>
@@ -321,20 +373,105 @@ It now keeps your code clean from long and extensive validation and animation lo
         )
       </span>
       &mdash;
-      <span class='desc'>Parameters to pass into the callback function </span>
+      <span class='desc'>Params to pass into the callback function </span>
+    </li>
+  </ul>
+</div>
+    </div>
+    <div class='overload'>
+      <p class='signature'>
+        ~
+(void)
+<b>trigger</b><span>(obj, params)</span>
+      </p>
+      <div class='docstring'>
+  <p>Trigger events by name and context</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>obj</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>{name:String (name of the event), context:Object (context of the event)} </span>
+    </li>
+    <li>
+      <span class='name'>params</span>
+      <span class='type'>
+        (
+          <tt>...</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Params to pass into the callback function </span>
+    </li>
+  </ul>
+</div>
+    </div>
+  </div>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='find-dynamic'>
+      #
+(Event, Null)
+<b>find</b><span>(name, build = false)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Iterate through the events to find given event</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>name</span>
+      <span class='type'>
+        (
+          <tt>String</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The event name; split on the / and : characters </span>
+    </li>
+    <li>
+      <span class='name'>build</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Default = true. If set to true the event object will be built by the name if can be found. </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Event, Null</tt>
+      )
+      &mdash;
+      <span class='desc'>If event object is found/created then it is returned. </span>
     </li>
   </ul>
 </div>
   </div>
   <div class='method_details'>
-    <p class='signature' id='listen-dynamic'>
+    <p class='signature' id='toggle-dynamic'>
       #
 (void)
-<b>listen</b><span>(name, options = {})</span>
+<b>toggle</b><span>(name, options = {})</span>
       <br>
     </p>
     <div class='docstring'>
-  <p>Set event to be listened to</p>
+  <p>Toggle events listening state limited by name and options (callback, context and max calls)</p>
 </div>
 <div class='tags'>
   <h3>Parameters:</h3>
@@ -395,79 +532,30 @@ It now keeps your code clean from long and extensive validation and animation lo
       &mdash;
       <span class='desc'>Maximum calls to limit to. </span>
     </li>
-  </ul>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='noListen-dynamic'>
-      #
-(void)
-<b>noListen</b><span>(name, options = {})</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Set event to not be listened to</p>
-</div>
-<div class='tags'>
-  <h3>Parameters:</h3>
-  <ul class='param'>
     <li>
-      <span class='name'>name</span>
-      <span class='type'>
-        (
-          <tt>String</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The event name; split on the / and : characters </span>
-    </li>
-    <li>
-      <span class='name'>options</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>The limits to check events to. </span>
-    </li>
-  </ul>
-  <h3>
-    Options Hash:
-    (options):
-  </h3>
-  <ul class='options'>
-    <li>
-      <span class='name'>context</span>
-      <span class='type'>
-        (
-          <tt>Object</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Context to limit to. </span>
-    </li>
-    <li>
-      <span class='name'>callback</span>
+      <span class='name'>listen</span>
       <span class='type'>
         (
           <tt>Function</tt>
         )
       </span>
       &mdash;
-      <span class='desc'>Callback function to limit to. </span>
-    </li>
-    <li>
-      <span class='name'>max</span>
-      <span class='type'>
-        (
-          <tt>Number</tt>
-        )
-      </span>
-      &mdash;
-      <span class='desc'>Maximum calls to limit to. </span>
+      <span class='desc'>Whether to enable listening to event. </span>
     </li>
   </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='reset-dynamic'>
+      #
+(void)
+<b>reset</b><span>()</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Resets the events back to empty.</p>
+</div>
+<div class='tags'>
 </div>
   </div>
 </div>

@@ -40,22 +40,9 @@
             <a href='../../class/tweak/Store.html'>tweak.Store</a>
           </td>
         </tr>
-        <tr>
-          <td>Includes:</td>
-          <td>
-            <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-            <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-            <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-            <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-          </td>
-        </tr>
       </table>
       <h2>Overview</h2>
       <div class='docstring'>
-  <div class='note todo'>
-    <strong>TODO:</strong>
-    Update pluck to use new same functionality 
-  </div>
   <p>A collection is where data can be stored, a default collection is an array based system. The model is a extension to the default collection; but based on an object.</p>
 </div>
 <div class='tags'>
@@ -66,11 +53,11 @@
       </p>
       <h2>Property Summary</h2>
       <dl class='properties'>
-        <dt id='storeType-property'>
+        <dt id='_type-property'>
           <span class='signature'>
             (String)
             <b>
-              storeType
+              _type
             </b>
           </span>
         </dt>
@@ -83,16 +70,38 @@
         <a href='../../class/tweak/Store.html'>tweak.Store</a>
       </h3>
       <p class='inherited'>
+        <a href='[object Object]'>_type</a>
         <a href='[object Object]'>config</a>
         <a href='[object Object]'>length</a>
         <a href='[object Object]'>data</a>
-        <a href='[object Object]'>storeType</a>
         <a href='[object Object]'>uid</a>
-        <a href='[object Object]'>cuid</a>
         <a href='[object Object]'>root</a>
+        <a href='[object Object]'>relation</a>
+        <a href='[object Object]'>parse</a>
+      </p>
+      <h2>Variables Summary</h2>
+      
+      <h3 class='inherited'>
+        Variable inherited from
+        <a href='../../class/tweak/Store.html'>tweak.Store</a>
+      </h3>
+      <p class='inherited'>
+        <a href='../../class/tweak/Store.html#super-variable'>super</a>
       </p>
       <h2>Instance Method Summary</h2>
       <ul class='summary'>
+  <li>
+    <span class='signature'>
+      <a href='#reduced-dynamic'>
+        #
+(Array)
+<b>reduced</b><span>(arr, length)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Reduce an array be remove elements from the front of the array and returning the new array 
+    </span>
+  </li>
   <li>
     <span class='signature'>
       <a href='#clean-dynamic'>
@@ -103,18 +112,6 @@
     </span>
     <span class='desc'>
       Removes empty keys 
-    </span>
-  </li>
-  <li>
-    <span class='signature'>
-      <a href='#construct-dynamic'>
-        #
-(void)
-<b>construct</b><span>()</span>
-      </a>
-    </span>
-    <span class='desc'>
-      Construct the initial state of the collection 
     </span>
   </li>
   <li>
@@ -201,6 +198,30 @@
       Reset the collection back to defaults 
     </span>
   </li>
+  <li>
+    <span class='signature'>
+      <a href='#import-dynamic'>
+        #
+(Object)
+<b>import</b><span>(data, options = {})</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Import a JSONObject - imports to one depth only. 
+    </span>
+  </li>
+  <li>
+    <span class='signature'>
+      <a href='#export-dynamic'>
+        #
+(Object)
+<b>export</b><span>(restrict)</span>
+      </a>
+    </span>
+    <span class='desc'>
+      Export a JSONString of this collections data. 
+    </span>
+  </li>
 </ul>
       <h2>
         <small>Inherited Method Summary</small>
@@ -209,67 +230,22 @@
           <a href='../../class/tweak/Store.html'>tweak.Store</a>
         </h3>
         <p class='inherited'>
+          <a href='../../class/tweak/Store.html#init-dynamic'>#init</a>
           <a href='../../class/tweak/Store.html#set-dynamic'>#set</a>
+          <a href='../../class/tweak/Store.html#same-dynamic'>#same</a>
           <a href='../../class/tweak/Store.html#get-dynamic'>#get</a>
           <a href='../../class/tweak/Store.html#has-dynamic'>#has</a>
-          <a href='../../class/tweak/Store.html#pluck-dynamic'>#pluck</a>
           <a href='../../class/tweak/Store.html#removeAt-dynamic'>#removeAt</a>
           <a href='../../class/tweak/Store.html#where-dynamic'>#where</a>
-          <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-          <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-          <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-          <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-          <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-          <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-          <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-          <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-          <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
         </p>
       </h2>
-      <h2>
-        <small>Included Method Summary</small>
-      </h2>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Empty.html'>tweak.Common.Empty</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Empty.html#init-dynamic'>#init</a>
-        <a href='../../mixin/tweak/Common.Empty.html#construct-dynamic'>#construct</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Events.html'>tweak.Common.Events</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Events.html#on-dynamic'>#on</a>
-        <a href='../../mixin/tweak/Common.Events.html#off-dynamic'>#off</a>
-        <a href='../../mixin/tweak/Common.Events.html#trigger-dynamic'>#trigger</a>
-        <a href='../../mixin/tweak/Common.Events.html#__trigger-dynamic'>#__trigger</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Collections.html'>tweak.Common.Collections</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Collections.html#combine-dynamic'>#combine</a>
-        <a href='../../mixin/tweak/Common.Collections.html#same-dynamic'>#same</a>
-        <a href='../../mixin/tweak/Common.Collections.html#clone-dynamic'>#clone</a>
-      </p>
-      <h3 class='inherited'>
-        Methods included from
-        <a href='../../mixin/tweak/Common.Arrays.html'>tweak.Common.Arrays</a>
-      </h3>
-      <p class='inherited'>
-        <a href='../../mixin/tweak/Common.Arrays.html#reduced-dynamic'>#reduced</a>
-      </p>
       <h2>Constructor Details</h2>
       <div class='methods'>
   <div class='method_details'>
     <p class='signature' id='constructor-dynamic'>
       #
 (void)
-<b>constructor</b><span>()</span>
+<b>constructor</b><span>(relation, data = {})</span>
       <span class='note private'>Private</span>
       <br>
     </p>
@@ -280,6 +256,53 @@
       <h2>Instance Method Details</h2>
       <div class='methods'>
   <div class='method_details'>
+    <p class='signature' id='reduced-dynamic'>
+      #
+(Array)
+<b>reduced</b><span>(arr, length)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Reduce an array be remove elements from the front of the array and returning the new array</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>arr</span>
+      <span class='type'>
+        (
+          <tt>Array</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Array to reduce </span>
+    </li>
+    <li>
+      <span class='name'>length</span>
+      <span class='type'>
+        (
+          <tt>Number</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>The length that the array should be </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Array</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns reduced array </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
     <p class='signature' id='clean-dynamic'>
       #
 (void)
@@ -288,19 +311,6 @@
     </p>
     <div class='docstring'>
   <p>Removes empty keys</p>
-</div>
-<div class='tags'>
-</div>
-  </div>
-  <div class='method_details'>
-    <p class='signature' id='construct-dynamic'>
-      #
-(void)
-<b>construct</b><span>()</span>
-      <br>
-    </p>
-    <div class='docstring'>
-  <p>Construct the initial state of the collection</p>
 </div>
 <div class='tags'>
 </div>
@@ -333,7 +343,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:removed:#{key}
+        #{@name}:#{@_type}:removed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event based on what property has been removed</p>
@@ -343,7 +353,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -403,7 +413,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed:#{key}
+        #{@name}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -413,7 +423,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -472,7 +482,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed:#{key}
+        #{@name}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -482,7 +492,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed:#{key}
+        #{@component.uid}:#{@_type}:changed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event and passes in changed property</p>
@@ -502,7 +512,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -512,7 +522,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed
+        #{@component.uid}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -608,7 +618,7 @@
     <h3>Events:</h3>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:removed:#{key}
+        #{@name}:#{@_type}:removed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event based on what property has been removed</p>
@@ -618,7 +628,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:removed:#{key}
+        #{@component.uid}:#{@_type}:removed:#{key}
       </p>
       <div class='docstring'>
   <p>Triggers an event based on what property has been removed</p>
@@ -638,7 +648,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@name}:#{@storeType}:changed
+        #{@name}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -648,7 +658,7 @@
     </div>
     <div class='event'>
       <p class='signature'>
-        #{@component.uid}:#{@storeType}:changed
+        #{@component.uid}:#{@_type}:changed
       </p>
       <div class='docstring'>
   <p>Triggers a generic event that the collection has been updated</p>
@@ -719,10 +729,130 @@
 <div class='tags'>
 </div>
   </div>
+  <div class='method_details'>
+    <p class='signature' id='import-dynamic'>
+      #
+(Object)
+<b>import</b><span>(data, options = {})</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Import a JSONObject - imports to one depth only.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>data</span>
+      <span class='type'>
+        (
+          <tt>JSONString</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>JSONString to parse. </span>
+    </li>
+    <li>
+      <span class='name'>options</span>
+      <span class='type'>
+        (
+          <tt>Object</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Options to parse to method. </span>
+    </li>
+  </ul>
+  <h3>
+    Options Hash:
+    (options):
+  </h3>
+  <ul class='options'>
+    <li>
+      <span class='name'>restrict</span>
+      <span class='type'>
+        (
+          <tt>Array&lt;String&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Restrict which properties to convert. Default: all properties get converted. </span>
+    </li>
+    <li>
+      <span class='name'>overwrite</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Default:true. If true existing properties in the key value will be replaced otherwise they are added to the collection </span>
+    </li>
+    <li>
+      <span class='name'>quiet</span>
+      <span class='type'>
+        (
+          <tt>Boolean</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>If true then it wont trigger events </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Object</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns the parsed JSONString as a raw object </span>
+    </li>
+  </ul>
+</div>
+  </div>
+  <div class='method_details'>
+    <p class='signature' id='export-dynamic'>
+      #
+(Object)
+<b>export</b><span>(restrict)</span>
+      <br>
+    </p>
+    <div class='docstring'>
+  <p>Export a JSONString of this collections data.</p>
+</div>
+<div class='tags'>
+  <h3>Parameters:</h3>
+  <ul class='param'>
+    <li>
+      <span class='name'>restrict</span>
+      <span class='type'>
+        (
+          <tt>Array&lt;String&gt;</tt>
+        )
+      </span>
+      &mdash;
+      <span class='desc'>Restrict which properties to convert. Default: all properties get converted. </span>
+    </li>
+  </ul>
+  <h3>Returns:</h3>
+  <ul class='return'>
+    <li>
+      <span class='type'></span>
+      (
+        <tt>Object</tt>
+      )
+      &mdash;
+      <span class='desc'>Returns a JSONString </span>
+    </li>
+  </ul>
+</div>
+  </div>
 </div>
     </div>
     <div id='footer'>
-  November 14, 14 16:34:59 by
+  January 12, 15 16:57:11 by
   <a href='https://github.com/coffeedoc/codo' title='CoffeeScript API documentation generator'>
     Codo
   </a>

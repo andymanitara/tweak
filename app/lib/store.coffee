@@ -7,40 +7,42 @@
   The controller is normally the interface between the view and the stores data.
   When the store updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the store quietly aswell.
-
-  @todo Update pluck to use new same functionality
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
 ###
 class tweak.Store
 
+  # @property [String] The type of storage, ie 'collection' or 'model'
+  _type: 'BASE'
   # @property [Object] The config object of this module
   config: {}
   # @property [Integer] Length of the stores data
   length: 0
   # @property [Object, Array] Data holder for the store
   data: []
-  # @property [String] The type of storage, ie 'collection' or 'model'
-  storeType: 'BASE'
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [Integer] The component uid of this object - for unique reference of component
-  cuid: 0
-  # @property [Component] The root component
+  # @property [*] The root relationship to this module
   root: null
+  # @property [*] The direct relationship to this module
+  relation: null
 
-  tweak.Extend @, [
-    tweak.Common.Empty
-    tweak.Common.Events
-    tweak.Common.Collections
-  ]
+  # @property [Method] see tweak.Common.parse
+  parse: tweak.Common.parse
+  
+  super: tweak.super
 
   # @private
-  constructor: ->
+  constructor: (relation, config = {}) ->
     # Set uid
     @uid = "s_#{tweak.uids.s++}"
+    @relation = relation ?= {}
+    @root = relation.root or @
+    @name = config.name or relation.name
 
+  ###
+    Default initialiser function
+  ###
+  init: ->
+    
   ###
     Set multiple properties or one property of the store by passing an object with object of the data you with to update.
 
@@ -55,12 +57,12 @@ class tweak.Store
       @param [Object] properties Key and property based object to store into store
       @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@component.uid}:#{@storeType}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
+    @event #{@component.uid}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
     @event #{@uid}:changed:#{key} Triggers an event and passes in changed property
 
-    @event #{@name}:#{@storeType}:changed Triggers a generic event that the store has been updated
-    @event #{@component.uid}:#{@storeType}:changed Triggers a generic event that the store has been updated
+    @event #{@name}:#{@_type}:changed Triggers a generic event that the store has been updated
+    @event #{@component.uid}:#{@_type}:changed Triggers a generic event that the store has been updated
     @event #{@uid}:changed Triggers a generic event that the store has been updated
   ###
   set: (properties, params...) ->
@@ -75,11 +77,22 @@ class tweak.Store
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then @__trigger "#{@storeType}:changed:#{key}", prop
+      if not quiet then tweak.Common.__trigger @, "#{@_type}:changed:#{key}", prop
 
-    if not quiet then @__trigger "#{@storeType}:changed"
+    if not quiet then tweak.Common.__trigger @, "#{@_type}:changed"
     return
 
+  ###
+    Returns whether two object are the same (similar)
+    @param [Object, Array] one Object to compare
+    @param [Object, Array] two Object to compare
+    @return [Boolean] Returns whether two object are the same (similar)
+  ###
+  same: (one, two) ->
+    for key, prop of one
+      if not two[key]? or two[key] isnt prop then return false
+    return true
+    
   ###
     Returns a stores property value
     @param [String] property Property name to look for in store data
@@ -93,17 +106,6 @@ class tweak.Store
     @return [Boolean] Returns true or false depending if the property exists in the store
   ###
   has: (property) -> @data[property]?
-
-  ###
-    Looks through the store for where the data matches.
-    @param [*] property The property data to find a match against.
-    @return [Array] Returns an array of the positions of the data.
-  ###
-  pluck: (property) ->
-    result = []
-    for key, prop of @data
-      if prop is property then result.push key
-    result
 
   ###
     Remove an element at a given position

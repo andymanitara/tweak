@@ -3,63 +3,63 @@
   For example a view may have to sections of user interaction that does two different things and gets two different sets of data, but its parent view is about a particular item.
   This example shows the power of relations in the framework. As the two views are different with different data being fed in these can be two sub components, allowing seperation of code.
   This allow reloading of views without affect other views, a bit like regions in backbone marionette. However your code can now be much more structured in this format and easier to understand where things are happening.
-  
-  @include tweak.Common.Empty
-  @include tweak.Common.Events
-  @include tweak.Common.Collections
-  @include tweak.Common.Arrays
-  @include tweak.Common.Modules
-  @include tweak.Common.Components
-
 ###
 class tweak.Components extends tweak.Collection
+  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
+    
   # @property [String] The type of storage
-  storeType: "components"
-  # @property [Object] The config object of this module
-  config: []
+  _type: "components"
 
-  tweak.Extend @, [
-    tweak.Common.Empty,
-    tweak.Common.Events,
-    tweak.Common.Collection,
-    tweak.Common.Arrays,
-    tweak.Common.Modules,
-    tweak.Common.Components
-  ]
+  # @property [*] The root relationship to this module
+  root: null
+  # @property [*] The direct relationship to this module
+  relation: null
+
+  # @property [Method] see tweak.Common.relToAbs
+  relToAbs: tweak.Common.relToAbs
+  # @property [Method] see tweak.Common.splitComponents
+  splitModuleName: tweak.Common.splitModuleName
 
   # @private
-  constructor: ->
+  constructor: (relation, config) ->
     # Set uid
     @uid = "cp_#{tweak.uids.cp++}"
+    @relation = relation ?= {}
+    @_config = config ?= []
+    @root = relation.root or @
+    @name = config.name or relation.name
   
   ###
    Construct the Collection with given options from the config file
   ###
-  construct: ->
+  init: ->
     @data = []
     data = []
-    for item in @config or []
+    for item in @_config
       obj = {}
       if item instanceof Array
-        names = @splitComponents item[0], @name
-        path = @relToAbs(item[1], @name)
-        i = 0
+        names = @splitModuleName @name, item[0]
+        path = @relToAbs @name, item[1]
         for name in names
-          @add new tweak.Component(@, {name, extends:path}), true
+          @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
-        if name is "" or name is " " then continue
-        data = @splitComponents item, @name
+        if item is "" or item is " " then continue
+        data = @splitModuleName @name, item
         for name in data
-          @add new tweak.Component(@, {name}), true
+          @data.push new tweak.Component @, {name}    
       else
         obj = item
         name = obj.name
         if not name? or name is "" or name is " " then continue
-        data = @splitComponents name, @name
-        obj.extends = @relToAbs(obj.extends, @name)
+        data = @splitModuleName @name, name
+        obj.extends = @relToAbs @name, obj.extends
         for prop in data
           obj.name = prop
-          @add new tweak.Component(@, obj), true
+          @data.push new tweak.Component @, obj
+      @data[@length++].init()
+
+      # Remove config as the data is no longer required
+      delete @_config
 
   ###
     @private
@@ -67,26 +67,32 @@ class tweak.Components extends tweak.Collection
   ###
   _componentRender: (type) ->
     if @length is 0
-      @__trigger "#{@storeType}:ready"
-      return
-    total = 0
-    totalItems = @length
-    for item in @data
-      item[type]()
-      @on("#{item.uid}:view:#{type}ed", =>
-        total++
-        if total >= totalItems then @__trigger "#{@storeType}:ready"
-      )
+      tweak.Common.__trigger @, "#{@_type}:ready"
+    else
+      @total = 0
+      for item in @data
+        item[type]()
+        # Weird format to allow the _allRendered method to remain private
+        tweak.Events.off @, "#{item.uid}:view:#{type}ed", => @_allRendered @
+        tweak.Events.on @, "#{item.uid}:view:#{type}ed", => @_allRendered @, @length
+
+  ###
+    @private
+    Callback for when an item is rendered
+    @param [context] context The context to apply to the function
+  ###
+  _allRendered: (context) ->
+    if context.total++ is context.length-1 then tweak.Common.__trigger context, "#{context._type}:ready"
 
   ###
     Renders all of its components, also triggers ready state when all components are ready
   ###
-  render: -> @_componentRender("render")
+  render: -> @_componentRender "render"
 
   ###
     Rerender all of its components, also triggers ready state when all components are ready
   ###
-  rerender: -> @_componentRender("rerender")
+  rerender: -> @_componentRender "rerender"
 
   ###
     Find component with matching data in model
@@ -99,8 +105,8 @@ class tweak.Components extends tweak.Collection
     componentData = @data
     for collectionKey, data of componentData
       modelData = data.model.data or model.data
-      for key, prop of modelData
-        if key is property and prop is value then result.push data
+      for key, prop of modelData when key is property and prop is value
+        result.push data
     result
 
   ###
@@ -110,3 +116,13 @@ class tweak.Components extends tweak.Collection
     for item in @data
       item.view?.clear()
     super()
+
+  ###
+    There is no default import mechanism for this module
+  ###
+  import: ->
+
+  ###
+    There is no default export mechanism for this module
+  ###
+  export: ->
