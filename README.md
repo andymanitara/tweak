@@ -1,12 +1,12 @@
 ## Introduction
 
-Tweak.js is built to help developers build structured code; for use in web applications and web components whether small or big Tweak.js meets most needs. Tweak.js is a MVC based framework with some extra tools for creating applications with well structured code. 
+Tweak.js is a MVC framework built to help developers structure code; for use in web applications and web components. Tweak.js is also accompanied with extra features that advances typical MVC concepts. 
 
-Initially Tweak.js was structured for CoffeeScripters in mind, although it is very well adapted to CoffeeScript it also has functionality for support using pure JavaScript. Not only does Tweak.js behave nicely for the CoffeeScripters it can also be used with tools such as Brunch, Grunt and Gulp to create a powerful file/directory structure to keep all of your code organised.
+Initially Tweak.js was primarily designed for CoffeeScripters, although JavaScripters can take advantage of some CoffeeScript features through the framework. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple.
 
-In brief Tweak.js is a simple MVC framework with additions like components; used to dynamically create a set of models, view and controllers that are quickly reusable and extendable. Tweak.js also contains additional concepts such as Routers and Collections that can be used to create powerful web applications. Also included is a powerful Event API, the aim to make event delegation simple throughout your web applications and components. 
+In addition to common MVC concepts Tweak.js introduces features like components. Components being used to dynamically create a set of linking modules like the typical Models, Views and Controllers. Tweak.js also includes Collections and Router modules like that of typical frameworks. Furthermore, to enhance the relationship between modules Tweak.js includes a powerful yet simple event API. The event API is aimed to be as simple as possible and available to link actions between the modules in a async and synchronous manner.
 
-Tweak.js needs no dependencies on large frameworks such as JQuery. To attach html to the DOM you will need a template engine ([Handlebars](http://handlebarsjs.com/)). Tweak.js also contains an optional set of code for the view; this contains additional code that is useful for manipulating the DOM. However if you would live to do this with JQuery or a similar framework then that is also possible. 
+Tweak.js is also built to be as independent as possible, removing needs for large frameworks such as jQuery. However use of these frameworks is possible, you can use them with this framework just as you would normally. Tweak.js is separated into three parts. This is to keep the core functionality separated to keep things light weight for simple use cases, the optional modules code can easily be included to further extend the functionality Tweak.js. A large benefit from separating the non core modules is to reduce file size; Tweak.js is also extremely small. 
 
 For a full understanding to the framework please look at the [documentation](http://docs.tweakjs.com) or the source code.
 
@@ -14,7 +14,6 @@ For a full understanding to the framework please look at the [documentation](htt
 
 To download the framework visit the [downloads page](http://dl.tweakjs.com).
 
-Tweak.js is separated into three parts. This is to keep the core functionality separated to keep things light weight for simple use cases and for the extended functionality to be optionally added into your code.
 * tweak.js (Models, View, Controller, Collection, Router, Event API, Classes)
 * tweak.components.js (Component and Components)
 * tweak.view.advanced.js (Additional view functionality)
@@ -43,3 +42,5 @@ Tweak.js components provide functionality to dynamically create extendable set o
 
 ### Classes
 Classes core to the framework it provides an solution to keep code organised, reusable and extendable. If using CoffeeScript you should be well adapted the class concept and its functionality. For more information and those using pure JavaScript please look at the [documentation](http://docs.tweakjs.com) under the ['Class'](http://docs.tweakjs.com/class/tweak/Class.html) section.
+
+
