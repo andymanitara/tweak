@@ -127,10 +127,7 @@ class tweak.Events
       item.callback.call item.context, params...
       # Check to see if the event has reached its call limit
       # Delete event if reached call limit
-      if item.max?
-        item.calls++
-        if item.calls >= item.max
-          delete callbacks[key]
+      if item.max? and ++item.calls >= item.max then item.listen = false
   
   ###
     Iterate through the events to find given event
@@ -156,7 +153,7 @@ class tweak.Events
     event
 
   ###
-    Toggle events listening state limited by name and options (callback, context and max calls)
+    Set events listening state, max calls, and total calls limited by name and options (callback, context).
     @param [String] name The event name; split on the / and : characters
     @param [Object] options The limits to check events to.
     @option options [Object] context Context to limit to.
@@ -164,17 +161,23 @@ class tweak.Events
     @option options [Number] max Maximum calls to limit to.
     @option options [Function] listen Whether to enable listening to event.
   ###
-  toggle: (name, options = {}) ->
+  set: (name, options = {}) ->
     event = @find name
     return if not event?.__callbacks
     callbacks = event.__callbacks
     c = options.context
-    ca = options.callback
     m = options.max
+    r = options.reset
+    cl = if r then 0 else options.calls
+
     l = options.listen
+    ca = options.callback
+    cs = if ca then ca.toString() else null
     for key, item of callbacks
-      if (l? and item.listen is l) or (c and item.context isnt c) or (ca and item.callback isnt ca) or (m and item.max isnt m) then continue
-      item.paused = not if l? then l else item.paused
+      if (c? and item.context isnt c) or (cs? and item.callback.toString() isnt cs) then continue
+      if m? then item.max = m
+      if cl? then item.calls = cl
+      if l? then item.listen = l
 
   ###
     Resets the events back to empty.
