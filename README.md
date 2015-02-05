@@ -266,7 +266,7 @@ For more information please look at the [documentation](http://docs.tweakjs.com)
 The View may be further stripped back to allow for multiple presentation layers. With the core View being fully extendable to cope for CLI, HTML and more. This will make Tweak.js much more versatile. If any one would like to help with this feature - please contact me.
 
 ### Controller
-A Controller defines the business logic between other modules. It can be used to control data flow, logic and more. It should process the data from the Model, interactions and responses from the View, and control the logic between other modules. The Controller has quick access to the **event system** and thus it can use this functionality to keep control of events that happen throughout your application, Components and modules .
+A Controller defines the business logic between other modules. It can be used to control data flow, logic and more. It should process the data from the Model, interactions and responses from the View, and control the logic between other modules. The Controller has quick access to the **event system** and thus it can use this functionality to keep control of events that happen throughout your application, Components and modules.
 
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Controller'](http://docs.tweakjs.com/class/tweak/Controller.html) section.
 
