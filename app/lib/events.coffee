@@ -14,8 +14,11 @@
 ###
 class tweak.Events
 
-  # Initialise the event object
-  events: {}
+  ###
+    Sets the events storage to empty upon initialisation.
+  ###
+  constructor: ->
+    @events = {}
 
   ###
     Iterate through events to find matching named events.
