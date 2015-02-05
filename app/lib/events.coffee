@@ -73,15 +73,13 @@ class tweak.Events
     # Find the event / build the event path
     event = @find name, true
     # Check if to replace current event
-    # Convert callback to string for extra check for events that may be directly bound
-    callbackString = callback.toString()
     for key, item of event.__callbacks ?= []
-      if ctx is item.ctx and (item.callback is callback or callbackString is item.callback.toString())
-        replace = key
+      if ctx is item.ctx and item.callback is callback
+        ignore = true
         break
         
     obj = {ctx, callback, max, calls:0, listen:true}
-    if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
+    if not ignore then event.__callbacks.push obj
     true
 
   ###
@@ -107,7 +105,7 @@ class tweak.Events
     result = false
     callbackString = callback.toString()
     for key, item of event.__callbacks
-      if context is item.ctx and (callback is item.callback or callbackString is item.callback.toString())
+      if context is item.ctx and callback is item.callback
         delete event.__callbacks[key]
         result = true
     result
@@ -132,7 +130,7 @@ class tweak.Events
     callbacks = event.__callbacks
     # Assign common parameters to variables. 
     for key, item of callbacks
-      if not item.listen or (context and item.ctx isnt context) then continue
+      if not item.listen or (context? isnt item.ctx) then continue
       # Check to see if the event has reached its call limit
       # Delete event if reached call limit
       if item.max? and ++item.calls >= item.max then item.listen = false
@@ -184,9 +182,8 @@ class tweak.Events
 
     l = options.listen
     ca = options.callback
-    cs = if ca then ca.toString() else null
     for key, item of callbacks
-      if (c? and item.ctx isnt c) or (cs? and item.callback.toString() isnt cs) then continue
+      if (c? isnt item.ctx) or (ca? isnt item.callback) then continue
       if m? then item.max = m
       if cl? then item.calls = cl
       if l? then item.listen = l

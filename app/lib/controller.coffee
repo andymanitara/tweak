@@ -37,8 +37,10 @@ class tweak.Controller
     @param [Number] maxCalls The maximum amount of calls the event can be triggered.
     @return [Boolean] Returns whether the event is added
   ###
-  on: (params...) -> 
-    tweak.Events.on @, params...
+  on: (options = {}) ->
+    options.context ?= @
+    options.args ?= []
+    tweak.Events.on options.context, options.args...
     return
 
   ###
@@ -47,8 +49,10 @@ class tweak.Controller
     @param [Function] callback (optional) The callback function; if you do not include this then all events under the name will be removed
     @return [Boolean] Returns whether the event is removed
   ###
-  off: (params...) -> 
-    tweak.Events.off @, params...
+  off: (options = {}) -> 
+    options.context ?= @
+    options.args ?= []
+    tweak.Events.off options.context, options.args...
     return
 
   ###
@@ -56,9 +60,11 @@ class tweak.Controller
     @param [String] name The event name, split on the / and : characters, to trigger
     @param [...] params Parameters to pass into the callback function
   ###
-  trigger: (params...) ->
+  trigger: (name, options = {}) ->    
+    options.context ?= @
+    options.args ?= []
     setTimeout(->
-      tweak.Events.trigger params...
+      tweak.Events.trigger {name, ctx:options.context}, options.args...
     ,0)
     return
 
