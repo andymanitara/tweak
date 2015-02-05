@@ -34,6 +34,7 @@ class tweak.ViewComponent extends tweak.View
       setTimeout(->
         tweak.Events.trigger "#{@uid}:renderable"
       ,0)
+    return
       
 tweak.View = tweak.ViewComponent
 
@@ -182,35 +183,45 @@ class tweak.Component
     @param [...] params Parameters passed to into the view constructor
     @return [Object] View
   ###
-  addView: (params...) -> @addModule "view", tweak.View, params...
+  addView: (params...) -> 
+    @addModule "view", tweak.View, params...
+    return
 
   ###
     Shortcut method to adding Model using the addModule method
     @param [...] params Parameters passed to into the model constructor
     @return [Object] Model
   ###
-  addModel: (params...) -> @addModule "model", tweak.Model, params...
+  addModel: (params...) -> 
+    @addModule "model", tweak.Model, params...
+    return
 
   ###
     Shortcut method to adding controller using the addModule method
     @param [...] params Parameters passed to into the controller constructor
     @return [Object] Controller
   ###
-  addController: (params...) -> @addModule "controller", tweak.Controller, params...
+  addController: (params...) -> 
+    @addModule "controller", tweak.Controller, params...
+    return
 
   ###
     Shortcut method to adding components using the addModule method
     @param [...] params Parameters passed to into the components constructor
     @return [Object] Components
   ###
-  addComponents: (params...) -> @addModule "components", tweak.Components, params...
+  addComponents: (params...) -> 
+    @addModule "components", tweak.Components, params...
+    return
 
   ###
     Shortcut method to adding router using the addModule method
     @param [...] params Parameters passed to into the router constructor
     @return [Object] Router
   ###
-  addRouter: (params...) -> @addModule "router", tweak.Router, params...
+  addRouter: (params...) -> 
+    @addModule "router", tweak.Router, params...
+    return
 
   ###
     Constructs the component and its modules using the addModule method
@@ -219,6 +230,7 @@ class tweak.Component
     # Call init on all the modules
     for name in @modules when name isnt "view" and item = @[name]
       item.init?()
+    return
 
   ###
     @private
@@ -231,18 +243,23 @@ class tweak.Component
         ,0)
       @components[type]()
     @view[type]()
+    return
 
   ###
     Renders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rendered
   ###
-  render: -> @_componentRender "render"
+  render: -> 
+    @_componentRender "render"
+    return
 
   ###
     Rerenders itself and its subcomponents
     @event #{@name}:ready Triggers ready event when itself and its components are ready/rerendered
   ###
-  rerender: -> @_componentRender "rerender"
+  rerender: -> 
+    @_componentRender "rerender"
+    return
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
@@ -258,3 +275,4 @@ class tweak.Component
           components.remove i, quiet
           return
         i++
+    return

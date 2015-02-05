@@ -60,6 +60,7 @@ class tweak.Components extends tweak.Collection
 
       # Remove config as the data is no longer required
       delete @_config
+    return
 
   ###
     @private
@@ -75,6 +76,7 @@ class tweak.Components extends tweak.Collection
         # Weird format to allow the _allRendered method to remain private
         tweak.Events.off @, "#{item.uid}:view:#{type}ed", => @_allRendered @
         tweak.Events.on @, "#{item.uid}:view:#{type}ed", => @_allRendered @, @length
+    return
 
   ###
     @private
@@ -83,16 +85,21 @@ class tweak.Components extends tweak.Collection
   ###
   _allRendered: (context) ->
     if context.total++ is context.length-1 then tweak.Common.__trigger context, "#{context._type}:ready"
+    return
 
   ###
     Renders all of its components, also triggers ready state when all components are ready
   ###
-  render: -> @_componentRender "render"
+  render: -> 
+    @_componentRender "render"
+    return
 
   ###
     Rerender all of its components, also triggers ready state when all components are ready
   ###
-  rerender: -> @_componentRender "rerender"
+  rerender: -> 
+    @_componentRender "rerender"
+    return
 
   ###
     Find component with matching data in model
@@ -116,6 +123,7 @@ class tweak.Components extends tweak.Collection
     for item in @data
       item.view?.clear()
     super()
+    return
 
   ###
     There is no default import mechanism for this module

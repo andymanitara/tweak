@@ -37,7 +37,9 @@ class tweak.Controller
     @param [Number] maxCalls The maximum amount of calls the event can be triggered.
     @return [Boolean] Returns whether the event is added
   ###
-  on: (params...) -> tweak.Events.on @, params...
+  on: (params...) -> 
+    tweak.Events.on @, params...
+    return
 
   ###
     Event 'off' handler Event API
@@ -45,7 +47,9 @@ class tweak.Controller
     @param [Function] callback (optional) The callback function; if you do not include this then all events under the name will be removed
     @return [Boolean] Returns whether the event is removed
   ###
-  off: (params...) -> tweak.Events.off @, params...
+  off: (params...) -> 
+    tweak.Events.off @, params...
+    return
 
   ###
     Event 'trigger' handler for DOM and the Event API, triggered in async
@@ -56,6 +60,7 @@ class tweak.Controller
     setTimeout(->
       tweak.Events.trigger params...
     ,0)
+    return
 
   ###
     Set an event to either not listen or listen - default is to listen. Also can be used to modify event options.
@@ -71,3 +76,4 @@ class tweak.Controller
   listen: (name, options) ->
     options.listen ?= true
     tweak.Events.set name, options
+    return

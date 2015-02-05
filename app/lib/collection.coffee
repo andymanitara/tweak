@@ -28,7 +28,9 @@ class tweak.Collection extends tweak.Store
   ###
     Removes empty keys
   ###
-  clean: -> @data = for key, item of @data then item
+  clean: -> 
+    @data = for key, item of @data then item
+    return
     
   ###
     Pop the top data element in the collection
@@ -51,7 +53,9 @@ class tweak.Collection extends tweak.Store
     @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
     @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
   ###
-  add: (data, quiet) -> @set "#{@length}", data, quiet
+  add: (data, quiet) -> 
+    @set "#{@length}", data, quiet
+    return
   
   ###
     Inserts a new property into a certain position
@@ -127,6 +131,7 @@ class tweak.Collection extends tweak.Store
   reset: ->
     @data = []
     @length = 0
+    return
   
   ###
     Import a JSONObject - imports to one depth only.

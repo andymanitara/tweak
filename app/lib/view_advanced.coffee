@@ -53,6 +53,7 @@ class tweak.ViewAdvanced extends tweak.View
       item._events ?= []
       item.addEventListener type, _callback, capture
       item._events.push event
+    return
   ###
     Remove event listener to element(s)
     @note Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
@@ -67,6 +68,7 @@ class tweak.ViewAdvanced extends tweak.View
       for evt in item._events or []
         if evt.type is type and evt.capture is capture and callback is evt.callback
           item.removeEventListener type, evt._callback, capture
+    return
 
   ###
     Trigger event listener on element(s)
@@ -78,6 +80,7 @@ class tweak.ViewAdvanced extends tweak.View
     elements = @element element
     for item in elements
       item.dispatchEvent event
+    return
 
   ###
     Returns height of an element
@@ -182,6 +185,7 @@ class tweak.ViewAdvanced extends tweak.View
         item.className = className
           .replace /\s{2,}/g,' '
           .replace /(^\s*|\s*$)/g,''
+    return
 
   ###
     Remove a string of class names of an element(s)
@@ -200,6 +204,7 @@ class tweak.ViewAdvanced extends tweak.View
         item.className = className
           .replace /\s{2,}/g,' '
           .replace /(^\s*|\s*$)/g,''
+    return
  
   ###
     Check of a string of class names is in an element(s) class
@@ -234,5 +239,6 @@ class tweak.ViewAdvanced extends tweak.View
         item.className = className
           .replace /\s{2,}/g,' '
           .replace /(^\s*|\s*$)/g,''
+    return
 
 tweak.View = tweak.ViewAdvanced

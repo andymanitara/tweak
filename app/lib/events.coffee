@@ -1,8 +1,16 @@
 ###
-  The framework is driven by a powerful and simple event system.
+  Tweak.js is built in with an event system that can be used to bind/unbind and trigger events throughout modules and your application. 
+  This provides functionality to communicate simply and effectively while maintaining an organised structure to your code and applications.
 
-  The event system simply stores the callbacks in an object tree.
-  The tree allows quick traversal of events, during interaction with the event API
+  The event system simply stores the callbacks in an object tree. 
+  The object tree allowing for quick traversal to events, speeding up overall event triggers. 
+  Each node of the tree when accessing an event is spit upon the / \ : and . characters. 
+  The splitting of events on these characters increases flexibility in ow you name your events.
+  
+  Events can be filtered by its context and callback, allowing you to control individual event callbacks or all callbacks under a registered event.
+  Events have a listen property to pause/unpause listening.
+  Set a max amount of calls to an event before it will automatically no longer listens.
+  Update a Events properties quickly and easily. Properties: Max calls, current total calls and listen.
 ###
 class tweak.Events
   # @property [Integer] The component uid of this object - for unique reference of component
@@ -13,7 +21,7 @@ class tweak.Events
   # Split regex for event name
   splitEventName = (name) ->
     if typeof name is "string"
-      return name.split /[\/\\:]/
+      return name.split /[\/\\:.]/
     else if name instanceof Array
       return name
     else throw new Error "Event name not parsable"
@@ -59,7 +67,7 @@ class tweak.Events
 
     @return [Boolean] Returns true if added, or false if not added
   ###
-  on: (context, name, callback, max = null) ->
+  on: (ctx, name, callback, max = null) ->
     # If there is no callback then return from function
     if not callback? then return false
     # Find the event / build the event path
@@ -68,11 +76,11 @@ class tweak.Events
     # Convert callback to string for extra check for events that may be directly bound
     callbackString = callback.toString()
     for key, item of event.__callbacks ?= []
-      if context is item.context and (item.callback is callback or callbackString is item.callback.toString())
+      if ctx is item.ctx and (item.callback is callback or callbackString is item.callback.toString())
         replace = key
         break
         
-    obj = {context, callback, max, calls:0, listen:true}
+    obj = {ctx, callback, max, calls:0, listen:true}
     if replace? then event.__callbacks[replace] = obj else event.__callbacks.push obj
     true
 
@@ -99,7 +107,7 @@ class tweak.Events
     result = false
     callbackString = callback.toString()
     for key, item of event.__callbacks
-      if context is item.context and (callback is item.callback or callbackString is item.callback.toString())
+      if context is item.ctx and (callback is item.callback or callbackString is item.callback.toString())
         delete event.__callbacks[key]
         result = true
     result
@@ -122,12 +130,14 @@ class tweak.Events
     event = @find name
     return if not event?.__callbacks
     callbacks = event.__callbacks
+    # Assign common parameters to variables. 
     for key, item of callbacks
-      if not item.listen or (context and item.context isnt context) then continue
-      item.callback.call item.context, params...
+      if not item.listen or (context and item.ctx isnt context) then continue
       # Check to see if the event has reached its call limit
       # Delete event if reached call limit
       if item.max? and ++item.calls >= item.max then item.listen = false
+      item.callback.call item.ctx, params...
+    return      
   
   ###
     Iterate through the events to find given event
@@ -165,7 +175,7 @@ class tweak.Events
   ###
   set: (name, options = {}) ->
     event = @find name
-    return if not event?.__callbacks
+    return false if not event?.__callbacks
     callbacks = event.__callbacks
     c = options.context
     m = options.max
@@ -176,13 +186,14 @@ class tweak.Events
     ca = options.callback
     cs = if ca then ca.toString() else null
     for key, item of callbacks
-      if (c? and item.context isnt c) or (cs? and item.callback.toString() isnt cs) then continue
+      if (c? and item.ctx isnt c) or (cs? and item.callback.toString() isnt cs) then continue
       if m? then item.max = m
       if cl? then item.calls = cl
       if l? then item.listen = l
+    true
 
   ###
-    Resets the events back to empty.
+    Resets the event object tree back to empty.
   ###
   reset: -> @events = {}
 

@@ -57,7 +57,6 @@ class tweak.Model extends tweak.Store
     for key, prop of data
       if i is position then return data[key]
       i++
-
     null
 
   ###
@@ -76,6 +75,8 @@ class tweak.Model extends tweak.Store
   ###
   reset: ->
     @data = {}
+    @length = 0
+    return
 
   ###
     Import a JSONObject.

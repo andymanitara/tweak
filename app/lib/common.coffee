@@ -21,6 +21,7 @@ class tweak.Common
     setTimeout(->
       tweak.Events.trigger "#{ctx.uid}:#{secondary.join ':'}", args...
     ,0)
+    return
 
   ###
     Reduce component names like ./cd[0-98] to an array of all the module names

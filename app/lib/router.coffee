@@ -34,11 +34,14 @@ class tweak.Router
     @watch = setInterval =>
       @check quiet
     , speed
+    return
   
   ###
     Stop watching the router for changes
   ###
-  stop: -> clearInterval @watch
+  stop: -> 
+    clearInterval @watch
+    return
   
   ###
     Check the window location, if there is an update from previous url then trigger an event
@@ -113,4 +116,6 @@ class tweak.Router
     Masks the url hash with certain data without triggering events
     @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
   ###
-  mask: (obj) -> @set obj, true
+  mask: (obj) -> 
+    @set obj, true
+    return

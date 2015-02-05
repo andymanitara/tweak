@@ -100,7 +100,6 @@ class tweak.View
 
     # Set viewable height and width
     @viewable = tweak.Viewable
-
     return
 
   ###
@@ -113,6 +112,7 @@ class tweak.View
     @clear()
     @render()
     tweak.Events.on @, "#{@uid}:rendered", -> tweak.Common.__trigger @, "view:rerendered"
+    return
 
   ###
     Get the chidlren nodes of an element
@@ -167,6 +167,7 @@ class tweak.View
       try
         @el.parentNode.removeChild @el
         @el = null
+    return
 
   ###
     Checks to see if the item is rendered; this is detirmined if the node has a parentNode
@@ -200,6 +201,7 @@ class tweak.View
       callback temp.firstChild
     ,
     0)
+    return
 
   ###
     @private
@@ -210,3 +212,4 @@ class tweak.View
     setTimeout(->
       tweak.Events.trigger "#{ctx.uid}:renderable"
     ,0)
+    return
