@@ -4,21 +4,12 @@
   your application. This provides functionality to communicate
   simply and effectively while maintaining an organised structure
   to your code and applications.
-
-  A single global event system is created upon running the
-  framework. The event system is designed to be global so you
-  can invoke events between modules; bringing more relationships
-  and flexibility to applications and its modules.
  
   Examples are in JS, unless where CoffeeScript syntax may be unusual.
 ###
-class tweak.Events
+class tweak.EventSystem
 
-  ###
-    Sets the events storage to empty upon initialisation.
-  ###
-  constructor: ->
-    @events = {}
+  _events = {}
 
   ###
     Iterate through events to find matching named events.
@@ -54,7 +45,7 @@ class tweak.Events
       tweak.Events.find(["sample:event", "another:event"], true);
 
   ###
-  find: (name, build = false) ->
+  findEvent: (name, build = false) ->
     # Split name if it is a string
     if typeof name is "string"
       name = name.split /\s+/
@@ -81,28 +72,28 @@ class tweak.Events
     @param [Number] max (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
 
     @example Binding a callback to event(s) (JS)
-      tweak.Events.on(this, "sample:event", function(){
+      tweak.Events.addEvent(this, "sample:event", function(){
         alert("Sample event triggered.")
       });
 
     @example Adding event with Max Calls (JS)
       // This example will allow the event to be called twice.
       // The event will no longer trigger when the calls have reached its limit.
-      tweak.Events.on(this, "sample:event", function(){
+      tweak.Events.addEvent(this, "sample:event", function(){
         alert("Sample event triggered.")
       }, 2);
 
     @example Adding event (CoffeeScript)
       # This example will allow the event to be called twice.
       # The event will no longer trigger when the calls have reached its limit.
-      tweak.Events.on(@, "sample:event", ->
+      tweak.Events.addEvent(@, "sample:event", ->
         alert "Sample event triggered."
       ,
       2)
 
-      tweak.Events.on(@, "sample:event", @testCallback, 2);
+      tweak.Events.addEvent(@, "sample:event", @testCallback, 2);
   ###
-  on: (context, name, callback, max = null) ->
+  addEvent: (context, name, callback, max = null) ->
     # Find the event / build the event path.
     for event in @find name, true
       for item in event.__callbacks ?= []
@@ -118,13 +109,13 @@ class tweak.Events
     @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the events under event name are removed.
 
     @example Unbinding a callback from event(s) (JS)
-      tweak.Events.on(this, "sample:event another:event", @callback);
+      tweak.Events.removeEvent(this, "sample:event another:event", @callback);
 
     @example Unbinding all callbacks from event(s) (JS)
-      tweak.Events.on(this, "sample:event another:event");
+      tweak.Events.removeEvent(this, "sample:event another:event");
 
   ###
-  off: (context, name, callback) ->    
+  removeEvent: (context, name, callback) ->    
     for event in @find name
       # Check to see if the callback matches.
       # If event matches criteria then delete.
@@ -136,31 +127,34 @@ class tweak.Events
 
   ###
     Trigger events by name.
-    @overload trigger(name, params)
+    @overload triggerEvent(name, params)
       Trigger events by name only.
       @param [String, Array<String>] name The event name(s); split on a space, or an array of event names.
       @param [...] params Params to pass into the callback function.
 
-    @overload trigger(options, params)
+    @overload triggerEvent(options, params)
       Trigger events by name and context.
       @param [Object] options Options and limiters to check against callbacks.
       @param [...] params Params to pass into the callback function.
       @option options [String, Array<String>] names The event name(s); split on a space, or an array of event names.
+      @option options [Boolean] async (default = true) Whether to trigger asynchronously.
       @option options [Context] context The context of the callback to check against a callback.
 
     @example Triggering event(s) (JS)
-      tweak.Events.trigger("sample:event, another:event");
+      tweak.Events.triggerEvent("sample:event, another:event");
 
     @example Triggering event(s) with params (JS)
-      tweak.Events.trigger("sample:event another:event", "whats my name", "its...");
+      tweak.Events.triggerEvent("sample:event another:event", "whats my name", "its...");
 
     @example Triggering event(s) but only with matching context (JS)
-      tweak.Events.trigger({context:@, name:"sample:event another:event"});
+      tweak.Events.triggerEvent({context:@, name:"sample:event another:event"});
   ###
-  trigger: (name, params...) ->
+  triggerEvent: (name, params...) ->
+    async = true
     if typeof name is "object" and not name instanceof Array
       name = name.name or []
       context = name.context
+      if name.aysnc? then async = name.async 
     
     for event in @find name
       for item in event.__callbacks
@@ -169,7 +163,12 @@ class tweak.Events
           # If it has reached its limit delete or add another.
           if item.max? and ++item.calls >= item.max            
             item.listen = false
-          item.callback.call item.ctx, params...
+          if async
+            setTimeout(->
+              item.callback.call item.ctx, params...
+            ,1)
+          else item.callback.call item.ctx, params...
+            
     return
 
   ###
@@ -184,25 +183,25 @@ class tweak.Events
     @option options [Boolean] listen Whether to enable or disable listening to event.
 
     @example Updating event(s) to not listen (JS)
-      tweak.Events.set("sample:event, another:event", {listen:false});
+      tweak.Events.updateEvent("sample:event, another:event", {listen:false});
 
     @example Updating event(s) to not listen, however limited by optional context and/or callback (JS)
       // Limit events that match to a context and callback.
-      tweak.Events.set("sample:event, another:event", {context:@, callback:@callback, listen:false});
+      tweak.Events.updateEvent("sample:event, another:event", {context:@, callback:@callback, listen:false});
 
       // Limit events that match to a callback.
-      tweak.Events.set("sample:event, another:event", {callback:@anotherCallback, listen:false});
+      tweak.Events.updateEvent("sample:event, another:event", {callback:@anotherCallback, listen:false});
 
       // Limit events that match to a context.
-      tweak.Events.set("sample:event, another:event", {context:@, listen:false});
+      tweak.Events.updateEvent("sample:event, another:event", {context:@, listen:false});
 
     @example Updating event(s) max calls and reset its current calls (JS)
-      tweak.Events.set("sample:event, another:event", {reset:true, max:100});
+      tweak.Events.updateEvent("sample:event, another:event", {reset:true, max:100});
 
     @example Updating event(s) total calls (JS)
-      tweak.Events.set("sample:event, another:event", {calls:29});
+      tweak.Events.updateEvent("sample:event, another:event", {calls:29});
   ###
-  set: (name, options = {}) ->
+  updateEvent: (name, options = {}) ->
     ctx = options.context
     max = options.max
     reset = options.reset
@@ -220,7 +219,8 @@ class tweak.Events
   ###
     Resets the event object tree back to empty.
   ###
-  reset: -> @events = {}
+  resetEvents: -> @events = {}
 
-tweak.Events = new tweak.Events()
+# A global events object is automatically created. Allowing for global event handling.
+tweak.Events = new tweak.EventSystem()
 

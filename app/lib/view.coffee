@@ -9,7 +9,7 @@ tweak.Viewable = {
   The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
 ###
-class tweak.View
+class tweak.View extends tweak.EventSystem
  
   # @property [Integer] The uid of this object - for unique reference
   uid: 0

@@ -266,7 +266,7 @@ For more information please look at the [documentation](http://docs.tweakjs.com)
 The View may be further stripped back to allow for multiple presentation layers. With the core View being fully extendable to cope for CLI, HTML and more. This will make Tweak.js much more versatile. If any one would like to help with this feature - please contact me.
 
 ### Controller
-A Controller defines the business logic between other modules. It can be used to control data flow, logic and more. It should process the data from the Model, interactions and responses from the View, and control the logic between other modules. The Controller has quick access to the **event system** and thus it can use this functionality to keep control of events that happen throughout your application, Components and modules.
+A Controller defines the business logic between other modules. It can be used to control data flow, logic and more. It should process the data from the Model, interactions and responses from the View, and control the logic between other modules.
 
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Controller'](http://docs.tweakjs.com/class/tweak/Controller.html) section.
 
@@ -285,7 +285,7 @@ For more information please look at the [documentation](http://docs.tweakjs.com)
 ### Event System
 Tweak.js is built in with an event system that can be used to bind/unbind and trigger events throughout modules and your application. This provides functionality to communicate simply and effectively while maintaining an organised structure to your code and applications.
 
-For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Events'](http://docs.tweakjs.com/class/tweak/Events.html) section.
+For more information please look at the [documentation](http://docs.tweakjs.com) under the ['EventSystem'](http://docs.tweakjs.com/class/tweak/EventSystem.html) section.
 
 ### Components
 Components are used to dynamically create a set of linking modules like the typical Models, Views and Controllers; that can be configured, extended, reused and organised.  A Component will build and tie together modules.

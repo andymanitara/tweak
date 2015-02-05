@@ -56,7 +56,7 @@ tweak.View = tweak.ViewComponent
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
 ###
-class tweak.Component
+class tweak.Component extends tweak.EventSystem
  
   # @property [Object]
   model: null

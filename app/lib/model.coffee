@@ -1,25 +1,36 @@
 ###
-  The model is simply a way of storing some data, with event triggering on changes to the model
-  In common MVC concept the Model is not always a database. So the controller should be used to get data from a database.
-  The controller is normally the interface between the view and the models data.
-  When the model updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
-  You can update the model quietly aswell.
+  A Model is used by other modules like the Controller to store, retrieve and listen
+  to a set of data. Tweak.js will call events through its **event system** when it
+  is updated, this makes it easy to listen to updates and to action as and when 
+  required. The Model’s data is not a database, but a JSON representation of its 
+  data can be exported and imported to and from storage sources. In Tweak.js the 
+  Model extends the Store module - which is the core functionality shared between 
+  the Model and Collection. The main difference between a Model and collection it
+  the base of its storage. The Model uses an object to store its data and a 
+  collection base storage is an Array.
 ###
 class tweak.Model extends tweak.Store
-  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
 
   # @property [Object] Data storage holder, for a model this is an object
   data: {}
   # @property [String] The type of collection this is
   _type: "model"
+  # @property [tweak.EventSystem] An event system is attached to  
+  events: {}
 
-  # @private
+  ###
+    The constructor initialises the models unique ID, contextual relation, 
+    its root context and its initial data. 
+
+    It also initialises a 
+
+    @param [Context] relation The contextual object, usually it is the context of where this module is called.
+  ###
   constructor: (relation, @data = {}) ->
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
     @relation = relation ?= {}
     @root = relation.root or @
-    @name = relation.name
 
   ###
     Remove a single property or many properties.
@@ -40,9 +51,15 @@ class tweak.Model extends tweak.Store
       for key, prop of data when key is property
         @length--
         delete @data[key]
-        if not quiet then tweak.Common.__trigger @, "#{@_type}:removed:#{key}"
+        if not quiet 
+          setTimeout(->
+            tweak.Events.trigger "#{uid}:removed:#{key}", args...
+          ,0)
 
-    if not quiet then tweak.Common.__trigger @, "#{@_type}:changed"
+    if not quiet
+      setTimeout(->
+        tweak.Events.trigger "#{uid}:changed", args...
+      , 0);
     return
 
   ###

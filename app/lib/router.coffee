@@ -3,7 +3,7 @@
   @todo Document description
 ###
 
-class tweak.Router
+class tweak.Router extends tweak.EventSystem
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
   # @property [*] The root relationship to this module

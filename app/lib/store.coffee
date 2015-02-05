@@ -8,7 +8,7 @@
   When the store updates it will fire of events to Event system; allowing you to listen to what has been changed. The controller can then detirmine what to do when it gets updated.
   You can update the store quietly aswell.
 ###
-class tweak.Store
+class tweak.Store extends tweak.EventSystem
 
   # @property [String] The type of storage, ie 'collection' or 'model'
   _type: 'BASE'

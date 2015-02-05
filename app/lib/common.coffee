@@ -3,27 +3,6 @@
 ###
 class tweak.Common
   ###
-    Triggering API calls in one hit - to reduce repetative code.
-    @param [*] ctx The context of the function
-    @param [String] name The event name; split on / and : characters
-    @param [...] args Callback function parameters
-  ###
-  __trigger: (ctx, path, args...) ->
-    secondary = path.split ":"
-    secondary.shift()
-    setTimeout(->
-      tweak.Events.trigger "#{ctx.name}:#{path}", args...
-    ,0)
-    if ctx.cuid?
-      setTimeout(->
-        tweak.Events.trigger "#{ctx.cuid}:#{path}", args...
-      ,0)
-    setTimeout(->
-      tweak.Events.trigger "#{ctx.uid}:#{secondary.join ':'}", args...
-    ,0)
-    return
-
-  ###
     Reduce component names like ./cd[0-98] to an array of all the module names
     @param [String] str The string to split into seperate component names
     @return [Array<String>] Returns Array of absolute module names

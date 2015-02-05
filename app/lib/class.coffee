@@ -1,6 +1,6 @@
 tweak.__hasProp = {}.hasOwnProperty
 
-tweak.extends = (child, parent) ->
+tweak.Extends = (child, parent) ->
   ctor = ->
     @constructor = child
     return
@@ -11,7 +11,7 @@ tweak.extends = (child, parent) ->
   child.__super__ = parent::
   child
 
-tweak.super = (child, name) -> 
+tweak.Super = (child, name) -> 
   child.__super__[name].call @
   return
 
@@ -23,13 +23,13 @@ tweak.super = (child, name) ->
 class tweak.Class
   ###
     This is a dummy method - for documentation purposes only.
-    To extend an object with JS use tweak.extends
+    To extend an object with JS use tweak.Extends
   ###
   extends: (child, parent) ->
 
   ###
     This is a dummy method - for documentation purposes only.
     To super a method with JS use this.super. 
-    To add super to prototype of a custom object not within the TweakJS classes in JS; do {class}.prototype.super = tweak.super
+    To add super to prototype of a custom object not within the TweakJS classes in JS; do {class}.prototype.super = tweak.Super
   ###
   super: (child, name) ->
