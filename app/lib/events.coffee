@@ -161,7 +161,7 @@ class tweak.Events
     @option options [Number] max Set a new maximum calls to an event.
     @option options [Number] calls Set the amount of calls that has been triggered on this event.
     @option options [Boolean] reset (Default = false) If true then calls on an event get set back to 0.
-    @option options [Function] listen Whether to enable or disable listening to event.
+    @option options [Boolean] listen Whether to enable or disable listening to event.
   ###
   set: (name, options = {}) ->
     event = @find name
