@@ -1,16 +1,16 @@
 ###
   Tweak.js is built in with an event system that can be used
-  to bind/unbind and trigger events throughout modules and 
+  to bind/unbind and trigger events throughout modules and
   your application. This provides functionality to communicate
   simply and effectively while maintaining an organised structure
   to your code and applications.
 
-  A single global event system is created upon running the 
+  A single global event system is created upon running the
   framework. The event system is designed to be global so you
   can invoke events between modules; bringing more relationships
-  and flexibilty to applications and its modules.
-  
-  Examples are in JS, unless where CoffeeScript syntax may be unusual. 
+  and flexibility to applications and its modules.
+ 
+  Examples are in JS, unless where CoffeeScript syntax may be unusual.
 ###
 class tweak.Events
 
@@ -24,7 +24,7 @@ class tweak.Events
     Iterate through events to find matching named events.
 
     @overload find(name, params)
-      Find events with a space seperated string.
+      Find events with a space separated string.
       @param [String] name The event name(s); split on a space.
       @param [Boolean] build (Default = false) Whether or not to add an event object when none can be found.
       @return [Array<Event>] All event objects that are found/created then it is returned in an Array.
@@ -36,11 +36,11 @@ class tweak.Events
       @return [Array<Event>] All event objects that are found/created then it is returned in an Array.
 
     @example Delimited string
-      // This will find all events in the given space delimeted string.
+      // This will find all events in the given space delimited string.
       tweak.Events.find("sample:event another:event");
 
     @example Delimited string with build
-      // This will find all events in the given space delimeted string.
+      // This will find all events in the given space delimited string.
       // If event can not be found then it will be created.
       tweak.Events.find("sample:event another:event", true);
 
@@ -57,7 +57,7 @@ class tweak.Events
   find: (name, build = false) ->
     # Split name if it is a string
     if typeof name is "string"
-      name = name.spilt /\s+/
+      name = name.split /\s+/
 
     for item in name
       event = @events[name]
@@ -68,10 +68,10 @@ class tweak.Events
       event
 
   ###
-    Bind a callback to the event system. The callback is invoked when an 
-    event is triggered. Events are added to an object based on there name. 
+    Bind a callback to the event system. The callback is invoked when an
+    event is triggered. Events are added to an object based on their name.
 
-    Name spacing is useful to seperate events into there relevent types. 
+    Name spacing is useful to separate events into their relevant types.
     It is typical to use colons for name spacing. However you can use any other
     namespacing characters such as / \ - _ or .
 
@@ -127,7 +127,7 @@ class tweak.Events
   off: (context, name, callback) ->    
     for event in @find name
       # Check to see if the callback matches.
-      # If event matches critera then delete.
+      # If event matches criteria then delete.
       for key, item of event.__callbacks
         if not callback? or context is item.ctx and callback is item.callback
           delete event.__callbacks[key]
@@ -210,7 +210,7 @@ class tweak.Events
     listen = options.listen
     callback = options.callback
     for event in @find name
-      for item in event.__callbacks 
+      for item in event.__callbacks
         if (not ctx? or ctx isnt item.ctx) and (not callback? or callback isnt item.callback)
           if max? then item.max = max
           if calls? then item.calls = calls
@@ -223,3 +223,4 @@ class tweak.Events
   reset: -> @events = {}
 
 tweak.Events = new tweak.Events()
+
