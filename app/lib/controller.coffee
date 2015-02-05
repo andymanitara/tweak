@@ -1,12 +1,10 @@
 ###
-  The controller should be used to control the logic and functionality between components modules.
-  The controller allows for seperation for your logic. You can still use the view and the model ect to control logic, but think of this as your middle man/ blank canvas.
-  By seperating the logic between the model and view you allow for much cleaner code. The view can still contain logic; but try keep this logic based on the interface between the user and view.
-
-  The view could be used to define the parts of interaction; and animating things.
-  The model can be used for validating data on updateing of data allowing a simple continuous checking system seperate from your logic.
-  Therefore the complex logic between what happens on certain interaction can remain in the controller; making it simpler to understand what happens where and when.
-  It now keeps your code clean from long and extensive validation and animation logic; which can make code hard to understand when trying to debug why something wont happen after another thing.
+  A Controller defines the business logic between other modules. It can be used to
+  control data flow, logic and more. It should process the data from the Model, 
+  interactions and responses from the View, and control the logic between other 
+  modules. The Controller has quick access to the **event system** and thus it can
+  use this functionality to keep control of events that happen throughout your 
+  application, Components and modules.
 ###
 class tweak.Controller
 
@@ -31,45 +29,54 @@ class tweak.Controller
   init: ->
 
   ###
-    Event 'on' handler for DOM and the Event API
-    @param [String] name The event name, split on the / and : characters, to add
-    @param [Function] callback  The callback function; if you do not include this then all events under the name will be removed
-    @param [Number] maxCalls The maximum amount of calls the event can be triggered.
-    @return [Boolean] Returns whether the event is added
+    A shortcut to the event systems, event binding function. For more information see the Events Class.
+
+    @param [Object] context The contextual object of which the event to be binded to.
+    @param [String] name The event name(s); split on a space, or an array of event names.
+    @param [Function] callback The event callback function.
+    @param [Number] max (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
   ###
-  on: (options = {}) ->
-    options.context ?= @
-    options.args ?= []
-    tweak.Events.on options.context, options.args...
+  on: (context, name, callback, max) ->
+    tweak.Events.on context, name, callback, max
+    return
+
+  ###    
+    A shortcut to the event systems, event unbinding function. For more information see the Events Class.
+
+    @param [Object] context The contextual object of which the event is binded to.
+    @param [String] name The event name(s); split on a space, or an array of event names.
+    @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the events under event name are removed.
+  ###
+  off: (context, name, callback) ->
+    tweak.Events.off context, name, callback
     return
 
   ###
-    Event 'off' handler Event API
-    @param [String] name The event name, split on the / and : characters, to remove
-    @param [Function] callback (optional) The callback function; if you do not include this then all events under the name will be removed
-    @return [Boolean] Returns whether the event is removed
-  ###
-  off: (options = {}) -> 
-    options.context ?= @
-    options.args ?= []
-    tweak.Events.off options.context, options.args...
-    return
+    A shortcut to the event systems, event triggering function. For more information see the Events Class.
+    The event is triggered in an async manner through this shortcut.
 
+    @overload trigger(name, params)
+      Trigger events by name only.
+      @param [String, Array<String>] name The event name(s); split on a space, or an array of event names.
+      @param [...] params Params to pass into the callback function.
+
+    @overload trigger(options, params)
+      Trigger events by name and context.
+      @param [Object] options Options and limiters to check against callbacks.
+      @param [...] params Params to pass into the callback function.
+      @option options [String, Array<String>] names The event name(s); split on a space, or an array of event names.
+      @option options [Context] context The context of the callback to check against a callback.
   ###
-    Event 'trigger' handler for DOM and the Event API, triggered in async
-    @param [String] name The event name, split on the / and : characters, to trigger
-    @param [...] params Parameters to pass into the callback function
-  ###
-  trigger: (name, options = {}) ->    
-    options.context ?= @
-    options.args ?= []
+  trigger: (name, args...) ->
     setTimeout(->
-      tweak.Events.trigger {name, ctx:options.context}, options.args...
+      tweak.Events.trigger name, args...
     ,0)
     return
 
   ###
-    Set an event to either not listen or listen - default is to listen. Also can be used to modify event options.
+    A shortcut to the event systems, event updating function. For more information see the Events Class.
+    Primarily to set an event to either not listen or listen - default is to listen. Also can be used to modify event options.
+
     @param [String] name The event name; split on the / and : characters
     @param [Object] options The limits to check events to.    
     @option options [Object] context Context to limit to.
