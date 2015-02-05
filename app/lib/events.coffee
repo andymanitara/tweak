@@ -158,8 +158,10 @@ class tweak.Events
     @param [Object] options The limits to check events to.
     @option options [Object] context Context to limit to.
     @option options [Function] callback Callback function to limit to.
-    @option options [Number] max Maximum calls to limit to.
-    @option options [Function] listen Whether to enable listening to event.
+    @option options [Number] max Set a new maximum calls to an event.
+    @option options [Number] calls Set the amount of calls that has been triggered on this event.
+    @option options [Boolean] reset (Default = false) If true then calls on an event get set back to 0.
+    @option options [Function] listen Whether to enable or disable listening to event.
   ###
   set: (name, options = {}) ->
     event = @find name
@@ -168,7 +170,7 @@ class tweak.Events
     c = options.context
     m = options.max
     r = options.reset
-    cl = if r then 0 else options.calls
+    cl = if r then 0 else options.calls or 0
 
     l = options.listen
     ca = options.callback
