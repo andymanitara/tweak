@@ -90,12 +90,11 @@ class tweak.View extends tweak.EventSystem
           @addClass @el, @config.class or ""
 
         @model.set "rendering", false
-        tweak.Common.__trigger @, "view:rendered"
+        @triggerEvent "rendered"
         @init()
      
       # Check if other components are waiting to finish rendering, if they are then wait to attach to DOM
-      tweak.Events.on @, "#{@uid}:renderable", ->
-        attach()
+      @addEvent "renderable", -> attach()
       @__renderable @
 
     # Set viewable height and width
@@ -111,7 +110,7 @@ class tweak.View extends tweak.EventSystem
   rerender: ->
     @clear()
     @render()
-    tweak.Events.on @, "#{@uid}:rendered", -> tweak.Common.__trigger @, "view:rerendered"
+    @addEvent "rendered", -> @triggerEvent "rerendered"
     return
 
   ###
@@ -209,7 +208,5 @@ class tweak.View extends tweak.EventSystem
     @event "#{@uid}:rerendered" Event called to trigger the rendering of this view.
   ###
   __renderable: (ctx) ->
-    setTimeout(->
-      tweak.Events.trigger "#{ctx.uid}:renderable"
-    ,0)
+    @triggerEvent "renderable"    
     return

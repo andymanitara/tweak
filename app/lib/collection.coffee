@@ -82,8 +82,7 @@ class tweak.Collection extends tweak.Store
       result.push @data[_j]
     @data = result
     if not quiet
-      tweak.Common.__trigger @, "#{@_type}:changed"
-      tweak.Common.__trigger @, "#{@_type}:changed:#{position}"
+      @triggerEvent "changed changed:#{position}"
     return
   
   ###
@@ -112,10 +111,10 @@ class tweak.Collection extends tweak.Store
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       delete @data[property]
-      if not quiet then tweak.Common.__trigger @, "#{@_type}:removed:#{property}"
+      if not quiet then @triggerEvent "removed:#{property}"
     
     @clean()
-    if not quiet then tweak.Common.__trigger @, "#{@_type}:changed"
+    if not quiet then @triggerEvent "changed"
     return
 
   ###

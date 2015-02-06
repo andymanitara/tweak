@@ -77,9 +77,9 @@ class tweak.Store extends tweak.EventSystem
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then tweak.Common.__trigger @, "#{@_type}:changed:#{key}", prop
+      if not quiet then @triggerEvent "changed:#{key}", prop
 
-    if not quiet then tweak.Common.__trigger @, "#{@_type}:changed"
+    if not quiet then @triggerEvent "#{@_type}:changed"
     return
 
   ###

@@ -68,23 +68,17 @@ class tweak.Components extends tweak.Collection
   ###
   _componentRender: (type) ->
     if @length is 0
-      tweak.Common.__trigger @, "#{@_type}:ready"
+      @triggerEvent "ready"
     else
       @total = 0
       for item in @data
+        @item.addEvent("view:#{type}ed", ->
+          if @total++ is @length-1 then @triggerEvent "ready"
+        , null, @)
         item[type]()
-        # Weird format to allow the _allRendered method to remain private
-        tweak.Events.off @, "#{item.uid}:view:#{type}ed", => @_allRendered @
-        tweak.Events.on @, "#{item.uid}:view:#{type}ed", => @_allRendered @, @length
+        
     return
-
-  ###
-    @private
-    Callback for when an item is rendered
-    @param [context] context The context to apply to the function
-  ###
-  _allRendered: (context) ->
-    if context.total++ is context.length-1 then tweak.Common.__trigger context, "#{context._type}:ready"
+    
     return
 
   ###

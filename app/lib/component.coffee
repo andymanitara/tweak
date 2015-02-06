@@ -25,15 +25,9 @@ class tweak.ViewComponent extends tweak.View
       if item is ctx.relation then break
       previousComponent = item
     if previousComponent?.model?.data.rendering
-      tweak.Events.on ctx, "#{previousComponent.uid}:model:changed:rendering", (rendering) ->
-        if not rendering
-          setTimeout(->
-            tweak.Events.trigger "#{@uid}:renderable"
-          ,0)
-    else
-      setTimeout(->
-        tweak.Events.trigger "#{@uid}:renderable"
-      ,0)
+      @model.addEvent "changed:rendering", (rendering) ->
+        if not rendering then @triggerEvent "renderable"
+    else @triggerEvent "renderable"
     return
       
 tweak.View = tweak.ViewComponent
@@ -236,12 +230,12 @@ class tweak.Component extends tweak.EventSystem
     @private
   ###
   _componentRender: (type) ->
-    tweak.Events.on @, "#{@uid}:view:#{type}ed", =>
-      tweak.Events.on @, "#{@uid}:components:ready", =>
-        setTimeout(=>
-          tweak.Events.trigger "#{@uid}:ready", @name
-        ,0)
+    @view.addEvent("#{type}ed", ->
+      @components.addEvent "ready", ->
+        @triggerEvent "ready", @name
+      ,null, @)
       @components[type]()
+    ,null, @)
     @view[type]()
     return
 

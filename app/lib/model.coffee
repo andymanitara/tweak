@@ -51,15 +51,9 @@ class tweak.Model extends tweak.Store
       for key, prop of data when key is property
         @length--
         delete @data[key]
-        if not quiet 
-          setTimeout(->
-            tweak.Events.trigger "#{uid}:removed:#{key}", args...
-          ,0)
+        if not quiet then @triggerEvent "removed:#{key}"
 
-    if not quiet
-      setTimeout(->
-        tweak.Events.trigger "#{uid}:changed", args...
-      , 0);
+    if not quiet then @triggerEvent "changed"
     return
 
   ###
