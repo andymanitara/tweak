@@ -19,17 +19,17 @@ class tweak.Model extends tweak.Store
   events: {}
 
   ###
-    The constructor initialises the models unique ID, contextual relation, 
-    its root context and its initial data. 
-
-    It also initialises a 
-
-    @param [Context] relation The contextual object, usually it is the context of where this module is called.
+    The constructor initialises the controllers unique ID, contextual relation, its root context, and its initial data. 
+    
+    @param [Object] relation The contextual object, usually it is the context of where this module is called.
   ###
   constructor: (relation, @data = {}) ->
     # Set uid
     @uid = "m_#{tweak.uids.m++}"
+    # Set the relation to this object, if no relation then set it to a blank object. 
     @relation = relation ?= {}
+    # Set the root relation to this object, this will look at its relations root.
+    # If there is no root relation then this becomes the root relation to other modules. 
     @root = relation.root or @
 
   ###
@@ -37,13 +37,8 @@ class tweak.Model extends tweak.Store
     @param [String, Array<String>] properties Array of property names to remove from model, or single String of the name of the property to remove
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:model:removed:#{key} Triggers an event based on what property has been removed
-    @event #{@component.uid}:model:removed:#{key} Triggers an event based on what property has been removed
-    @event #{@uid}:removed:#{key} Triggers an event based on what property has been removed
-
-    @event #{@name}:model:changed Triggers a generic event that the model has been updated
-    @event #{@component.uid}:model:changed Triggers a generic event that the model has been updated
-    @event #{@uid}:model:changed Triggers a generic event that the model has been updated
+    @event removed:#{key} Triggers an event based on what property has been removed
+    @event changed Triggers a generic event that the model has been updated
   ###
   remove: (properties, quiet = true) ->
     if typeof properties is 'string' then properties = [properties]

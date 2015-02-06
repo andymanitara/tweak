@@ -13,13 +13,19 @@ class tweak.Router extends tweak.EventSystem
   
   super: tweak.super
 
-  # @private
-  constructor: (relation, config = {}) ->
+  ###
+    The constructor initialises the controllers unique ID, contextual relation and its root context. 
+
+    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+  ###
+  constructor: (relation) ->
     # Set uid
     @uid = "r_#{tweak.uids.r++}"
+    # Set the relation to this object, if no relation then set it to a blank object. 
     @relation = relation ?= {}
+    # Set the root relation to this object, this will look at its relations root.
+    # If there is no root relation then this becomes the root relation to other modules. 
     @root = relation.root or @
-    @name = config.name or relation.name
 
   ###
     Start watching the roouter for changes, options for speed and whether to be quiet
@@ -50,29 +56,28 @@ class tweak.Router extends tweak.EventSystem
     @example hash url examples
       tweakjs.com/#search/safe/version=2
       triggers:
-        #{@uid}:data:search
-        #{@uid}:data:safe
-        #{@uid}:data:version (passes in 2)
-        #{@uid}:changed (passes in {search:true, safe:true, version:2})
+        data:search
+        data:safe
+        data:version (passes in 2)
+        changed (passes in {search:true, safe:true, version:2})
 
       tweakjs.com/#version:1/search/safe/version=2
       triggers:
-        #{@uid}:data:version (passes in 1)
-        #{@uid}:data:search
-        #{@uid}:data:safe
-        #{@uid}:data:version (passes in 2)
-        #{@uid}:changed (passes in {search:true, safe:true, version:2})
-
+        data:version (passes in 1)
+        data:search
+        data:safe
+        data:version (passes in 2)
+        changed (passes in {search:true, safe:true, version:2})
 
     @note event name is made up from the data in the url. The router data is split up by / \ per data set, and by : = between the key and data.
 
-    @event #{@name}:router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
-    @event #{@component.uid}:router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
-    @event #{@uid}:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+    @event router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+    @event router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+    @event data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
 
-    @event #{@name}:router:changed Triggers an event and passes the data of the url back
-    @event #{@component.uid}:router:changed Triggers an event and passes the data of the url back
-    @event #{@uid}:changed Triggers an event and passes the data of the url back
+    @event router:changed Triggers an event and passes the data of the url back
+    @event router:changed Triggers an event and passes the data of the url back
+    @event changed Triggers an event and passes the data of the url back
   ###
   check: (quiet = false) ->
     hash = window.location.hash.substring 1
@@ -89,11 +94,11 @@ class tweak.Router extends tweak.EventSystem
         itemArr = item.split /[=:]/
         if itemArr.length is 1
           hashObj[itemArr[0]] = true
-          if not quiet then tweak.Common.__trigger @, "router:data:"+itemArr[0]
+          if not quiet then @triggerEvent "data:"+itemArr[0]
         else
           hashObj[itemArr[0]] = itemArr[1]
-          if not quiet then tweak.Common.__trigger @, "router:data:"+itemArr[0], itemArr[1]
-      if not quiet then tweak.Common.__trigger @, "router:changed", hashObj
+          if not quiet then @triggerEvent "data:"+itemArr[0], itemArr[1]
+      if not quiet then @triggerEvent "changed", hashObj
     return
   
   ###

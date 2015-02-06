@@ -26,14 +26,23 @@ class tweak.View extends tweak.EventSystem
   # @property [Method] see tweak.super
   super: tweak.super
 
-  # @private
-  constructor: (relation, config) ->
-    @relation = relation ?= {}
-    @config = config ?= {}
+  ###
+    The constructor initialises the controllers unique ID, contextual relation, its root context and sets the views config. 
+
+    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+  ###
+  constructor: (relation, @config = {}) ->
     # Set uid
     @uid = "v_#{tweak.uids.v++}"
+    # Set the relation to this object, if no relation then set it to a blank object. 
+    @relation = relation ?= {}
+    # Set the root relation to this object, this will look at its relations root.
+    # If there is no root relation then this becomes the root relation to other modules. 
     @root = relation.root or @
-    @name = config.name or relation.name
+
+    # Set a name of the view so it is easy to access the DOM through a class name
+    # 
+    @name = @relation.name or @config.name or @uid
 
   ###
     Default initialiser function - called when the view has rendered
@@ -49,9 +58,7 @@ class tweak.View extends tweak.EventSystem
     However this is quite a perfmormance heavy part of the framework so help tidiing things up would be much appreciated.
 
     @todo Reduce the complexity of the rendering functionality
-    @event "#{@name}:view:rendered" The event is called when the view has been rendered.
-    @event "#{@component.uid}:view:rendered" The event is called when the view has been rendered.
-    @event "#{@uid}:rendered" The event is called when the view has been rendered.
+    @event rendered The event is called when the view has been rendered.
   ###
   render: ->
     if not @model? then throw new Error "There is no model attached to the view - cannot render"
@@ -59,7 +66,7 @@ class tweak.View extends tweak.EventSystem
     @model.data.rendering = true
     
     # Makes sure that there is an id for this component set, either by the config or by its name
-    @model.data.id = @name.replace /[\/\\]/g, "-"
+    className = @model.data.className = @config.className or @name.replace /[\/\\]/g, "-"
     # Build the template with the date from the model
     template = if @config.template then @require @name, @config.template else @findModule @relation.paths, './template'
     template = template @model.data
@@ -89,6 +96,10 @@ class tweak.View extends tweak.EventSystem
           @addClass @el, @model.get "id"
           @addClass @el, @config.class or ""
 
+        # add the unique id as the id for the main element
+        if @addID?
+          @addID @el, @uid
+
         @model.set "rendering", false
         @triggerEvent "rendered"
         @init()
@@ -103,9 +114,7 @@ class tweak.View extends tweak.EventSystem
 
   ###
     The view will be cleared then rendered again.
-    @event "#{@name}:view:rerendered" The event is called when the view has been rerendered.
-    @event "#{@component.uid}:view:rerendered" The event is called when the view has been rerendered.
-    @event "#{@uid}:rerendered" The event is called when the view has been rerendered.
+    @event rerendered The event is called when the view has been rerendered.
   ###
   rerender: ->
     @clear()
@@ -205,7 +214,7 @@ class tweak.View extends tweak.EventSystem
   ###
     @private
     Detirmine if view is ready to render; by default it will start rendering the view.
-    @event "#{@uid}:rerendered" Event called to trigger the rendering of this view.
+    @event rerenderable Event called to trigger the rendering of this view.
   ###
   __renderable: (ctx) ->
     @triggerEvent "renderable"    

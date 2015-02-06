@@ -7,13 +7,19 @@ class tweak.Collection extends tweak.Store
   # @property [String] The type of storage, ie 'collection' or 'model'
   _type: "collection"
 
-  # @private
-  constructor: (relation, @data = {}) ->
+  ###
+    The constructor initialises the controllers unique ID, contextual relation, its root context, and its initial data. 
+    
+    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+  ###
+  constructor: (relation, @data = []) ->
     # Set uid
     @uid = "cl_#{tweak.uids.cl++}"
+    # Set the relation to this object, if no relation then set it to a blank object. 
     @relation = relation ?= {}
+    # Set the root relation to this object, this will look at its relations root.
+    # If there is no root relation then this becomes the root relation to other modules. 
     @root = relation.root or @
-    @name = relation.name
 
   ###
     Reduce an array be remove elements from the front of the array and returning the new array
@@ -36,8 +42,8 @@ class tweak.Collection extends tweak.Store
     Pop the top data element in the collection
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@_type}:removed:#{key} Triggers an event based on what property has been removed
-    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
+    @event removed:#{key} Triggers an event based on what property has been removed
+    @event changed Triggers a generic event that the collection has been updated
     @return [*] Returns the data that was removed
   ###
   pop: (quiet) ->
@@ -50,8 +56,8 @@ class tweak.Collection extends tweak.Store
     @param [*] data Data to add to the end of the collection
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
+    @event changed:#{key} Triggers an event and passes in changed property
+    @event changed Triggers a generic event that the collection has been updated
   ###
   add: (data, quiet) -> 
     @set "#{@length}", data, quiet
@@ -63,13 +69,8 @@ class tweak.Collection extends tweak.Store
     @param [Number] position The position to insert the property at into the collection
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@component.uid}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@uid}:changed:#{key} Triggers an event and passes in changed property
-
-    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
-    @event #{@component.uid}:#{@_type}:changed Triggers a generic event that the collection has been updated
-    @event #{@uid}:changed Triggers a generic event that the collection has been updated
+    @event changed:#{key} Triggers an event and passes in changed property
+    @event changed Triggers a generic event that the collection has been updated
   ###
   place: (data, position, quiet) ->
     result = []
@@ -99,13 +100,8 @@ class tweak.Collection extends tweak.Store
     @param [String, Array<String>] properties Array of property names to remove from collection, or single String of the name of the property to remove
     @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@_type}:removed:#{key} Triggers an event based on what property has been removed
-    @event #{@component.uid}:#{@_type}:removed:#{key} Triggers an event based on what property has been removed
-    @event #{@uid}:removed:#{key} Triggers an event based on what property has been removed
-
-    @event #{@name}:#{@_type}:changed Triggers a generic event that the collection has been updated
-    @event #{@component.uid}:#{@_type}:changed Triggers a generic event that the collection has been updated
-    @event #{@uid}:changed Triggers a generic event that the collection has been updated
+    @event removed:#{key} Triggers an event based on what property has been removed
+    @event changed Triggers a generic event that the collection has been updated
   ###
   remove: (properties, quiet) ->
     if typeof properties is 'string' then properties = [properties]

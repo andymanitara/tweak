@@ -241,7 +241,7 @@ class tweak.Component extends tweak.EventSystem
 
   ###
     Renders itself and its subcomponents
-    @event #{@name}:ready Triggers ready event when itself and its components are ready/rendered
+    @event ready Triggers ready event when itself and its components are ready/rendered
   ###
   render: -> 
     @_componentRender "render"
@@ -249,7 +249,7 @@ class tweak.Component extends tweak.EventSystem
 
   ###
     Rerenders itself and its subcomponents
-    @event #{@name}:ready Triggers ready event when itself and its components are ready/rerendered
+    @event ready Triggers ready event when itself and its components are ready/rerendered
   ###
   rerender: -> 
     @_componentRender "rerender"

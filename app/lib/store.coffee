@@ -30,13 +30,19 @@ class tweak.Store extends tweak.EventSystem
   
   super: tweak.super
 
-  # @private
-  constructor: (relation, config = {}) ->
+  ###
+    The constructor initialises the controllers unique ID, contextual relation and its root context. 
+
+    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+  ###
+  constructor: (relation) ->
     # Set uid
     @uid = "s_#{tweak.uids.s++}"
+    # Set the relation to this object, if no relation then set it to a blank object. 
     @relation = relation ?= {}
+    # Set the root relation to this object, this will look at its relations root.
+    # If there is no root relation then this becomes the root relation to other modules. 
     @root = relation.root or @
-    @name = config.name or relation.name
 
   ###
     Default initialiser function
@@ -57,13 +63,8 @@ class tweak.Store extends tweak.EventSystem
       @param [Object] properties Key and property based object to store into store
       @param [Boolean] quiet Setting to trigger change events
 
-    @event #{@name}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@component.uid}:#{@_type}:changed:#{key} Triggers an event and passes in changed property
-    @event #{@uid}:changed:#{key} Triggers an event and passes in changed property
-
-    @event #{@name}:#{@_type}:changed Triggers a generic event that the store has been updated
-    @event #{@component.uid}:#{@_type}:changed Triggers a generic event that the store has been updated
-    @event #{@uid}:changed Triggers a generic event that the store has been updated
+    @event changed:#{key} Triggers an event and passes in changed property
+    @event changed Triggers a generic event that the store has been updated
   ###
   set: (properties, params...) ->
     quiet = params[0]
@@ -79,7 +80,7 @@ class tweak.Store extends tweak.EventSystem
       
       if not quiet then @triggerEvent "changed:#{key}", prop
 
-    if not quiet then @triggerEvent "#{@_type}:changed"
+    if not quiet then @triggerEvent "changed"
     return
 
   ###

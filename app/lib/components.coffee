@@ -20,14 +20,23 @@ class tweak.Components extends tweak.Collection
   # @property [Method] see tweak.Common.splitComponents
   splitModuleName: tweak.Common.splitModuleName
 
+
+  ###
+    The constructor initialises the controllers unique ID, contextual relation, its root context. 
+    
+    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+  ###
+
   # @private
   constructor: (relation, config) ->
     # Set uid
     @uid = "cp_#{tweak.uids.cp++}"
-    @relation = relation ?= {}
     @_config = config ?= []
+    # Set the relation to this object, if no relation then set it to a blank object. 
+    @relation = relation ?= {}
+    # Set the root relation to this object, this will look at its relations root.
+    # If there is no root relation then this becomes the root relation to other modules. 
     @root = relation.root or @
-    @name = config.name or relation.name
   
   ###
    Construct the Collection with given options from the config file
@@ -35,24 +44,25 @@ class tweak.Components extends tweak.Collection
   init: ->
     @data = []
     data = []
+    _name = @relation.name or @_config.name
     for item in @_config
       obj = {}
       if item instanceof Array
-        names = @splitModuleName @name, item[0]
-        path = @relToAbs @name, item[1]
+        names = @splitModuleName _name, item[0]
+        path = @relToAbs _name, item[1]
         for name in names
           @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
         if item is "" or item is " " then continue
-        data = @splitModuleName @name, item
+        data = @splitModuleName _name, item
         for name in data
           @data.push new tweak.Component @, {name}    
       else
         obj = item
         name = obj.name
         if not name? or name is "" or name is " " then continue
-        data = @splitModuleName @name, name
-        obj.extends = @relToAbs @name, obj.extends
+        data = @splitModuleName _name, name
+        obj.extends = @relToAbs _name, obj.extends
         for prop in data
           obj.name = prop
           @data.push new tweak.Component @, obj

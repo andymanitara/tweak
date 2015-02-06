@@ -15,7 +15,7 @@ class tweak.Controller extends tweak.EventSystem
   ###
     The constructor initialises the controllers unique ID, contextual relation and its root context. 
 
-    @param [Context] relation The contextual object, usually it is the context of where this module is called.
+    @param [Object] relation The contextual object, usually it is the context of where this module is called.
   ###
   constructor: (relation) ->
     # Set uid

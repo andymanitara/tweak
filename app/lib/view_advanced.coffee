@@ -161,30 +161,61 @@ class tweak.ViewAdvanced extends tweak.View
     @private
     Split classes from a string to an array
   ###
-  splitClasses: (classes) ->
+  _splitString = (str) ->
     results = []
-    if typeof classes isnt "string" then classes = ''
-    for key, prop of classes.split " "
+    if typeof str isnt "string" then str = ''
+    for key, prop of str.split /\s+/
       if prop isnt "" then results.push prop
     results
 
+  
+  ###
+    @private
+    Check of a string of class names is in an element(s) class
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to remove to the element(s)
+  ###
+  _has = (type, element, name) ->
+    if (" #{element[type]} ").indexOf(" #{name} ") is -1 then return false
+    true
+
+  ###
+    Add a string of class names to an element(s)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes or ids to add to the element(s)
+  ###
+  adjust: (type, method, element, str, str2) ->
+    elements = @element element
+    if elements.length is 0 then return
+    str = _splitString str
+    if str2? then str2 = _splitString str2
+    else str2 = str
+    for item in elements
+      if not item? then continue      
+      i = 0
+      for prop in str2
+        name = item[type]
+        if method is "add"
+          if not _has type, item, prop then name += " #{prop}"
+        else
+          if prop is ' ' then continue
+          if method is "remove"
+            name = (" #{name} ").split(" #{prop} ").join ' '
+          else
+            name = (" #{name} ").split(" #{prop} ").join " #{str[i++]} "
+        item[type] = name
+          .replace /\s{2,}/g,' '
+          .replace /(^\s*|\s*$)/g,''
+    return
+
+  
   ###
     Add a string of class names to an element(s)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] classes A string of classes to add to the element(s)
   ###
   addClass: (element, classes = '') ->
-    elements = @element element
-    if elements.length is 0 then return
-    classes = @splitClasses classes
-    for item in elements
-      if not item? then continue
-      for prop in classes
-        className = item.className
-        if not @hasClass item, prop then className += " #{prop}"
-        item.className = className
-          .replace /\s{2,}/g,' '
-          .replace /(^\s*|\s*$)/g,''
+    @adjust 'className', 'add', element, classes
     return
 
   ###
@@ -193,17 +224,7 @@ class tweak.ViewAdvanced extends tweak.View
     @param [String] classes A string of classes to remove to the element(s)
   ###
   removeClass: (element, classes = '') ->
-    elements = @element element
-    if elements.length is 0 then return
-    classes = @splitClasses classes
-    for item in elements
-      if not item? then continue
-      for prop in classes
-        if prop is ' ' then continue
-        className = (" #{item.className} ").split(" #{prop} ").join ' '
-        item.className = className
-          .replace /\s{2,}/g,' '
-          .replace /(^\s*|\s*$)/g,''
+    @adjust 'className', 'remove', element, classes
     return
  
   ###
@@ -216,7 +237,7 @@ class tweak.ViewAdvanced extends tweak.View
     if elements.length is 0 then return
     for item in elements
       if not item? then continue
-      if (" #{item.className} ").indexOf(" #{name} ") is -1 then return false
+      if not _has 'className', element, name then return false
     true
 
 
@@ -225,20 +246,49 @@ class tweak.ViewAdvanced extends tweak.View
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] classes A string of classes to remove to the element(s)
   ###
-  replaceClass: (element, orig, classes) ->
+  replaceClass: (element, orig, classes) ->    
+    @adjust 'className', 'replace', element, classes, orig
+    return
+
+  ###
+    Add a string of class names to an element(s)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to add to the element(s)
+  ###
+  addID: (element, classes = '') ->
+    @adjust 'id', 'add', element, classes
+    return
+
+  ###
+    Remove a string of class names of an element(s)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to remove to the element(s)
+  ###
+  removeID: (element, classes = '') ->
+    @adjust 'id', 'remove', element, classes
+    return
+ 
+  ###
+    Check of a string of class names is in an element(s) class
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to remove to the element(s)
+  ###
+  hasID: (element, name) ->
     elements = @element element
     if elements.length is 0 then return
-    classes = @splitClasses classes
-    orig = @splitClasses orig
     for item in elements
       if not item? then continue
-      i = 0
-      for prop in orig
-        if prop is ' ' then continue
-        className = (" #{item.className} ").split(" #{prop} ").join " #{classes[i++]} "
-        item.className = className
-          .replace /\s{2,}/g,' '
-          .replace /(^\s*|\s*$)/g,''
+      if not _has 'id', element, name then return false
+    true
+
+
+  ###
+    Replace of a string of class names in element(s)
+    @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
+    @param [String] classes A string of classes to remove to the element(s)
+  ###
+  replaceID: (element, orig, classes) ->    
+    @adjust 'id', 'replace', element, classes, orig
     return
 
 tweak.View = tweak.ViewAdvanced
