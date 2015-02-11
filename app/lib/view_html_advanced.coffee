@@ -1,5 +1,5 @@
 ###
-  tweak.view.advanced.js 1.0.0
+  tweak.view.html.advanced.js 1.0.0
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -7,18 +7,13 @@
   http://tweakjs.com
 ###
 
-tweak.Viewable = {
-  width : window.innerWidth or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientWidth
-  height : window.innerHeight or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientHeight
-}
-
 ###
   The view is the DOM controller. This should be used for code that doesnt really control any logic but how the view is displayed. For example animations.
   The view uses a templating engine to provide the html to the DOM.
   The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
 ###
-class tweak.ViewAdvanced extends tweak.View
+class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
   # Not using own tweak.extends method as codo doesnt detect that this is an extending class
   
   ###
@@ -28,7 +23,7 @@ class tweak.ViewAdvanced extends tweak.View
     @return [Array<DOMElement>] Returns an array of DOMElements
     @throw When trying to use a selector engine without having one assigned to the tweak.Selector property you will recieve the following error - "Trying to get element with selector engine, but none defined to tweak.Selector"
   ###
-  element: (element, root= @el) ->
+  element: (element, root = @el) ->
     if typeof element is 'string'
       if tweak.Selector
         tweak.Selector element, root
@@ -161,7 +156,7 @@ class tweak.ViewAdvanced extends tweak.View
     @private
     Split classes from a string to an array
   ###
-  _splitString = (str) ->
+  _splitString: _splitString = (str) ->
     results = []
     if typeof str isnt "string" then str = ''
     for key, prop of str.split /\s+/
@@ -280,8 +275,6 @@ class tweak.ViewAdvanced extends tweak.View
       if not item? then continue
       if not _has 'id', element, name then return false
     true
-
-
   ###
     Replace of a string of class names in element(s)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
@@ -291,4 +284,4 @@ class tweak.ViewAdvanced extends tweak.View
     @adjust 'id', 'replace', element, classes, orig
     return
 
-tweak.View = tweak.ViewAdvanced
+tweak.View = tweak.ViewHTMLAdvanced
