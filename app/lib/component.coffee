@@ -8,31 +8,6 @@
 ###
 
 ###
-  @private
-  Overrides tweak.View to contain additional rendering functionality.
-  With this override; components render in order.
-###
-class tweak.ViewComponent extends tweak.View
-  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
-
-  ###
-    @private
-    Add extra functionality based on it now supports components
-  ###
-  __renderable = (ctx) ->
-    comps = ctx.relation.parent?.components?.data or []
-    for item in comps
-      if item is ctx.relation then break
-      previousComponent = item
-    if previousComponent?.model?.data.rendering
-      @model.addEvent "changed:rendering", (rendering) ->
-        if not rendering then @triggerEvent "renderable"
-    else @triggerEvent "renderable"
-    return
-      
-tweak.View = tweak.ViewComponent
-
-###
   The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
   For example you can plug "Web Components" into your static site; like sliders, accordians.
   The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps.
