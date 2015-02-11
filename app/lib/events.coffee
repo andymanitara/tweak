@@ -8,19 +8,16 @@
   Examples are in JS, unless where CoffeeScript syntax may be unusual.
 ###
 class tweak.EventSystem
-
-  _events = {}
-
   ###
-    Iterate through events to find matching named events.
+    Iterate through events to find matching named events. Can be used to add a new event through the optional Boolean build argument
 
-    @overload find(name, params)
+    @overload find(names, build)
       Find events with a space separated string.
-      @param [String] name The event name(s); split on a space.
+      @param [String] names The event name(s); split on a space.
       @param [Boolean] build (Default = false) Whether or not to add an event object when none can be found.
       @return [Array<Event>] All event objects that are found/created then it is returned in an Array.
 
-    @overload find(names, params)
+    @overload find(names, build)
       Find events with an array of names (strings).
       @param [Array<String>] names An array of names (strings).
       @param [Boolean] build (Default = false) Whether or not to add an event object when none can be found.
@@ -45,17 +42,20 @@ class tweak.EventSystem
       tweak.Events.find(["sample:event", "another:event"], true);
 
   ###
-  findEvent: (name, build = false) ->
+  findEvent: (names, build = false) ->
     # Split name if it is a string
-    if typeof name is "string"
-      name = name.split /\s+/
-
-    for item in name
-      event = @events[name]
-      if not event
-        # If build is true then the event path with be added to the tree
-        if build then event = {name:item}
+    if typeof names is "string"
+      names = names.split /\s+/
+    # Initiate @__events property if not yet initialised
+    events = @__events = @__events or {}
+    # Search for each name
+    for item in names
+      # Check if event exists
+      if not event = events[name]
+        # If we are to build then add a default event else continue the iteration
+        if build then event = @__events[name] = {name:item, __callbacks:[]}
         else continue
+      # Push found/created event into the returning array
       event
 
   ###
@@ -66,7 +66,7 @@ class tweak.EventSystem
     It is typical to use colons for name spacing. However you can use any other
     namespacing characters such as / \ - _ or .
 
-    @param [String, Array<String>] name The event name(s); split on a space, or an array of event names.
+    @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
     @param [Function] callback The event callback function.
     @param [Number] max (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
     @param [Object] context The contextual object of which the event to be binded to.
@@ -76,22 +76,23 @@ class tweak.EventSystem
         alert("Sample event triggered.")
       });
 
-    @example Binding a callback to event(s) with a seperate context without limitation (JS)
+    @example Binding a callback to event(s) with a separate context without limitation or total calls (JS)
       tweak.Events.addEvent("sample:event", function(){
         alert("Sample event triggered.")
       }, null, this);
 
-    @example Binding a callback to event(s) with a seperate context with a Max calls (JS)
+    @example Binding a callback to event(s) with a separate context with max calls (JS)
       tweak.Events.addEvent("sample:event", function(){
         alert("Sample event triggered.")
       }, 3, this);
 
   ###
-  addEvent: (name, callback, max, context = @) ->
-    # Find the event / build the event path.
-    for event in @find name, true
+  addEvent: (names, callback, max, context = @) ->
+    # Find events / build the event path, then iterate through them.
+    for event in @findEvent names, true
       ignore = false
-      for item in event.__callbacks ?= []
+      # Iterate through all callbacks to this event
+      for item in event.__callbacks
         # If the callback and context for an event match then ignore adding the event, but update the current event.
         if item.callback is callback and context is item.ctx
           # Update events max calls property
@@ -99,15 +100,14 @@ class tweak.EventSystem
           # Reset event calls and make event listen again
           item.calls = 0
           item.listen = ignore = true
-      if ignore then event.__callbacks.push {ctx:context, callback, max, calls:0, listen:true}
-
+      if not ignore then event.__callbacks.push {ctx:context, callback, max, calls:0, listen:true}
     return
 
   ###
-    Remove a previously bound callback function
-    @param [String] name The event name(s); split on a space, or an array of event names.
+    Remove a previously bound callback function. Removing events can be limited to context and its callback.
+    @param [String] names The event name(s). Split on a space, or an array of event names.
     @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the events under event name are removed.
-    @param [Object] context (default = this) The contextual object of which the event is binded to.
+    @param [Object] context (default = this) The contextual object of which the event is binded to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
 
     @example Unbinding a callback from event(s) (JS)
       tweak.Events.removeEvent("sample:event another:event", @callback);
@@ -115,30 +115,33 @@ class tweak.EventSystem
     @example Unbinding all callbacks from event(s) (JS)
       tweak.Events.removeEvent("sample:event another:event");
   ###
-  removeEvent: (name, callback, context = @) ->
-    for event in @find name
-      # Check to see if the callback matches.
+  removeEvent: (names, callback, context = @) ->
+    # Iterate through found events
+    for event in @findEvent names
+      # Check to see if the callback and/or context matches.
       # If event matches criteria then delete.
       for key, item of event.__callbacks
         if (not callback? or callback is item.callback) and (not context? or context is item.ctx) 
-          delete event.__callbacks[key]
-      if event.__callbacks.length is 0 then delete @events[event.name]
+          event.__callbacks.splice key,1
+      # If callbacks is empty then delete from @__events object
+      if event.__callbacks.length is 0 
+        delete @__events[event.name]
+
     return
 
   ###
     Trigger events by name.
-    @overload triggerEvent(name, params)
+    @overload triggerEvent(names, params)
       Trigger events by name only.
-      @param [String, Array<String>] name The event name(s); split on a space, or an array of event names.
+      @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
       @param [...] params Params to pass into the callback function.
 
     @overload triggerEvent(options, params)
       Trigger events by name and context.
       @param [Object] options Options and limiters to check against callbacks.
       @param [...] params Params to pass into the callback function.
-      @option options [String, Array<String>] names The event name(s); split on a space, or an array of event names.
-      @option options [Boolean] async (default = true) Whether to trigger asynchronously.
-      @option options [Context] context The context of the callback to check against a callback.
+      @option options [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
+      @option options [Context] context (Default = null) The context of the callback to check against a callback.
 
     @example Triggering event(s) (JS)
       tweak.Events.triggerEvent("sample:event, another:event");
@@ -148,38 +151,33 @@ class tweak.EventSystem
 
     @example Triggering event(s) but only with matching context (JS)
       tweak.Events.triggerEvent({context:@, name:"sample:event another:event"});
-
-    @example Triggering event(s) syncronously (JS)
-      tweak.Events.triggerEvent({async:false, name:"sample:event another:event"});
   ###
-  triggerEvent: (name, params...) ->
-    async = true
-    if typeof name is "object" and not name instanceof Array
-      name = name.name or []
-      context = name.context
-      if name.aysnc? then async = name.async 
-    
-    for event in @find name
+  triggerEvent: (names, params...) ->
+    # If names is an object then set names and context
+    if typeof names is "object" and not names instanceof Array
+      names = names.names or []       
+      context = names.context or null
+
+    # Iterate through found events
+    for event in @findEvent names
+      # Iterate through this event's callbacks
       for item in event.__callbacks
+        # If in listening state and if there is a context limit calls to the events with matching context
         if item.listen and (not context? or context is item.ctx)
-          # Check to see if the event has reached its call limit
-          # If it has reached its limit delete or add another.
-          if item.max? and ++item.calls >= item.max            
+          # Update the total calls to this event callback
+          if item.max? and ++item.calls >= item.max      
+            # Event has hit call limit, so set its event listening state to false     
             item.listen = false
-          if async
-            setTimeout(->
-              item.callback.call item.ctx, params...
-            ,0)
-          else item.callback.call item.ctx, params...
-            
+          # Call the events call back
+          item.callback.call item.ctx, params...            
     return
 
   ###
     Set events listening state, max calls, and total calls limited by name and options (callback, context).
-    @param [String] name The event name(s); split on a space, or an array of event names.
-    @param [Object] options The limits to check events to.
-    @option options [Object] context Context to limit to.
-    @option options [Function] callback Callback function to limit to.
+    @param [String] names The event name(s). Split on a space, or an array of event names.
+    @param [Object] options Optional limiters and update values.
+    @option options [Object] context The contextual object to limit updating events to.
+    @option options [Function] callback Callback function to limit updating events to.
     @option options [Number] max Set a new maximum calls to an event.
     @option options [Number] calls Set the amount of calls that has been triggered on this event.
     @option options [Boolean] reset (Default = false) If true then calls on an event get set back to 0.
@@ -204,26 +202,31 @@ class tweak.EventSystem
     @example Updating event(s) total calls (JS)
       tweak.Events.updateEvent("sample:event, another:event", {calls:29});
   ###
-  updateEvent: (name, options = {}) ->
+  updateEvent: (names, options = {}) ->
+    # Setup limiters and update properties
     ctx = options.context
     max = options.max
     reset = options.reset
     calls = if reset then 0 else options.calls or 0
     listen = options.listen
     callback = options.callback
-    for event in @find name
+
+    # Iterate through found events
+    for event in @findEvent names
+      # Iterate through this event's callbacks
       for item in event.__callbacks
+        # Check to see if the callback and/or context matches.
         if (not ctx? or ctx isnt item.ctx) and (not callback? or callback isnt item.callback)
+          # Update event properties
           if max? then item.max = max
           if calls? then item.calls = calls
           if listen? then item.listen = listen    
     return
 
   ###
-    Resets the event object tree back to empty.
+    Resets the events on this object to empty.
   ###
-  resetEvents: -> @events = {}
+  resetEvents: -> @__events = {}
 
 # A global events object is automatically created. Allowing for global event handling.
 tweak.Events = new tweak.EventSystem()
-
