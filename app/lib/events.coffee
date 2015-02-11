@@ -1,10 +1,10 @@
 ###
-  Tweak.js is built in with an event system that can be used
-  to bind/unbind and trigger events throughout modules and
-  your application. This provides functionality to communicate
-  simply and effectively while maintaining an organised structure
-  to your code and applications.
- 
+  Tweak.js has an event system class, this provides functionality to extending classes to communicate simply and
+  effectively while maintaining an organised structure to your code and applications. Each object can extend the
+  tweak.EventSystem class to provide event functionality to classes. Majority of Tweak.js modules/classes already
+  extend the EventSystem class, however when creating custom objects/classes you can extend the class using the
+  tweak.Extends method, please see the Class class in the documentation.
+    
   Examples are in JS, unless where CoffeeScript syntax may be unusual.
 ###
 class tweak.EventSystem
