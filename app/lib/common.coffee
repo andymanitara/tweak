@@ -1,38 +1,9 @@
 ###
-  This class contains common shared functionality. The aim to reduce repeated code.
+  This class contains common shared functionality. The aim to reduce repeated code and overall filesize.
 ###
 class tweak.Common
   ###
-    Reduce component names like ./cd[0-98] to an array of all the module names
-    @param [String] str The string to split into seperate component names
-    @return [Array<String>] Returns Array of absolute module names
-  ###
-  splitModuleName: (context, str) ->
-    values = []
-    reg1 = /\[(\d*)\-(\d*)\]$/
-    reg2 = /\[(\d*)\]$/
-    reg3 = /^(.*)\[/
-    for item in str.split " "
-      prefix = reg3.exec(item)
-      if prefix
-        prefix = prefix[1]
-        min = 0
-        max = 0
-        if item.match reg2
-          max = reg2.exec(item)[1]
-        else if item.match reg1
-          result = reg1.exec item
-          min = result[1]
-          max = result[2]     
-        
-        while min <= max
-          values.push tweak.Common.relToAbs context, "./#{prefix}#{min++}"
-      else
-        values.push tweak.Common.relToAbs context, str
-    values
-
-  ###
-    Merge properites from object from one object to another. (First object is the object to take on the properties from another)
+    Merge properites from object from one object to another. (First object is the object to take on the properties from other)
     @param [Object, Array] one The Object/Array to combine properties into.
     @param [Object, Array] two The Object/Array that shall be combined into the first object.
     @return [Object, Array] Returns the resulting combined object from two Object/Array
@@ -76,9 +47,9 @@ class tweak.Common
 
   ###
     Convert a simple JSON string/object.
-    @param [JSONString, JSONObject] data JSON data to convert.
-    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
-    @return [JSONObject, JSONString] Returns JSON data of the opposite data type.
+    @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
+    @param [Array<String>] restrict (Default = all properties get converted) Restrict which properties to convert. 
+    @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
   parse: (data, restrict) ->
     _restrict = (obj) ->
@@ -87,7 +58,7 @@ class tweak.Common
       for item in restict
         res[item] = obj[item]
       res
-    if typeof data is string
+    if typeof data is "string"
       _restrict JSON.parse data
     else
       JSON.stringify _restrict data
@@ -102,14 +73,14 @@ class tweak.Common
     @throw When an object is found but there is an error during processing the found object the following message will appear - "Module (#{path}) found. Encountered #{e.name}: #{e.message}"
   ###
   findModule: (contexts, module, surrogate = null) ->
+    # Iterate each contex 
     for context in contexts
+      # Convert path to absolute
       path = tweak.Common.relToAbs context, module
       try
         return require path
       catch e
-        ###
-          If the error thrown isnt a direct call on "Error" Then the module was found however there was an internal error in the module
-        ###
+        # If the error thrown isnt a direct call on "Error" Then the module was found however there was an internal error in the module
         if e.name isnt "Error"
           e.message = "Module (#{"#{path}"}) found. Encountered #{e.name}: #{e.message}"
           throw e
@@ -121,7 +92,7 @@ class tweak.Common
     Require method to find a module in a given context path and module path.
     The context path and module path are merged together to create an absolute path.
     @param [String] context The context path
-    @param [String] module The module path to convert to absolute path; based on the context path
+    @param [String] module The module path to convert to absolute path, based on the context path
     @return [Object] Returns required object.
     @throw When module can not be loaded the following error message will appear - "Can not find path #{url}"
   ###
@@ -134,18 +105,16 @@ class tweak.Common
       throw new Error "Can not find path #{url}"
     result
 
-
   ###
-    convert relative path to an absolute path; relative path defined by ./ or .\
+    Convert relative path to an absolute path; relative path defined by ./ or .\
     It will also reduce the prefix path by one level per ../ in the path
     @param [String] context The context path
-    @param [String] module The module path to convert to absolute path; based on the context path
-    @return [String] Absolute path to the module
+    @param [String] name The path to convert to absolute path, based on the context path
+    @return [String] Absolute path
   ###
-  relToAbs: (context, module) ->
-    amount = module.split(/\.{2,}[\/\\]/).length-1 or 0
-    context = context.replace new RegExp("([\\\/\\\\]?[^\\\/\\\\]+){#{amount}}[\\\/\\\\]?$"), ''
-    module = module.replace /^(\.+[\/\\])+/, "#{context.replace /[\/\\]*$/, '/'}"
-    module.replace /^[\/\\]+/, ''
+  relToAbs: (context, name) ->
+    amount = module.split(/\.{2,}[\/\\]*/).length-1 or 0
+    context = context.replace new RegExp("([\\\/\\\\]*[^\\\/\\\\]+){#{amount}}[\\\/\\\\]?$"), ''
+    "/#{name}".replace /^(\.+[\/\\]*)+/, context
 
 tweak.Common = new tweak.Common()
