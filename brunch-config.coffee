@@ -3,9 +3,10 @@ exports.config =
     javascripts:
       defaultExtension: 'coffee'
       joinTo:
-        'javascripts/tweak.js': /^app(\/|\\)(?!((lib(\/|\\)(view_advanced|component|components))|header|.*(_test)))/
+        'javascripts/tweak.js': /^app(\/|\\)(?!((lib(\/|\\)(view_|component|components))|header|.*(_test)))/
         'javascripts/tweak.component.js': /^app(\/|\\)lib(\/|\\)(component|components)/
-        'javascripts/tweak.view.advanced.js': /^app(\/|\\)lib(\/|\\)view_advanced/
+        'javascripts/tweak.view.html.js': /^app(\/|\\)lib(\/|\\)view_html\.coffee/
+        'javascripts/tweak.view.html.advanced.js': /^app(\/|\\)lib(\/|\\)view_html_advanced/
         'javascripts/etc/tests.js': /^app(\/|\\).*(?=_test)/
         'javascripts/etc/header.js': /^app(\/|\\)(?=header)/
         'javascripts/etc/vendor.js': /^(?!app)/
@@ -22,8 +23,7 @@ exports.config =
           'app/lib/view.coffee',
           'app/lib/router.coffee',
           'app/lib/component.coffee',
-          'app/lib/components.coffee',
-          'app/lib/view_advanced.coffee'
+          'app/lib/components.coffee'
         ]
 
     stylesheets:
