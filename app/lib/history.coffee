@@ -11,6 +11,7 @@ class tweak.History extends tweak.EventSystem
   iframe: null
   url: null
   __interval: null
+  intervalRate: 50
 
   ###    
     Checks is window is avaialble. This allows for history to work outside of browsers
@@ -45,6 +46,8 @@ class tweak.History extends tweak.EventSystem
     if usePush is true then @usePush = usePush = not @useHash = useHash = true
     # Ir the page is to be refreshed on a navigation event then set both useHash and usePush to false
     if options.forceRefresh or (useHash and not ('onhashchange' in @window)) then @usePush = @useHash = useHash = usePush = false
+
+    @intervalRate = options.interval or @intervalRate
 
     # Set the normalized root for the history to check against.
     @root = root = ("/#{options.root or "/"}/").replace /^[\/\\]+|[\/\\]+$/g, "/"
@@ -152,7 +155,7 @@ class tweak.History extends tweak.EventSystem
     else if @useHash
       # If using iframe and hash state
       if prefix is "on"
-        @__interval = setInterval @__checkChanged, options.interval or 50
+        @__interval = setInterval @__checkChanged, @intervalRate
       else
         clearInterval @__interval
         document.body.removeChild @iframe.frameElement
