@@ -21,6 +21,7 @@ exports.config =
           'app/lib/collection.coffee',
           'app/lib/controller.coffee',
           'app/lib/view.coffee',
+          'app/lib/history.coffee',
           'app/lib/router.coffee',
           'app/lib/component.coffee',
           'app/lib/components.coffee'
