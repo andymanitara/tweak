@@ -1,4 +1,13 @@
 # Tweak.js - MVC your way.
+# Support Notes
+Support for older browsers is being added in. Current support is IE9+. 
+
+Changes below for the core to support older browsers
+## Core
+JSON parsing - http://bestiejs.github.io/json3/
+## view.html
+Rendering 
+
 ## Introduction
 
 Tweak.js is a MVC framework built to help developers’ structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
@@ -139,9 +148,14 @@ To further extend a Collection, Tweak.js allows data to be imported and exported
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Store'](http://docs.tweakjs.com/class/tweak/Store.html) and ['Collection'](http://docs.tweakjs.com/class/tweak/Collection.html) sections.
 
 ### Router
-Web applications often provide linkable, bookmarkable, shareable URLs for important locations in the app. The Router module provides methods for routing to events which can control the application.
+The Router which hooks into the history change events which provides information back from the URL. The Router module provides methods for routing to events which can control the application.
 
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Router'](http://docs.tweakjs.com/class/tweak/Router.html) section.
+
+### History
+The History is a cross-browser friendly version of the HTML5 history API. When available it uses the HTML5 pushState else it provides a backwards compatible solution to having a stored history, either hashState or an interval that checks at a set rate. The history provides routes to your application/component which updates the application/components based on the url infomation. The current URL location can also be set to provide a Sharable/linkable/bookmarkable URL to specific places in your application. 
+
+For more information please look at the [documentation](http://docs.tweakjs.com) under the ['History'](http://docs.tweakjs.com/class/tweak/History.html) section.
 
 ### Event System
 Tweak.js has an event system class, this provides functionality to extending classes to communicate simply and effectively while maintaining an organised structure to your code and applications. Each object can extend the tweak.EventSystem class to provide event functionality to classes. Majority of Tweak.js modules/classes already extend the EventSystem class, however when creating custom objects/classes you can extend the class using the tweak.Extends method, please see ['Class'](http://docs.tweakjs.com/class/tweak/Class.html) class in the [documentation](http://docs.tweakjs.com). Furthermore, there is a global event system created on using Tweak.js; reference tweak.Events. 
