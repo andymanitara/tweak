@@ -39,10 +39,9 @@ class tweak.ViewHTML extends tweak.View
     There is many options available for rendering through the view class, allowing for powerful rendering functionality.
     However this is quite a perfmormance heavy part of the framework so help tidiing things up would be much appreciated.
 
-    @todo Reduce the complexity of the rendering functionality
     @event rendered The event is called when the view has been rendered.
   ###
-  render: ->
+  render: (silent) ->
     if @isRendered()
       @triggerEvent "rendered"
       return
@@ -88,7 +87,7 @@ class tweak.ViewHTML extends tweak.View
       if @addID?
         @addID @el, @uid
 
-      @triggerEvent "rendered"
+      if not silent then @triggerEvent "rendered"
       @init()
 
     # Set viewable height and width
