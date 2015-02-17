@@ -1,7 +1,7 @@
 ###
   This is the base Class for dynamic storage based modules. A good way to think of a Store/Model/Collection is to think it as Cache;
-  it can be used to store data for tempory access. It recieves and sends its data to a secondary pernamant storage solution. The store
-  class is the base functionality shared between a model and collection. Classes that inherit store class trigger events when it's 
+  it can be used to store data for temporary access. It receives and sends its data to a secondary permanent storage solution. The Store
+  class is the base functionality shared between a Model and Collection. Classes that inherit store class trigger events when it's 
   storage base is updated, this makes it easy to listen to changes and to action as and when required.
 
   Examples are in JS, unless where CoffeeScript syntax may be unusual.
