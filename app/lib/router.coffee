@@ -1,126 +1,86 @@
 ###
-  Router module
+  Web applications often provide linkable, bookmarkable, shareable URLs for important locations in the app.
+  The Router module provides methods for routing to events which can control the application. Traditionaly it
+  used to be that routers worked from hash fragments #page. However, the History API now provides standard
+  url formats /example. Routers provide functioanlity that links applications/components/modules together 
+  through data passed through the URL.
+
   @todo Document description
 ###
 
 class tweak.Router extends tweak.EventSystem
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [*] The root relationship to this module
-  root: null
-  # @property [*] The direct relationship to this module
-  relation: null
-  
+  # @property [Method] see tweak.super
   super: tweak.super
 
   ###
-    The constructor initialises the controllers unique ID, contextual relation and its root context. 
-
-    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+    The constructor initialises the controllers unique ID. 
   ###
-  constructor: (relation) ->
-    # Set uid
+  constructor: (hash = false, @routes = {}) ->
     @uid = "r_#{tweak.uids.r++}"
-    # Set the relation to this object, if no relation then set it to a blank object. 
-    @relation = relation ?= {}
-    # Set the root relation to this object, this will look at its relations root.
-    # If there is no root relation then this becomes the root relation to other modules. 
-    @root = relation.root or @
+    tweak.History.addEvent "changed", @__urlChanged, null, @
 
-  ###
-    Start watching the roouter for changes, options for speed and whether to be quiet
-    @param [Object] options The listening options object
-    @option options [Number] speed The amount of time per check in ms
-    @option options [Boolean] quiet If true then it wont trigger events
-  ###
-  start: (options = {}) ->
-    speed = options.speed or 50
-    quiet = if options.quiet then true else false
-    check = @check
-    @watch = setInterval =>
-      @check quiet
-    , speed
-    return
-  
-  ###
-    Stop watching the router for changes
-  ###
-  stop: -> 
-    clearInterval @watch
-    return
-  
-  ###
-    Check the window location, if there is an update from previous url then trigger an event
-    @param [Boolean] quiet If true then it wont trigger events
+  add: (event, route) ->
+    if @routes[event]? then @routes[event].push route
+    else @routes[event] = [route]
 
-    @example hash url examples
-      tweakjs.com/#search/safe/version=2
-      triggers:
-        data:search
-        data:safe
-        data:version (passes in 2)
-        changed (passes in {search:true, safe:true, version:2})
+  remove: (event, routes) ->
+    routers = @routes[event]
+    for route in " #{routes.replace /\s+/g, ' '} ".split " "
+      routers = " #{routers.join ' '} ".split " #{route} "
+    @routes[event] = routers
+    
+    if not routes? or routers.length is 0
+      delete @routes[event]
 
-      tweakjs.com/#version:1/search/safe/version=2
-      triggers:
-        data:version (passes in 1)
-        data:search
-        data:safe
-        data:version (passes in 2)
-        changed (passes in {search:true, safe:true, version:2})
+  __paramReg = /\/?[?:]([^?\/:]*)/g
 
-    @note event name is made up from the data in the url. The router data is split up by / \ per data set, and by : = between the key and data.
+  __getData = (segment) ->
+    data = /^.*\?(.+)/.exec segment
+    if data
+      options = /([^&\/\\]+)[&\/\\]*/.exec data[1]
+      if options        
+        for option in options
+          segment = {}
+          props = /(.+)[:=]+(.+)|(.+)/.exec segment
+          if props
+            key = props[3] or props[1]
+            prop = props[2] or true
+            segment[key] = prop
+    else
+      segment = segment.replace /\?/g, ''
+    segment
+      
+  __toRegex = (route) ->
+    escapeReg = /[\-\\\^\[\]\s{}+.,$|#]/g
+    splatReg = /\/?(\*)$/
 
-    @event router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
-    @event router:data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
-    @event data:#{data key} Triggers an event based on the key value and if there is any data attached to the router key then that data is passed through aswell. Triggered for each data set
+    route = route.replace escapeReg, '\\$&'
+    route = route.replace __paramReg, (match) ->
+      res = "\\/?([^\\/]*?)"
+      if /^\/?\?/.exec match then "(?:#{res})?" else res                   
+    route = route.replace splatReg, '\\/?(.*?)'
+    new RegExp "^#{route}[\\/\\s]?$"
 
-    @event router:changed Triggers an event and passes the data of the url back
-    @event router:changed Triggers an event and passes the data of the url back
-    @event changed Triggers an event and passes the data of the url back
-  ###
-  check: (quiet = false) ->
-    hash = window.location.hash.substring 1
-    data = 'data'
-    if hash isnt @before
-      hashObj = {}
-      @before = hash
-      if @ignore is true
-        @ignore = false
-        return
-      @ignore = false
+  __getKeys = (route) ->
+    res = route.match __paramReg
+    res.push "splat"
+    res
+      
+  __urlChanged: (url) ->
+    for event, routes of @routers
+      for route in routes
+        keys = []       
+        if typeof route is "string"
+          keys = __getKeys route
+          route = __toRegex route         
+        if match = route.exec url   
+          res = {url, data:{}}
+          match.splice 0,1
+          key = 0
+          for item in match
+            res.data[keys[key].replace(/^[?:\/]/, "") or key] = __getData item
+            key++
+          @triggerEvent event, res
 
-      for item in hash.split /[\\/]/
-        itemArr = item.split /[=:]/
-        if itemArr.length is 1
-          hashObj[itemArr[0]] = true
-          if not quiet then @triggerEvent "data:"+itemArr[0]
-        else
-          hashObj[itemArr[0]] = itemArr[1]
-          if not quiet then @triggerEvent "data:"+itemArr[0], itemArr[1]
-      if not quiet then @triggerEvent "changed", hashObj
-    return
-  
-  ###
-    Set the url hash with certain data; triggering router based events
-    @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
-    @param [Boolean] quiet If true router events will not be triggered on change
-  ###
-  set: (obj, quiet = false) ->
-    location = ''
-    for key, item of obj
-      if typeof(item) is 'boolean' and item
-        location += "#{key}/"
-      else
-        location += "#{key}:#{item}/"
-    @ignore = quiet
-    window.location.hash = location.slice 0, -1
-    return
-
-  ###
-    Masks the url hash with certain data without triggering events
-    @param [Object] obj Simple object to pass into url. Can't be more than one level deep.
-  ###
-  mask: (obj) -> 
-    @set obj, true
-    return
