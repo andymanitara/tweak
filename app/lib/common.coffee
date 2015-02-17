@@ -117,4 +117,53 @@ class tweak.Common
     context = context.replace new RegExp("([\\\/\\\\]*[^\\\/\\\\]+){#{amount}}[\\\/\\\\]?$"), ''
     "/#{name}".replace /^(\.+[\/\\]*)+/, context
 
+  ###
+    Apply event listener to an element, with cross/old browser support
+    @param [DOMElement] element A DOMElement
+    @param [String] type The type of event
+    @param [Function] callback The method to add to the events callbacks
+    @param [Boolean] capture (default = false) After initiating capture, all events of the specified type will be dispatched to the registered listener before being dispatched to any EventTarget beneath it in the DOM tree. Events which are bubbling upward through the tree will not trigger a listener designated to use capture. If a listener was registered twice, one with capture and one without, each must be removed separately. Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
+  ###
+  on: (element, type, callback, capture) ->
+    if window.addEventListener
+      element.addEventListener type, callback, capture
+    else if window.attachEvent
+      element.attachEvent "on#{type}", callback
+    else
+      el["on#{type}"] = callback
+    return
+
+  ###
+    Remove event listener to an element, with cross/old browser support
+    @param [DOMElement] element A DOMElement
+    @param [String] type The type of event
+    @param [Function] callback The method to remove from the events callbacks
+    @param [Boolean] capture (default = false) Specifies whether the EventListener being removed was registered as a capturing listener or not. If a listener was registered twice, one with capture and one without, each must be removed separately. Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
+  ###
+  off: (element, type, callback, capture) ->
+    if window.removeEventListener
+      element.removeEventListener type, callback, capture
+    else if window.detachEvent
+      element.detachEvent "on#{type}", callback
+    else
+      el["on#{type}"] = null
+    return
+
+  ###
+    Trigger event listener on an element, with cross/old browser support
+    @param [DOMElement] element A DOMElement to trigger event on
+    @param [Event, String] event Event to trigger or string if to create new event
+  ###
+  trigger: (element, event) ->
+    doc = window.document
+    if doc.createEvent
+      event or= new Event event
+      event.root = element 
+      target.dispatchEvent event
+    else
+      event or= doc.createEventObject()
+      event.root = element
+      target.fireEvent "on#{event}", event
+    return
+      
 tweak.Common = new tweak.Common()
