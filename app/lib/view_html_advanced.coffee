@@ -13,9 +13,7 @@
   The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
 ###
-class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
-  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
-  
+class tweak.ViewHTMLAdvanced extends tweak.ViewHTML  
   ###
     Tweak has an optional dependecy of any selector engine in the tweak.Selector object
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
@@ -32,49 +30,39 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
 
   ###
     Apply event listener to element(s)
-    @note Use the on method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] type The type of event
-    @param [Function] callback The method to apply to the event listener
-    @param [Boolean] capture if true it indicates to initiate capture to the registered listener first.
+    @param [Function] callback The method to add to the events callbacks
+    @param [Boolean] capture (default = false) After initiating capture, all events of the specified type will be dispatched to the registered listener before being dispatched to any EventTarget beneath it in the DOM tree. Events which are bubbling upward through the tree will not trigger a listener designated to use capture. If a listener was registered twice, one with capture and one without, each must be removed separately. Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
   ###
   on: (element = @el, type, callback, capture = false) ->
     elements = @element element
-    _callback = (e) -> _callback.fn e, _callback.targ
-    _callback.fn = callback
-    _callback.targ = element
-    event = {type, callback, _callback, capture}
     for item in elements
-      item._events ?= []
-      item.addEventListener type, _callback, capture
-      item._events.push event
+      tweak.Common.on item, type, callback, capture
     return
+
   ###
     Remove event listener to element(s)
-    @note Use the off method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] type The type of event
-    @param [Boolean] capture If a listener was registered twice, one with capture and one without, each must be removed separately.
-                            Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
+    @param [Function] callback The method to remove from the events callbacks
+    @param [Boolean] capture (default = false) Specifies whether the EventListener being removed was registered as a capturing listener or not. If a listener was registered twice, one with capture and one without, each must be removed separately. Removal of a capturing listener does not affect a non-capturing version of the same listener, and vice versa.
   ###
   off: (element = @el, type, callback, capture = false) ->
     elements = @element element
     for item in elements
-      for evt in item._events or []
-        if evt.type is type and evt.capture is capture and callback is evt.callback
-          item.removeEventListener type, evt._callback, capture
+      tweak.Common.off item, type, callback, capture
     return
 
   ###
     Trigger event listener on element(s)
-    @note Use the trigger method, which shortcuts to this if parameters match, or if performance is critical then you can skip a check and directly use this method.
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
-    @param [Event] event an evet to trigger
+    @param [Event, String] event Event to trigger or string if to create new event
   ###
   trigger: (element = @el, event) ->
     elements = @element element
     for item in elements
-      item.dispatchEvent event
+      tweak.Common.trigger item, event
     return
 
   ###
@@ -156,21 +144,20 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @private
     Split classes from a string to an array
   ###
-  _splitString: _splitString = (str) ->
+  __splitString = (str) ->
     results = []
     if typeof str isnt "string" then str = ''
     for key, prop of str.split /\s+/
       if prop isnt "" then results.push prop
     results
 
-  
   ###
     @private
     Check of a string of class names is in an element(s) class
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] classes A string of classes to remove to the element(s)
   ###
-  _has = (type, element, name) ->
+  __has = (type, element, name) ->
     if (" #{element[type]} ").indexOf(" #{name} ") is -1 then return false
     true
 
@@ -182,8 +169,8 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
   adjust: (type, method, element, str, str2) ->
     elements = @element element
     if elements.length is 0 then return
-    str = _splitString str
-    if str2? then str2 = _splitString str2
+    str = __splitString str
+    if str2? then str2 = __splitString str2
     else str2 = str
     for item in elements
       if not item? then continue      
@@ -191,7 +178,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
       for prop in str2
         name = item[type]
         if method is "add"
-          if not _has type, item, prop then name += " #{prop}"
+          if not __has type, item, prop then name += " #{prop}"
         else
           if prop is ' ' then continue
           if method is "remove"
@@ -203,7 +190,6 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
           .replace /(^\s*|\s*$)/g,''
     return
 
-  
   ###
     Add a string of class names to an element(s)
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
@@ -232,9 +218,8 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     if elements.length is 0 then return
     for item in elements
       if not item? then continue
-      if not _has 'className', element, name then return false
+      if not __has 'className', element, name then return false
     true
-
 
   ###
     Replace of a string of class names in element(s)
@@ -273,7 +258,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     if elements.length is 0 then return
     for item in elements
       if not item? then continue
-      if not _has 'id', element, name then return false
+      if not __has 'id', element, name then return false
     true
   ###
     Replace of a string of class names in element(s)
