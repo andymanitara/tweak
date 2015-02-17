@@ -34,16 +34,16 @@ class tweak.Store extends tweak.EventSystem
   ###
     Set a single or multiple properties or the base storage.
 
-    @overload set(name, data, quiet)
+    @overload set(name, data, silent)
       Set an individual property in the store by name
       @param [String] name The name of the property to set
       @param [*] data Data to store in the property bieng set
-      @param [Boolean] quiet (optional) (default = false) Quietly change the base storage property, by not triggering events upon change
+      @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
-    @overload set(properties, quiet)
+    @overload set(properties, silent)
       Set an multiple properties in the store from an object
       @param [Object] properties Key and property based object
-      @param [Boolean] quiet (optional) (default = false) Quietly change the base storage property, by not triggering events upon change
+      @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @example Setting single property
       this.set("sample", 100);
@@ -51,7 +51,7 @@ class tweak.Store extends tweak.EventSystem
     @example Setting multiple properties
       this.set({sample:100, second:2});
   
-    @example Setting properties quietly
+    @example Setting properties silently
       this.set("sample", 100, true);
       this.set({sample:100, second:2}, true);
 
@@ -59,20 +59,20 @@ class tweak.Store extends tweak.EventSystem
     @event changed Triggers a generic event that the store has been updated
   ###
   set: (properties, params...) ->
-    quiet = params[0]
+    silent = params[0]
     if typeof properties is 'string'
       prevProps = properties
       properties = {}
       properties[prevProps] = params[0]
-      quiet = params[1]
+      silent = params[1]
     for key, prop of properties
       prev = @data[key]
       if not prev? then @length++
       @data[key] = prop
       
-      if not quiet then @triggerEvent "changed:#{key}", prop
+      if not silent then @triggerEvent "changed:#{key}", prop
 
-    if not quiet then @triggerEvent "changed"
+    if not silent then @triggerEvent "changed"
     return
 
   ###
@@ -124,3 +124,13 @@ class tweak.Store extends tweak.EventSystem
     for key, prop of data
       if prop is value then result.push key
     return result
+
+  ###
+    Reset the store length to 0 and triggers change event.
+
+    @event changed Triggers a generic event that the store has been updated
+  ###
+  reset: ->
+    @length = 0
+    @triggerEvent "changed"
+    return
