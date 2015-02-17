@@ -21,16 +21,21 @@
     lib/model.coffee
     lib/view.coffee
     lib/router.coffee
+    lib/history.coffee
 
   tweak.component.js (optional)
     To use the component functionality a module loader is needed.
     lib/component.coffee
     lib/components.coffee - collection of components
+  
+  tweak.view.html.js (optional)
+    Adds core functionality for redering templates to views in a webpage.
+    lib/view_html.coffee
 
-  tweak.view.advanced.js (optional)
-    Extra functionality for views - a selector engine is needed.
+  tweak.view.html.advanced.js (optional)
+    Extra functionality for html views - a selector engine is needed.
     Aim to remove the need for JQuery. In my opinion jQuery is too big of a framework for majority of use case scenarios.
-    lib/view_advanced.coffee
+    lib/view_html_advanced.coffee
 ###
 
 
