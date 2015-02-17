@@ -13,10 +13,11 @@ tweak.Viewable = {
 }
 
 ###
-  The view is the DOM controller. This should be used for code that doesnt really control any logic but how the view is displayed. For example animations.
-  The view uses a templating engine to provide the html to the DOM.
-  The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
-  The data in the model is passed into the views template, allowing for easy manipulation of the view.
+  This class extends the View class, extending its rendering functionality for HTML. 
+  The ViewHTML class does not provide functionality to manipulate this views 
+  presentation layer. To extend the HTMLView to provide extra functionality to 
+  manipulate this view's rendered interface (DOM) please include the optional
+  tweak.ViewHTMLAdvanced class.  
 ###
 class tweak.ViewHTML extends tweak.View
   # @property [Method] see tweak.Common.require
@@ -59,36 +60,22 @@ class tweak.ViewHTML extends tweak.View
     template = if config.template then @require @name, config.template else @findModule @component.paths, './template'
     template = template @model.data
     
-    @asyncHTML template, (template) =>
-      # Attach nodes to the dom
-      # It can either replace whats is in its parent node, or append after or be inserted before.
+    # Create HTML element add add to DOM
+    template = @create template 
+
+    # Attach template to the DOM and set @el
+    @el = @atttach @parent = parent = @getParent(), template, config.attach.method
       
-      @parent = parent = @getParent()
-      switch config.attach.method or 'after'
-        when 'bottom', 'after'
-          parent.appendChild template
-          @el = parent.lastElementChild
-        when 'top', 'before'
-          parent.insertBefore template, parent.firstChild
-          @el = parent.firstElementChild
-        when 'replace'
-          for item in parent.children
-            try
-              parent.removeChild item
-            catch e
-          parent.appendChild template
-          @el = parent.firstElementChild
-        
-      # If the add class method from the advanced view is available or equivilant method then add the classes
-      if @addClass?
-        @addClass @el, className
+    # If the add class method from the advanced view is available or equivilant method then add the classes
+    if @addClass?
+      @addClass @el, className
 
-      # add the unique id as the id for the main element
-      if @addID?
-        @addID @el, @uid
+    # add the unique id as the id for the main element
+    if @addID?
+      @addID @el, @uid
 
-      if not silent then @triggerEvent "rendered"
-      @init()
+    if not silent then @triggerEvent "rendered"
+    @init()
 
     # Set viewable height and width
     @viewable = tweak.Viewable
@@ -142,11 +129,11 @@ class tweak.ViewHTML extends tweak.View
   ###
     Clears the view and removed event listeners of DOM elements
   ###
-  clear: ->
-    if @el?.parentNode
+  clear: (element = @el) ->
+    if element?.parentNode
       try
-        @el.parentNode.removeChild @el
-        @el = null
+        element.parentNode.removeChild element
+        element = null
     return
 
   ###
@@ -167,21 +154,28 @@ class tweak.ViewHTML extends tweak.View
     parent = view?.el or html
     name = @config.attach?.to or @config.attach?.name or @name
     @getComponentNode(parent, name) or @getComponentNode(html, name) or parent or throw new Error "Unable to find view parent for #{@name} (#{name})"
-  
-  ###
-    Async html to a function, this allows dynamic building of components without holding up parts of the system
-    @param [String] HTML A String containing html to build into a dom object
-    @param [Function] callback A method to pass the built up dom object to
-  ###
-  asyncHTML: (HTML, callback) ->
-    setTimeout(->
-      temp = document.createElement "div"
-      frag = document.createDocumentFragment()
-      temp.innerHTML = HTML
-      callback temp.firstChild
-    ,
-    0)
-    return
+
+  attach: (parent, node, method) ->
+    switch method
+      when 'top', 'before'
+        parent.insertBefore node, parent.firstChild
+        return parent.firstElementChild
+      when 'replace'
+        for item in parent.children
+          try
+            parent.removeChild item
+          catch e
+        parent.appendChild node
+        return parent.firstElementChild
+      else
+        parent.appendChild node
+        return parent.lastElementChild
+
+  create: (template) ->
+    temp = document.createElement "div"
+    frag = document.createDocumentFragment()
+    temp.innerHTML = template
+    temp.firstChild
 
 
 tweak.View = tweak.ViewHTML
