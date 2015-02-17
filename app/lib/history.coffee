@@ -50,7 +50,7 @@ class tweak.History extends tweak.EventSystem
     @intervalRate = options.interval or @intervalRate
 
     # Set the normalized root for the history to check against.
-    @root = root = ("/#{options.root or "/"}/").replace /^[\/\\]+|[\/\\]+$/g, "/"
+    @root = root = ("/#{options.root or "/"}/").replace /^\/+|\/+$/g, "/"
     # Get the current URL
     @url = url = @__getURL()
     location = @location
@@ -169,7 +169,7 @@ class tweak.History extends tweak.EventSystem
     @return Whether the URL is at the root of the application.
   ###
   __atRoot: ->
-    path = @location.pathname.replace /[^\/\\]$/, "$&/"
+    path = @location.pathname.replace /[^\/]$/, "$&/"
     path is @root and not @getSearch()
 
   ###
@@ -217,7 +217,7 @@ class tweak.History extends tweak.EventSystem
         # Get the URL decoded
         url = decodeURI "#{@location.pathname}#{@location.search}"
         # Get the root without trailing slash
-        root = @root.replace /[\/\\]$/, ""
+        root = @root.replace /\/$/, ""
         # Get the URL minus the root
         if not url.indexOf(root) then url = url.slice root.length
       else
@@ -225,7 +225,7 @@ class tweak.History extends tweak.EventSystem
         url = @__getHash()
 
     # Return URL without trailing slashes
-    url.replace /^[\/\\]+|[\/\\]+$/g, ""
+    url.replace /^\/+|\/+$/g, ""
 
    ###
     @private
