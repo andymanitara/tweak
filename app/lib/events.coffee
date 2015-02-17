@@ -11,13 +11,13 @@ class tweak.EventSystem
   ###
     Iterate through events to find matching named events. Can be used to add a new event through the optional Boolean build argument
 
-    @overload find(names, build)
+    @overload findEvent(names, build)
       Find events with a space separated string.
       @param [String] names The event name(s); split on a space.
       @param [Boolean] build (Default = false) Whether or not to add an event object when none can be found.
       @return [Array<Event>] All event objects that are found/created then it is returned in an Array.
 
-    @overload find(names, build)
+    @overload findEvent(names, build)
       Find events with an array of names (strings).
       @param [Array<String>] names An array of names (strings).
       @param [Boolean] build (Default = false) Whether or not to add an event object when none can be found.
@@ -25,21 +25,21 @@ class tweak.EventSystem
 
     @example Delimited string
       // This will find all events in the given space delimited string.
-      tweak.Events.find("sample:event another:event");
+      tweak.Events.findEvent("sample:event another:event");
 
     @example Delimited string with build
       // This will find all events in the given space delimited string.
       // If event can not be found then it will be created.
-      tweak.Events.find("sample:event another:event", true);
+      tweak.Events.findEvent("sample:event another:event", true);
 
     @example Array of names (strings)
       // This will find all events from the names in the given array.
-      tweak.Events.find(["sample:event", "another:event"]);
+      tweak.Events.findEvent(["sample:event", "another:event"]);
 
     @example Array of names (strings) with build
       // This will find all events from the names in the given array.
       // If event can not be found then it will be created.
-      tweak.Events.find(["sample:event", "another:event"], true);
+      tweak.Events.findEvent(["sample:event", "another:event"], true);
 
   ###
   findEvent: (names, build = false) ->
