@@ -27,8 +27,8 @@ class tweak.View extends tweak.EventSystem
     Renders the view.
     @event rendered View has been rendered.
   ###
-  render: ->    
-    @triggerEvent "rendered"
+  render: (silent) ->
+    if not silent then @triggerEvent "rendered"
     return
 
   ###
@@ -36,9 +36,13 @@ class tweak.View extends tweak.EventSystem
     @event rendered View has been rendered.
     @event rerendered View has been rerendered.
   ###
-  rerender: ->
+  rerender: (silent) ->
     @clear()
-    @triggerEvent "rendered rerendered"
+    @render silent
+    if not silent
+      @onEvent "rendered", -> 
+        @triggerEvent "rerendered"
+      ,1    
     return
 
   ###
