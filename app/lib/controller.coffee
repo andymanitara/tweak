@@ -7,24 +7,13 @@
 class tweak.Controller extends tweak.EventSystem
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
-  # @property [*] The root relationship to this module
-  root: null
-  # @property [*] The direct relationship to this module
-  relation: null
+  # @property [Method] see tweak.super
+  super: tweak.super
 
   ###
-    The constructor initialises the controllers unique ID, contextual relation and its root context. 
-
-    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+    The constructor initialises the controllers unique ID.
   ###
-  constructor: (relation) ->
-    # Set uid
-    @uid = "ct_#{tweak.uids.ct++}"
-    # Set the relation to this object, if no relation then set it to a blank object. 
-    @relation = relation ?= {}
-    # Set the root relation to this object, this will look at its relations root.
-    # If there is no root relation then this becomes the root relation to other modules. 
-    @root = relation.root or @
+  constructor: -> @uid = "ct_#{tweak.uids.ct++}"
 
   ###
     Default initialiser function

@@ -8,18 +8,9 @@ class tweak.Collection extends tweak.Store
   _type: "collection"
 
   ###
-    The constructor initialises the controllers unique ID, contextual relation, its root context, and its initial data. 
-    
-    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+    The constructor initialises the controllers unique ID and its initial data. 
   ###
-  constructor: (relation, @data = []) ->
-    # Set uid
-    @uid = "cl_#{tweak.uids.cl++}"
-    # Set the relation to this object, if no relation then set it to a blank object. 
-    @relation = relation ?= {}
-    # Set the root relation to this object, this will look at its relations root.
-    # If there is no root relation then this becomes the root relation to other modules. 
-    @root = relation.root or @
+  constructor: (@data = []) -> @uid = "cl_#{tweak.uids.cl++}"
 
   ###
     Reduce an array be remove elements from the front of the array and returning the new array
@@ -32,47 +23,40 @@ class tweak.Collection extends tweak.Store
     for [start..length] then arr[_i]
     
   ###
-    Removes empty keys
-  ###
-  clean: -> 
-    @data = for key, item of @data then item
-    return
-    
-  ###
     Pop the top data element in the collection
-    @param [Boolean] quiet Setting to trigger change events
+    @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @event removed:#{key} Triggers an event based on what property has been removed
     @event changed Triggers a generic event that the collection has been updated
     @return [*] Returns the data that was removed
   ###
-  pop: (quiet) ->
+  pop: (silent) ->
     result = @data[@length-1]
-    @remove result, quiet
+    @remove result, silent
     result
   
   ###
     Add a new property to the end of the collection
     @param [*] data Data to add to the end of the collection
-    @param [Boolean] quiet Setting to trigger change events
+    @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @event changed:#{key} Triggers an event and passes in changed property
     @event changed Triggers a generic event that the collection has been updated
   ###
-  add: (data, quiet) -> 
-    @set "#{@length}", data, quiet
+  add: (data, silent) -> 
+    @set "#{@length}", data, silent
     return
   
   ###
     Inserts a new property into a certain position
     @param [*] data Data to insert into the collection
     @param [Number] position The position to insert the property at into the collection
-    @param [Boolean] quiet Setting to trigger change events
+    @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @event changed:#{key} Triggers an event and passes in changed property
     @event changed Triggers a generic event that the collection has been updated
   ###
-  place: (data, position, quiet) ->
+  place: (data, position, silent) ->
     result = []
     for prop in @data
       if position is _i then break
@@ -82,7 +66,7 @@ class tweak.Collection extends tweak.Store
       if _j < position then continue
       result.push @data[_j]
     @data = result
-    if not quiet
+    if not silent
       @triggerEvent "changed changed:#{position}"
     return
   
@@ -98,34 +82,52 @@ class tweak.Collection extends tweak.Store
   ###
     Remove a single property or many properties.
     @param [String, Array<String>] properties Array of property names to remove from collection, or single String of the name of the property to remove
-    @param [Boolean] quiet Setting to trigger change events
+    @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @event removed:#{key} Triggers an event based on what property has been removed
     @event changed Triggers a generic event that the collection has been updated
   ###
-  remove: (properties, quiet) ->
+  remove: (properties, silent) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
-      delete @data[property]
-      if not quiet then @triggerEvent "removed:#{property}"
-    
-    @clean()
-    if not quiet then @triggerEvent "changed"
+      @data.splice property, 1
+      if not silent then @triggerEvent "removed:#{property}"
+    if not silent then @triggerEvent "changed"
     return
 
   ###
     Get an element at position of a given number
     @param [Integer] position Position of property to return
+    @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
     @return [*] Returns data of property by given position
   ###
   at: (position) -> @data[Number position]
 
   ###
+    Remove an element at a given position
+    @param [Integer] position Position of property to return
+    @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
+    
+    @example removing a property at a given index
+      this.removeAt(1);
+
+    @example removing a property at a given index silently
+      this.removeAt(3, true);
+  ###
+  removeAt: (position, silent) ->
+    element = @at position
+    for key, prop of element
+      @remove key, silent
+    return
+
+  ###
     Reset the collection back to defaults
+    
+    @event changed Triggers a generic event that the store has been updated
   ###
   reset: ->
     @data = []
-    @length = 0
+    super()
     return
   
   ###
@@ -134,7 +136,7 @@ class tweak.Collection extends tweak.Store
     @param [Object] options Options to parse to method.
     @option options [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
     @option options [Boolean] overwrite Default:true. If true existing properties in the key value will be replaced otherwise they are added to the collection
-    @option options [Boolean] quiet If true then it wont trigger events
+    @option options [Boolean] silent If true then it wont trigger events
     @return [Object] Returns the parsed JSONString as a raw object
   ###
   import: (data, options = {}) ->
@@ -145,8 +147,8 @@ class tweak.Collection extends tweak.Store
         new tweak[item.type] @, item.data
       else item
       if not overwrite and @data[key]
-        @set {key:prop}, options.quiet
-      else @data.add prop, options.quiet
+        @set {key:prop}, options.silent
+      else @data.add prop, options.silent
     data
 
   ###

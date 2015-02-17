@@ -15,40 +15,29 @@ class tweak.Model extends tweak.Store
   data: {}
   # @property [String] The type of collection this is
   _type: "model"
-  # @property [tweak.EventSystem] An event system is attached to  
-  events: {}
 
   ###
-    The constructor initialises the controllers unique ID, contextual relation, its root context, and its initial data. 
-    
-    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+    The constructor initialises the controllers unique ID and its initial data.    
   ###
-  constructor: (relation, @data = {}) ->
-    # Set uid
-    @uid = "m_#{tweak.uids.m++}"
-    # Set the relation to this object, if no relation then set it to a blank object. 
-    @relation = relation ?= {}
-    # Set the root relation to this object, this will look at its relations root.
-    # If there is no root relation then this becomes the root relation to other modules. 
-    @root = relation.root or @
+  constructor: (@data = {}) -> @uid = "m_#{tweak.uids.m++}"
 
   ###
     Remove a single property or many properties.
     @param [String, Array<String>] properties Array of property names to remove from model, or single String of the name of the property to remove
-    @param [Boolean] quiet Setting to trigger change events
+    @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @event removed:#{key} Triggers an event based on what property has been removed
     @event changed Triggers a generic event that the model has been updated
   ###
-  remove: (properties, quiet = true) ->
+  remove: (properties, silent) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
       for key, prop of data when key is property
         @length--
         delete @data[key]
-        if not quiet then @triggerEvent "removed:#{key}"
+        if not silent then @triggerEvent "removed:#{key}"
 
-    if not quiet then @triggerEvent "changed"
+    if not silent then @triggerEvent "changed"
     return
 
   ###
@@ -78,10 +67,12 @@ class tweak.Model extends tweak.Store
 
   ###
     Reset the model back to defaults
+
+    @event changed Triggers a generic event that the model has been updated
   ###
   reset: ->
     @data = {}
-    @length = 0
+    super()
     return
 
   ###
@@ -89,10 +80,10 @@ class tweak.Model extends tweak.Store
     @param [JSONString] data JSONString to parse.
     @param [Object] options Options to parse to method.
     @option options [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
-    @option options [Boolean] quiet If true then it wont trigger events
+    @option options [Boolean] silent If true then it wont trigger events
     @return [Object] Returns the parsed JSONString as a raw object
   ###
-  import: (data, options = {}) -> @set @parse(data, options.restict), options.quiet or true
+  import: (data, options = {}) -> @set @parse(data, options.restict), options.silent or true
 
   ###
     Export a JSONString of this models data.

@@ -10,33 +10,47 @@ class tweak.Components extends tweak.Collection
   # @property [String] The type of storage
   _type: "components"
 
-  # @property [*] The root relationship to this module
-  root: null
-  # @property [*] The direct relationship to this module
-  relation: null
-
   # @property [Method] see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
-  # @property [Method] see tweak.Common.splitComponents
-  splitModuleName: tweak.Common.splitModuleName
-
 
   ###
-    The constructor initialises the controllers unique ID, contextual relation, its root context. 
-    
-    @param [Object] relation The contextual object, usually it is the context of where this module is called.
+    The constructor initialises the controllers unique ID, relating component, its root and its initial config. 
   ###
-
-  # @private
-  constructor: (relation, config) ->
-    # Set uid
+  constructor: (@component, @_config = {}) -> 
+    @root = @component.root
     @uid = "cp_#{tweak.uids.cp++}"
-    @_config = config ?= []
-    # Set the relation to this object, if no relation then set it to a blank object. 
-    @relation = relation ?= {}
-    # Set the root relation to this object, this will look at its relations root.
-    # If there is no root relation then this becomes the root relation to other modules. 
-    @root = relation.root or @
+
+  ###
+    Split a component name out to individual absolute component names. 
+    Names formated like "./cd[2-4]" will return an array or something like ["album1/cd2","album1/cd3","album1/cd4"].
+    Names formated like "./cd[2-4]a ./item[1]/model" will return an array or something like ["album1/cd2a","album1/cd3a","album1/cd4a","album1/item0/model","album1/item1/model"].
+    @param [String] context The current context's relating name
+    @param [String, Array<String>] names The string to split into seperate component names
+    @return [Array<String>] Returns Array of absolute module names
+  ###
+  __splitMultiName: (context, names) ->
+    values = []
+    # Regex to split out the name prefix, suffix and the amount to expand by
+    reg = /^(.*)\[(\d*)(?:[,\-](\d*)){0,1}\](.*)$/
+
+    # Split name if it is a string
+    if typeof names is "string"
+      names = names.split /\s+/
+
+    # Iterate through names in 
+    for item in names
+      result = reg.exec item
+      # If regex matches then expand the name 
+      if result?
+        prefix = result[1]
+        min = result[2] or 0
+        max = result[3] or min
+        suffix = result[4]    
+        while min <= max
+          values.push @relToAbs context, "#{prefix}#{min++}#{suffix}"
+      else
+        values.push @relToAbs context, item
+    values
   
   ###
    Construct the Collection with given options from the config file
@@ -44,24 +58,22 @@ class tweak.Components extends tweak.Collection
   init: ->
     @data = []
     data = []
-    _name = @relation.name or @_config.name
+    _name = @component.name or @_config.name
     for item in @_config
       obj = {}
       if item instanceof Array
-        names = @splitModuleName _name, item[0]
+        names = @__splitMultiName _name, item[0]
         path = @relToAbs _name, item[1]
         for name in names
           @data.push new tweak.Component @, {name, extends:path}
       else if typeof item is "string"
-        if item is "" or item is " " then continue
-        data = @splitModuleName _name, item
+        data = @__splitMultiName _name, item
         for name in data
           @data.push new tweak.Component @, {name}    
       else
         obj = item
         name = obj.name
-        if not name? or name is "" or name is " " then continue
-        data = @splitModuleName _name, name
+        data = @__splitMultiName _name, name
         obj.extends = @relToAbs _name, obj.extends
         for prop in data
           obj.name = prop
@@ -76,33 +88,30 @@ class tweak.Components extends tweak.Collection
     @private
     Rendering and rererendering functionality to reduce code
   ###
-  _componentRender: (type) ->
+  __componentRender: (type) ->
     if @length is 0
       @triggerEvent "ready"
     else
       @total = 0
       for item in @data
-        @item.addEvent("view:#{type}ed", ->
-          if @total++ is @length-1 then @triggerEvent "ready"
-        , null, @)
+        item.controller.addEvent "ready", ->
+          if ++@total is @length then @triggerEvent "ready"
+        , 1, @
         item[type]()
-        
-    return
-    
     return
 
   ###
     Renders all of its components, also triggers ready state when all components are ready
   ###
   render: -> 
-    @_componentRender "render"
+    @__componentRender "render"
     return
 
   ###
     Rerender all of its components, also triggers ready state when all components are ready
   ###
   rerender: -> 
-    @_componentRender "rerender"
+    @__componentRender "rerender"
     return
 
   ###
@@ -122,10 +131,12 @@ class tweak.Components extends tweak.Collection
 
   ###
     Reset components - clears the views
+
+    @event changed Triggers a generic event that the store has been updated
   ###
   reset: ->
     for item in @data
-      item.view?.clear()
+      item.destroy()
     super()
     return
 

@@ -25,7 +25,7 @@
   The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
 
 ###
-class tweak.Component extends tweak.EventSystem
+class tweak.Component
  
   # @property [Object]
   model: null
@@ -50,7 +50,7 @@ class tweak.Component extends tweak.EventSystem
   findModule: tweak.Common.findModule
   # @property [Method] see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
-
+  # @property [Method] see tweak.super
   super: tweak.super
 
   modules: ["model", "view", "components", "router", "controller"]
@@ -69,22 +69,22 @@ class tweak.Component extends tweak.EventSystem
     relation = @relation = if relation is window then {} else relation
     relation.relation ?= {}
     # Get parent component
-    @parent = if relation instanceof tweak.Components then relation.relation else relation
+    @parent = if relation instanceof tweak.Component then relation else relation.component or relation
     @root = @parent.root or @
     # Set name of component
     @name = options.name
     if not @name? then throw new Error "No name given"
 
-    @config = @buildConfig(options) or {}
+    @config = @__buildConfig(options) or {}
     # Router is optional as it is perfomance heavy
     # So it needs to be explicility defind in the config for the component that it should be used
-    if @config.router then @addRouter()
+    if @config.router then @__addRouter()
 
     # Add modules to the component
-    @addModel()
-    @addView()
-    @addComponents()
-    @addController()
+    @__addModel()
+    @__addView()
+    @__addComponents()
+    @__addController()
 
     # Add references to the the modules
     for name in @modules when prop = @[name]
@@ -92,15 +92,24 @@ class tweak.Component extends tweak.EventSystem
       prop.component = @
       for name2 in @modules when name isnt name2 and prop2 = @[name2]
         prop[name2] = prop2
-      prop.construct?()
 
   ###
+    Constructs the component and its modules using the addModule method
+  ###
+  init: ->
+    # Call init on all the modules
+    for name in @modules when name isnt "view" and item = @[name]
+      item.init?()
+    return
+
+  ###
+    @private
     @param [Object] options Component options
     @return [Object] returns combined config based on the configs extending inheritance
     Builds the config component
     It inteligently iherits modules, and configuration settings from its extending components
   ###
-  buildConfig: (options) ->
+  __buildConfig: (options) ->
     configs = []
     paths = @paths = []
 
@@ -135,82 +144,77 @@ class tweak.Component extends tweak.EventSystem
     result
 
   ###
+    @private
     Add a module to the component, if module can't be found then it will use a surrogate object
     @param [String] name Name of the module
     @param [Object] surrogate Surrogate if the module can not be found
     @param [...] params Parameters passed into the module on constuction
-    @return [Object] Constructed object
   ###
-  addModule: (name, surrogate, params...) ->
+  __addModule: (name, surrogate, params...) ->
     Module = @findModule @paths, "./#{name}", surrogate
-    module = @[name] = new Module @, @config[name], params...
-    module.cuid = @uid
-    module
+    module = @[name] = new Module @config[name], params...
+    module.component = @
+    module.root = @root
+    return
 
   ###
+    @private
     Shortcut method to adding view using the addModule method
     @param [...] params Parameters passed to into the view constructor
-    @return [Object] View
   ###
-  addView: (params...) -> 
-    @addModule "view", tweak.View, params...
+  __addView: (params...) -> 
+    @__addModule "view", tweak.View, params...
     return
 
   ###
+    @private
     Shortcut method to adding Model using the addModule method
     @param [...] params Parameters passed to into the model constructor
-    @return [Object] Model
   ###
-  addModel: (params...) -> 
-    @addModule "model", tweak.Model, params...
+  __addModel: (params...) -> 
+    @__addModule "model", tweak.Model, params...
     return
 
   ###
+    @private
     Shortcut method to adding controller using the addModule method
     @param [...] params Parameters passed to into the controller constructor
-    @return [Object] Controller
   ###
-  addController: (params...) -> 
-    @addModule "controller", tweak.Controller, params...
+  __addController: (params...) -> 
+    @__addModule "controller", tweak.Controller, params...
     return
 
   ###
-    Shortcut method to adding components using the addModule method
+    @private
+    Add components module to this com
     @param [...] params Parameters passed to into the components constructor
-    @return [Object] Components
   ###
-  addComponents: (params...) -> 
-    @addModule "components", tweak.Components, params...
+  __addComponents: -> 
+    name = "components"
+    Module = @findModule @paths, "./#{name}", tweak.Components
+    module = @[name] = new Module @, @config[name]
     return
 
   ###
+    @private
     Shortcut method to adding router using the addModule method
     @param [...] params Parameters passed to into the router constructor
     @return [Object] Router
   ###
-  addRouter: (params...) -> 
-    @addModule "router", tweak.Router, params...
-    return
-
-  ###
-    Constructs the component and its modules using the addModule method
-  ###
-  init: ->
-    # Call init on all the modules
-    for name in @modules when name isnt "view" and item = @[name]
-      item.init?()
+  __addRouter: (params...) -> 
+    @__addModule "router", tweak.Router, params...
     return
 
   ###
     @private
   ###
-  _componentRender: (type) ->
-    @view.addEvent("#{type}ed", ->
+  __componentRender: (type) ->
+    @view.addEvent "#{type}ed", ->
       @components.addEvent "ready", ->
-        @triggerEvent "ready", @name
-      ,null, @)
+        @controller.triggerEvent "ready"
+      , 1, @
       @components[type]()
-    ,null, @)
+    , 1, @
     @view[type]()
     return
 
@@ -219,7 +223,8 @@ class tweak.Component extends tweak.EventSystem
     @event ready Triggers ready event when itself and its components are ready/rendered
   ###
   render: -> 
-    @_componentRender "render"
+    name = @name
+    @__componentRender "render"
     return
 
   ###
@@ -227,12 +232,12 @@ class tweak.Component extends tweak.EventSystem
     @event ready Triggers ready event when itself and its components are ready/rerendered
   ###
   rerender: -> 
-    @_componentRender "rerender"
+    @__componentRender "rerender"
     return
 
   ###
     Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
-    @param [Boolean] quiet Setting to trigger change events
+    @param [Boolean] quiet (optional) (default = false) Quietly change the base storage property, by not triggering events upon change
   ###
   destroy: (quiet) ->
     @view.clear()
@@ -245,3 +250,76 @@ class tweak.Component extends tweak.EventSystem
           return
         i++
     return
+
+  ###
+    Shortcut to the controllers findEvent method.
+
+    @overload findEvent(names, build)
+      Find events on controller with a space separated string.
+      @param [String] names The event name(s); split on a space.
+      @param [Boolean] build (Default = false) Whether or not to add an event object to the controller when none can be found.
+      @return [Array<Event>] All event objects that are found/created then it is returned in an Array.
+
+    @overload findEvent(names, build)
+      Find events on controller with an array of names (strings).
+      @param [Array<String>] names An array of names (strings).
+      @param [Boolean] build (Default = false) Whether or not to add an event object to the controller when none can be found.
+      @return [Array<Event>] All the controllers event objects that are found/created then it is returned in an Array.
+  ###
+  findEvent: (names, build) -> @controller.findEvent names, build
+    
+
+  ###
+    Shortcut to the controllers addEvent method.
+
+    @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
+    @param [Function] callback The event callback function.
+    @param [Number] max (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
+    @param [Object] context The contextual object of which the event to be binded to.
+  ###
+  addEvent: (names, callback, max, context) -> @controller.addEvent names, callback, max, context
+
+  ###    
+    Shortcut to the controllers removeEvent method.
+
+    @param [String] names The event name(s). Split on a space, or an array of event names.
+    @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the controller events under event name are removed.
+    @param [Object] context (default = this) The contextual object of which the event is binded to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
+  ###
+  removeEvent: (names, callback, context) -> @controller.removeEvent names, callback, context
+
+  ###    
+    Shortcut to the controllers triggerEvent method.
+
+    @overload triggerEvent(names, params)
+      Trigger events on controller by name only.
+      @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
+      @param [...] params Params to pass into the callback function.
+
+    @overload triggerEvent(options, params)
+      Trigger events on controller by name and context.
+      @param [Object] options Options and limiters to check against callbacks.
+      @param [...] params Params to pass into the callback function.
+      @option options [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
+      @option options [Context] context (Default = null) The context of the callback to check against a callback.
+  ###
+  triggerEvent: (names, params...) -> @controller.triggerEvent names, params...
+
+  ###    
+    Shortcut to the controllers updateEvent method.
+
+    @param [String] names The event name(s). Split on a space, or an array of event names.
+    @param [Object] options Optional limiters and update values.
+    @option options [Object] context The contextual object to limit updating events to.
+    @option options [Function] callback Callback function to limit updating events to.
+    @option options [Number] max Set a new maximum calls to an event.
+    @option options [Number] calls Set the amount of calls that has been triggered on this event.
+    @option options [Boolean] reset (Default = false) If true then calls on an event get set back to 0.
+    @option options [Boolean] listen Whether to enable or disable listening to event.
+  ###
+  updateEvent: (names, options) -> @controller.updateEvent names, options
+
+  ###
+    Resets the controllers events to empty.
+  ###
+  resetEvents: -> @controller.resetEvents()
