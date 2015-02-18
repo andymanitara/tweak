@@ -50,10 +50,10 @@ class tweak.EventSystem
     events = @__events = @__events or {}
     # Search for each name
     for item in names
-      # Check if event exists
-      if not event = events[name]
+      # Check if event exists      
+      if not event = events[item]
         # If we are to build then add a default event else continue the iteration
-        if build then event = @__events[name] = {name:item, __callbacks:[]}
+        if build then event = @__events[item] = {name:item, __callbacks:[]}
         else continue
       # Push found/created event into the returning array
       event
@@ -172,7 +172,7 @@ class tweak.EventSystem
           setTimeout ->
             item.callback.apply item.ctx, params
             return
-          ,0         
+          ,0
     return
 
   ###
