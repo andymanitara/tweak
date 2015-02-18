@@ -64,67 +64,32 @@ class tweak.ViewHTML extends tweak.View
     template = @create template 
 
     # Attach template to the DOM and set @el
-    @el = @atttach @parent = parent = @getParent(), template, config.attach.method
+    @el = @getAttachmentNode template, config.attach.method
       
-    # If the add class method from the advanced view is available or equivilant method then add the classes
-    if @addClass?
-      @addClass @el, className
-
-    # add the unique id as the id for the main element
-    if @addID?
-      @addID @el, @uid
+    # Attempt to add class and uid
+    @el.className = className
+    @el.id = @uid
 
     if not silent then @triggerEvent "rendered"
     @init()
-
-    # Set viewable height and width
-    @viewable = tweak.Viewable
     return
 
   ###
-    Get the chidlren nodes of an element
-    @param [DOMElement] parent The element to get the children nodes of
-    @return [Array<DOMElement>] Returns an array of children nodes from a parent Element
+    Get the children nodes of an element
+    @param [DOMElement] parent The element to retrieve the children of
+    @param [Boolean] recursive (Default: true) Whether to recursively go through its childerns children to get a full list
+    @return [Array<DOMElement>] Returns an array of children nodes inside an element
   ###
-  getChildren: (parent) =>
+  getChildren: (element, recursive = true) =>
     nodes = []
     children = (node = {}) =>
       node.children ?= []
       for element in node.children
-        # Check if that a node is part of a lower down component
-        # If it is then we do not want to loop through it later
-        # so we can ignore it
-        par = @component.parent
-        if par.components
-          for component in par.components.data
-            if component.view.el is element then continue
-        if element.children then children element
+        if recursive and element.children then children element
         nodes.push element
-    # If the parent is the body then put it is the nodes array
-    # This allows full web apps that hook into the body
-    html = document.getElementsByTagName("html")[0]
-    if parent.body is html then nodes.push html
-    children parent
+    # Iterate though all children of an element
+    children element
     nodes  
-
-  ###
-    Find a component node by a value (attribute to apply on html is data-attach)
-    @param [DOMElment] parent The parent DOMElement to search through to find a given component node
-    @param [String] value The component name to look for in the data-attach attribute
-    @return [DOMElement] Returns the dom element with matching critera
-  ###
-  getComponentNode: (parent, value) ->
-    nodes = @getChildren parent
-    nodes.push parent
-    for prop in nodes
-      if child then break
-      try
-        component = prop.getAttribute 'data-attach' or ''
-      catch e
-      if not component or component is ' ' then continue
-      for val in @splitModuleName @name, component
-        if value is val then child = prop
-    child
 
   ###
     Clears the view and removed event listeners of DOM elements
@@ -143,17 +108,25 @@ class tweak.ViewHTML extends tweak.View
   isRendered: -> if document.getElementsByTagName("html")[0].contains @el then true else false
   
   ###
-    Find the parent DOMElement to this view
+    Get the attachment node for this element
     @return [DOMElement] Returns the parent DOMElement
     @throw When looking for a parrent Element and there is not a returnable element you will recieve the following error - "Unable to find view parent for #{@name} (#{name})"
   ###
-  getParent: ->
-    view = @component.parent?.view
+  getAttachmentNode: ->
     # The result is the parent el, or it will try to find a node to attach to in the DOM
-    html = document.getElementsByTagName("html")[0]
-    parent = view?.el or html
+    parent = @component.parent?.view?.el or document.getElementsByTagName("html")[0]
     name = @config.attach?.to or @config.attach?.name or @name
-    @getComponentNode(parent, name) or @getComponentNode(html, name) or parent or throw new Error "Unable to find view parent for #{@name} (#{name})"
+    nodes = @getChildren parent
+    nodes.push parent
+    for prop in nodes
+      if child then break
+      attachment = prop.getAttribute 'data-attach'
+      if attachment? isnt ' '
+        for val in @splitMultiName name, attachment
+          if value is val 
+            child = prop
+            break
+    child or parent or throw new Error "Unable to find view parent for #{@name} (#{name})"
 
   attach: (parent, node, method) ->
     switch method
@@ -176,6 +149,5 @@ class tweak.ViewHTML extends tweak.View
     frag = document.createDocumentFragment()
     temp.innerHTML = template
     temp.firstChild
-
 
 tweak.View = tweak.ViewHTML
