@@ -106,6 +106,38 @@ class tweak.Common
     result
 
   ###
+    Split a component name out to individual absolute component names. 
+    Names formated like "./cd[2-4]" will return an array or something like ["album1/cd2","album1/cd3","album1/cd4"].
+    Names formated like "./cd[2-4]a ./item[1]/model" will return an array or something like ["album1/cd2a","album1/cd3a","album1/cd4a","album1/item0/model","album1/item1/model"].
+    @param [String] context The current context's relating name
+    @param [String, Array<String>] names The string to split into seperate component names
+    @return [Array<String>] Returns Array of absolute module names
+  ###
+  splitMultiName: (context, names) ->
+    values = []
+    # Regex to split out the name prefix, suffix and the amount to expand by
+    reg = /^(.*)\[(\d*)(?:[,\-](\d*)){0,1}\](.*)$/
+
+    # Split name if it is a string
+    if typeof names is "string"
+      names = names.split /\s+/
+
+    # Iterate through names in 
+    for item in names
+      result = reg.exec item
+      # If regex matches then expand the name 
+      if result?
+        prefix = result[1]
+        min = result[2] or 0
+        max = result[3] or min
+        suffix = result[4]    
+        while min <= max
+          values.push @relToAbs context, "#{prefix}#{min++}#{suffix}"
+      else
+        values.push @relToAbs context, item
+    values
+
+  ###
     Convert relative path to an absolute path; relative path defined by ./ or .\
     It will also reduce the prefix path by one level per ../ in the path
     @param [String] context The context path

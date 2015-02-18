@@ -22,8 +22,8 @@ tweak.Viewable = {
 class tweak.ViewHTML extends tweak.View
   # @property [Method] see tweak.Common.require
   require: tweak.Common.require
-  # @property [Method] see tweak.Common.splitModuleName
-  splitModuleName: tweak.Common.splitModuleName
+  # @property [Method] see tweak.Common.splitMultiName
+  splitMultiName: tweak.Common.splitMultiName
   # @property [Method] see tweak.Common.findModule
   findModule: tweak.Common.findModule
 
@@ -105,7 +105,7 @@ class tweak.ViewHTML extends tweak.View
     html = document.getElementsByTagName("html")[0]
     if parent.body is html then nodes.push html
     children parent
-    nodes
+    nodes  
 
   ###
     Find a component node by a value (attribute to apply on html is data-attach)
