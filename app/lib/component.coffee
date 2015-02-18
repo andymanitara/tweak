@@ -53,7 +53,7 @@ class tweak.Component
   # @property [Method] see tweak.super
   super: tweak.super
 
-  modules: ["model", "view", "components", "router", "controller"]
+  modules: ["controller", "model", "view", "router", "components"]
 
   ###
     @param [Object] relation Relation to the component
