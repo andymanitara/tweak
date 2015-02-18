@@ -169,7 +169,10 @@ class tweak.EventSystem
             # Event has hit call limit, so set its event listening state to false     
             item.listen = false
           # Call the events call back
-          item.callback.call item.ctx, params...            
+          setTimeout ->
+            item.callback.apply item.ctx, params
+            return
+          ,0         
     return
 
   ###
