@@ -145,9 +145,9 @@ class tweak.Common
     @return [String] Absolute path
   ###
   relToAbs: (context, name) ->
-    amount = module.split(/\.{2,}[\/\\]*/).length-1 or 0
-    context = context.replace new RegExp("([\\\/\\\\]*[^\\\/\\\\]+){#{amount}}[\\\/\\\\]?$"), ''
-    "/#{name}".replace /^(\.+[\/\\]*)+/, context
+    amount = name.split(/\.{2,}[\/\\]*/).length-1 or 0
+    context = context.replace new RegExp("([\\/\\\\]*[^\\/\\\\]+){#{amount}}[\\/\\\\]?$"), ''
+    name.replace /^(\.+[\/\\]*)+/, "#{context}/"
 
   ###
     Apply event listener to an element, with cross/old browser support

@@ -115,7 +115,6 @@ class tweak.Component
 
     extension = @name
     if options
-      paths.push @name
       configs.push @clone options
       if options.extends then extension = options.extends
 
