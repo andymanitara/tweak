@@ -24,6 +24,8 @@ class tweak.ViewHTML extends tweak.View
   require: tweak.Common.require
   # @property [Method] see tweak.Common.splitMultiName
   splitMultiName: tweak.Common.splitMultiName
+  # @property [Method] see tweak.Common.relToAbs
+  relToAbs: tweak.Common.relToAbs
   # @property [Method] see tweak.Common.findModule
   findModule: tweak.Common.findModule
 
@@ -61,17 +63,20 @@ class tweak.ViewHTML extends tweak.View
     template = template @model.data
     
     # Create HTML element add add to DOM
-    template = @create template 
+    rendered = (template) =>
+      # Attach template to the DOM and set @el
+      @el = @attach @getAttachmentNode(), template, config.attach.method
+        
+      # Attempt to add class and uid
+      strip = /^\s+|\s\s+|\s+$/
+      @el.className = "#{@el.className} #{className}".replace strip, ''
+      @el.id = "#{@el.id} #{@uid}".replace strip, ''
 
-    # Attach template to the DOM and set @el
-    @el = @getAttachmentNode template, config.attach.method
-      
-    # Attempt to add class and uid
-    @el.className = className
-    @el.id = @uid
+      if not silent then @triggerEvent "rendered"
+      @init()
 
-    if not silent then @triggerEvent "rendered"
-    @init()
+    @createAsync template, rendered 
+
     return
 
   ###
@@ -81,15 +86,17 @@ class tweak.ViewHTML extends tweak.View
     @return [Array<DOMElement>] Returns an array of children nodes inside an element
   ###
   getChildren: (element, recursive = true) =>
-    nodes = []
+    result = []
     children = (node = {}) =>
-      node.children ?= []
-      for element in node.children
-        if recursive and element.children then children element
-        nodes.push element
+      nodes = node.children or []
+      for node in nodes
+        result.push node
+      for node in nodes        
+        if recursive and node.children then children node
+      return
     # Iterate though all children of an element
     children element
-    nodes  
+    result  
 
   ###
     Clears the view and removed event listeners of DOM elements
@@ -114,16 +121,16 @@ class tweak.ViewHTML extends tweak.View
   ###
   getAttachmentNode: ->
     # The result is the parent el, or it will try to find a node to attach to in the DOM
-    parent = @component.parent?.view?.el or document.getElementsByTagName("html")[0]
-    name = @config.attach?.to or @config.attach?.name or @name
+    parent = @component.parent?.view?.el or document.getElementsByTagName("html")[0]    
+    name = @config.attach?.to or @config.attach?.name or @name    
     nodes = @getChildren parent
     nodes.push parent
     for prop in nodes
       if child then break
       attachment = prop.getAttribute 'data-attach'
-      if attachment? isnt ' '
+      if attachment? and not attachment.match /\s+/
         for val in @splitMultiName name, attachment
-          if value is val 
+          if name is val 
             child = prop
             break
     child or parent or throw new Error "Unable to find view parent for #{@name} (#{name})"
@@ -149,5 +156,9 @@ class tweak.ViewHTML extends tweak.View
     frag = document.createDocumentFragment()
     temp.innerHTML = template
     temp.firstChild
+
+  createAsync: (template, callback) -> setTimeout => callback @create template, 0
+
+
 
 tweak.View = tweak.ViewHTML
