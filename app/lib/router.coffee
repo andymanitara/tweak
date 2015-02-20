@@ -64,12 +64,12 @@ class tweak.Router extends tweak.EventSystem
     new RegExp "^#{route}[\\/\\s]?$"
 
   __getKeys = (route) ->
-    res = route.match __paramReg
+    res = route.match(__paramReg) or []
     res.push "splat"
     res
       
   __urlChanged: (url) ->
-    for event, routes of @routers
+    for event, routes of @routes
       for route in routes
         keys = []       
         if typeof route is "string"
