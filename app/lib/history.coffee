@@ -41,13 +41,16 @@ class tweak.History extends tweak.EventSystem
     @started = true
 
     # Set usePush and useHash based on the options passed in.
-    @usePush = usePush = not useHash =  @useHash = options.useHashState and not options.usePushState and not @history?.pushState
+    @usePush = usePush = not useHash = @useHash = options.useHashState or not options.usePushState or not @history?.pushState
+
     # Make sure using one state or the other
-    if usePush is true then @usePush = usePush = not @useHash = useHash = true
+    if usePush is true then @useHash = useHash = false
+
     # Ir the page is to be refreshed on a navigation event then set both useHash and usePush to false
-    if options.forceRefresh or (useHash and not ('onhashchange' in @window)) then @usePush = @useHash = useHash = usePush = false
+    if options.forceRefresh or (useHash and not `('onhashchange' in this.window)`) then @usePush = @useHash = useHash = usePush = false
 
     @intervalRate = options.interval or @intervalRate
+
 
     # Set the normalized root for the history to check against.
     @root = root = ("/#{options.root or "/"}/").replace /^\/+|\/+$/g, "/"
@@ -77,9 +80,8 @@ class tweak.History extends tweak.EventSystem
       @iframe = body.insertBefore(frame, body.firstChild).contentWindow
       @__setHash @iframe, "##{url}", false
 
-    @__toggleListeners
-    
-    if not options.silent then return @triggerEvent "change", @url
+    @__toggleListeners()
+    if not options.silent then return @triggerEvent "changed", @url
   
   ###
    Stop tweak.History. Most likely useful for a web component that uses the history to change state, 
@@ -104,7 +106,7 @@ class tweak.History extends tweak.EventSystem
     replace = options.replace
 
     # Get the current URL formatted and validated
-    url = @__getURL url or ""
+    url = @__getURL(url) or ""
 
     # Get root without slash or question mark
     root = @root
@@ -140,7 +142,6 @@ class tweak.History extends tweak.EventSystem
     return
 
    ###
-    @private
     Add listeners of remove history change listeners
     @param [String] prefix (Default = "on") Set the prefix - "on" or "off"
   ###
@@ -151,7 +152,8 @@ class tweak.History extends tweak.EventSystem
       tweak.Common[prefix] @window, "popstate", @__checkChanged
     else if @useHash and not @iframe
       # If hashState is available and not using an iframe
-      tweak.Common[prefix] @window "hashchange", @__checkChanged
+      tweak.Common[prefix] @window, "hashchange", @__checkChanged
+
     else if @useHash
       # If using iframe and hash state
       if prefix is "on"
@@ -170,7 +172,7 @@ class tweak.History extends tweak.EventSystem
   ###
   __atRoot: ->
     path = @location.pathname.replace /[^\/]$/, "$&/"
-    path is @root and not @getSearch()
+    path is @root and not @__getSearch()
 
   ###
     @private
@@ -211,7 +213,7 @@ class tweak.History extends tweak.EventSystem
   ###
   __getURL: (url, force) ->
     # If the URL is null then a URL will be retrieved from window.location 
-    if url is null
+    if not url?
       # If usePush or if to be forced to retrieve this format
       if @usePush or force
         # Get the URL decoded
@@ -225,7 +227,9 @@ class tweak.History extends tweak.EventSystem
         url = @__getHash()
 
     # Return URL without trailing slashes
-    url.replace /^\/+|\/+$/g, ""
+    # We may want to neaten tne url with a single prefix slash therefore it accepts 1 prefix slash
+    url.replace /^\/+/g, "/"
+    url.replace /^\/+$/g, ""
 
    ###
     @private
@@ -255,7 +259,7 @@ class tweak.History extends tweak.EventSystem
         now = @__getHash @iframe
         @set now
       else return false
-    @triggerEvent "change", @url = now
+    @triggerEvent "changed", @url = now
     true
 
 tweak.History = new tweak.History()
