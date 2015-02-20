@@ -141,7 +141,7 @@ class tweak.History extends tweak.EventSystem
     if not options.silent then @triggerEvent "change", @url = url
     return
 
-   ###
+  ###
     Add listeners of remove history change listeners
     @param [String] prefix (Default = "on") Set the prefix - "on" or "off"
   ###
@@ -231,7 +231,7 @@ class tweak.History extends tweak.EventSystem
     url.replace /^\/+/g, "/"
     url.replace /^\/+$/g, ""
 
-   ###
+  ###
     @private
     Change the hash or replace the hash.
     @param [Location] location The location to amend the hash to. ieFrame.location or the window.location.

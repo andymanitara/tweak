@@ -189,13 +189,13 @@ class tweak.Common
   trigger: (element, event) ->
     doc = window.document
     if doc.createEvent
-      event or= new Event event
+      if typeof event is "string" then event = new Event event
       event.root = element 
-      target.dispatchEvent event
+      element.dispatchEvent event
     else
-      event or= doc.createEventObject()
+      if typeof event is "string" then event = doc.createEventObject()
       event.root = element
-      target.fireEvent "on#{event}", event
+      element.fireEvent "on#{event}", event
     return
       
 tweak.Common = new tweak.Common()
