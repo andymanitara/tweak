@@ -1,7 +1,7 @@
 ###
-  Simple cross compatible history API. Upon changes to history a change event is called. 
-  The ability to hook event listeners to the tweak.History API allows for routes to be
-  added accordingly, and for multiple routers to be declared for better code structuring.
+  Simple cross browser history API. Upon changes to the history a change event is called. 
+  The ability to hook event listeners to the tweak.History API allows routes to be
+  added accordingly, and for multiple Routers to be declared for better code structure.
 ###
 class tweak.History extends tweak.EventSystem
   usePush: true
@@ -13,8 +13,9 @@ class tweak.History extends tweak.EventSystem
   __interval: null
   intervalRate: 50
 
-  ###    
-    Checks is window is avaialble. This allows for history to work outside of browsers
+  ###
+    Checks that the window and history is avaialble. 
+    This add support for the history to work outside of browsers
     if the window, history and location are set manually.
   ###
   constructor: ->
@@ -162,13 +163,12 @@ class tweak.History extends tweak.EventSystem
         clearInterval @__interval
         document.body.removeChild @iframe.frameElement
         @iframe = @__interval = null
-
-
     return
+
   ###
     @private
-    Gets whether the URL is at root of the application.
-    @return Whether the URL is at the root of the application.
+    Gets whether the URL is at the root of application.
+    @return Gets whether the URL is at the root of application.
   ###
   __atRoot: ->
     path = @location.pathname.replace /[^\/]$/, "$&/"
@@ -177,8 +177,8 @@ class tweak.History extends tweak.EventSystem
   ###
     @private
     Get the URL formatted without the hash.
-    @param [Window] window The window to get the hash from.
-    @return Formatted URL without hash.
+    @param [Window] window The window to retrieve hash.
+    @return Normalized URL without hash.
   ###
   __getHash: (window) ->
     match = (window or @).location.href.match /#(.*)$/
@@ -196,7 +196,7 @@ class tweak.History extends tweak.EventSystem
   ###
     @private
     Get the pathname and search parameters, without the root.
-    @return Formatted URL without hash.
+    @return Normalized URL.
   ###
   __getPath: ->
     path = decodeURI "#{@location.pathname}#{@__getSearch()}"
@@ -209,7 +209,7 @@ class tweak.History extends tweak.EventSystem
     Get a normalized URL
     @param [String] URL The URL to normalize - if null then URL will be retrieved from window.location.
     @param [Boolean] force Force the returning value to be hash state.
-    @return Formatted URL without trailing slashes at either side.
+    @return Normalized URL without trailing slashes at either side.
   ###
   __getURL: (url, force) ->
     # If the URL is null then a URL will be retrieved from window.location 
