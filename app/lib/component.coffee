@@ -12,17 +12,17 @@
   For example you can plug "Web Components" into your static site; like sliders, accordions.
   The flexibility is endless; allowing MVC to be used from small web components to full scale one page web applications.
 
-  TweakJS wraps its Models, Views, Templates, and Controllers into a component module.
-  The component module acts intelligently to build up your application with simple configuration files.
-  Each component its built through a config object; this allows for powerful configuration with tonnes of flexibility.
+  TweakJS wraps its Models, Views, Templates, and Controllers into a Component module.
+  The Component module acts intelligently to build up your application with simple configuration files.
+  Each Component its built through a config object; this allows for powerful configuration with tonnes of flexibility.
 
-  Each component can have sub components which are accessible in both directions; although it is recommended to keep functionality separate
+  Each Component can have sub Components which are accessible in both directions; although it is recommended to keep functionality separate
   it sometimes comes in handy to have access to other parts of the application.
 
-  Each component can extend another component, which will then inherent the models, views, templates, and controllers directly from that component.
-  If you however want to extend a component yet using a different Model you can simply overwrite that model, or extend the functionality to the components model.
+  Each Component can extend another Component, which will then inherent the models, views, templates, and controllers directly from that Component.
+  If you however want to extend a Component yet using a different Model you can simply overwrite that model, or extend the functionality to the Components model.
 
-  The config objects are extremely handy for making components reusable, with easy accessible configuration settings.
+  The config objects are extremely handy for making Components reusable, with easy accessible configuration settings.
 
 ###
 class tweak.Component
@@ -56,8 +56,8 @@ class tweak.Component
   modules: ["controller", "model", "view", "router", "components"]
 
   ###
-    @param [Object] relation Relation to the component
-    @param [Object] options Configuration for the component
+    @param [Object] relation Relation to the Component
+    @param [Object] options Configuration for the Component
   ###
   constructor: (relation, options) ->
     if not options? then throw new Error "No options given"
@@ -68,19 +68,19 @@ class tweak.Component
     # The relation is it direct caller
     relation = @relation = if relation is window then {} else relation
     relation.relation ?= {}
-    # Get parent component
+    # Get parent Component
     @parent = if relation instanceof tweak.Component then relation else relation.component or relation
     @root = @parent.root or @
-    # Set name of component
+    # Set name of Component
     @name = options.name
     if not @name? then throw new Error "No name given"
 
     @config = @__buildConfig(options) or {}
     # Router is optional as it is performance heavy
-    # So it needs to be explicitly defined in the config for the component that it should be used
+    # So it needs to be explicitly defined in the config for the Component that it should be used
     if @config.router then @__addRouter()
 
-    # Add modules to the component
+    # Add modules to the Component
     @__addModel()
     @__addView()
     @__addComponents()
@@ -94,7 +94,7 @@ class tweak.Component
         prop[name2] = prop2
 
   ###
-    Constructs the component and its modules using the addModule method
+    Constructs the Component and its modules using the addModule method
   ###
   init: ->
     # Call init on all the modules
@@ -106,8 +106,8 @@ class tweak.Component
     @private
     @param [Object] options Component options
     @return [Object] returns combined config based on the configs extending inheritance
-    Builds the config component
-    It intelligently inherits modules, and configuration settings from its extending components
+    Builds the config Component
+    It intelligently inherits modules, and configuration settings from its extending Components
   ###
   __buildConfig: (options) ->
     configs = []
@@ -144,7 +144,7 @@ class tweak.Component
 
   ###
     @private
-    Add a module to the component, if module can't be found then it will use a surrogate object
+    Add a module to the Component, if module can't be found then it will use a surrogate object
     @param [String] name Name of the module
     @param [Object] surrogate Surrogate if the module can not be found
     @param [...] params Parameters passed into the module on construction
@@ -158,7 +158,7 @@ class tweak.Component
 
   ###
     @private
-    Shortcut method to adding view using the addModule method
+    Short cut method to adding view using the addModule method
     @param [...] params Parameters passed to into the view constructor
   ###
   __addView: (params...) ->
@@ -167,7 +167,7 @@ class tweak.Component
 
   ###
     @private
-    Shortcut method to adding Model using the addModule method
+    Short cut method to adding Model using the addModule method
     @param [...] params Parameters passed to into the model constructor
   ###
   __addModel: (params...) ->
@@ -176,7 +176,7 @@ class tweak.Component
 
   ###
     @private
-    Shortcut method to adding controller using the addModule method
+    Short cut method to adding controller using the addModule method
     @param [...] params Parameters passed to into the controller constructor
   ###
   __addController: (params...) ->
@@ -185,8 +185,8 @@ class tweak.Component
 
   ###
     @private
-    Add module to this component
-    @param [...] params Parameters passed to into the components constructor
+    Add module to this Component
+    @param [...] params Parameters passed to into the Components constructor
   ###
   __addComponents: ->
     name = "components"
@@ -219,7 +219,7 @@ class tweak.Component
 
   ###
     Renders itself and its subcomponents
-    @event ready Triggers ready event when itself and its components are ready/rendered
+    @event ready Triggers ready event when itself and its Components are ready/rendered
   ###
   render: ->
     name = @name
@@ -228,14 +228,14 @@ class tweak.Component
 
   ###
     Re-renders itself and its subcomponents
-    @event ready Triggers ready event when itself and its components are ready/re-rendered
+    @event ready Triggers ready event when itself and its Components are ready/re-rendered
   ###
   rerender: ->
     @__componentRender "rerender"
     return
 
   ###
-    Destroy this component. It will clear the view if it exists; and removes it from collection if it is part of one
+    Destroy this Component. It will clear the view if it exists; and removes it from Collection if it is part of one
     @param [Boolean] quiet (optional) (default = false) Quietly change the base storage property, by not triggering events upon change
   ###
   destroy: (quiet) ->

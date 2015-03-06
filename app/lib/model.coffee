@@ -20,7 +20,7 @@ class tweak.Model extends tweak.Store
   ###
     The constructor initialises the controllers unique ID and its initial data.
 
-    @example Creating a model with predefined set of data
+    @example Creating a Model with predefined set of data
       var model;
       model = new tweak.Model({
         "demo":true,
@@ -32,11 +32,11 @@ class tweak.Model extends tweak.Store
 
   ###
     Remove a single property or many properties.
-    @param [String, Array<String>] properties Array of property names to remove from model, or single String of the name of the property to remove
+    @param [String, Array<String>] properties Array of property names to remove from a Model, or single String of the name of the property to remove
     @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @event removed:#{key} Triggers an event based on what property has been removed
-    @event changed Triggers a generic event that the model has been updated
+    @event changed Triggers a generic event that the Model has been updated
 
     @example Removing a single property
       var model;
@@ -91,9 +91,9 @@ class tweak.Model extends tweak.Store
     result
 
   ###
-    Reset the model back to defaults
+    Reset the Model back to defaults
 
-    @event changed Triggers a generic event that the model has been updated
+    @event changed Triggers a generic event that the Model has been updated
   ###
   reset: ->
     @data = {}
@@ -108,7 +108,7 @@ class tweak.Model extends tweak.Store
     @option options [Boolean] silent If true then it wont trigger events
     @return [JSONObject] Returns the parsed JSONString as a JSONObject
 
-    @example Importing a JSONObject to a model
+    @example Importing a JSONObject to a Model
       // This is a simple demo with a JSONString being passed
       var model;
       model = new tweak.Model();
@@ -122,7 +122,7 @@ class tweak.Model extends tweak.Store
         silent:true
       });
 
-    @example Importing a JSONObject to a model but with restrictions to what should be imported
+    @example Importing a JSONObject to a Model but with restrictions to what should be imported
       // This is a simple demo with a JSONString being passed with only demo value being updated
       var model;
       model = new tweak.Model();
@@ -133,16 +133,16 @@ class tweak.Model extends tweak.Store
   import: (data, options = {}) -> @set @parse(data, options.limit), options.silent or true
 
   ###
-    Export a JSONString of this models data.
+    Export a JSONString of this Models data.
     @param [Array<String>] limit Limit which properties to convert. Default: all properties get converted.
     @return [JSONString] Returns a JSONString
 
-    @example Exporting all data from this model as a JSONObject
+    @example Exporting all data from this Model as a JSONObject
       var model, jsonString;
       model = new tweak.Model();
       jsonString = model.export();
 
-    @example Exporting limited data from this model as a JSONObject
+    @example Exporting limited data from this Model as a JSONObject
       var model, jsonString;
       model = new tweak.Model();
       jsonString = model.export([

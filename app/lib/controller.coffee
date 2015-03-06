@@ -11,7 +11,7 @@ class tweak.Controller extends tweak.EventSystem
   super: tweak.super
 
   ###
-    The constructor initialises the controllers unique ID.
+    The constructor initialises the Controllers unique ID.
   ###
   constructor: -> @uid = "ct_#{tweak.uids.ct++}"
 

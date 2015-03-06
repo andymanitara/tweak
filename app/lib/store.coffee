@@ -1,8 +1,8 @@
 ###
   This is the base Class for dynamic storage based modules. A good way to think of a Store/Model/Collection
-  is to think it as Cache; it can be used to store data for temporary access. It receives and sends its data
+  is to think it as Cache; it can be used to Store data for temporary access. It receives and sends its data
   to a secondary permanent storage solution. The Store class is the base functionality shared between a Model
-  and Collection. Classes that inherit store class trigger events when it's storage base is updated, this
+  and Collection. Classes that inherit Store class trigger events when it's storage base is updated, this
   makes it easy to listen to changes and to action as and when required.
 
   Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
@@ -12,9 +12,9 @@ class tweak.Store extends tweak.EventSystem
 
   # @property [String] The type of storage, i.e. 'collection' or 'model'
   _type: 'BASE'
-  # @property [Integer] Length of the stores data
+  # @property [Integer] Length of the Stores data
   length: 0
-  # @property [Object, Array] Data holder for the store
+  # @property [Object, Array] Data holder for the Store
   data: []
   # @property [Integer] The uid of this object - for unique reference
   uid: 0
@@ -37,13 +37,13 @@ class tweak.Store extends tweak.EventSystem
     Set a single or multiple properties or the base storage.
 
     @overload set(name, data, silent)
-      Set an individual property in the store by name
+      Set an individual property in the Store by name
       @param [String] name The name of the property to set
-      @param [*] data Data to store in the property being set
+      @param [*] data Data to Store in the property being set
       @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @overload set(properties, silent)
-      Set an multiple properties in the store from an object
+      Set an multiple properties in the Store from an object
       @param [Object] properties Key and property based object
       @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
@@ -58,7 +58,7 @@ class tweak.Store extends tweak.EventSystem
       this.set({sample:100, second:2}, true);
 
     @event changed:#{key} Triggers an event and passes in changed property
-    @event changed Triggers a generic event that the store has been updated
+    @event changed Triggers a generic event that the Store has been updated
   ###
   set: (properties, params...) ->
     silent = params[0]
@@ -128,9 +128,9 @@ class tweak.Store extends tweak.EventSystem
     return result
 
   ###
-    Reset the store length to 0 and triggers change event.
+    Reset the Store length to 0 and triggers change event.
 
-    @event changed Triggers a generic event that the store has been updated
+    @event changed Triggers a generic event that the Store has been updated
   ###
   reset: ->
     @length = 0

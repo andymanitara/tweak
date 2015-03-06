@@ -14,9 +14,9 @@ tweak.Viewable = {
 
 ###
   This class extends the View class, extending its rendering functionality for HTML.
-  The ViewHTML class does not provide functionality to manipulate this views
+  The ViewHTML class does not provide functionality to manipulate this Views
   presentation layer. To extend the HTMLView to provide extra functionality to
-  manipulate this view's rendered interface (DOM) please include the optional
+  manipulate this View's rendered interface (DOM) please include the optional
   tweak.ViewHTMLAdvanced class.
 ###
 class tweak.ViewHTML extends tweak.View
@@ -30,25 +30,25 @@ class tweak.ViewHTML extends tweak.View
   findModule: tweak.Common.findModule
 
   ###
-    Default initialiser function - called when the view has rendered
+    Default initialiser function - called when the View has rendered
   ###
   init: ->
 
   ###
-    Renders the view, using a html template engine. The view is loaded async, this prevents the view from clogging up allowing for complex component structures.
-    When the view has been rendered there is a event triggered. This allows an on ready for high components to be achieved, and to make sure that the DOM is available for access.
-    The view wont be rendered until its parent view is rendered and any other components views that are waiting to be rendered.
-    After the view is rendered the init method will be called.
-    There is many options available for rendering through the view class, allowing for powerful rendering functionality.
+    Renders the View, using a html template engine. The View is loaded async, this prevents the View from clogging up allowing for complex component structures.
+    When the View has been rendered there is a event triggered. This allows an on ready for high components to be achieved, and to make sure that the DOM is available for access.
+    The View wont be rendered until its parent View is rendered and any other components Views that are waiting to be rendered.
+    After the View is rendered the init method will be called.
+    There is many options available for rendering through the View class, allowing for powerful rendering functionality.
 
-    @event rendered The event is called when the view has been rendered.
+    @event rendered The event is called when the View has been rendered.
   ###
   render: (silent) ->
     if @isRendered()
       @triggerEvent "rendered"
       return
       
-    if not @model? then throw new Error "There is no model attached to the view - cannot render"
+    if not @model? then throw new Error "No model attached to View"
     config = @config
     config.attach ?= {}
 
@@ -97,7 +97,7 @@ class tweak.ViewHTML extends tweak.View
     result
 
   ###
-    Clears the view and removed event listeners of DOM elements
+    Clears the View and removed event listeners of DOM elements
   ###
   clear: (element = @el) ->
     if element?.parentNode
@@ -108,14 +108,14 @@ class tweak.ViewHTML extends tweak.View
 
   ###
     Checks to see if the item is rendered; this is determined if the node has a parentNode
-    @return [Boolean] Returns whether the view has been rendered.
+    @return [Boolean] Returns whether the View has been rendered.
   ###
   isRendered: -> if document.getElementsByTagName("html")[0].contains @el then true else false
   
   ###
     Get the attachment node for this element
     @return [DOMElement] Returns the parent DOMElement
-    @throw When looking for a parent Element and there is not a returnable element you will receive the following error - "Unable to find view parent for #{@name} (#{name})"
+    @throw When looking for a parent Element and there is not a returnable element you will receive the following error - "No View parent for #{@name} (#{name})"
   ###
   getAttachmentNode: ->
     # The result is the parent el, or it will try to find a node to attach to in the DOM
@@ -131,7 +131,7 @@ class tweak.ViewHTML extends tweak.View
           if name is val
             child = prop
             break
-    child or parent or throw new Error "Unable to find view parent for #{@name} (#{name})"
+    child or parent or throw new Error "No View parent for #{@name} (#{name})"
 
   attach: (parent, node, method) ->
     switch method

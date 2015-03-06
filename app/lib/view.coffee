@@ -1,5 +1,5 @@
 ###
-  The core view.
+  The core View.
   
   A View is a module used as a presentation layer. Which is used to render, manipulate and listen to an interface.
   The Model, View and Controller separates logic of the Views interaction to that of data and functionality.
@@ -14,17 +14,17 @@ class tweak.View extends tweak.EventSystem
   super: tweak.super
 
   ###
-    The constructor initialises the controllers unique ID and its root context and sets the views configuration.
+    The constructor initialises the controllers unique ID and its root context and sets the Views configuration.
   ###
   constructor: (@config = {}) -> @uid = "v_#{tweak.uids.v++}"
 
   ###
-    Default initialiser function - called when the view has rendered
+    Default initialiser function - called when the View has rendered
   ###
   init: ->
 
   ###
-    Renders the view.
+    Renders the View.
     @event rendered View has been rendered.
   ###
   render: (silent) ->
@@ -32,7 +32,7 @@ class tweak.View extends tweak.EventSystem
     return
 
   ###
-    Re-renders the view
+    Re-renders the View
     @event rendered View has been rendered.
     @event rerendered View has been re-rendered.
   ###
@@ -47,13 +47,13 @@ class tweak.View extends tweak.EventSystem
 
   ###
     Checks to see if the item is rendered; this is determined if the node has a parentNode
-    @return [Boolean] Returns whether the view has been rendered.
+    @return [Boolean] Returns whether the View has been rendered.
   ###
   isRendered: ->
     return true
 
   ###
-    Clears the view
+    Clears the View
   ###
   clear: ->
     return

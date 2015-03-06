@@ -8,10 +8,10 @@
 ###
 
 ###
-  The view is the DOM controller. This should be used for code that doesn't really control any logic but how the view is displayed. For example animations.
-  The view uses a template engine to provide the html to the DOM.
-  The view in common MV* frameworks is typically used to directly listen for model changes to re-render however typically this should be done in the controller.
-  The data in the model is passed into the views template, allowing for easy manipulation of the view.
+  The View is the DOM controller. This should be used for code that doesn't really control any logic but how the View is displayed. For example animations.
+  The View uses a template engine to provide the html to the DOM.
+  The View in common MV* frameworks is typically used to directly listen for model changes to re-render however typically this should be done in the controller.
+  The data in the model is passed into the Views template, allowing for easy manipulation of the View.
 ###
 class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
   ###
@@ -19,13 +19,13 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine
     @param [DOMElement] root (Default = @el) The element root to search for elements with a selector engine
     @return [Array<DOMElement>] Returns an array of DOMElements
-    @throw When trying to use a selector engine without having one assigned to the tweak.Selector property you will receive the following error - "Trying to get element with selector engine, but none defined to tweak.Selector"
+    @throw When trying to use a selector engine without having one assigned to the tweak.Selector property you will receive the following error - "No selector engine defined to tweak.Selector"
   ###
   element: (element, root = @el) ->
     if typeof element is 'string'
       if tweak.Selector
         tweak.Selector element, root
-      else throw new Error "Trying to get element with selector engine, but none defined to tweak.Selector"
+      else throw new Error "No selector engine defined to tweak.Selector"
     else [element]
 
   ###

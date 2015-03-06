@@ -79,7 +79,7 @@ class tweak.Router extends tweak.EventSystem
     
     @param [object] routes (optional, default = {}) An object containing event name based keys to an array of routes.
 
-    @example Creating a router with a set of predefined routes
+    @example Creating a Router with a set of predefined routes
       var router;
       router = new tweak.Router({
         "navigation":[
@@ -96,7 +96,7 @@ class tweak.Router extends tweak.EventSystem
     tweak.History.addEvent "changed", @__urlChanged, null, @
 
   ###
-    Add a route to the router.
+    Add a route to the Router.
     @param [String] event The event name to add route to.
     @param [String, Reg-ex] route A string or Reg-ex formatted string or Reg-ex.
 
@@ -221,7 +221,7 @@ class tweak.Router extends tweak.EventSystem
       res = "\\/?([^\\/]*?)"
       # If the parameter is optional then wrap the Reg-ex equivalent to make it an optional Reg-ex equivalent
       if /^\/?\?/.exec match then "(?:#{res})?" else res
-    # Replace the splat to its regex equivalent
+    # Replace the splat to its Reg-ex equivalent
     route = route.replace splatReg, '\\/?(.*?)'
     # Return the Reg-ex equivalent
     new RegExp "^#{route}[\\/\\s]?$"
@@ -238,7 +238,7 @@ class tweak.Router extends tweak.EventSystem
   
   ###
     @private
-    When history event is made this method is called to check this routers events to see if any route events can be triggered.
+    When history event is made this method is called to check this Routers events to see if any route events can be triggered.
     @param [String] url A URL to check route events to
     @event {event_name} Triggers a route event with passed in data from URL
   ###

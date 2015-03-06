@@ -18,8 +18,8 @@
 *    lib/store.coffee - Core/shared code for collections and models
     lib/collection.coffee
     lib/controller.coffee
-    lib/model.coffee
-    lib/view.coffee
+*    lib/model.coffee
+*    lib/view.coffee
 *    lib/router.coffee
 *    lib/history.coffee
 
