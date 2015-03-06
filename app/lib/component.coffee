@@ -8,21 +8,21 @@
 ###
 
 ###
-  The future of MVC doesnt always lie in web apps; the architecture to TweakJS allows for intergration of components anywhere on a website
-  For example you can plug "Web Components" into your static site; like sliders, accordians.
-  The flexibity is endless; allowing MVC to be used from small web components to full scale one page web apps.
+  The future of MVC doesn't always lie in web applications; the architecture to TweakJS allows for integration of components anywhere on a website
+  For example you can plug "Web Components" into your static site; like sliders, accordions.
+  The flexibility is endless; allowing MVC to be used from small web components to full scale one page web applications.
 
   TweakJS wraps its Models, Views, Templates, and Controllers into a component module.
-  The component module acts inteligently to build up your application with simple config files.
-  Each component its built through a config object; this allows for powerfull configuration with tonnes of flexibity.
+  The component module acts intelligently to build up your application with simple configuration files.
+  Each component its built through a config object; this allows for powerful configuration with tonnes of flexibility.
 
-  Each component can have sub components which are accessible in both directions; although it is recommended to keep functionality seperate
+  Each component can have sub components which are accessible in both directions; although it is recommended to keep functionality separate
   it sometimes comes in handy to have access to other parts of the application.
 
-  Each component can extend another component, which will then inheret the models, views, templates, and controllers directly from that component.
-  If you however want to extend a component yet using a different Model you can simply overrite that model, or extend the functionality to the components model.
+  Each component can extend another component, which will then inherent the models, views, templates, and controllers directly from that component.
+  If you however want to extend a component yet using a different Model you can simply overwrite that model, or extend the functionality to the components model.
 
-  The config objects are extremely handy for making components reusable, with easy accessable configuration settings.
+  The config objects are extremely handy for making components reusable, with easy accessible configuration settings.
 
 ###
 class tweak.Component
@@ -57,7 +57,7 @@ class tweak.Component
 
   ###
     @param [Object] relation Relation to the component
-    @param [Object] options Configuartion for the component
+    @param [Object] options Configuration for the component
   ###
   constructor: (relation, options) ->
     if not options? then throw new Error "No options given"
@@ -76,8 +76,8 @@ class tweak.Component
     if not @name? then throw new Error "No name given"
 
     @config = @__buildConfig(options) or {}
-    # Router is optional as it is perfomance heavy
-    # So it needs to be explicility defind in the config for the component that it should be used
+    # Router is optional as it is performance heavy
+    # So it needs to be explicitly defined in the config for the component that it should be used
     if @config.router then @__addRouter()
 
     # Add modules to the component
@@ -107,7 +107,7 @@ class tweak.Component
     @param [Object] options Component options
     @return [Object] returns combined config based on the configs extending inheritance
     Builds the config component
-    It inteligently iherits modules, and configuration settings from its extending components
+    It intelligently inherits modules, and configuration settings from its extending components
   ###
   __buildConfig: (options) ->
     configs = []
@@ -129,7 +129,7 @@ class tweak.Component
       extension = requested.extends
 
     # Combine all the config files into one
-    # The values of the config files from lower down the chain have piortiy
+    # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]
     for i in [configs.length-2..0]
       result = @combine result, configs[i]
@@ -147,7 +147,7 @@ class tweak.Component
     Add a module to the component, if module can't be found then it will use a surrogate object
     @param [String] name Name of the module
     @param [Object] surrogate Surrogate if the module can not be found
-    @param [...] params Parameters passed into the module on constuction
+    @param [...] params Parameters passed into the module on construction
   ###
   __addModule: (name, surrogate, params...) ->
     Module = @findModule @paths, "./#{name}", surrogate
@@ -185,7 +185,7 @@ class tweak.Component
 
   ###
     @private
-    Add components module to this com
+    Add module to this component
     @param [...] params Parameters passed to into the components constructor
   ###
   __addComponents: ->
@@ -196,7 +196,7 @@ class tweak.Component
 
   ###
     @private
-    Shortcut method to adding router using the addModule method
+    Short cut method to adding router using the addModule method
     @param [...] params Parameters passed to into the router constructor
     @return [Object] Router
   ###
@@ -227,8 +227,8 @@ class tweak.Component
     return
 
   ###
-    Rerenders itself and its subcomponents
-    @event ready Triggers ready event when itself and its components are ready/rerendered
+    Re-renders itself and its subcomponents
+    @event ready Triggers ready event when itself and its components are ready/re-rendered
   ###
   rerender: ->
     @__componentRender "rerender"
@@ -251,7 +251,7 @@ class tweak.Component
     return
 
   ###
-    Shortcut to the controllers findEvent method.
+    Short-cut to the controllers findEvent method.
 
     @overload findEvent(names, build)
       Find events on controller with a space separated string.
@@ -269,36 +269,36 @@ class tweak.Component
     
 
   ###
-    Shortcut to the controllers addEvent method.
+    Short-cut to the controllers addEvent method.
 
     @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
     @param [Function] callback The event callback function.
-    @param [Number] max (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
-    @param [Object] context The contextual object of which the event to be binded to.
+    @param [Number] maximum (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
+    @param [Object] context The contextual object of which the event to be bound to.
   ###
   addEvent: (names, callback, max, context) -> @controller.addEvent names, callback, max, context
 
   ###
-    Shortcut to the controllers removeEvent method.
+    Short cut to the controllers removeEvent method.
 
     @param [String] names The event name(s). Split on a space, or an array of event names.
     @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the controller events under event name are removed.
-    @param [Object] context (default = this) The contextual object of which the event is binded to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
+    @param [Object] context (default = this) The contextual object of which the event is bound to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
   ###
   removeEvent: (names, callback, context) -> @controller.removeEvent names, callback, context
 
   ###
-    Shortcut to the controllers triggerEvent method.
+    Short cut to the controllers triggerEvent method.
 
     @overload triggerEvent(names, params)
       Trigger events on controller by name only.
       @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
-      @param [...] params Params to pass into the callback function.
+      @param [...] params Parameters to pass into the callback function.
 
     @overload triggerEvent(options, params)
       Trigger events on controller by name and context.
       @param [Object] options Options and limiters to check against callbacks.
-      @param [...] params Params to pass into the callback function.
+      @param [...] params Parameters to pass into the callback function.
       @option options [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
       @option options [Context] context (Default = null) The context of the callback to check against a callback.
   ###

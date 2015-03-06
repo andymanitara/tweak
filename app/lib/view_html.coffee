@@ -35,12 +35,11 @@ class tweak.ViewHTML extends tweak.View
   init: ->
 
   ###
-    Renders the view, using a html template engine. The view is loaded async, this prevents the view from cloging up allowing for complex component structures.
+    Renders the view, using a html template engine. The view is loaded async, this prevents the view from clogging up allowing for complex component structures.
     When the view has been rendered there is a event triggered. This allows an on ready for high components to be achieved, and to make sure that the DOM is available for access.
     The view wont be rendered until its parent view is rendered and any other components views that are waiting to be rendered.
     After the view is rendered the init method will be called.
     There is many options available for rendering through the view class, allowing for powerful rendering functionality.
-    However this is quite a perfmormance heavy part of the framework so help tidiing things up would be much appreciated.
 
     @event rendered The event is called when the view has been rendered.
   ###
@@ -81,7 +80,7 @@ class tweak.ViewHTML extends tweak.View
   ###
     Get the children nodes of an element
     @param [DOMElement] parent The element to retrieve the children of
-    @param [Boolean] recursive (Default: true) Whether to recursively go through its childerns children to get a full list
+    @param [Boolean] recursive (Default: true) Whether to recursively go through its children's children to get a full list
     @return [Array<DOMElement>] Returns an array of children nodes inside an element
   ###
   getChildren: (element, recursive = true) ->
@@ -108,7 +107,7 @@ class tweak.ViewHTML extends tweak.View
     return
 
   ###
-    Checks to see if the item is rendered; this is detirmined if the node has a parentNode
+    Checks to see if the item is rendered; this is determined if the node has a parentNode
     @return [Boolean] Returns whether the view has been rendered.
   ###
   isRendered: -> if document.getElementsByTagName("html")[0].contains @el then true else false
@@ -116,7 +115,7 @@ class tweak.ViewHTML extends tweak.View
   ###
     Get the attachment node for this element
     @return [DOMElement] Returns the parent DOMElement
-    @throw When looking for a parrent Element and there is not a returnable element you will recieve the following error - "Unable to find view parent for #{@name} (#{name})"
+    @throw When looking for a parent Element and there is not a returnable element you will receive the following error - "Unable to find view parent for #{@name} (#{name})"
   ###
   getAttachmentNode: ->
     # The result is the parent el, or it will try to find a node to attach to in the DOM

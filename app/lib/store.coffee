@@ -6,11 +6,11 @@
   makes it easy to listen to changes and to action as and when required.
 
   Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
-  directly represent valid code; the aim of an example is to show the structure of a method.
+  directly represent valid code; the aim of an example is to show how to roughly use a method.
 ###
 class tweak.Store extends tweak.EventSystem
 
-  # @property [String] The type of storage, ie 'collection' or 'model'
+  # @property [String] The type of storage, i.e. 'collection' or 'model'
   _type: 'BASE'
   # @property [Integer] Length of the stores data
   length: 0
@@ -39,7 +39,7 @@ class tweak.Store extends tweak.EventSystem
     @overload set(name, data, silent)
       Set an individual property in the store by name
       @param [String] name The name of the property to set
-      @param [*] data Data to store in the property bieng set
+      @param [*] data Data to store in the property being set
       @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
 
     @overload set(properties, silent)
@@ -103,7 +103,7 @@ class tweak.Store extends tweak.EventSystem
   get: (property) -> @data[property]
 
   ###
-    Checks ir a property exists from the base storage
+    Checks if a property exists from the base storage
     @param [String] property Property name to look for in the base storage
     @return [Boolean] Returns true or false depending if the property exists in the base storage
 

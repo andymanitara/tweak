@@ -1,5 +1,5 @@
 ###
-  This class contains common shared functionality. The aim to reduce repeated code and overall filesize.
+  This class contains common shared functionality. The aim to reduce repeated code and overall file size.
 ###
 class tweak.Common
   ###
@@ -23,7 +23,7 @@ class tweak.Common
     @return [Object, Array] Returns the copied object, while removing object references.
   ###
   clone: (ref) ->
-    # Handle the 3 simple types, and null or undefined. returns itself if it tries to clone itslef otherwise it will stack overflow
+    # Handle the 3 simple types, and null or undefined. returns itself if it tries to clone itself otherwise it will stack overflow
     return ref if null is ref or "object" isnt typeof ref or ref is @
 
     # Handle Date
@@ -68,19 +68,19 @@ class tweak.Common
     @param [Array<String>] paths An array of context paths.
     @param [String] module The module path to convert to absolute path; based on the context path.
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
-    @return [Object] Returns an Object that has the highest piority.
+    @return [Object] Returns an Object that has the highest priority.
     @throw When an object cannot be found and no surrogate is provided the following error message will appear - "Could not find a default module (#{module name}) for component #{component name}"
     @throw When an object is found but there is an error during processing the found object the following message will appear - "Module (#{path}) found. Encountered #{e.name}: #{e.message}"
   ###
   findModule: (contexts, module, surrogate = null) ->
-    # Iterate each contex
+    # Iterate each context
     for context in contexts
       # Convert path to absolute
       path = tweak.Common.relToAbs context, module
       try
         return require path
       catch e
-        # If the error thrown isnt a direct call on "Error" Then the module was found however there was an internal error in the module
+        # If the error thrown isn't a direct call on "Error" Then the module was found however there was an internal error in the module
         if e.name isnt "Error"
           e.message = "Module (#{"#{path}"}) found. Encountered #{e.name}: #{e.message}"
           throw e
@@ -110,12 +110,12 @@ class tweak.Common
     Names formated like "./cd[2-4]" will return an array or something like ["album1/cd2","album1/cd3","album1/cd4"].
     Names formated like "./cd[2-4]a ./item[1]/model" will return an array or something like ["album1/cd2a","album1/cd3a","album1/cd4a","album1/item0/model","album1/item1/model"].
     @param [String] context The current context's relating name
-    @param [String, Array<String>] names The string to split into seperate component names
+    @param [String, Array<String>] names The string to split into separate component names
     @return [Array<String>] Returns Array of absolute module names
   ###
   splitMultiName: (context, names) ->
     values = []
-    # Regex to split out the name prefix, suffix and the amount to expand by
+    # Reg-ex to split out the name prefix, suffix and the amount to expand by
     reg = /^(.*)\[(\d*)(?:[,\-](\d*)){0,1}\](.*)$/
 
     # Split name if it is a string

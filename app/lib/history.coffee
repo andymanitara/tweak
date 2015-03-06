@@ -4,7 +4,7 @@
   be declared for better code structure.
 
   Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
-  directly represent valid code; the aim of an example is to show the structure of a method.
+  directly represent valid code; the aim of an example is to show how to roughly use a method.
 ###
 class tweak.History extends tweak.EventSystem
   usePush: true
@@ -17,7 +17,7 @@ class tweak.History extends tweak.EventSystem
   intervalRate: 50
 
   ###
-    Checks that the window and history is avaialble.
+    Checks that the window and history is available.
     This add support for the history to work outside of browsers
     if the window, history and location are set manually.
   ###
@@ -56,7 +56,7 @@ class tweak.History extends tweak.EventSystem
         forceRefresh:true
       });
 
-    @example Starting the history with a interval rate for the polling speed for older browsers
+    @example Starting the history with an interval rate for the polling speed for older browsers
       tweak.History.start({
         hashState:true,
         interval: 100
@@ -80,10 +80,10 @@ class tweak.History extends tweak.EventSystem
     # Make sure using one state or the other
     if usePush is true then @useHash = useHash = false
 
-    # Ir the page is to be refreshed on a navigation event then set both useHash and usePush to false
+    # If the page is to be refreshed on a navigation event then set both useHash and usePush to false
     if options.forceRefresh or (useHash and not `('onhashchange' in this.window)`) then @usePush = @useHash = useHash = usePush = false
 
-    # Set the interaval rate for older browsers
+    # Set the interval rate for older browsers
     @intervalRate = options.interval or @intervalRate
 
 
@@ -104,7 +104,7 @@ class tweak.History extends tweak.EventSystem
     else if usePush and atRoot
       @set @__getHash(), {replace: true}
 
-    # If the browser doesn’t support hash or pushState and it isn’t being forced to be refreshed
+    # If the browser doesn't support hash or pushState and it isn't being forced to be refreshed
     if not usePush and not useHash and not options.forceRefresh
       # Creates a simple iframe element attaching to the body to trick IE into having a usable history
       frame = document.createElement "iframe"
@@ -133,15 +133,15 @@ class tweak.History extends tweak.EventSystem
     @option options [Boolean] replace (default = false) Specify whether to replace the current item in the history.
     @option options [Boolean] silent (default = true) Specify whether to allow triggering of event when setting the URL.
 
-    @example Setting the History (updating the url)
+    @example Setting the History (updating the URL)
       tweak.History.set("/#/fake/url");
 
-    @example Replacing the last History state (updating the url)
+    @example Replacing the last History state (updating the URL)
       tweak.History.set("/#/fake/url", {
         replace:true
       });
 
-    @example Setting the History (updating the url) and calling history change event
+    @example Setting the History (updating the URL) and calling history change event
       tweak.History.set("/#/fake/url", {
         silent:false
       });
@@ -161,7 +161,7 @@ class tweak.History extends tweak.EventSystem
     if url is "" or url.charAt(0) is "?"
       root = root.slice(0, -1) or  "/"
 
-    # Create ful url with root
+    # Create full URL with root
     fullUrl = "#{root}#{url}"
 
     # Strip the hash from the URL and decode
@@ -275,7 +275,7 @@ class tweak.History extends tweak.EventSystem
         url = @__getHash()
 
     # Return URL without trailing slashes
-    # We may want to neaten tne url with a single prefix slash therefore it accepts 1 prefix slash
+    # We may want to neaten the URL with a single prefix slash therefore it accepts 1 prefix slash
     url.replace /^\/+/g, "/"
     url.replace /^\/+$/g, ""
 

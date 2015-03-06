@@ -2,13 +2,11 @@
   A collection is where data can be stored, a default collection is an array based system. The model is a extension to the default collection; but based on an object.
 ###
 class tweak.Collection extends tweak.Store
-  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
-    
-  # @property [String] The type of storage, ie 'collection' or 'model'
+  # @property [String] The type of storage, i.e. 'collection' or 'model'
   _type: "collection"
 
   ###
-    The constructor initialises the controllers unique ID and its initial data. 
+    The constructor initialises the controllers unique ID and its initial data.
   ###
   constructor: (@data = []) -> @uid = "cl_#{tweak.uids.cl++}"
 

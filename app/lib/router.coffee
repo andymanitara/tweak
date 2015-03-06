@@ -1,5 +1,5 @@
 ###
-  Web applications often provide linkable, bookmarkable, shareable URLs for important locations in the app.
+  Web applications often provide linkable, bookmark, shareable URLs for important locations in the application.
   The Router module provides methods for routing to events which can control the application. Traditionally it
   used to be that routers worked from hash fragments (#page/22). However, the HTML5 History API now provides
   standard URL formats (/page/22). Routers provide functionality that links applications/components/modules
@@ -66,7 +66,7 @@
     }
 
   Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
-  directly represent valid code; the aim of an example is to show the structure of a method.
+  directly represent valid code; the aim of an example is to show how to roughly use a method.
 ###
 class tweak.Router extends tweak.EventSystem
   # @property [Integer] The uid of this object - for unique reference
@@ -98,14 +98,14 @@ class tweak.Router extends tweak.EventSystem
   ###
     Add a route to the router.
     @param [String] event The event name to add route to.
-    @param [String, Regex] route A string or Regex formatted string or Regex.
+    @param [String, Reg-ex] route A string or Reg-ex formatted string or Reg-ex.
 
     @example Adding a single string formatted route to an event
       var router;
       router = new tweak.Router();
       router.add("navigation", "/:section/:page");
   
-    @example Adding a single Regex formatted route to an event
+    @example Adding a single Reg-ex formatted route to an event
       var router;
       router = new tweak.Router();
       router.add("navigation", /^(*.)$/);
@@ -113,7 +113,7 @@ class tweak.Router extends tweak.EventSystem
   add: (event, route) ->
     # If the route event exists then push route to existing event
     if @routes[event]? then @routes[event].push route
-    # If route event doesn’t exist create a new route event attaching the route
+    # If route event doesn't exist create a new route event attaching the route
     else @routes[event] = [route]
     return
 
@@ -129,9 +129,9 @@ class tweak.Router extends tweak.EventSystem
       @param [String] route A string containing multiple string formatted routes. (":section/:page :section/:page/*")
 
     @overload remove(event, route)
-      Remove a single Regex formatted route from an event.
+      Remove a single Reg-ex formatted route from an event.
       @param [String] event The event name to add route to.
-      @param [Boolean] route A Regex formatted route. (/^.*$/)
+      @param [Boolean] route A Reg-ex formatted route. (/^.*$/)
     
     @example Removing a single string formatted route from an event
       var router;
@@ -143,7 +143,7 @@ class tweak.Router extends tweak.EventSystem
       router = new tweak.Router();
       router.remove("navigation", "/:section/:page /:website/:section/?page");
   
-    @example Removing a single Regex formatted route from an event
+    @example Removing a single Reg-ex formatted route from an event
       var router;
       router = new tweak.Router();
       router.remove("navigation", /^(*.)$/);
@@ -167,7 +167,7 @@ class tweak.Router extends tweak.EventSystem
 
   ###
     @private
-    Regex to get parameters from a URL.
+    Reg-ex to get parameters from a URL.
   ###
   __paramReg = /\/?[?:]([^?\/:]*)/g
 
@@ -203,27 +203,27 @@ class tweak.Router extends tweak.EventSystem
 
   ###
     @private
-    Converts a string formatted route into its Regex counterpart.
-    @param [String] route The route to convert into a Regex formatted route.
-    @return [Regex] The Regex formatted route of given string formatted route.
+    Converts a string formatted route into its Reg-ex counterpart.
+    @param [String] route The route to convert into a Reg-ex formatted route.
+    @return [Reg-ex] The Reg-ex formatted route of given string formatted route.
   ###
   __toRegex = (route) ->
-    # Regex to escape characters for the returned regex
+    # Reg-ex to escape characters for the returned Reg-ex
     escapeReg = /[\-\\\^\[\]\s{}+.,$|#]/g
-    # Regex to be able to retrieve the splat from end of URL
+    # Reg-ex to be able to retrieve the splat from end of URL
     splatReg = /\/?(\*)$/
 
     # Escape the route
     route = route.replace escapeReg, '\\$&'
     # Retrieve optional and non-optional parameters from route
     route = route.replace __paramReg, (match) ->
-      # The Regex equivalent to a non-optional parameter
+      # The Reg-ex equivalent to a non-optional parameter
       res = "\\/?([^\\/]*?)"
-      # If the parameter is optional then wrap the regex equivalent to make it an optional regex equivalent
+      # If the parameter is optional then wrap the Reg-ex equivalent to make it an optional Reg-ex equivalent
       if /^\/?\?/.exec match then "(?:#{res})?" else res
     # Replace the splat to its regex equivalent
     route = route.replace splatReg, '\\/?(.*?)'
-    # Return the regex equivalent
+    # Return the Reg-ex equivalent
     new RegExp "^#{route}[\\/\\s]?$"
 
   ###
@@ -252,9 +252,9 @@ class tweak.Router extends tweak.EventSystem
         if typeof route is "string"
           # Get the keys of this string formatted route
           keys = __getKeys route
-          # Get the Regex equivalent of the string formatted route
+          # Get the Reg-ex equivalent of the string formatted route
           route = __toRegex route
-        # Check the regex to the URL
+        # Check the reg-ex to the URL
         if match = route.exec url
           # Create the data to pass into event
           res = {url, data:{}}

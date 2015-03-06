@@ -2,9 +2,9 @@
   The core view.
   
   A View is a module used as a presentation layer. Which is used to render, manipulate and listen to an interface.
-  The Model, View and Controller separates logic of the Views interaction to that of data and functionality. 
+  The Model, View and Controller separates logic of the Views interaction to that of data and functionality.
   This helps to keep code organized and tangle free - the View should primarily be used to render, manipulate and
-  listen to the presentation layer. A View consists of a template to which data is binded to and rendered/re-rendered.
+  listen to the presentation layer. A View consists of a template to which data is bound to and rendered/re-rendered.
 ###
 class tweak.View extends tweak.EventSystem
  
@@ -32,9 +32,9 @@ class tweak.View extends tweak.EventSystem
     return
 
   ###
-    Rerenders the view
+    Re-renders the view
     @event rendered View has been rendered.
-    @event rerendered View has been rerendered.
+    @event rerendered View has been re-rendered.
   ###
   rerender: (silent) ->
     @clear()
@@ -46,7 +46,7 @@ class tweak.View extends tweak.EventSystem
     return
 
   ###
-    Checks to see if the item is rendered; this is detirmined if the node has a parentNode
+    Checks to see if the item is rendered; this is determined if the node has a parentNode
     @return [Boolean] Returns whether the view has been rendered.
   ###
   isRendered: ->

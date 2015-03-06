@@ -1,7 +1,7 @@
 ###
   A Controller defines the business logic between other modules. It can be used to
-  control data flow, logic and more. It should process the data from the Model, 
-  interactions and responses from the View, and control the logic between other 
+  control data flow, logic and more. It should process the data from the Model,
+  interactions and responses from the View, and control the logic between other
   modules.
 ###
 class tweak.Controller extends tweak.EventSystem

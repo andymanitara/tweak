@@ -16,9 +16,9 @@ tweak.Super = (child, name) ->
   return
 
 ###
-  TweakJS was intitially designed in CoffeeScript for CoffeeScripters.
-  It is much easier to use the framework in coffeescript; however those using JS the following helpers will provide extending features that coffeescipt possess
-  These can also be used to reduce the file size of compiled coffeescript files.
+  TweakJS was initially designed in CoffeeScript for CoffeeScripters.
+  It is much easier to use the framework in CoffeeScript; however those using JS the following helpers will provide extending features that CoffeeScipt possess
+  These can also be used to reduce the file size of compiled CoffeeScript files.
 ###
 class tweak.Class
   ###
