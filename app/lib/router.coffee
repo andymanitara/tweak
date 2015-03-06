@@ -81,7 +81,7 @@ class tweak.Router extends tweak.EventSystem
 
     @example Creating a router with a set of predefined routes
       var router;
-      router = new Router({
+      router = new tweak.Router({
         "navigation":[
           ":section/:page",
           /:website/:section/?page
@@ -102,12 +102,12 @@ class tweak.Router extends tweak.EventSystem
 
     @example Adding a single string formatted route to an event
       var router;
-      router = new Router();
+      router = new tweak.Router();
       router.add("navigation", "/:section/:page");
   
     @example Adding a single Regex formatted route to an event
       var router;
-      router = new Router();
+      router = new tweak.Router();
       router.add("navigation", /^(*.)$/);
   ###
   add: (event, route) ->
@@ -135,17 +135,17 @@ class tweak.Router extends tweak.EventSystem
     
     @example Removing a single string formatted route from an event
       var router;
-      router = new Router();
+      router = new tweak.Router();
       router.remove("navigation", "/:section/:page");
 
     @example Removing a multiple string formatted routes from an event
       var router;
-      router = new Router();
+      router = new tweak.Router();
       router.remove("navigation", "/:section/:page /:website/:section/?page");
   
     @example Removing a single Regex formatted route from an event
       var router;
-      router = new Router();
+      router = new tweak.Router();
       router.remove("navigation", /^(*.)$/);
   ###
   remove: (event, routes) ->
