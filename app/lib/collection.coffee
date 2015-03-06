@@ -43,7 +43,7 @@ class tweak.Collection extends tweak.Store
     @event changed:#{key} Triggers an event and passes in changed property
     @event changed Triggers a generic event that the collection has been updated
   ###
-  add: (data, silent) -> 
+  add: (data, silent) ->
     @set "#{@length}", data, silent
     return
   

@@ -1,7 +1,7 @@
 ###
   This is the base Class for dynamic storage based modules. A good way to think of a Store/Model/Collection is to think it as Cache;
   it can be used to store data for temporary access. It receives and sends its data to a secondary permanent storage solution. The Store
-  class is the base functionality shared between a Model and Collection. Classes that inherit store class trigger events when it's 
+  class is the base functionality shared between a Model and Collection. Classes that inherit store class trigger events when it's
   storage base is updated, this makes it easy to listen to changes and to action as and when required.
 
   Examples are in JS, unless where CoffeeScript syntax may be unusual.
@@ -22,7 +22,7 @@ class tweak.Store extends tweak.EventSystem
   super: tweak.super
 
   ###
-    The constructor initialises the controllers unique ID. 
+    The constructor initialises the controllers unique ID.
   ###
   constructor: -> @uid = "s_#{tweak.uids.s++}"
 

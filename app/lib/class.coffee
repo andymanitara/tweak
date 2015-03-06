@@ -11,7 +11,7 @@ tweak.Extends = (child, parent) ->
   child.__super__ = parent::
   child
 
-tweak.Super = (child, name) -> 
+tweak.Super = (child, name) ->
   child.__super__[name].call @
   return
 
@@ -29,7 +29,7 @@ class tweak.Class
 
   ###
     This is a dummy method - for documentation purposes only.
-    To super a method with JS use this.super. 
+    To super a method with JS use this.super.
     To add super to prototype of a custom object not within the TweakJS classes in JS; do {class}.prototype.super = tweak.Super
   ###
   super: (child, name) ->

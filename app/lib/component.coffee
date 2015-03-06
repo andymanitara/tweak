@@ -161,7 +161,7 @@ class tweak.Component
     Shortcut method to adding view using the addModule method
     @param [...] params Parameters passed to into the view constructor
   ###
-  __addView: (params...) -> 
+  __addView: (params...) ->
     @__addModule "view", tweak.View, params...
     return
 
@@ -170,7 +170,7 @@ class tweak.Component
     Shortcut method to adding Model using the addModule method
     @param [...] params Parameters passed to into the model constructor
   ###
-  __addModel: (params...) -> 
+  __addModel: (params...) ->
     @__addModule "model", tweak.Model, params...
     return
 
@@ -179,7 +179,7 @@ class tweak.Component
     Shortcut method to adding controller using the addModule method
     @param [...] params Parameters passed to into the controller constructor
   ###
-  __addController: (params...) -> 
+  __addController: (params...) ->
     @__addModule "controller", tweak.Controller, params...
     return
 
@@ -188,7 +188,7 @@ class tweak.Component
     Add components module to this com
     @param [...] params Parameters passed to into the components constructor
   ###
-  __addComponents: -> 
+  __addComponents: ->
     name = "components"
     Module = @findModule @paths, "./#{name}", tweak.Components
     module = @[name] = new Module @, @config[name]
@@ -200,7 +200,7 @@ class tweak.Component
     @param [...] params Parameters passed to into the router constructor
     @return [Object] Router
   ###
-  __addRouter: (params...) -> 
+  __addRouter: (params...) ->
     @__addModule "router", tweak.Router, params...
     return
 
@@ -221,7 +221,7 @@ class tweak.Component
     Renders itself and its subcomponents
     @event ready Triggers ready event when itself and its components are ready/rendered
   ###
-  render: -> 
+  render: ->
     name = @name
     @__componentRender "render"
     return
@@ -230,7 +230,7 @@ class tweak.Component
     Rerenders itself and its subcomponents
     @event ready Triggers ready event when itself and its components are ready/rerendered
   ###
-  rerender: -> 
+  rerender: ->
     @__componentRender "rerender"
     return
 
@@ -278,7 +278,7 @@ class tweak.Component
   ###
   addEvent: (names, callback, max, context) -> @controller.addEvent names, callback, max, context
 
-  ###    
+  ###
     Shortcut to the controllers removeEvent method.
 
     @param [String] names The event name(s). Split on a space, or an array of event names.
@@ -287,7 +287,7 @@ class tweak.Component
   ###
   removeEvent: (names, callback, context) -> @controller.removeEvent names, callback, context
 
-  ###    
+  ###
     Shortcut to the controllers triggerEvent method.
 
     @overload triggerEvent(names, params)
@@ -304,7 +304,7 @@ class tweak.Component
   ###
   triggerEvent: (names, params...) -> @controller.triggerEvent names, params...
 
-  ###    
+  ###
     Shortcut to the controllers updateEvent method.
 
     @param [String] names The event name(s). Split on a space, or an array of event names.

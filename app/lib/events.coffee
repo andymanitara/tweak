@@ -50,7 +50,7 @@ class tweak.EventSystem
     events = @__events = @__events or {}
     # Search for each name
     for item in names
-      # Check if event exists      
+      # Check if event exists
       if not event = events[item]
         # If we are to build then add a default event else continue the iteration
         if build then event = @__events[item] = {name:item, __callbacks:[]}
@@ -121,10 +121,10 @@ class tweak.EventSystem
       # Check to see if the callback and/or context matches.
       # If event matches criteria then delete.
       for key, item of event.__callbacks
-        if (not callback? or callback is item.callback) and (not context? or context is item.ctx) 
+        if (not callback? or callback is item.callback) and (not context? or context is item.ctx)
           event.__callbacks.splice key,1
       # If callbacks is empty then delete from @__events object
-      if event.__callbacks.length is 0 
+      if event.__callbacks.length is 0
         delete @__events[event.name]
 
     return
@@ -155,7 +155,7 @@ class tweak.EventSystem
   triggerEvent: (names, params...) ->
     # If names is an object then set names and context
     if typeof names is "object" and not names instanceof Array
-      names = names.names or []       
+      names = names.names or []
       context = names.context or null
 
     # Iterate through found events
@@ -165,8 +165,8 @@ class tweak.EventSystem
         # If in listening state and if there is a context limit calls to the events with matching context
         if item.listen and (not context? or context is item.ctx)
           # Update the total calls to this event callback
-          if item.max? and ++item.calls >= item.max      
-            # Event has hit call limit, so set its event listening state to false     
+          if item.max? and ++item.calls >= item.max
+            # Event has hit call limit, so set its event listening state to false
             item.listen = false
           # Call the events call back
           setTimeout ->
@@ -223,7 +223,7 @@ class tweak.EventSystem
           # Update event properties
           if max? then item.max = max
           if calls? then item.calls = calls
-          if listen? then item.listen = listen    
+          if listen? then item.listen = listen
     return
 
   ###

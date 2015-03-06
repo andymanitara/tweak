@@ -15,9 +15,9 @@ class tweak.Components extends tweak.Collection
   splitMultiName: tweak.Common.splitMultiName
 
   ###
-    The constructor initialises the controllers unique ID, relating component, its root and its initial config. 
+    The constructor initialises the controllers unique ID, relating component, its root and its initial config.
   ###
-  constructor: (@component, @_config = {}) -> 
+  constructor: (@component, @_config = {}) ->
     @root = @component.root
     @uid = "cp_#{tweak.uids.cp++}"
 
@@ -38,7 +38,7 @@ class tweak.Components extends tweak.Collection
       else if typeof item is "string"
         data = @splitMultiName _name, item
         for name in data
-          @data.push new tweak.Component @, {name}    
+          @data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
@@ -72,14 +72,14 @@ class tweak.Components extends tweak.Collection
   ###
     Renders all of its components, also triggers ready state when all components are ready
   ###
-  render: -> 
+  render: ->
     @__componentRender "render"
     return
 
   ###
     Rerender all of its components, also triggers ready state when all components are ready
   ###
-  rerender: -> 
+  rerender: ->
     @__componentRender "rerender"
     return
 

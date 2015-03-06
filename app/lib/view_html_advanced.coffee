@@ -13,7 +13,7 @@
   The view in common MV* frameworks is typically used to directly listen for model changes to rerender however typically this should be done in the controller.
   The data in the model is passed into the views template, allowing for easy manipulation of the view.
 ###
-class tweak.ViewHTMLAdvanced extends tweak.ViewHTML  
+class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
   ###
     Tweak has an optional dependecy of any selector engine in the tweak.Selector object
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
@@ -173,7 +173,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     if str2? then str2 = __splitString str2
     else str2 = str
     for item in elements
-      if not item? then continue      
+      if not item? then continue
       i = 0
       for prop in str2
         name = item[type]
@@ -226,7 +226,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] classes A string of classes to remove to the element(s)
   ###
-  replaceClass: (element, orig, classes) ->    
+  replaceClass: (element, orig, classes) ->
     @adjust 'className', 'replace', element, classes, orig
     return
 
@@ -265,7 +265,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] element A DOMElement or a string represeting a selector query if using a selector engine
     @param [String] classes A string of classes to remove to the element(s)
   ###
-  replaceID: (element, orig, classes) ->    
+  replaceID: (element, orig, classes) ->
     @adjust 'id', 'replace', element, classes, orig
     return
 

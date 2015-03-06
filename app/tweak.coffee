@@ -13,7 +13,7 @@
  
   tweak.js
     This is the core of the framework - with these modules you can use them in any many of way.
-    lib/common.coffee - Common methods used throughout the framework 
+    lib/common.coffee - Common methods used throughout the framework
     lib/events.coffee - Event system
     lib/store.coffee - Core/shared code for collections and models
     lib/collection.coffee

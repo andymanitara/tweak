@@ -40,16 +40,16 @@ class tweak.View extends tweak.EventSystem
     @clear()
     @render silent
     if not silent
-      @onEvent "rendered", -> 
+      @onEvent "rendered", ->
         @triggerEvent "rerendered"
-      ,1    
+      ,1
     return
 
   ###
     Checks to see if the item is rendered; this is detirmined if the node has a parentNode
     @return [Boolean] Returns whether the view has been rendered.
   ###
-  isRendered: -> 
+  isRendered: ->
     return true
 
   ###

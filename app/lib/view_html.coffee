@@ -13,11 +13,11 @@ tweak.Viewable = {
 }
 
 ###
-  This class extends the View class, extending its rendering functionality for HTML. 
-  The ViewHTML class does not provide functionality to manipulate this views 
-  presentation layer. To extend the HTMLView to provide extra functionality to 
+  This class extends the View class, extending its rendering functionality for HTML.
+  The ViewHTML class does not provide functionality to manipulate this views
+  presentation layer. To extend the HTMLView to provide extra functionality to
   manipulate this view's rendered interface (DOM) please include the optional
-  tweak.ViewHTMLAdvanced class.  
+  tweak.ViewHTMLAdvanced class.
 ###
 class tweak.ViewHTML extends tweak.View
   # @property [Method] see tweak.Common.require
@@ -75,8 +75,7 @@ class tweak.ViewHTML extends tweak.View
       if not silent then @triggerEvent "rendered"
       @init()
 
-    @createAsync template, rendered 
-
+    @createAsync template, rendered
     return
 
   ###
@@ -85,18 +84,18 @@ class tweak.ViewHTML extends tweak.View
     @param [Boolean] recursive (Default: true) Whether to recursively go through its childerns children to get a full list
     @return [Array<DOMElement>] Returns an array of children nodes inside an element
   ###
-  getChildren: (element, recursive = true) =>
+  getChildren: (element, recursive = true) ->
     result = []
-    children = (node = {}) =>
+    children = (node = {}) ->
       nodes = node.children or []
       for node in nodes
         result.push node
-      for node in nodes        
+      for node in nodes
         if recursive and node.children then children node
       return
     # Iterate though all children of an element
     children element
-    result  
+    result
 
   ###
     Clears the view and removed event listeners of DOM elements
@@ -121,8 +120,8 @@ class tweak.ViewHTML extends tweak.View
   ###
   getAttachmentNode: ->
     # The result is the parent el, or it will try to find a node to attach to in the DOM
-    parent = @component.parent?.view?.el or document.getElementsByTagName("html")[0]    
-    name = @config.attach?.to or @config.attach?.name or @name    
+    parent = @component.parent?.view?.el or document.getElementsByTagName("html")[0]
+    name = @config.attach?.to or @config.attach?.name or @name
     nodes = @getChildren parent
     nodes.push parent
     for prop in nodes
@@ -130,7 +129,7 @@ class tweak.ViewHTML extends tweak.View
       attachment = prop.getAttribute 'data-attach'
       if attachment? and not attachment.match /\s+/
         for val in @splitMultiName name, attachment
-          if name is val 
+          if name is val
             child = prop
             break
     child or parent or throw new Error "Unable to find view parent for #{@name} (#{name})"
@@ -158,7 +157,5 @@ class tweak.ViewHTML extends tweak.View
     temp.firstChild
 
   createAsync: (template, callback) -> setTimeout => callback @create template, 0
-
-
-
+  
 tweak.View = tweak.ViewHTML

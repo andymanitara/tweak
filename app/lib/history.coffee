@@ -1,5 +1,5 @@
 ###
-  Simple cross browser history API. Upon changes to the history a change event is called. 
+  Simple cross browser history API. Upon changes to the history a change event is called.
   The ability to hook event listeners to the tweak.History API allows routes to be
   added accordingly, and for multiple Routers to be declared for better code structure.
 ###
@@ -31,14 +31,14 @@ class tweak.History extends tweak.EventSystem
     @option options [Boolean] useHashState (default = false) Specify whether to use hashState if true then pushState will be set to false.
     @option options [Boolean] forceRefresh (default = false) When set to true then pushState and hashState will not be used.
     @option options [Number] interval (default = null) When set to a number this is what the refresh rate will be when an interval has to be used to check changes to the URL.
-    @option options [Boolean] silent (default = false) If set to true then an initial change event trigger will not be called. 
+    @option options [Boolean] silent (default = false) If set to true then an initial change event trigger will not be called.
     
     @event changed When the URL is updated a change event is fired from tweak.History.
   ###
   start: (options = {}) ->
     # Check if tweak.History is already started
     # If started then return
-    return if @started    
+    return if @started
     @started = true
 
     # Set usePush and useHash based on the options passed in.
@@ -66,7 +66,7 @@ class tweak.History extends tweak.EventSystem
       # Return immediately as browser has now triggered URL change
       return
 
-    # Validate the push state - if not at root she replace URL with root 
+    # Validate the push state - if not at root she replace URL with root
     else if usePush and atRoot
       @set @__getHash(), {replace: true}
 
@@ -85,10 +85,10 @@ class tweak.History extends tweak.EventSystem
     if not options.silent then return @triggerEvent "changed", @url
   
   ###
-   Stop tweak.History. Most likely useful for a web component that uses the history to change state, 
+   Stop tweak.History. Most likely useful for a web component that uses the history to change state,
    but if removed from page then component may want to stop the history.
   ###
-  stop: -> 
+  stop: ->
     @__toggleListeners "off"
     @started = false
 
@@ -111,8 +111,8 @@ class tweak.History extends tweak.EventSystem
 
     # Get root without slash or question mark
     root = @root
-    if url is "" or url.charAt(0) is "?" 
-      root = root.slice(0, -1) or  "/"   
+    if url is "" or url.charAt(0) is "?"
+      root = root.slice(0, -1) or  "/"
 
     # Create ful url with root
     fullUrl = "#{root}#{url}"
@@ -130,9 +130,9 @@ class tweak.History extends tweak.EventSystem
     else if @useHash
       # If hash is is available then update the hash
       @__setHash @window, url, replace
-      if @iframe and url isnt @__getHash @iframe        
-        @__setHash @iframe, url, replace    
-    else 
+      if @iframe and url isnt @__getHash @iframe
+        @__setHash @iframe, url, replace
+    else
       # Forces refresh of page if not using push of hash state
       # Return as the page is refreshing at that point
       @location.assign fullURL
@@ -212,7 +212,7 @@ class tweak.History extends tweak.EventSystem
     @return Normalized URL without trailing slashes at either side.
   ###
   __getURL: (url, force) ->
-    # If the URL is null then a URL will be retrieved from window.location 
+    # If the URL is null then a URL will be retrieved from window.location
     if not url?
       # If usePush or if to be forced to retrieve this format
       if @usePush or force
@@ -223,7 +223,7 @@ class tweak.History extends tweak.EventSystem
         # Get the URL minus the root
         if not url.indexOf(root) then url = url.slice root.length
       else
-        # Get the hash  
+        # Get the hash
         url = @__getHash()
 
     # Return URL without trailing slashes
@@ -255,7 +255,7 @@ class tweak.History extends tweak.EventSystem
     now = @__getURL()
     old = @url
     if now is old
-      if @iframe 
+      if @iframe
         now = @__getHash @iframe
         @set now
       else return false

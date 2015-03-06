@@ -48,7 +48,7 @@ class tweak.Common
   ###
     Convert a simple JSON string/object.
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
-    @param [Array<String>] restrict (Default = all properties get converted) Restrict which properties to convert. 
+    @param [Array<String>] restrict (Default = all properties get converted) Restrict which properties to convert.
     @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
   parse: (data, restrict) ->
@@ -73,7 +73,7 @@ class tweak.Common
     @throw When an object is found but there is an error during processing the found object the following message will appear - "Module (#{path}) found. Encountered #{e.name}: #{e.message}"
   ###
   findModule: (contexts, module, surrogate = null) ->
-    # Iterate each contex 
+    # Iterate each contex
     for context in contexts
       # Convert path to absolute
       path = tweak.Common.relToAbs context, module
@@ -106,7 +106,7 @@ class tweak.Common
     result
 
   ###
-    Split a component name out to individual absolute component names. 
+    Split a component name out to individual absolute component names.
     Names formated like "./cd[2-4]" will return an array or something like ["album1/cd2","album1/cd3","album1/cd4"].
     Names formated like "./cd[2-4]a ./item[1]/model" will return an array or something like ["album1/cd2a","album1/cd3a","album1/cd4a","album1/item0/model","album1/item1/model"].
     @param [String] context The current context's relating name
@@ -122,15 +122,15 @@ class tweak.Common
     if typeof names is "string"
       names = names.split /\s+/
 
-    # Iterate through names in 
+    # Iterate through names in
     for item in names
       result = reg.exec item
-      # If regex matches then expand the name 
+      # If regex matches then expand the name
       if result?
         prefix = result[1]
         min = result[2] or 0
         max = result[3] or min
-        suffix = result[4]    
+        suffix = result[4]
         while min <= max
           values.push @relToAbs context, "#{prefix}#{min++}#{suffix}"
       else
@@ -190,7 +190,7 @@ class tweak.Common
     doc = window.document
     if doc.createEvent
       if typeof event is "string" then event = new Event event
-      event.root = element 
+      event.root = element
       element.dispatchEvent event
     else
       if typeof event is "string" then event = doc.createEventObject()

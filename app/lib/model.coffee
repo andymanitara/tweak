@@ -1,12 +1,12 @@
 ###
   A Model is used by other modules like the Controller to store, retrieve and listen
   to a set of data. Tweak.js will call events through its **event system** when it
-  is updated, this makes it easy to listen to updates and to action as and when 
-  required. The Model’s data is not a database, but a JSON representation of its 
-  data can be exported and imported to and from storage sources. In Tweak.js the 
-  Model extends the Store module - which is the core functionality shared between 
+  is updated, this makes it easy to listen to updates and to action as and when
+  required. The Model’s data is not a database, but a JSON representation of its
+  data can be exported and imported to and from storage sources. In Tweak.js the
+  Model extends the Store module - which is the core functionality shared between
   the Model and Collection. The main difference between a Model and collection it
-  the base of its storage. The Model uses an object to store its data and a 
+  the base of its storage. The Model uses an object to store its data and a
   collection base storage is an Array.
 ###
 class tweak.Model extends tweak.Store
@@ -17,7 +17,7 @@ class tweak.Model extends tweak.Store
   _type: "model"
 
   ###
-    The constructor initialises the controllers unique ID and its initial data.    
+    The constructor initialises the controllers unique ID and its initial data.
   ###
   constructor: (@data = {}) -> @uid = "m_#{tweak.uids.m++}"
 
