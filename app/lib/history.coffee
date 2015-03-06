@@ -1,7 +1,10 @@
 ###
-  Simple cross browser history API. Upon changes to the history a change event is called.
-  The ability to hook event listeners to the tweak.History API allows routes to be
-  added accordingly, and for multiple Routers to be declared for better code structure.
+  Simple cross browser history API. Upon changes to the history a change event is called. The ability to hook
+  event listeners to the tweak.History API allows routes to be added accordingly, and for multiple Routers to
+  be declared for better code structure.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
+  directly represent valid code; the aim of an example is to show the structure of a method.
 ###
 class tweak.History extends tweak.EventSystem
   usePush: true
@@ -14,7 +17,7 @@ class tweak.History extends tweak.EventSystem
   intervalRate: 50
 
   ###
-    Checks that the window and history is avaialble. 
+    Checks that the window and history is avaialble.
     This add support for the history to work outside of browsers
     if the window, history and location are set manually.
   ###
@@ -27,13 +30,43 @@ class tweak.History extends tweak.EventSystem
     Start listening to the URL changes to push back the history API if available.
     
     @param [Object] options An optional object to pass in optional arguments
-    @option options [Boolean] usePushState (default = true) Specify whether to use pushState if false then hashState will be used.
-    @option options [Boolean] useHashState (default = false) Specify whether to use hashState if true then pushState will be set to false.
+    @option options [Boolean] pushState (default = true) Specify whether to use pushState if false then hashState will be used.
+    @option options [Boolean] hashState (default = false) Specify whether to use hashState if true then pushState will be set to false.
     @option options [Boolean] forceRefresh (default = false) When set to true then pushState and hashState will not be used.
     @option options [Number] interval (default = null) When set to a number this is what the refresh rate will be when an interval has to be used to check changes to the URL.
     @option options [Boolean] silent (default = false) If set to true then an initial change event trigger will not be called.
     
     @event changed When the URL is updated a change event is fired from tweak.History.
+
+    @example Starting the history with auto configuration
+      tweak.History.start();
+
+    @example Starting the history with forced HashState
+      tweak.History.start({
+        hashState:true
+      });
+
+    @example Starting the history with forced PushState
+      tweak.History.start({
+        pushState:true
+      });
+
+    @example Starting the history with forced refresh or page
+      tweak.History.start({
+        forceRefresh:true
+      });
+
+    @example Starting the history with a interval rate for the polling speed for older browsers
+      tweak.History.start({
+        hashState:true,
+        interval: 100
+      });
+
+    @example Starting the history silently
+      tweak.History.start({
+        hashState:true,
+        silent: true
+      });
   ###
   start: (options = {}) ->
     # Check if tweak.History is already started
@@ -42,7 +75,7 @@ class tweak.History extends tweak.EventSystem
     @started = true
 
     # Set usePush and useHash based on the options passed in.
-    @usePush = usePush = not useHash = @useHash = options.useHashState or not options.usePushState or not @history?.pushState
+    @usePush = usePush = not useHash = @useHash = options.hashState or not options.pushState or not @history?.pushState
 
     # Make sure using one state or the other
     if usePush is true then @useHash = useHash = false
@@ -50,6 +83,7 @@ class tweak.History extends tweak.EventSystem
     # Ir the page is to be refreshed on a navigation event then set both useHash and usePush to false
     if options.forceRefresh or (useHash and not `('onhashchange' in this.window)`) then @usePush = @useHash = useHash = usePush = false
 
+    # Set the interaval rate for older browsers
     @intervalRate = options.interval or @intervalRate
 
 
@@ -98,6 +132,19 @@ class tweak.History extends tweak.EventSystem
     @param [Object] options An optional object to pass in optional arguments.
     @option options [Boolean] replace (default = false) Specify whether to replace the current item in the history.
     @option options [Boolean] silent (default = true) Specify whether to allow triggering of event when setting the URL.
+
+    @example Setting the History (updating the url)
+      tweak.History.set("/#/fake/url");
+
+    @example Replacing the last History state (updating the url)
+      tweak.History.set("/#/fake/url", {
+        replace:true
+      });
+
+    @example Setting the History (updating the url) and calling history change event
+      tweak.History.set("/#/fake/url", {
+        silent:false
+      });
   ###
   set: (url, options = {}) ->
     # If the history isn’t started then return
@@ -143,6 +190,7 @@ class tweak.History extends tweak.EventSystem
     return
 
   ###
+    @private
     Add listeners of remove history change listeners
     @param [String] prefix (Default = "on") Set the prefix - "on" or "off"
   ###
