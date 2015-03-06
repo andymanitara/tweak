@@ -132,13 +132,13 @@ class tweak.Collection extends tweak.Store
     Import a JSONObject - imports to one depth only.
     @param [JSONString] data JSONString to parse.
     @param [Object] options Options to parse to method.
-    @option options [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @option options [Array<String>] limit Limit which properties to convert. Default: all properties get converted.
     @option options [Boolean] overwrite Default:true. If true existing properties in the key value will be replaced otherwise they are added to the collection
     @option options [Boolean] silent If true then it wont trigger events
     @return [Object] Returns the parsed JSONString as a raw object
   ###
   import: (data, options = {}) ->
-    data = @parse data, options.restict
+    data = @parse data, options.limit
     overwrite = options.overwrite ?= true
     for key, item of data
       prop = if item.type
@@ -151,7 +151,7 @@ class tweak.Collection extends tweak.Store
 
   ###
     Export a JSONString of this collections data.
-    @param [Array<String>] restrict Restrict which properties to convert. Default: all properties get converted.
+    @param [Array<String>] limit Limit which properties to convert. Default: all properties get converted.
     @return [Object] Returns a JSONString
   ###
   export: (restrict) ->
@@ -160,4 +160,4 @@ class tweak.Collection extends tweak.Store
       res[key] = if item._type
         {type:item._type, data:@parse item.export()}
       else item
-    @parse res, restict
+    @parse res, limit

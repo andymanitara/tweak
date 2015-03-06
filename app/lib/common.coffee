@@ -3,7 +3,7 @@
 ###
 class tweak.Common
   ###
-    Merge properites from object from one object to another. (First object is the object to take on the properties from other)
+    Merge properties from object from one object to another. (First object is the object to take on the properties from other)
     @param [Object, Array] one The Object/Array to combine properties into.
     @param [Object, Array] two The Object/Array that shall be combined into the first object.
     @return [Object, Array] Returns the resulting combined object from two Object/Array
@@ -38,7 +38,7 @@ class tweak.Common
     else if typeof ref is "object"
       copy = {}
     else
-      throw new Error "Unable to copy object its type isnt supported"
+      throw new Error "Unable to copy object its type isn't supported"
 
     # Handle Object
     for attr of ref
@@ -48,20 +48,20 @@ class tweak.Common
   ###
     Convert a simple JSON string/object.
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
-    @param [Array<String>] restrict (Default = all properties get converted) Restrict which properties to convert.
+    @param [Array<String>] limit (Default = all properties get converted) Limit which properties to convert.
     @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
-  parse: (data, restrict) ->
-    _restrict = (obj) ->
-      if not restrict?.length > 0 then return obj
+  parse: (data, limit) ->
+    _limit = (obj) ->
+      if not limit?.length > 0 then return obj
       res = {}
       for item in restict
         res[item] = obj[item]
       res
     if typeof data is "string"
-      _restrict JSON.parse data
+      _limit JSON.parse data
     else
-      JSON.stringify _restrict data
+      JSON.stringify _limit data
 
   ###
     Try to find a module by name in multiple paths. A final surrogate if available will be returned if no module can be found.
@@ -125,7 +125,7 @@ class tweak.Common
     # Iterate through names in
     for item in names
       result = reg.exec item
-      # If regex matches then expand the name
+      # If Reg-ex matches then expand the name
       if result?
         prefix = result[1]
         min = result[2] or 0

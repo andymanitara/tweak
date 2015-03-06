@@ -108,11 +108,11 @@ class tweak.Components extends tweak.Collection
     return
 
   ###
-    There is no default import mechanism for this module
+    There is no default import mechanism for this module - so set it to an empty function
   ###
   import: ->
 
   ###
-    There is no default export mechanism for this module
+    There is no default export mechanism for this module - so set it to an empty function
   ###
   export: ->
