@@ -16,7 +16,7 @@ class tweak.Store extends tweak.EventSystem
   length: 0
   # @property [Object, Array] Data holder for the Store
   data: []
-  # @property [Integer] The uid of this object - for unique reference
+  # @property [Integer] The UID of this object - for unique reference
   uid: 0
   # @property [Method] see tweak.Common.parse
   parse: tweak.Common.parse
@@ -34,40 +34,41 @@ class tweak.Store extends tweak.EventSystem
   init: ->
     
   ###
-    Set a single or multiple properties or the base storage.
+    Set a single property or multiple properties.
 
     @overload set(name, data, silent)
-      Set an individual property in the Store by name
-      @param [String] name The name of the property to set
-      @param [*] data Data to Store in the property being set
-      @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
+      Set an individual property by the name (String).
+      @param [String] name The name of the property to set.
+      @param [*] data Data to Store in the property being set.
+      @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
 
-    @overload set(properties, silent)
-      Set an multiple properties in the Store from an object
-      @param [Object] properties Key and property based object
-      @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
+    @overload set(data, silent)
+      Set multiple properties by an object of data.
+      @param [Object] data Key and property based object.
+      @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
 
-    @example Setting single property
+    @example Setting single property.
       this.set("sample", 100);
 
-    @example Setting multiple properties
+    @example Setting multiple properties.
       this.set({sample:100, second:2});
   
-    @example Setting properties silently
+    @example Setting properties silently.
       this.set("sample", 100, true);
       this.set({sample:100, second:2}, true);
 
-    @event changed:#{key} Triggers an event and passes in changed property
-    @event changed Triggers a generic event that the Store has been updated
+    @event changed:#{key} Triggers an event and passes in changed property.
+    @event changed Triggers a generic event that the Store has been updated.
   ###
-  set: (properties, params...) ->
+  set: (data, params...) ->
     silent = params[0]
-    if typeof properties is 'string'
-      prevProps = properties
-      properties = {}
-      properties[prevProps] = params[0]
+    type = typeof data
+    if type is 'string' or type is 'number'
+      prevProps = data
+      data = {}
+      data[prevProps] = params[0]
       silent = params[1]
-    for key, prop of properties
+    for key, prop of data
       prev = @data[key]
       if not prev? then @length++
       @data[key] = prop
@@ -113,12 +114,12 @@ class tweak.Store extends tweak.EventSystem
   has: (property) -> @data[property]?
 
   ###
-    Returns an array of property names where the value is equal to the given value
+    Returns an array of keys where the property matches given value
     @param [*] value Value to check
-    @return [Array<String>] Returns an array of keys where the value is equal to the given value
+    @return [Array<String>] Returns an array of keys where the property matches given value
     
     @example find keys of base storage where the value matches
-      this.where(1009);
+      this.where(1009); //[3,87]
   ###
   where: (value) ->
     result = []

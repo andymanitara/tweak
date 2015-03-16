@@ -67,7 +67,7 @@ class tweak.Model extends tweak.Store
 
   ###
     Get an element at position of a given number
-    @param [Integer] position Position of property to return
+    @param [Number] position Position of property to return
     @return [*] Returns data of property by given position
   ###
   at: (position) ->
