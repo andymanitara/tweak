@@ -16,7 +16,7 @@
     lib/common.coffee - Common methods used throughout the framework
 *    lib/events.coffee - Event system
 *    lib/store.coffee - Core/shared code for collections and models
-    lib/collection.coffee
+*    lib/collection.coffee
     lib/controller.coffee
 *    lib/model.coffee
 *    lib/view.coffee
