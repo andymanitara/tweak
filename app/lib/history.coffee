@@ -8,7 +8,7 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.History extends tweak.EventSystem
+class tweak.History extends tweak.Events
   usePush: true
   useHash: false
   started: false
@@ -149,7 +149,7 @@ class tweak.History extends tweak.EventSystem
       });
   ###
   set: (url, options = {}) ->
-    # If the history isn’t started then return
+    # If the history isn't started then return
     if not @started then return
     # Set silent option to true if it is null
     options.silent ?= true

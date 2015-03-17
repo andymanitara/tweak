@@ -13,19 +13,20 @@
  
   tweak.js
     This is the core of the framework - with these modules you can use them in any many of way.
-*    lib/common.coffee - Common methods used throughout the framework
-*    lib/events.coffee - Event system
-*    lib/store.coffee - Core/shared code for collections and models
-*    lib/collection.coffee
-*    lib/controller.coffee
-*    lib/model.coffee
-*    lib/view.coffee
-*    lib/router.coffee
-*    lib/history.coffee
+    lib/common.coffee - Common methods used throughout the framework
+    lib/class.coffee - Methods to supply JS users the ability to use CoffeScripts OOP methology.
+    lib/events.coffee - Event system
+    lib/store.coffee - Core/shared code for collections and models
+    lib/collection.coffee
+    lib/controller.coffee
+    lib/model.coffee
+    lib/view.coffee
+    lib/router.coffee
+    lib/history.coffee
 
   tweak.component.js (optional)
     To use the component functionality a module loader is needed.
-*    lib/component.coffee
+    lib/component.coffee
     lib/components.coffee - collection of components
   
   tweak.view.html.js (optional)

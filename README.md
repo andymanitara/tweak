@@ -129,9 +129,9 @@ For more information please look at the [documentation](http://docs.tweakjs.com)
 ### View
 A View is a module used as a presentation layer. Which is used to render, manipulate and listen to an interface. The Model, View and Controller separates logic of the Views interaction to that of data and functionality. This helps to keep code organized and tangle free - the View should primarily be used to render, manipulate and listen to the presentation layer. A View consists of a template to which data is bound to and rendered/re-rendered. 
 
-#### Layered/Additional Views
+#### Sub Views
 Tweak.js has multiple layers to the View. Its core being available in the main file of Tweak.js provides simple rendering logic. 
-To render to a webpage using templates the view is further extended with the ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) class. To further manipulate the view/DOM there is another class that adds further functionality this being the ['ViewHTMLAdvanced'](http://docs.tweakjs.com/class/tweak/ViewHTMLAdvanced.html) class. The extra functionality is for manipulating the DOM, it is a very light weight alternative to jQuery for when creating lightweight applications is priority.  
+To render to a web-page using templates the view is further extended with the ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) class. To further manipulate the view/DOM there is another class that adds further functionality this being the ['ViewHTMLAdvanced'](http://docs.tweakjs.com/class/tweak/ViewHTMLAdvanced.html) class. The extra functionality is for manipulating the DOM, it is a very light weight alternative to jQuery for when creating lightweight applications is priority.  
 
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['View'](http://docs.tweakjs.com/class/tweak/View.html), ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) and ['ViewHTMLAdvanced'](http://docs.tweakjs.com/class/tweak/ViewHTMLAdvanced.html) sections.
 
@@ -148,7 +148,7 @@ To further extend a Collection, Tweak.js allows data to be imported and exported
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Store'](http://docs.tweakjs.com/class/tweak/Store.html) and ['Collection'](http://docs.tweakjs.com/class/tweak/Collection.html) sections.
 
 ### Router
-The Router which hooks into the history change events which provides information back from the URL. The Router module provides methods for routing to events which can control the application.
+The Router which hooks into the tweak.History change events which provides information back from the URL. The Router module provides routing to events which can control the application and its modules.
 
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Router'](http://docs.tweakjs.com/class/tweak/Router.html) section.
 
@@ -158,9 +158,9 @@ The History is a cross-browser friendly version of the HTML5 history API. When a
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['History'](http://docs.tweakjs.com/class/tweak/History.html) section.
 
 ### Event System
-Tweak.js has an event system class, this provides functionality to extending classes to communicate simply and effectively while maintaining an organised structure to your code and applications. Each object can extend the tweak.EventSystem class to provide event functionality to classes. Majority of Tweak.js modules/classes already extend the EventSystem class, however when creating custom objects/classes you can extend the class using the tweak.Extends method, please see ['Class'](http://docs.tweakjs.com/class/tweak/Class.html) class in the [documentation](http://docs.tweakjs.com). Furthermore, there is a global event system created on using Tweak.js; reference tweak.Events. 
+Tweak.js has an event system class, this provides functionality to extending classes to communicate simply and effectively while maintaining an organised structure to your code and applications. Each object can extend the tweak.EventSystem class to provide event functionality. Majority of Tweak.js modules/classes already extend the EventSystem class, however when creating custom objects/classes you can extend the class using the tweak.Extends method, please see ['Class'](http://docs.tweakjs.com/class/tweak/Class.html) class in the [documentation](http://docs.tweakjs.com).
 
-For more information please look at the [documentation](http://docs.tweakjs.com) under the ['EventSystem'](http://docs.tweakjs.com/class/tweak/EventSystem.html) section.
+For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Events'](http://docs.tweakjs.com/class/tweak/Events.html) class.
 
 ### Components
 Components are used to dynamically create a set of linking modules like the typical Models, Views and Controllers; that can be configured, extended, reused and organised. A Component will build and tie together modules.

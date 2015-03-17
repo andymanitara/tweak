@@ -39,12 +39,12 @@ class tweak.ViewHTML extends tweak.View
   init: ->
 
   ###
-    Renders the View, using a html template engine. The View is loaded async, this prevents the View from clogging up allowing for complex component structures.
-    When the View has been rendered there is a event triggered. This allows an on ready for high components to be achieved, and to make sure that the DOM is available for access.
-    The View wont be rendered until its parent View is rendered and any other components Views that are waiting to be rendered.
-    After the View is rendered the init method will be called.
-    There is many options available for rendering through the View class, allowing for powerful rendering functionality.
-
+    Renders the View, using a html template engine. The View is loaded asynchronously, this prevents the DOM from
+    from congesting during rendering. The View won't be rendered until its parent View is rendered and any other
+    components Views that are waiting to be rendered; this makes sure that components are rendered into in there
+    correct positions.
+    
+    @param [Boolean] silent (Optional, default = false) If true events are not triggered upon any changes.
     @event rendered The event is called when the View has been rendered.
   ###
   render: (silent) ->
@@ -82,7 +82,7 @@ class tweak.ViewHTML extends tweak.View
     return
 
   ###
-    Get the children nodes of an element
+    Get the children nodes of an element.
     @param [DOMElement] parent The element to retrieve the children of
     @param [Boolean] recursive (Default: true) Whether to recursively go through its children's children to get a full list
     @return [Array<DOMElement>] Returns an array of children nodes inside an element
@@ -101,7 +101,7 @@ class tweak.ViewHTML extends tweak.View
     result
 
   ###
-    Clears the View and removed event listeners of DOM elements
+    Clears the View and removed event listeners of DOM elements.
   ###
   clear: (element = @el) ->
     if element?.parentNode
@@ -111,15 +111,15 @@ class tweak.ViewHTML extends tweak.View
     return
 
   ###
-    Checks to see if the item is rendered; this is determined if the node has a parentNode
+    Checks to see if the item is rendered; this is determined if the node has a parentNode.
     @return [Boolean] Returns whether the View has been rendered.
   ###
   isRendered: -> if document.getElementsByTagName("html")[0].contains @el then true else false
   
   ###
-    Get the attachment node for this element
-    @return [DOMElement] Returns the parent DOMElement
-    @throw When looking for a parent Element and there is not a returnable element you will receive the following error - "No View parent for #{@name} (#{name})"
+    Get the attachment node for this element.
+    @return [DOMElement] Returns the parent DOMElement.
+    @throw When looking for a parent Element and there is not a returnable element you will receive the following error - "No View parent for #{@name} (#{name})".
   ###
   getAttachmentNode: ->
     # The result is the parent el, or it will try to find a node to attach to in the DOM
@@ -137,9 +137,16 @@ class tweak.ViewHTML extends tweak.View
             break
     child or parent or throw new Error "No View parent for #{@name} (#{name})"
 
+  ###
+    Attach a DOMElement to another DOMElement. Attachment can happen by three methods, inserting before, inserting after and replacing.
+
+    @param [DOMElement] parent DOMElement to attach to.
+    @param [DOMElement] node DOMElement to attach to parent.
+    @param [String] string (Default = append) The method to attach ('prefix'/'before', 'replace') any other method will use the attach method to insert after.
+  ###
   attach: (parent, node, method) ->
     switch method
-      when 'top', 'before'
+      when 'prefix', 'before'
         parent.insertBefore node, parent.firstChild
         return parent.firstElementChild
       when 'replace'
@@ -153,12 +160,24 @@ class tweak.ViewHTML extends tweak.View
         parent.appendChild node
         return parent.lastElementChild
 
+  ###
+    Create an Element from a template string.
+    
+    @param [String] template A template String to parse to a DOMElement.
+    @return [DOMElement] Parsed DOMElement.
+  ###
   create: (template) ->
     temp = document.createElement "div"
     frag = document.createDocumentFragment()
     temp.innerHTML = template
     temp.firstChild
 
+  ###
+    Asynchronously create an Element from a template string.
+    
+    @param [String] template A template String to parse to a DOMElement.
+    @return [DOMElement] Parsed DOMElement.
+  ###
   createAsync: (template, callback) -> setTimeout => callback @create template, 0
   
 tweak.View = tweak.ViewHTML

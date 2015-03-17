@@ -1,22 +1,17 @@
 ###
-  The Components collection is used to allow a Component to have multiple sub
-  Components; allowing a extensive powerful hierarchy system of Components;
-  which also allows for multiple areas of views. For example a view may have to
-  sections of user interaction that does two different things and gets two
-  different sets of data, but its parent view is about a particular item. This
-  example shows the power of relations in the framework. As the two views are
-  different with different data being fed in these can be two sub Components,
-  allowing separation of code. This allow reloading of views without affect other
-  views, a bit like regions in backbone marionette. However your code can now be
-  much more structured in this format and easier to understand where things
-  are happening.
+  This class provides a collection of components. Upon initialisation components
+  are dynamically built, from its configuration. The configuration for this
+  component is an Array of component names (Strings). The component names are
+  then used to create a component. Components nested within those components are
+  then initialised creating a powerful scope of nest components that are completely
+  unique to themselves.
 
   Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.Components extends tweak.Collection    
-  # @property [String] The type of storage
+class tweak.Components extends tweak.Collection
+   # @property [String] The type of Store, i.e. 'collection', 'components' or 'model'.
   _type: "components"
   # @property [Method] see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
@@ -24,14 +19,14 @@ class tweak.Components extends tweak.Collection
   splitMultiName: tweak.Common.splitMultiName
 
   ###
-    The constructor initialises the controllers unique ID, relating Component, its root and its initial config.
+    The constructor initialises the controllers unique ID, relating Component, its root and its initial configuration.
   ###
   constructor: (@component, @_config = {}) ->
     @root = @component.root
     @uid = "cp_#{tweak.uids.cp++}"
 
   ###
-   Construct the Collection with given options from the configuration file
+   Construct the Collection with given options from the Components configuration.
   ###
   init: ->
     @data = []
@@ -64,7 +59,8 @@ class tweak.Components extends tweak.Collection
 
   ###
     @private
-    Rendering and re-rendering functionality to reduce code
+    Reusable method to render and re-render.
+    @param [String] type The type of rendering to do either "render" or "rerender".
   ###
   __componentRender: (type) ->
     if @length is 0
@@ -79,24 +75,26 @@ class tweak.Components extends tweak.Collection
     return
 
   ###
-    Renders all of its Components, also triggers ready state when all Components are ready
+    Renders all of its Components.
+    @event ready Triggers ready event when itself and its sub-Components are ready/rendered.
   ###
   render: ->
     @__componentRender "render"
     return
 
   ###
-    Re-render all of its Components, also triggers ready state when all Components are ready
+    Re-render all of its Components.
+    @event ready Triggers ready event when itself and its sub-Components are ready/re-rendered.
   ###
   rerender: ->
     @__componentRender "rerender"
     return
 
   ###
-    Find Component with matching data in model
-    @param [String] property The property to find matching value against
-    @param [*] value Data to compare to
-    @return [Array] An array of matching Components
+    Find Component with matching data in model.
+    @param [String] property The property to find matching value against.
+    @param [*] value Data to compare to.
+    @return [Array] An array of matching Components.
   ###
   whereData: (property, value) ->
     result = []
@@ -108,8 +106,7 @@ class tweak.Components extends tweak.Collection
     result
 
   ###
-    Reset Components - clears the views
-
+    Reset this Collection of components. Also destroys it's components (views removed from DOM).
     @event changed Triggers a generic event that the store has been updated
   ###
   reset: ->
@@ -119,11 +116,15 @@ class tweak.Components extends tweak.Collection
     return
 
   ###
-    There is no default import mechanism for this module - so set it to an empty function
+    There is no default import mechanism for this module.
+    @note Add functionality to provide importing a component and its sub components data.
+    It may be that this is a overridable function to supply unique data imports to a component.
   ###
   import: ->
 
   ###
-    There is no default export mechanism for this module - so set it to an empty function
+    There is no default export mechanism for this module.
+    @note Add functionality to provide exporting a component and its sub components data.
+    It may be that this is a overridable function to export unique data from a component.
   ###
   export: ->

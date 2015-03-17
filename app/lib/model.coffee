@@ -122,7 +122,7 @@ class tweak.Model extends tweak.Store
         limit:["demo"]
       });
   ###
-  import: (data, options = {}) -> 
+  import: (data, options = {}) ->
     @set @parse(data, options.limit), options.silent or true
     return
 

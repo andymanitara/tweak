@@ -12,7 +12,7 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.View extends tweak.EventSystem
+class tweak.View extends tweak.Events
  
   # @property [Integer] The uid of this object - for unique reference.
   uid: 0

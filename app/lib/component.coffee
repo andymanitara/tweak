@@ -112,7 +112,7 @@ class tweak.Component
 
   ###
     @private
-    Builds the configuration object for the Component. 
+    Builds the configuration object for the Component.
     @param [Object] options Component options.
     @return [Object] Combined config based on the components inheritance.
   ###
@@ -212,7 +212,7 @@ class tweak.Component
 
   ###
     @private
-    Reusable method to render and rerender.    
+    Reusable method to render and re-render.
     @param [String] type The type of rendering to do either "render" or "rerender".
   ###
   __componentRender: (type) ->
