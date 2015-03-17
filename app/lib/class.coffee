@@ -1,6 +1,6 @@
 tweak.__hasProp = {}.hasOwnProperty
 
-tweak.extends = (child, parent) ->
+tweak.Extends = (child, parent) ->
   ctor = ->
     @constructor = child
     return
@@ -11,23 +11,26 @@ tweak.extends = (child, parent) ->
   child.__super__ = parent::
   child
 
-tweak.super = (child, name) -> child.__super__[name].call @
+tweak.Super = (child, name) ->
+  child.__super__[name].call @
+  return
 
 ###
-  TweakJS was intitially designed in CoffeeScript for CoffeeScripters.
-  It is much easier to use the framework in coffeescript; however those using JS the following helpers will provide extending features that coffeescipt possess
-  These can also be used to reduce the file size of compiled coffeescript files.
+  TweakJS was initially designed in CoffeeScript for CoffeeScripters.
+  It is much easier to use the framework in CoffeeScript; however those using JS the 
+  following helpers will provide extending features that CoffeeScipt possess. These can
+  also be used to reduce the file size of compiled CoffeeScript files.
 ###
 class tweak.Class
   ###
     This is a dummy method - for documentation purposes only.
-    To extend an object with JS use tweak.extends
+    To extend an object with JS use tweak.Extends
   ###
-  extends: (child, parent) -> null
+  extends: (child, parent) ->
 
   ###
     This is a dummy method - for documentation purposes only.
-    To super a method with JS use this.super. 
-    To add super to prototype of a custom object not within the TweakJS classes in JS; do {class}.prototype.super = tweak.super
+    To super a method with JS use this.super.
+    To add super to prototype of a custom object not within the TweakJS classes in JS; do {class}.prototype.super = tweak.Super
   ###
-  super: (child, name) -> null
+  super: (child, name) ->
