@@ -16,6 +16,6 @@ class tweak.Controller extends tweak.EventSystem
   constructor: -> @uid = "ct_#{tweak.uids.ct++}"
 
   ###
-    Default initialiser function
+    By default, this does nothing during initialization unless it is overridden.
   ###
   init: ->
