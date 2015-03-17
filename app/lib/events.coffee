@@ -1,11 +1,15 @@
 ###
-  Tweak.js has an event system class, this provides functionality to extending classes to communicate simply and
-  effectively while maintaining an organised structure to your code and applications. Each object can extend the
-  tweak.EventSystem class to provide event functionality to classes. Majority of Tweak.js modules/classes already
-  extend the EventSystem class, however when creating custom objects/classes you can extend the class using the
-  tweak.Extends method, please see the Class class in the documentation.
+  Tweak.js has an event system class, this provides functionality to extending
+  classes to communicate simply and effectively while maintaining an organised
+  structure to your code and applications. Each object can extend the
+  tweak.EventSystem class to provide event functionality to classes. Majority of
+  Tweak.js modules/classes already extend the EventSystem class, however when
+  creating custom objects/classes you can extend the class using the tweak.Extends
+  method, please see the Class class in the documentation.
     
-  Examples are in JS, unless where CoffeeScript syntax may be unusual.
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.EventSystem
   ###
@@ -25,21 +29,29 @@ class tweak.EventSystem
 
     @example Delimited string
       // This will find all events in the given space delimited string.
-      tweak.Events.findEvent("sample:event another:event");
+      var model;
+      model = new Model();
+      model.findEvent("sample:event another:event");
 
     @example Delimited string with build
       // This will find all events in the given space delimited string.
-      // If event can not be found then it will be created.
-      tweak.Events.findEvent("sample:event another:event", true);
+      // If event cannot be found then it will be created.
+      var model;
+      model = new Model();
+      model.findEvent("sample:event another:event", true);
 
     @example Array of names (strings)
       // This will find all events from the names in the given array.
-      tweak.Events.findEvent(["sample:event", "another:event"]);
+      var model;
+      model = new Model();
+      model.findEvent(["sample:event", "another:event"]);
 
     @example Array of names (strings) with build
       // This will find all events from the names in the given array.
-      // If event can not be found then it will be created.
-      tweak.Events.findEvent(["sample:event", "another:event"], true);
+      // If event cannot be found then it will be created.
+      var model;
+      model = new Model();
+      model.findEvent(["sample:event", "another:event"], true);
 
   ###
   findEvent: (names, build = false) ->
@@ -50,7 +62,7 @@ class tweak.EventSystem
     events = @__events = @__events or {}
     # Search for each name
     for item in names
-      # Check if event exists      
+      # Check if event exists
       if not event = events[item]
         # If we are to build then add a default event else continue the iteration
         if build then event = @__events[item] = {name:item, __callbacks:[]}
@@ -64,25 +76,31 @@ class tweak.EventSystem
 
     Name spacing is useful to separate events into their relevant types.
     It is typical to use colons for name spacing. However you can use any other
-    namespacing characters such as / \ - _ or .
+    name spacing characters such as / \ - _ or .
 
     @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
     @param [Function] callback The event callback function.
     @param [Number] max (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
-    @param [Object] context The contextual object of which the event to be binded to.
+    @param [Object] context The contextual object of which the event to be bound to.
 
-    @example Binding a callback to event(s) (JS)
-      tweak.Events.addEvent("sample:event", function(){
+    @example Bind a callback to event(s)
+      var model;
+      model = new Model();
+      model.addEvent("sample:event", function(){
         alert("Sample event triggered.")
       });
 
-    @example Binding a callback to event(s) with a separate context without limitation or total calls (JS)
-      tweak.Events.addEvent("sample:event", function(){
+    @example Bind a callback to event(s) with a separate context without limitation or total calls
+      var model;
+      model = new Model();
+      model.addEvent("sample:event", function(){
         alert("Sample event triggered.")
       }, null, this);
 
-    @example Binding a callback to event(s) with a separate context with max calls (JS)
-      tweak.Events.addEvent("sample:event", function(){
+    @example Bind a callback to event(s) with a separate context with maximum calls
+      var model;
+      model = new Model();
+      model.addEvent("sample:event", function(){
         alert("Sample event triggered.")
       }, 3, this);
 
@@ -95,7 +113,7 @@ class tweak.EventSystem
       for item in event.__callbacks
         # If the callback and context for an event match then ignore adding the event, but update the current event.
         if item.callback is callback and context is item.ctx
-          # Update events max calls property
+          # Update events maximum calls property
           item.max = max
           # Reset event calls and make event listen again
           item.calls = 0
@@ -107,13 +125,17 @@ class tweak.EventSystem
     Remove a previously bound callback function. Removing events can be limited to context and its callback.
     @param [String] names The event name(s). Split on a space, or an array of event names.
     @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the events under event name are removed.
-    @param [Object] context (default = this) The contextual object of which the event is binded to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
+    @param [Object] context (default = this) The contextual object of which the event is bound to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
 
-    @example Unbinding a callback from event(s) (JS)
-      tweak.Events.removeEvent("sample:event another:event", @callback);
+    @example Unbind a callback from event(s)
+      var model;
+      model = new Model();
+      model.removeEvent("sample:event another:event", @callback);
 
-    @example Unbinding all callbacks from event(s) (JS)
-      tweak.Events.removeEvent("sample:event another:event");
+    @example Unbind all callbacks from event(s)
+      var model;
+      model = new Model();
+      model.removeEvent("sample:event another:event");
   ###
   removeEvent: (names, callback, context = @) ->
     # Iterate through found events
@@ -121,10 +143,10 @@ class tweak.EventSystem
       # Check to see if the callback and/or context matches.
       # If event matches criteria then delete.
       for key, item of event.__callbacks
-        if (not callback? or callback is item.callback) and (not context? or context is item.ctx) 
+        if (not callback? or callback is item.callback) and (not context? or context is item.ctx)
           event.__callbacks.splice key,1
       # If callbacks is empty then delete from @__events object
-      if event.__callbacks.length is 0 
+      if event.__callbacks.length is 0
         delete @__events[event.name]
 
     return
@@ -134,28 +156,34 @@ class tweak.EventSystem
     @overload triggerEvent(names, params)
       Trigger events by name only.
       @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
-      @param [...] params Params to pass into the callback function.
+      @param [...] params Parameters to pass into the callback function.
 
     @overload triggerEvent(options, params)
       Trigger events by name and context.
       @param [Object] options Options and limiters to check against callbacks.
-      @param [...] params Params to pass into the callback function.
+      @param [...] params Parameters to pass into the callback function.
       @option options [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
       @option options [Context] context (Default = null) The context of the callback to check against a callback.
 
-    @example Triggering event(s) (JS)
-      tweak.Events.triggerEvent("sample:event, another:event");
+    @example Triggering event(s)
+      var model;
+      model = new Model();
+      model.triggerEvent("sample:event, another:event");
 
-    @example Triggering event(s) with params (JS)
-      tweak.Events.triggerEvent("sample:event another:event", "whats my name", "its...");
+    @example Triggering event(s) with parameters
+      var model;
+      model = new Model();
+      model.triggerEvent("sample:event another:event", "whats my name", "its...");
 
-    @example Triggering event(s) but only with matching context (JS)
-      tweak.Events.triggerEvent({context:@, name:"sample:event another:event"});
+    @example Triggering event(s) but only with matching context
+      var model;
+      model = new Model();
+      model.triggerEvent({context:@, name:"sample:event another:event"});
   ###
   triggerEvent: (names, params...) ->
     # If names is an object then set names and context
     if typeof names is "object" and not names instanceof Array
-      names = names.names or []       
+      names = names.names or []
       context = names.context or null
 
     # Iterate through found events
@@ -165,8 +193,8 @@ class tweak.EventSystem
         # If in listening state and if there is a context limit calls to the events with matching context
         if item.listen and (not context? or context is item.ctx)
           # Update the total calls to this event callback
-          if item.max? and ++item.calls >= item.max      
-            # Event has hit call limit, so set its event listening state to false     
+          if item.max? and ++item.calls >= item.max
+            # Event has hit call limit, so set its event listening state to false
             item.listen = false
           # Call the events call back
           setTimeout ->
@@ -176,7 +204,7 @@ class tweak.EventSystem
     return
 
   ###
-    Set events listening state, max calls, and total calls limited by name and options (callback, context).
+    Set events listening state, maximum calls, and total calls limited by name and options (callback, context).
     @param [String] names The event name(s). Split on a space, or an array of event names.
     @param [Object] options Optional limiters and update values.
     @option options [Object] context The contextual object to limit updating events to.
@@ -186,27 +214,39 @@ class tweak.EventSystem
     @option options [Boolean] reset (Default = false) If true then calls on an event get set back to 0.
     @option options [Boolean] listen Whether to enable or disable listening to event.
 
-    @example Updating event(s) to not listen (JS)
-      tweak.Events.updateEvent("sample:event, another:event", {listen:false});
+    @example Updating event(s) to not listen
+      var model;
+      model = new Model();
+      model.updateEvent("sample:event, another:event", {listen:false});
 
-    @example Updating event(s) to not listen, however limited by optional context and/or callback (JS)
+    @example Updating event(s) to not listen, however limited by optional context and/or callback
       // Limit events that match to a context and callback.
-      tweak.Events.updateEvent("sample:event, another:event", {context:@, callback:@callback, listen:false});
+      var model;
+      model = new Model();
+      model.updateEvent("sample:event, another:event", {context:@, callback:@callback, listen:false});
 
       // Limit events that match to a callback.
-      tweak.Events.updateEvent("sample:event, another:event", {callback:@anotherCallback, listen:false});
+      var model;
+      model = new Model();
+      model.updateEvent("sample:event, another:event", {callback:@anotherCallback, listen:false});
 
       // Limit events that match to a context.
-      tweak.Events.updateEvent("sample:event, another:event", {context:@, listen:false});
+      var model;
+      model = new Model();
+      model.updateEvent("sample:event, another:event", {context:@, listen:false});
 
-    @example Updating event(s) max calls and reset its current calls (JS)
-      tweak.Events.updateEvent("sample:event, another:event", {reset:true, max:100});
+    @example Updating event(s) maximum calls and reset its current calls
+      var model;
+      model = new Model();
+      model.updateEvent("sample:event, another:event", {reset:true, max:100});
 
-    @example Updating event(s) total calls (JS)
-      tweak.Events.updateEvent("sample:event, another:event", {calls:29});
+    @example Updating event(s) total calls
+      var model;
+      model = new Model();
+      model.updateEvent("sample:event, another:event", {calls:29});
   ###
   updateEvent: (names, options = {}) ->
-    # Setup limiters and update properties
+    # Set limiters and update properties
     ctx = options.context
     max = options.max
     reset = options.reset
@@ -223,7 +263,7 @@ class tweak.EventSystem
           # Update event properties
           if max? then item.max = max
           if calls? then item.calls = calls
-          if listen? then item.listen = listen    
+          if listen? then item.listen = listen
     return
 
   ###

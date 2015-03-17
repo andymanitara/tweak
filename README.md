@@ -10,7 +10,7 @@ Rendering
 
 ## Introduction
 
-Tweak.js is a MVC framework built to help developers’ structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
+Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
 
 Initially Tweak.js was primarily designed for CoffeeScripters, although JavaScripters can take advantage of CoffeeScript’s Class features through Tweak.js’ Class module. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple and effective.
 
@@ -153,7 +153,7 @@ The Router which hooks into the history change events which provides information
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Router'](http://docs.tweakjs.com/class/tweak/Router.html) section.
 
 ### History
-The History is a cross-browser friendly version of the HTML5 history API. When available it uses the HTML5 pushState else it provides a backwards compatible solution to having a stored history, either hashState or an interval that checks at a set rate. The history provides routes to your application/component which updates the application/components based on the url infomation. The current URL location can also be set to provide a Sharable/linkable/bookmarkable URL to specific places in your application. 
+The History is a cross-browser friendly version of the HTML5 history API. When available it uses the HTML5 pushState else it provides a backwards compatible solution to having a stored history, either hashState or an interval that checks at a set rate. The history provides routes to your application/component which updates the application/components based on the URL information. The current URL location can also be set to provide a Shareable/linkable/bookmark-able URL to specific places in your application. 
 
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['History'](http://docs.tweakjs.com/class/tweak/History.html) section.
 
@@ -167,12 +167,12 @@ Components are used to dynamically create a set of linking modules like the typi
 
 Components will automatically detect inherited modules through a depended upon module loader such as [require.js](http://requirejs.org/). This increases versatility of Tweak.js, by creating an eco-system of reusable, configurable and organised Components. This is a unique twist to common MVC frameworks as it provides a wrapper that helps make understanding the links between the concepts of MVC clearer. It is also brilliant for saving development time.
 
-Components bring Object Oriented Programing (OOP) concepts into MVC and JavaScript. Which acts as a powerful structuring mechanism to web applications. They are also configurable through a configuration object, the configuration object cleverly inheriting its extended components configuration as its base configuration object.
+Components bring Object Oriented Programming (OOP) concepts into MVC and JavaScript. Which acts as a powerful structuring mechanism to web applications. They are also configurable through a configuration object, the configuration object cleverly inheriting its extended components configuration as its base configuration object.
 
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Component'](http://docs.tweakjs.com/class/tweak/Component.html) and ['Component'](http://docs.tweakjs.com/class/tweak/Component.html) sections.
 
 ### Classes
-Classes are core to Tweak.js as it provides a solution to keep code organised, reusable and extendable. If using CoffeeScript you should be well adapted the class concept and its functionality. The Class module provides JavaScript purists a way to use CoffeeScript based functionality to make objects extendable without the complicated code that comes with it. ‘Super’ing inherited classes is also available through the class module.
+Classes are core to Tweak.js as it provides a solution to keep code organised, reusable and extend-able. If using CoffeeScript you should be well adapted the class concept and its functionality. The Class module provides JavaScript purists a way to use CoffeeScript based functionality to make objects extend-able without the complicated code that comes with it. ‘Super’ing inherited classes is also available through the class module.
 
 For more information and those using pure JavaScript please look at the [documentation](http://docs.tweakjs.com) under the ['Class'](http://docs.tweakjs.com/class/tweak/Class.html) section.
 

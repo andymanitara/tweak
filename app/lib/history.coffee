@@ -1,7 +1,12 @@
 ###
-  Simple cross compatible history API. Upon changes to history a change event is called. 
-  The ability to hook event listeners to the tweak.History API allows for routes to be
-  added accordingly, and for multiple routers to be declared for better code structuring.
+  Simple cross browser history API. Upon changes to the history a change event is
+  called. The ability to hook event listeners to the tweak.History API allows
+  routes to be added accordingly, and for multiple Routers to be declared for
+  better code structure.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.History extends tweak.EventSystem
   usePush: true
@@ -13,8 +18,9 @@ class tweak.History extends tweak.EventSystem
   __interval: null
   intervalRate: 50
 
-  ###    
-    Checks is window is avaialble. This allows for history to work outside of browsers
+  ###
+    Checks that the window and history is available.
+    This addr support for the history to work outside of browsers
     if the window, history and location are set manually.
   ###
   constructor: ->
@@ -26,29 +32,60 @@ class tweak.History extends tweak.EventSystem
     Start listening to the URL changes to push back the history API if available.
     
     @param [Object] options An optional object to pass in optional arguments
-    @option options [Boolean] usePushState (default = true) Specify whether to use pushState if false then hashState will be used.
-    @option options [Boolean] useHashState (default = false) Specify whether to use hashState if true then pushState will be set to false.
+    @option options [Boolean] pushState (default = true) Specify whether to use pushState if false then hashState will be used.
+    @option options [Boolean] hashState (default = false) Specify whether to use hashState if true then pushState will be set to false.
     @option options [Boolean] forceRefresh (default = false) When set to true then pushState and hashState will not be used.
     @option options [Number] interval (default = null) When set to a number this is what the refresh rate will be when an interval has to be used to check changes to the URL.
-    @option options [Boolean] silent (default = false) If set to true then an initial change event trigger will not be called. 
+    @option options [Boolean] silent (default = false) If set to true then an initial change event trigger will not be called.
     
     @event changed When the URL is updated a change event is fired from tweak.History.
+
+    @example Starting the history with auto configuration.
+      tweak.History.start();
+
+    @example Starting the history with forced HashState.
+      tweak.History.start({
+        hashState:true
+      });
+
+    @example Starting the history with forced PushState.
+      tweak.History.start({
+        pushState:true
+      });
+
+    @example Starting the history with forced refresh or page.
+      tweak.History.start({
+        forceRefresh:true
+      });
+
+    @example Starting the history with an interval rate for the polling speed for older browsers.
+      tweak.History.start({
+        hashState:true,
+        interval: 100
+      });
+
+    @example Starting the history silently.
+      tweak.History.start({
+        hashState:true,
+        silent: true
+      });
   ###
   start: (options = {}) ->
     # Check if tweak.History is already started
     # If started then return
-    return if @started    
+    return if @started
     @started = true
 
     # Set usePush and useHash based on the options passed in.
-    @usePush = usePush = not useHash = @useHash = options.useHashState or not options.usePushState or not @history?.pushState
+    @usePush = usePush = not useHash = @useHash = options.hashState or not options.pushState or not @history?.pushState
 
     # Make sure using one state or the other
     if usePush is true then @useHash = useHash = false
 
-    # Ir the page is to be refreshed on a navigation event then set both useHash and usePush to false
+    # If the page is to be refreshed on a navigation event then set both useHash and usePush to false
     if options.forceRefresh or (useHash and not `('onhashchange' in this.window)`) then @usePush = @useHash = useHash = usePush = false
 
+    # Set the interval rate for older browsers
     @intervalRate = options.interval or @intervalRate
 
 
@@ -65,11 +102,11 @@ class tweak.History extends tweak.EventSystem
       # Return immediately as browser has now triggered URL change
       return
 
-    # Validate the push state - if not at root she replace URL with root 
+    # Validate the push state - if not at root she replace URL with root
     else if usePush and atRoot
       @set @__getHash(), {replace: true}
 
-    # If the browser doesn’t support hash or pushState and it isn’t being forced to be refreshed
+    # If the browser doesn't support hash or pushState and it isn't being forced to be refreshed
     if not usePush and not useHash and not options.forceRefresh
       # Creates a simple iframe element attaching to the body to trick IE into having a usable history
       frame = document.createElement "iframe"
@@ -84,10 +121,10 @@ class tweak.History extends tweak.EventSystem
     if not options.silent then return @triggerEvent "changed", @url
   
   ###
-   Stop tweak.History. Most likely useful for a web component that uses the history to change state, 
+   Stop tweak.History. Most likely useful for a web component that uses the history to change state,
    but if removed from page then component may want to stop the history.
   ###
-  stop: -> 
+  stop: ->
     @__toggleListeners "off"
     @started = false
 
@@ -97,6 +134,19 @@ class tweak.History extends tweak.EventSystem
     @param [Object] options An optional object to pass in optional arguments.
     @option options [Boolean] replace (default = false) Specify whether to replace the current item in the history.
     @option options [Boolean] silent (default = true) Specify whether to allow triggering of event when setting the URL.
+
+    @example Setting the History (updating the URL).
+      tweak.History.set("/#/fake/url");
+
+    @example Replacing the last History state (updating the URL).
+      tweak.History.set("/#/fake/url", {
+        replace:true
+      });
+
+    @example Setting the History (updating the URL) and calling history change event.
+      tweak.History.set("/#/fake/url", {
+        silent:false
+      });
   ###
   set: (url, options = {}) ->
     # If the history isn’t started then return
@@ -110,10 +160,10 @@ class tweak.History extends tweak.EventSystem
 
     # Get root without slash or question mark
     root = @root
-    if url is "" or url.charAt(0) is "?" 
-      root = root.slice(0, -1) or  "/"   
+    if url is "" or url.charAt(0) is "?"
+      root = root.slice(0, -1) or  "/"
 
-    # Create ful url with root
+    # Create full URL with root
     fullUrl = "#{root}#{url}"
 
     # Strip the hash from the URL and decode
@@ -129,9 +179,9 @@ class tweak.History extends tweak.EventSystem
     else if @useHash
       # If hash is is available then update the hash
       @__setHash @window, url, replace
-      if @iframe and url isnt @__getHash @iframe        
-        @__setHash @iframe, url, replace    
-    else 
+      if @iframe and url isnt @__getHash @iframe
+        @__setHash @iframe, url, replace
+    else
       # Forces refresh of page if not using push of hash state
       # Return as the page is refreshing at that point
       @location.assign fullURL
@@ -142,8 +192,9 @@ class tweak.History extends tweak.EventSystem
     return
 
   ###
-    Add listeners of remove history change listeners
-    @param [String] prefix (Default = "on") Set the prefix - "on" or "off"
+    @private
+    Add listeners of remove history change listeners.
+    @param [String] prefix (Default = "on") Set the prefix - "on" or "off".
   ###
   __toggleListeners: (prefix = "on") ->
     # Setup or remove event triggers for when the history updates - depending on the type of state being used.
@@ -162,13 +213,12 @@ class tweak.History extends tweak.EventSystem
         clearInterval @__interval
         document.body.removeChild @iframe.frameElement
         @iframe = @__interval = null
-
-
     return
+
   ###
     @private
-    Gets whether the URL is at root of the application.
-    @return Whether the URL is at the root of the application.
+    Gets whether the URL is at the root of application.
+    @return Gets whether the URL is at the root of application.
   ###
   __atRoot: ->
     path = @location.pathname.replace /[^\/]$/, "$&/"
@@ -177,8 +227,8 @@ class tweak.History extends tweak.EventSystem
   ###
     @private
     Get the URL formatted without the hash.
-    @param [Window] window The window to get the hash from.
-    @return Formatted URL without hash.
+    @param [Window] window The window to retrieve hash.
+    @return Normalized URL without hash.
   ###
   __getHash: (window) ->
     match = (window or @).location.href.match /#(.*)$/
@@ -186,7 +236,7 @@ class tweak.History extends tweak.EventSystem
 
   ###
     @private
-    In IE6 the search and hash are wrong when it contains a question mark
+    In IE6 the search and hash are wrong when it contains a question mark.
     @return search if it matches or return empty string.
   ###
   __getSearch: ->
@@ -196,7 +246,7 @@ class tweak.History extends tweak.EventSystem
   ###
     @private
     Get the pathname and search parameters, without the root.
-    @return Formatted URL without hash.
+    @return Normalized URL.
   ###
   __getPath: ->
     path = decodeURI "#{@location.pathname}#{@__getSearch()}"
@@ -206,13 +256,13 @@ class tweak.History extends tweak.EventSystem
 
   ###
     @private
-    Get a normalized URL
+    Get a normalized URL.
     @param [String] URL The URL to normalize - if null then URL will be retrieved from window.location.
     @param [Boolean] force Force the returning value to be hash state.
-    @return Formatted URL without trailing slashes at either side.
+    @return Normalized URL without trailing slashes at either side.
   ###
   __getURL: (url, force) ->
-    # If the URL is null then a URL will be retrieved from window.location 
+    # If the URL is null then a URL will be retrieved from window.location
     if not url?
       # If usePush or if to be forced to retrieve this format
       if @usePush or force
@@ -223,11 +273,11 @@ class tweak.History extends tweak.EventSystem
         # Get the URL minus the root
         if not url.indexOf(root) then url = url.slice root.length
       else
-        # Get the hash  
+        # Get the hash
         url = @__getHash()
 
     # Return URL without trailing slashes
-    # We may want to neaten tne url with a single prefix slash therefore it accepts 1 prefix slash
+    # We may want to neaten the URL with a single prefix slash therefore it accepts 1 prefix slash
     url.replace /^\/+/g, "/"
     url.replace /^\/+$/g, ""
 
@@ -255,7 +305,7 @@ class tweak.History extends tweak.EventSystem
     now = @__getURL()
     old = @url
     if now is old
-      if @iframe 
+      if @iframe
         now = @__getHash @iframe
         @set now
       else return false

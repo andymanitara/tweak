@@ -1,20 +1,25 @@
 ###
-  This is the base Class for dynamic storage based modules. A good way to think of a Store/Model/Collection is to think it as Cache;
-  it can be used to store data for temporary access. It receives and sends its data to a secondary permanent storage solution. The Store
-  class is the base functionality shared between a Model and Collection. Classes that inherit store class trigger events when it's 
-  storage base is updated, this makes it easy to listen to changes and to action as and when required.
+  This is the base Class for dynamic storage based modules. A good way to think of
+  a Store/Model/Collection is to think it as Cache; it can be used to Store data for
+  temporary access. It receives and sends its data to a secondary permanent storage
+  solution. The Store class is the base functionality shared between a Model and
+  Collection. Classes that inherit Store class trigger events when it's storage
+  base is updated, this makes it easy to listen to changes and to action as and
+  when required.
 
-  Examples are in JS, unless where CoffeeScript syntax may be unusual.
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.Store extends tweak.EventSystem
 
-  # @property [String] The type of storage, ie 'collection' or 'model'
+  # @property [String] The type of storage, i.e. 'collection' or 'model'
   _type: 'BASE'
-  # @property [Integer] Length of the stores data
+  # @property [Integer] Length of the Stores data
   length: 0
-  # @property [Object, Array] Data holder for the store
+  # @property [Object, Array] Data holder for the Store
   data: []
-  # @property [Integer] The uid of this object - for unique reference
+  # @property [Integer] The UID of this object - for unique reference
   uid: 0
   # @property [Method] see tweak.Common.parse
   parse: tweak.Common.parse
@@ -22,7 +27,7 @@ class tweak.Store extends tweak.EventSystem
   super: tweak.super
 
   ###
-    The constructor initialises the controllers unique ID. 
+    The constructor initialises the controllers unique ID.
   ###
   constructor: -> @uid = "s_#{tweak.uids.s++}"
 
@@ -32,40 +37,41 @@ class tweak.Store extends tweak.EventSystem
   init: ->
     
   ###
-    Set a single or multiple properties or the base storage.
+    Set a single property or multiple properties.
 
     @overload set(name, data, silent)
-      Set an individual property in the store by name
-      @param [String] name The name of the property to set
-      @param [*] data Data to store in the property bieng set
-      @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
+      Set an individual property by the name (String).
+      @param [String] name The name of the property to set.
+      @param [*] data Data to Store in the property being set.
+      @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
 
-    @overload set(properties, silent)
-      Set an multiple properties in the store from an object
-      @param [Object] properties Key and property based object
-      @param [Boolean] silent (optional) (default = false) Silently change the base storage property, by not triggering events upon change
+    @overload set(data, silent)
+      Set multiple properties by an object of data.
+      @param [Object] data Key and property based object.
+      @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
 
-    @example Setting single property
+    @example Setting single property.
       this.set("sample", 100);
 
-    @example Setting multiple properties
+    @example Setting multiple properties.
       this.set({sample:100, second:2});
   
-    @example Setting properties silently
+    @example Setting properties silently.
       this.set("sample", 100, true);
       this.set({sample:100, second:2}, true);
 
-    @event changed:#{key} Triggers an event and passes in changed property
-    @event changed Triggers a generic event that the store has been updated
+    @event changed:#{key} Triggers an event and passes in changed property.
+    @event changed Triggers a generic event that the Store has been updated.
   ###
-  set: (properties, params...) ->
+  set: (data, params...) ->
     silent = params[0]
-    if typeof properties is 'string'
-      prevProps = properties
-      properties = {}
-      properties[prevProps] = params[0]
+    type = typeof data
+    if type is 'string' or type is 'number'
+      prevProps = data
+      data = {}
+      data[prevProps] = params[0]
       silent = params[1]
-    for key, prop of properties
+    for key, prop of data
       prev = @data[key]
       if not prev? then @length++
       @data[key] = prop
@@ -76,12 +82,12 @@ class tweak.Store extends tweak.EventSystem
     return
 
   ###
-    Returns whether two objects are the same (similar)
-    @param [Object, Array] one Object to compare
-    @param [Object, Array] two Object to compare
-    @return [Boolean] Returns whether two object are the same (similar)
+    Returns whether two objects are the same (similar).
+    @param [Object, Array] one Object to compare to Object two.
+    @param [Object, Array] two Object to compare to Object one.
+    @return [Boolean] Are the two Objects the same/similar?
 
-    @example comparing objects
+    @example comparing objects.
       this.same({"sample":true},{"sample":true}); //true
       this.same({"sample":true},{"not":true}); //false
   ###
@@ -91,32 +97,32 @@ class tweak.Store extends tweak.EventSystem
     true
     
   ###
-    Get a property from the base storage
-    @param [String] property Property name to look for in the base storage
-    @return [*] Returns property value of property in the base storage
+    Get a property from the base storage.
+    @param [String] property Property name to look for in the base storage.
+    @return [*] Returns property value of property in the base storage.
 
-    @example Getting property
+    @example Getting property.
       this.get("sample");
   ###
   get: (property) -> @data[property]
 
   ###
-    Checks ir a property exists from the base storage
-    @param [String] property Property name to look for in the base storage
-    @return [Boolean] Returns true or false depending if the property exists in the base storage
+    Checks if a property exists from the base storage.
+    @param [String] property Property name to look for in the base storage.
+    @return [Boolean] Returns true or false depending if the property exists in the base storage.
 
-    @example Checking property exists
+    @example Checking property exists.
       this.has("sample");
   ###
   has: (property) -> @data[property]?
 
   ###
-    Returns an array of property names where the value is equal to the given value
-    @param [*] value Value to check
-    @return [Array<String>] Returns an array of keys where the value is equal to the given value
+    Returns an array of keys where the property matches given value.
+    @param [*] value Value to check.
+    @return [Array<String>] Returns an array of keys where the property matches given value.
     
-    @example find keys of base storage where the value matches
-      this.where(1009);
+    @example find keys of base storage where the value matches.
+      this.where(1009); //[3,87]
   ###
   where: (value) ->
     result = []
@@ -126,9 +132,9 @@ class tweak.Store extends tweak.EventSystem
     return result
 
   ###
-    Reset the store length to 0 and triggers change event.
+    Reset the Store length to 0 and triggers change event.
 
-    @event changed Triggers a generic event that the store has been updated
+    @event changed Triggers a generic event that the Store has been updated.
   ###
   reset: ->
     @length = 0

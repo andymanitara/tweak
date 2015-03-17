@@ -1,4 +1,4 @@
 $ ->
-    mocha
-    .checkLeaks()
-    .run()
+  mocha
+  .checkLeaks()
+  .run()

@@ -1,12 +1,21 @@
 ###
-  The components collection is used to allow a component to have multiple sub components; allowing a extensive powerful heirachy system of components; which also allows for multiple areas of views.
-  For example a view may have to sections of user interaction that does two different things and gets two different sets of data, but its parent view is about a particular item.
-  This example shows the power of relations in the framework. As the two views are different with different data being fed in these can be two sub components, allowing seperation of code.
-  This allow reloading of views without affect other views, a bit like regions in backbone marionette. However your code can now be much more structured in this format and easier to understand where things are happening.
+  The Components collection is used to allow a Component to have multiple sub
+  Components; allowing a extensive powerful hierarchy system of Components;
+  which also allows for multiple areas of views. For example a view may have to
+  sections of user interaction that does two different things and gets two
+  different sets of data, but its parent view is about a particular item. This
+  example shows the power of relations in the framework. As the two views are
+  different with different data being fed in these can be two sub Components,
+  allowing separation of code. This allow reloading of views without affect other
+  views, a bit like regions in backbone marionette. However your code can now be
+  much more structured in this format and easier to understand where things
+  are happening.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
-class tweak.Components extends tweak.Collection
-  # Not using own tweak.extends method as codo doesnt detect that this is an extending class
-    
+class tweak.Components extends tweak.Collection    
   # @property [String] The type of storage
   _type: "components"
   # @property [Method] see tweak.Common.relToAbs
@@ -15,14 +24,14 @@ class tweak.Components extends tweak.Collection
   splitMultiName: tweak.Common.splitMultiName
 
   ###
-    The constructor initialises the controllers unique ID, relating component, its root and its initial config. 
+    The constructor initialises the controllers unique ID, relating Component, its root and its initial config.
   ###
-  constructor: (@component, @_config = {}) -> 
+  constructor: (@component, @_config = {}) ->
     @root = @component.root
     @uid = "cp_#{tweak.uids.cp++}"
 
   ###
-   Construct the Collection with given options from the config file
+   Construct the Collection with given options from the configuration file
   ###
   init: ->
     @data = []
@@ -38,7 +47,7 @@ class tweak.Components extends tweak.Collection
       else if typeof item is "string"
         data = @splitMultiName _name, item
         for name in data
-          @data.push new tweak.Component @, {name}    
+          @data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
@@ -49,13 +58,13 @@ class tweak.Components extends tweak.Collection
           @data.push new tweak.Component @, obj
       @data[@length++].init()
 
-      # Remove config as the data is no longer required
+      # Remove @_config as the data is no longer required
       delete @_config
     return
 
   ###
     @private
-    Rendering and rererendering functionality to reduce code
+    Rendering and re-rendering functionality to reduce code
   ###
   __componentRender: (type) ->
     if @length is 0
@@ -70,24 +79,24 @@ class tweak.Components extends tweak.Collection
     return
 
   ###
-    Renders all of its components, also triggers ready state when all components are ready
+    Renders all of its Components, also triggers ready state when all Components are ready
   ###
-  render: -> 
+  render: ->
     @__componentRender "render"
     return
 
   ###
-    Rerender all of its components, also triggers ready state when all components are ready
+    Re-render all of its Components, also triggers ready state when all Components are ready
   ###
-  rerender: -> 
+  rerender: ->
     @__componentRender "rerender"
     return
 
   ###
-    Find component with matching data in model
+    Find Component with matching data in model
     @param [String] property The property to find matching value against
     @param [*] value Data to compare to
-    @return [Array] An array of matching components
+    @return [Array] An array of matching Components
   ###
   whereData: (property, value) ->
     result = []
@@ -99,7 +108,7 @@ class tweak.Components extends tweak.Collection
     result
 
   ###
-    Reset components - clears the views
+    Reset Components - clears the views
 
     @event changed Triggers a generic event that the store has been updated
   ###
@@ -110,11 +119,11 @@ class tweak.Components extends tweak.Collection
     return
 
   ###
-    There is no default import mechanism for this module
+    There is no default import mechanism for this module - so set it to an empty function
   ###
   import: ->
 
   ###
-    There is no default export mechanism for this module
+    There is no default export mechanism for this module - so set it to an empty function
   ###
   export: ->
