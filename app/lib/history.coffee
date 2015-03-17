@@ -1,10 +1,12 @@
 ###
-  Simple cross browser history API. Upon changes to the history a change event is called. The ability to hook
-  event listeners to the tweak.History API allows routes to be added accordingly, and for multiple Routers to
-  be declared for better code structure.
+  Simple cross browser history API. Upon changes to the history a change event is
+  called. The ability to hook event listeners to the tweak.History API allows
+  routes to be added accordingly, and for multiple Routers to be declared for
+  better code structure.
 
-  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
-  directly represent valid code; the aim of an example is to show how to roughly use a method.
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.History extends tweak.EventSystem
   usePush: true
@@ -18,7 +20,7 @@ class tweak.History extends tweak.EventSystem
 
   ###
     Checks that the window and history is available.
-    This add support for the history to work outside of browsers
+    This addr support for the history to work outside of browsers
     if the window, history and location are set manually.
   ###
   constructor: ->
@@ -38,31 +40,31 @@ class tweak.History extends tweak.EventSystem
     
     @event changed When the URL is updated a change event is fired from tweak.History.
 
-    @example Starting the history with auto configuration
+    @example Starting the history with auto configuration.
       tweak.History.start();
 
-    @example Starting the history with forced HashState
+    @example Starting the history with forced HashState.
       tweak.History.start({
         hashState:true
       });
 
-    @example Starting the history with forced PushState
+    @example Starting the history with forced PushState.
       tweak.History.start({
         pushState:true
       });
 
-    @example Starting the history with forced refresh or page
+    @example Starting the history with forced refresh or page.
       tweak.History.start({
         forceRefresh:true
       });
 
-    @example Starting the history with an interval rate for the polling speed for older browsers
+    @example Starting the history with an interval rate for the polling speed for older browsers.
       tweak.History.start({
         hashState:true,
         interval: 100
       });
 
-    @example Starting the history silently
+    @example Starting the history silently.
       tweak.History.start({
         hashState:true,
         silent: true
@@ -133,15 +135,15 @@ class tweak.History extends tweak.EventSystem
     @option options [Boolean] replace (default = false) Specify whether to replace the current item in the history.
     @option options [Boolean] silent (default = true) Specify whether to allow triggering of event when setting the URL.
 
-    @example Setting the History (updating the URL)
+    @example Setting the History (updating the URL).
       tweak.History.set("/#/fake/url");
 
-    @example Replacing the last History state (updating the URL)
+    @example Replacing the last History state (updating the URL).
       tweak.History.set("/#/fake/url", {
         replace:true
       });
 
-    @example Setting the History (updating the URL) and calling history change event
+    @example Setting the History (updating the URL) and calling history change event.
       tweak.History.set("/#/fake/url", {
         silent:false
       });
@@ -191,8 +193,8 @@ class tweak.History extends tweak.EventSystem
 
   ###
     @private
-    Add listeners of remove history change listeners
-    @param [String] prefix (Default = "on") Set the prefix - "on" or "off"
+    Add listeners of remove history change listeners.
+    @param [String] prefix (Default = "on") Set the prefix - "on" or "off".
   ###
   __toggleListeners: (prefix = "on") ->
     # Setup or remove event triggers for when the history updates - depending on the type of state being used.
@@ -234,7 +236,7 @@ class tweak.History extends tweak.EventSystem
 
   ###
     @private
-    In IE6 the search and hash are wrong when it contains a question mark
+    In IE6 the search and hash are wrong when it contains a question mark.
     @return search if it matches or return empty string.
   ###
   __getSearch: ->
@@ -254,7 +256,7 @@ class tweak.History extends tweak.EventSystem
 
   ###
     @private
-    Get a normalized URL
+    Get a normalized URL.
     @param [String] URL The URL to normalize - if null then URL will be retrieved from window.location.
     @param [Boolean] force Force the returning value to be hash state.
     @return Normalized URL without trailing slashes at either side.

@@ -1,12 +1,15 @@
 ###
-  This is the base Class for dynamic storage based modules. A good way to think of a Store/Model/Collection
-  is to think it as Cache; it can be used to Store data for temporary access. It receives and sends its data
-  to a secondary permanent storage solution. The Store class is the base functionality shared between a Model
-  and Collection. Classes that inherit Store class trigger events when it's storage base is updated, this
-  makes it easy to listen to changes and to action as and when required.
+  This is the base Class for dynamic storage based modules. A good way to think of
+  a Store/Model/Collection is to think it as Cache; it can be used to Store data for
+  temporary access. It receives and sends its data to a secondary permanent storage
+  solution. The Store class is the base functionality shared between a Model and
+  Collection. Classes that inherit Store class trigger events when it's storage
+  base is updated, this makes it easy to listen to changes and to action as and
+  when required.
 
-  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
-  directly represent valid code; the aim of an example is to show how to roughly use a method.
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.Store extends tweak.EventSystem
 
@@ -79,12 +82,12 @@ class tweak.Store extends tweak.EventSystem
     return
 
   ###
-    Returns whether two objects are the same (similar)
-    @param [Object, Array] one Object to compare
-    @param [Object, Array] two Object to compare
-    @return [Boolean] Returns whether two object are the same (similar)
+    Returns whether two objects are the same (similar).
+    @param [Object, Array] one Object to compare to Object two.
+    @param [Object, Array] two Object to compare to Object one.
+    @return [Boolean] Are the two Objects the same/similar?
 
-    @example comparing objects
+    @example comparing objects.
       this.same({"sample":true},{"sample":true}); //true
       this.same({"sample":true},{"not":true}); //false
   ###
@@ -94,31 +97,31 @@ class tweak.Store extends tweak.EventSystem
     true
     
   ###
-    Get a property from the base storage
-    @param [String] property Property name to look for in the base storage
-    @return [*] Returns property value of property in the base storage
+    Get a property from the base storage.
+    @param [String] property Property name to look for in the base storage.
+    @return [*] Returns property value of property in the base storage.
 
-    @example Getting property
+    @example Getting property.
       this.get("sample");
   ###
   get: (property) -> @data[property]
 
   ###
-    Checks if a property exists from the base storage
-    @param [String] property Property name to look for in the base storage
-    @return [Boolean] Returns true or false depending if the property exists in the base storage
+    Checks if a property exists from the base storage.
+    @param [String] property Property name to look for in the base storage.
+    @return [Boolean] Returns true or false depending if the property exists in the base storage.
 
-    @example Checking property exists
+    @example Checking property exists.
       this.has("sample");
   ###
   has: (property) -> @data[property]?
 
   ###
-    Returns an array of keys where the property matches given value
-    @param [*] value Value to check
-    @return [Array<String>] Returns an array of keys where the property matches given value
+    Returns an array of keys where the property matches given value.
+    @param [*] value Value to check.
+    @return [Array<String>] Returns an array of keys where the property matches given value.
     
-    @example find keys of base storage where the value matches
+    @example find keys of base storage where the value matches.
       this.where(1009); //[3,87]
   ###
   where: (value) ->
@@ -131,7 +134,7 @@ class tweak.Store extends tweak.EventSystem
   ###
     Reset the Store length to 0 and triggers change event.
 
-    @event changed Triggers a generic event that the Store has been updated
+    @event changed Triggers a generic event that the Store has been updated.
   ###
   reset: ->
     @length = 0

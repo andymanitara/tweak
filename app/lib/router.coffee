@@ -1,12 +1,14 @@
 ###
-  Web applications often provide linkable, bookmark, shareable URLs for important locations in the application.
-  The Router module provides methods for routing to events which can control the application. Traditionally it
-  used to be that routers worked from hash fragments (#page/22). However, the HTML5 History API now provides
-  standard URL formats (/page/22). Routers provide functionality that links applications/components/modules
-  together through data passed through the URL.
+  Web applications often provide linkable, bookmark, shareable URLs for important
+  locations in the application. The Router module provides methods for routing to
+  events which can control the application. Traditionally it used to be that
+  routers worked from hash fragments (#page/22). However, the HTML5 History API now
+  provides standard URL formats (/page/22). Routers provide functionality that
+  links applications/components/modules together through data passed through the URL.
 
-  The router's routes can be formatted as a string that provides additional easy management to routing of events.
-  A route can contain the following structure. Which implements splats, parameters and optional parameters.
+  The router's routes can be formatted as a string that provides additional easy
+  management to routing of events. A route can contain the following structure.
+  Which implements splats, parameters and optional parameters.
   
   @example Route with parameters
     Adding a route ":section:page" or ":section/:page" attached to the event of "navigation", will trigger a
@@ -65,21 +67,22 @@
       }
     }
 
-  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
-  directly represent valid code; the aim of an example is to show how to roughly use a method.
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.Router extends tweak.EventSystem
-  # @property [Integer] The uid of this object - for unique reference
+  # @property [Integer] The uid of this object - for unique reference.
   uid: 0
   # @property [Method] see tweak.super
   super: tweak.super
 
   ###
-    The constructor initialises the routers unique ID, routes, and event listening
+    The constructor initialises the routers unique ID, routes, and event listening.
     
     @param [object] routes (optional, default = {}) An object containing event name based keys to an array of routes.
 
-    @example Creating a Router with a set of predefined routes
+    @example Creating a Router with a set of predefined routes.
       var router;
       router = new tweak.Router({
         "navigation":[
@@ -100,12 +103,12 @@ class tweak.Router extends tweak.EventSystem
     @param [String] event The event name to add route to.
     @param [String, Reg-ex] route A string or Reg-ex formatted string or Reg-ex.
 
-    @example Adding a single string formatted route to an event
+    @example Adding a single string formatted route to an event.
       var router;
       router = new tweak.Router();
       router.add("navigation", "/:section/:page");
   
-    @example Adding a single Reg-ex formatted route to an event
+    @example Adding a single Reg-ex formatted route to an event.
       var router;
       router = new tweak.Router();
       router.add("navigation", /^(*.)$/);
@@ -138,12 +141,12 @@ class tweak.Router extends tweak.EventSystem
       router = new tweak.Router();
       router.remove("navigation", "/:section/:page");
 
-    @example Removing a multiple string formatted routes from an event
+    @example Removing a multiple string formatted routes from an event.
       var router;
       router = new tweak.Router();
       router.remove("navigation", "/:section/:page /:website/:section/?page");
   
-    @example Removing a single Reg-ex formatted route from an event
+    @example Removing a single Reg-ex formatted route from an event.
       var router;
       router = new tweak.Router();
       router.remove("navigation", /^(*.)$/);
@@ -239,8 +242,8 @@ class tweak.Router extends tweak.EventSystem
   ###
     @private
     When history event is made this method is called to check this Routers events to see if any route events can be triggered.
-    @param [String] url A URL to check route events to
-    @event {event_name} Triggers a route event with passed in data from URL
+    @param [String] url A URL to check route events to.
+    @event {event_name} Triggers a route event with passed in data from URL.
   ###
   __urlChanged: (url) ->
     # For each route event

@@ -28,6 +28,10 @@
   and controllers directly from that Component. If you however want to extend a
   Component using a different Model you can simply overwrite that model, or extend
   the functionality to the inherited model Components model.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.Component
  
@@ -286,7 +290,7 @@ class tweak.Component
     Short cut to the controllers removeEvent method.
 
     @param [String] names The event name(s). Split on a space, or an array of event names.
-    @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the controller events under event name are removed.
+    @param [Function] callback (optional) The callback function of the event. If no specific callbacki s given then all the controller events under event name are removed.
     @param [Object] context (default = this) The contextual object of which the event is bound to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
   ###
   removeEvent: (names, callback, context) -> @controller.removeEvent names, callback, context

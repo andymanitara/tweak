@@ -1,8 +1,19 @@
 ###
-  The Components collection is used to allow a Component to have multiple sub Components; allowing a extensive powerful hierarchy system of Components; which also allows for multiple areas of views.
-  For example a view may have to sections of user interaction that does two different things and gets two different sets of data, but its parent view is about a particular item.
-  This example shows the power of relations in the framework. As the two views are different with different data being fed in these can be two sub Components, allowing separation of code.
-  This allow reloading of views without affect other views, a bit like regions in backbone marionette. However your code can now be much more structured in this format and easier to understand where things are happening.
+  The Components collection is used to allow a Component to have multiple sub
+  Components; allowing a extensive powerful hierarchy system of Components;
+  which also allows for multiple areas of views. For example a view may have to
+  sections of user interaction that does two different things and gets two
+  different sets of data, but its parent view is about a particular item. This
+  example shows the power of relations in the framework. As the two views are
+  different with different data being fed in these can be two sub Components,
+  allowing separation of code. This allow reloading of views without affect other
+  views, a bit like regions in backbone marionette. However your code can now be
+  much more structured in this format and easier to understand where things
+  are happening.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.Components extends tweak.Collection    
   # @property [String] The type of storage

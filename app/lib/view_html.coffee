@@ -18,6 +18,10 @@ tweak.Viewable = {
   presentation layer. To extend the HTMLView to provide extra functionality to
   manipulate this View's rendered interface (DOM) please include the optional
   tweak.ViewHTMLAdvanced class.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.ViewHTML extends tweak.View
   # @property [Method] see tweak.Common.require

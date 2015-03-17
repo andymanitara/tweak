@@ -1,14 +1,20 @@
 ###
   The core View.
   
-  A View is a module used as a presentation layer. Which is used to render, manipulate and listen to an interface.
-  The Model, View and Controller separates logic of the Views interaction to that of data and functionality.
-  This helps to keep code organized and tangle free - the View should primarily be used to render, manipulate and
-  listen to the presentation layer. A View consists of a template to which data is bound to and rendered/re-rendered.
+  A View is a module used as a presentation layer. Which is used to render,
+  manipulate and listen to an interface. The Model, View and Controller separates
+  logic of the Views interaction to that of data and functionality. This helps to
+  keep code organized and tangle free - the View should primarily be used to render,
+  manipulate and listen to the presentation layer. A View consists of a template to
+  which data is bound to and rendered/re-rendered.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.View extends tweak.EventSystem
  
-  # @property [Integer] The uid of this object - for unique reference
+  # @property [Integer] The uid of this object - for unique reference.
   uid: 0
   # @property [Method] see tweak.super
   super: tweak.super
@@ -19,7 +25,7 @@ class tweak.View extends tweak.EventSystem
   constructor: (@config = {}) -> @uid = "v_#{tweak.uids.v++}"
 
   ###
-    Default initialiser function - called when the View has rendered
+    Default initialiser function - called when the View has rendered.
   ###
   init: ->
 
@@ -32,7 +38,7 @@ class tweak.View extends tweak.EventSystem
     return
 
   ###
-    Re-renders the View
+    Re-renders the View.
     @event rendered View has been rendered.
     @event rerendered View has been re-rendered.
   ###
@@ -46,7 +52,7 @@ class tweak.View extends tweak.EventSystem
     return
 
   ###
-    Checks to see if the item is rendered; this is determined if the node has a parentNode
+    Checks to see if the item is rendered; this is determined if the node has a parentNode.
     @return [Boolean] Returns whether the View has been rendered.
   ###
   isRendered: ->

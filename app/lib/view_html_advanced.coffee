@@ -8,10 +8,16 @@
 ###
 
 ###
-  The View is the DOM controller. This should be used for code that doesn't really control any logic but how the View is displayed. For example animations.
-  The View uses a template engine to provide the html to the DOM.
-  The View in common MV* frameworks is typically used to directly listen for model changes to re-render however typically this should be done in the controller.
-  The data in the model is passed into the Views template, allowing for easy manipulation of the View.
+  The View is the DOM controller. This should be used for code that doesn't really
+  control any logic but how the View is displayed. For example animations. The View
+  uses a template engine to provide the html to the DOM. The View in common MV*
+  frameworks is typically used to directly listen for model changes to re-render
+  however typically this should be done in the controller. The data in the model
+  is passed into the Views template, allowing for easy manipulation of the View.
+
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
   ###

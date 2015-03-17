@@ -1,24 +1,29 @@
 ###
-  A Collection is used by other modules like the Controller to store, retrieve and listen to a set of
-  ordered data. A Collection triggers events when its storage base is updated, this makes it easy to
-  listen to changes and to action as and when required. The Collection data is not a database, but a JSON
-  representation of its data can be exported and imported to and from storage sources. In Tweak.js the Model
-  extends the Store module - which is the core functionality shared between Model's and Collection's. The
-  main difference between a Model and collection it the base of its data type. The Model uses an object as
-  its base data type and a collection base type is an Array.
+  A Collection is used by other modules like the Controller to store, retrieve and
+  listen to a set of ordered data. A Collection triggers events when its storage
+  base is updated, this makes it easy to listen to changes and to action as and
+  when required. The Collection data is not a database, but a JSON representation
+  of its data can be exported and imported to and from storage sources. In Tweak.js
+  the Model extends the Store module - which is the core functionality shared between
+  Model's and Collection's. The main difference between a Model and collection it
+  the base of its data type. The Model uses an object as its base data type and a
+  collection base type is an Array.
 
-  To further extend a Collection, Tweak.js allows data to be imported and exported. When doing this please
-  know that all data stored should be able to be converted to a JSON string. A Collection of Models can
-  also be exported and imported to and from a database, as it has an inbuilt detection for when a value
-  should be created as a Model representation. Keep note that a Collection of Collections is not
-  appropriate as this becomes complicated and it can get messy quickly. It should be possible to export and
-  import data of that nature, but it’s not recommended - always try to keep stored data structured simply.
+  To further extend a Collection, Tweak.js allows data to be imported and exported.
+  When doing this please know that all data stored should be able to be converted
+  to a JSON string. A Collection of Models can also be exported and imported to
+  and from a database, as it has an inbuilt detection for when a value should be
+  created as a Model representation. Keep note that a Collection of Collections is
+  not appropriate as this becomes complicated and it can get messy quickly. It
+  should be possible to export and import data of that nature, but it’s not
+  recommended - always try to keep stored data structured simply.
 
-  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples are not exact, and will not
-  directly represent valid code; the aim of an example is to show how to roughly use a method.
+  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
+  are not exact, and will not directly represent valid code; the aim of an example
+  is to show how to roughly use a method.
 ###
 class tweak.Collection extends tweak.Store
-  # @property [String] The type of storage, i.e. 'collection' or 'model'.
+  # @property [String] The type of Store, i.e. 'collection' or 'model'.
   _type: "collection"
 
   ###
