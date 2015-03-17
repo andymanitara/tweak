@@ -28,6 +28,9 @@ tmp/
 # Brunch output folder.
 public/
 
+# Documentation output folder.
+doc/
+
 # Bower stuff.
 bower_components/
 sh.exe.stackdump
