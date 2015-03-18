@@ -155,17 +155,6 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
 
   ###
     @private
-    Split classes from a string to an array.
-  ###
-  __splitString = (str) ->
-    results = []
-    if typeof str isnt "string" then str = ''
-    for key, prop of str.split /\s+/
-      if prop isnt "" then results.push prop
-    results
-
-  ###
-    @private
     Check of a string of class names is in an element(s) class.
     @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
     @param [String] classes A string of classes to remove to the element(s).
@@ -182,8 +171,8 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
   adjust: (type, method, element, str, str2) ->
     elements = @element element
     if elements.length is 0 then return
-    str = __splitString str
-    if str2? then str2 = __splitString str2
+    str = str.spilt /\s+/
+    if str2? then str2 = str2.spilt /\s+/
     else str2 = str
     for item in elements
       if not item? then continue
