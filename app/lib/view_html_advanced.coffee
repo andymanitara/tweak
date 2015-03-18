@@ -171,8 +171,8 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
   adjust: (type, method, element, str, str2) ->
     elements = @element element
     if elements.length is 0 then return
-    str = str.spilt /\s+/
-    if str2? then str2 = str2.spilt /\s+/
+    str = (str or '').split /\s+/
+    if str2? then str2 = str2.split /\s+/
     else str2 = str
     for item in elements
       if not item? then continue

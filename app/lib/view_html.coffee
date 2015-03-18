@@ -48,7 +48,7 @@ class tweak.ViewHTML extends tweak.View
     @event rendered The event is called when the View has been rendered.
   ###
   render: (silent) ->
-    if @isRendered()
+    if @isRendered() and not silent
       @triggerEvent "rendered"
       return
       
