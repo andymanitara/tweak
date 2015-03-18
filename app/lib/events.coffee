@@ -185,7 +185,7 @@ class tweak.Events
     if typeof names is "object" and not names instanceof Array
       names = names.names or []
       context = names.context or null
-
+    
     # Iterate through found events
     for event in @findEvent names
       # Iterate through this event's callbacks
@@ -196,11 +196,11 @@ class tweak.Events
           if item.max? and ++item.calls >= item.max
             # Event has hit call limit, so set its event listening state to false
             item.listen = false
-          # Call the events call back
-          setTimeout ->
-            item.callback.apply item.ctx, params
-            return
-          ,0
+          # Call the events callback - done asynchronously. 
+          caller = {item, params, fn: ->
+            @item.callback.apply @item.ctx, @params
+          }
+          setTimeout caller.fn.bind(caller), 0
     return
 
   ###
