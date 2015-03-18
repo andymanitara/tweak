@@ -197,9 +197,7 @@ class tweak.Events
             # Event has hit call limit, so set its event listening state to false
             item.listen = false
           # Call the events callback - done asynchronously.
-          caller = {item, params}
-          fn = -> @item.callback.apply @item.ctx, @params
-          setTimeout fn.bind(caller), 0
+          setTimeout (-> @callback.apply @ctx, params; return).bind(item), 0
     return
 
   ###
