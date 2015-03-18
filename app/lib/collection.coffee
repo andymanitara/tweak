@@ -63,7 +63,7 @@ class tweak.Collection extends tweak.Store
     @param [Number] index Index of property to return.
     @return [*] Returned data from the specified index.
   ###
-  at: (index) -> @data[Number position]
+  at: (index) -> @data[Number index]
 
   ###
     Push a new property to the end of the Collection.
