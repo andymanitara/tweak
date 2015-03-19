@@ -1,5 +1,5 @@
 ###
-  tweak.view.html.advanced.js 1.0.0
+  tweak.view.html.advanced.js 1.0.2
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
