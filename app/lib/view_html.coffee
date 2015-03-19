@@ -68,7 +68,13 @@ class tweak.ViewHTML extends tweak.View
     # Create HTML element add add to DOM
     rendered = (template) =>
       # Attach template to the DOM and set @el
-      @el = @attach @getAttachmentNode(), template, config.attach.method
+      attachTo = @config.attach?.to or @config.attach?.name or @name
+      parent = @component.parent?.view?.el
+      html = document.getElementsByTagName("html")[0]
+      attachment = if attachTo.tagName then attachTo
+      else @getAttachmentNode(parent) or @getAttachmentNode(html) or parent or html
+      
+      @el = @attach attachment, template, config.attach.method
         
       # Attempt to add class and uid
       strip = /^\s+|\s\s+|\s+$/
