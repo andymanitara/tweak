@@ -138,11 +138,11 @@ class tweak.ViewHTML extends tweak.View
     child or parent or throw new Error "No View parent for #{@name} (#{name})"
 
   ###
-    Attach a DOMElement to another DOMElement. Attachment can happen by three methods, inserting before, inserting after and replacing.
+    Attach a DOMElement to another DOMElement. Attachment can happen by three methods, inserting before, inserting after, inserting at position and replacing.
 
     @param [DOMElement] parent DOMElement to attach to.
     @param [DOMElement] node DOMElement to attach to parent.
-    @param [String] string (Default = append) The method to attach ('prefix'/'before', 'replace') any other method will use the attach method to insert after.
+    @param [String, Number] method (Default = append) The method to attach ('prefix'/'before', 'replace', (number) = insert at position) any other method will use the attach method to insert after.
   ###
   attach: (parent, node, method) ->
     switch method
@@ -157,6 +157,11 @@ class tweak.ViewHTML extends tweak.View
         parent.appendChild node
         return parent.firstElementChild
       else
+        if /^\d+$/.test "#{method}"
+          num = Number(method)
+          parent.insertBefore node, parent.children[num]
+          return parent.children[num]
+        else
         parent.appendChild node
         return parent.lastElementChild
 
