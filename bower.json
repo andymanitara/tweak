@@ -1,6 +1,6 @@
 {
   "name": "TweakJS",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "main": ["public/javascripts/tweak.js","public/javascripts/tweak.component.js","public/javascripts/tweak.view.advanced.js"],
   "dependencies": {
     "jquery": "*",

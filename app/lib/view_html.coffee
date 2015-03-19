@@ -1,5 +1,5 @@
 ###
-  tweak.view.html.js 1.0.2
+  tweak.view.html.js 1.0.4
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -68,7 +68,13 @@ class tweak.ViewHTML extends tweak.View
     # Create HTML element add add to DOM
     rendered = (template) =>
       # Attach template to the DOM and set @el
-      @el = @attach @getAttachmentNode(), template, config.attach.method
+      attachTo = @config.attach?.to or @config.attach?.name or @name
+      parent = @component.parent?.view?.el
+      html = document.getElementsByTagName("html")[0]
+      attachment = if attachTo.tagName then attachTo
+      else @getAttachmentNode(parent) or @getAttachmentNode(html) or parent or html
+      
+      @el = @attach attachment, template, config.attach.method
         
       # Attempt to add class and uid
       strip = /^\s+|\s\s+|\s+$/
@@ -118,15 +124,15 @@ class tweak.ViewHTML extends tweak.View
   
   ###
     Get the attachment node for this element.
+    @param [DOMElement] parent the DOM Element to search in
     @return [DOMElement] Returns the parent DOMElement.
-    @throw When looking for a parent Element and there is not a returnable element you will receive the following error - "No View parent for #{@name} (#{name})".
   ###
-  getAttachmentNode: ->
+  getAttachmentNode: (parent) ->
+    if not parent then return
     # The result is the parent el, or it will try to find a node to attach to in the DOM
-    parent = @component.parent?.view?.el or document.getElementsByTagName("html")[0]
     name = @config.attach?.to or @config.attach?.name or @name
     nodes = @getChildren parent
-    nodes.push parent
+    nodes.unshift parent
     for prop in nodes
       if child then break
       attachment = prop.getAttribute 'data-attach'
@@ -135,14 +141,14 @@ class tweak.ViewHTML extends tweak.View
           if name is val
             child = prop
             break
-    child or parent or throw new Error "No View parent for #{@name} (#{name})"
+    child
 
   ###
-    Attach a DOMElement to another DOMElement. Attachment can happen by three methods, inserting before, inserting after and replacing.
+    Attach a DOMElement to another DOMElement. Attachment can happen by three methods, inserting before, inserting after, inserting at position and replacing.
 
     @param [DOMElement] parent DOMElement to attach to.
     @param [DOMElement] node DOMElement to attach to parent.
-    @param [String] string (Default = append) The method to attach ('prefix'/'before', 'replace') any other method will use the attach method to insert after.
+    @param [String, Number] method (Default = append) The method to attach ('prefix'/'before', 'replace', (number) = insert at position) any other method will use the attach method to insert after.
   ###
   attach: (parent, node, method) ->
     switch method
@@ -157,8 +163,13 @@ class tweak.ViewHTML extends tweak.View
         parent.appendChild node
         return parent.firstElementChild
       else
-        parent.appendChild node
-        return parent.lastElementChild
+        if /^\d+$/.test "#{method}"
+          num = Number(method)
+          parent.insertBefore node, parent.children[num]
+          return parent.children[num]
+        else
+          parent.appendChild node
+          return parent.lastElementChild
 
   ###
     Create an Element from a template string.
