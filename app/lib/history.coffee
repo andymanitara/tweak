@@ -188,7 +188,7 @@ class tweak.History extends tweak.Events
       return
     
     # If the option not to be silent is made then send a change event
-    if not options.silent then @triggerEvent "change", @url = url
+    if not options.silent then @triggerEvent "changed", @url = url
     return
 
   ###
