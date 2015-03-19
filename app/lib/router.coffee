@@ -266,7 +266,7 @@ class tweak.Router extends tweak.Events
           match.splice 0,1
           key = 0
           for item in match
-            res.data[keys[key].replace(/^[?:\/]*/, "") or key] = __getQueryData item
+            res.data[keys[key]?.replace(/^[?:\/]*/, "") or key] = __getQueryData item
             key++
           # Trigger this route event with the retrieved data from the URL
           @triggerEvent event, res
