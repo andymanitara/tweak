@@ -197,7 +197,7 @@ class tweak.Router extends tweak.Events
             # If there is no value from parameters then set it to the value of "true"
             prop = props[2] or "true"
             segment[key] = prop
-    else
+    else if segment
       # If there is no valid query string remove any ? characters
       segment = segment.replace /\?/g, ''
 
