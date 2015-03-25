@@ -77,11 +77,20 @@ class tweak.Events
     Name spacing is useful to separate events into their relevant types.
     It is typical to use colons for name spacing. However you can use any other
     name spacing characters such as / \ - _ or .
+    
+    @overload addEvent(names, callback, context, max)
+      Bind a callback to event(s) with context and/or total calls
+      @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
+      @param [Function] callback The event callback function.
+      @param [Object] context (optional, default = this) The contextual object of which the event to be bound to.
+      @param [Number] max (optional, default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
 
-    @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
-    @param [Function] callback The event callback function.
-    @param [Number] max (Default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
-    @param [Object] context The contextual object of which the event to be bound to.
+    @overload addEvent(names, callback, max, context)
+      Bind a callback to event(s) with total calls and/or context
+      @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
+      @param [Function] callback The event callback function.
+      @param [Number] max The maximum calls on the event listener. After the total calls the events callback will not invoke.
+      @param [Object] context (optional, default = this) The contextual object of which the event to be bound to.
 
     @example Bind a callback to event(s)
       var model;
@@ -89,23 +98,34 @@ class tweak.Events
       model.addEvent("sample:event", function(){
         alert("Sample event triggered.")
       });
-
-    @example Bind a callback to event(s) with a separate context without limitation or total calls
+    
+    @example Bind a callback to event(s) with total calls
       var model;
       model = new Model();
       model.addEvent("sample:event", function(){
         alert("Sample event triggered.")
-      }, null, this);
+      }, 4);
+
+    @example Bind a callback to event(s) with a separate context without total calls
+      var model;
+      model = new Model();
+      model.addEvent("sample:event", function(){
+        alert("Sample event triggered.")
+      }, this);
 
     @example Bind a callback to event(s) with a separate context with maximum calls
       var model;
       model = new Model();
       model.addEvent("sample:event", function(){
         alert("Sample event triggered.")
-      }, 3, this);
+      }, this, 3);
 
   ###
-  addEvent: (names, callback, max, context = @) ->
+  addEvent: (names, callback, context = @, max) ->
+    # Removes the need to have context when trying to pass max calls
+    if typeof context is "number" or context is null
+      max = context
+      context = max or @
     # Find events / build the event path, then iterate through them.
     for event in @findEvent names, true
       ignore = false
