@@ -96,7 +96,7 @@ class tweak.Router extends tweak.Events
   ###
   constructor: (@routes = {}) ->
     @uid = "r_#{tweak.uids.r++}"
-    tweak.History.addEvent "changed", @__urlChanged, null, @
+    tweak.History.addEvent "changed", @__urlChanged, @
 
   ###
     Add a route to the Router.
@@ -248,6 +248,7 @@ class tweak.Router extends tweak.Events
   __urlChanged: (url) ->
     # Remove trailing slashes from url
     url = url.replace /^\/+|\/+$/g, ""
+
     # For each route event
     for event, routes of @routes
       # For each route in the route events routes
