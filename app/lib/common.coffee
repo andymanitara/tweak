@@ -79,13 +79,12 @@ class tweak.Common
     @throw When an object is found but there is an error during processing the found object the following message will appear -
       "Module (#{path}) found. Encountered #{e.name}: #{e.message}".
   ###
-  findModule: (contexts, module, surrogate = null) ->
+  findModule: (contexts, module, surrogate) ->
     # Iterate each context
     for context in contexts
       # Convert path to absolute
-      path = tweak.Common.relToAbs context, module
       try
-        return require path
+        return tweak.Common.require context, module
       catch e
         # If the error thrown isn't a direct call on "Error" Then the module was found however there was an internal error in the module
         if e.name isnt "Error"
@@ -100,17 +99,19 @@ class tweak.Common
     The context path and module path are merged together to create an absolute path.
     @param [String] context The context path.
     @param [String] module The module path to convert to absolute path, based on the context path.
-    @return [Object] Required object.
-    @throw When module can not be loaded the following error message will appear - "No module: #{url}".
+    @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
+    @return [Object] Required object or the surrogate if requested.
+    @throw Error upon no found module.
   ###
-  require: (context, module) ->
-    # Convert path to absolute path
-    url = tweak.Common.relToAbs context, module
+  require: (context, module, surrogate) ->
+    # Convert path to absolute
+    path = tweak.Common.relToAbs context, module
     try
-      result = require url
-    catch error
-      throw new Error "No module: #{url}"
-    result
+      return require path
+    catch e
+      return surrogate if surrogate?
+      throw e
+    return   
 
   ###
     Split a name out to individual absolute names.
