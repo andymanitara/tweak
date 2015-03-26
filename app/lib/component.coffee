@@ -1,5 +1,5 @@
 ###
-  tweak.component.js 1.0.6
+  tweak.component.js 1.0.7
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
