@@ -93,60 +93,6 @@ class tweak.Model extends tweak.Store
     result
 
   ###
-    Import a JSONObject.
-    @param [JSONString] data JSONString to parse.
-    @param [Object] options Options to parse to method.
-    @option options [Array<String>] limit (default = all properties) Limit which properties to convert.
-    @option options [Boolean] overwrite (default = true). If true existing properties will be replaced otherwise they are added to the Model.
-    @option options [Boolean] silent (default = false) If true events are not triggered upon any changes.
-
-    @example Importing a JSONObject to a Model
-      // This is a simple demo with a JSONString being passed
-      var model;
-      model = new tweak.Model();
-      model.import("{'demo':'example'}");
-
-    @example Importing a JSONObject to a model silently
-      // This is a simple demo with a JSONString being passed
-      var model;
-      model = new tweak.Model();
-      model.import("{'demo':'example'}", {
-        silent:true
-      });
-
-    @example Importing a JSONObject to a Model but with restrictions to what should be imported
-      // This is a simple demo with a JSONString being passed with only demo value being updated
-      var model;
-      model = new tweak.Model();
-      model.import("{'demo':'example', 'simon':'pegg'}", {
-        limit:["demo"]
-      });
-  ###
-  import: (data, options = {}) ->
-    @set @parse(data, options.limit), options.silent or true
-    return
-
-  ###
-    Export the Model as a JSONString.
-    @param [Array<String>] limit (default = all properties) Limit which properties to convert.
-    @return [Object] Model as a JSONString
-
-    @example Exporting all data from this Model as a JSONObject
-      var model, jsonString;
-      model = new tweak.Model();
-      jsonString = model.export();
-
-    @example Exporting limited data from this Model as a JSONObject
-      var model, jsonString;
-      model = new tweak.Model();
-      jsonString = model.export([
-        'position',
-        'demo'
-      ]);
-  ###
-  export: (restrict) -> @parse @data, restrict
-
-  ###
     Reset the Model back to defaults.
     @event changed Triggers a generic event that the Model has been updated.
   ###

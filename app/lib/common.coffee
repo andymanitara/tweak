@@ -53,20 +53,9 @@ class tweak.Common
   ###
     Convert a simple JSON string/object.
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
-    @param [Array<String>] limit (Default = all properties get converted) Limit which properties to convert.
     @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
-  parse: (data, limit) ->
-    _limit = (obj) ->
-      if not limit?.length > 0 then return obj
-      res = {}
-      for item in restict
-        res[item] = obj[item]
-      res
-    if typeof data is "string"
-      _limit JSON.parse data
-    else
-      JSON.stringify _limit data
+  parse: (data) -> JSON[if typeof data is "string" then "parse" else "data"] data
 
   ###
     Try to find a module by name in multiple paths. A final surrogate if available will be returned if no module can be found.
@@ -111,7 +100,7 @@ class tweak.Common
     catch e
       return surrogate if surrogate?
       throw e
-    return   
+    return
 
   ###
     Split a name out to individual absolute names.

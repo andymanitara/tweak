@@ -58,6 +58,8 @@ class tweak.Component
   findModule: tweak.Common.findModule
   # @property [Method] see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
+  # @property [Method] see tweak.Common.parse
+  parse: tweak.Common.parse
   # @property [Method] see tweak.super
   super: tweak.super
 
@@ -331,3 +333,25 @@ class tweak.Component
     Resets the controllers events to empty.
   ###
   resetEvents: -> @controller.resetEvents()
+
+  ###
+    This method is used to extract all data of a component. If there is an export method within the Component Controller
+    then the Controller export method will be executed with the data returned from the method.
+    @param [Object] limit Limit the data from model to be exported
+    @return [Object] Extracted data from Component.
+  ###
+  export: (limit) -> @controller.export?() or {model:@model.export limit, components:@components.export()}
+
+  ###
+    This method is used to import data into a component. If there is an import method within the Component Controller
+    then the Controller import method will be executed with the data passed to the method.
+    @param [Object] data Data to import to the Component.
+    @option data [Object] model Object to import into the Component's Model.
+    @option data [Array<Object>] components Array of Objects to import into the Component's Components.
+  ###
+  import: (data) ->
+    if @controller.import?
+      @controller.import data
+    else
+      if data.model then @model.import data.model
+      if data.components then @components.import data.components
