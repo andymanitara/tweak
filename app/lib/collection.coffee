@@ -331,42 +331,6 @@ class tweak.Collection extends tweak.Store
     @data = []
     super()
     return
-  
-  ###
-    Import and parse a JSONString into the Collection (To one depth only).
-    @param [JSONString] data JSONString to parse.
-    @param [Object] options Options to parse to method.
-    @option options [Array<String>] limit (default = all properties) Limit which properties to convert.
-    @option options [Boolean] overwrite (default = true). If true existing properties will be replaced otherwise they are added to the Collection.
-    @option options [Boolean] silent (default = false) If true events are not triggered upon any changes.
-
-    @event changed:#{index} Triggers an event and passes in changed property.
-    @event changed Triggers a generic event that the Collection has been updated.
-  ###
-  import: (data, options = {}) ->
-    data = @parse data, options.limit
-    overwrite = options.overwrite ?= true
-    for key, item of data
-      prop = if item.type
-        new tweak[item.type] @, item.data
-      else item
-      if not overwrite and @data[key]
-        @set {key:prop}, options.silent
-      else @data.add prop, options.silent
-    return
-
-  ###
-    Export the Collection as a JSONString.
-    @param [Array<String>] limit (default = all properties) Limit which properties to convert.
-    @return [Object] Collection as a JSONString
-  ###
-  export: (restrict) ->
-    res = {}
-    for key, item of @data
-      res[key] = if item._type
-        {type:item._type, data:@parse item.export()}
-      else item
-    @parse res, limit
 
   ###
     This method directly accesses the Collection's data's every method.

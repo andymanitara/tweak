@@ -107,24 +107,10 @@ class tweak.Components extends tweak.Collection
 
   ###
     Reset this Collection of components. Also destroys it's components (views removed from DOM).
-    @event changed Triggers a generic event that the store has been updated
+    @event changed Triggers a generic event that the store has been updated.
   ###
   reset: ->
     for item in @data
       item.destroy()
     super()
     return
-
-  ###
-    There is no default import mechanism for this module.
-    @note Add functionality to provide importing a component and its sub components data.
-    It may be that this is a overridable function to supply unique data imports to a component.
-  ###
-  import: ->
-
-  ###
-    There is no default export mechanism for this module.
-    @note Add functionality to provide exporting a component and its sub components data.
-    It may be that this is a overridable function to export unique data from a component.
-  ###
-  export: ->

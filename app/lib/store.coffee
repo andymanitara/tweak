@@ -41,8 +41,8 @@ class tweak.Store extends tweak.Events
 
     @overload set(name, data, silent)
       Set an individual property by the name (String).
-      @param [String] name The name of the property to set.
-      @param [*] data Data to Store in the property being set.
+      @param [String] name The name of the property.
+      @param [*] data Data to Store in the property.
       @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
 
     @overload set(data, silent)
@@ -98,13 +98,40 @@ class tweak.Store extends tweak.Events
     
   ###
     Get a property from the base storage.
-    @param [String] property Property name to look for in the base storage.
-    @return [*] Returns property value of property in the base storage.
+    @param [String, Array<String>] property Property/properties to retrieve from the base storage.
+    @return [*] Property/properties from base storage.
+    
+    @overload get()
+      Get all properties from base storage.
+      @return [Array<*>, Object] Properties from base storage.
 
-    @example Getting property.
+    @overload get(name)
+      Get an individual property by a property name.
+      @param [String] name The name of the property.
+      @return [*] Property from base storage.
+
+    @overload get(limit)
+      Get multiple properties from base storage.
+      @param [Array<String>] limit Array of property names to retrive from the base storage.
+      @return [Array<*>, Object] Properties from base storage.
+
+    @example Get property.
       this.get("sample");
+
+    @example Get mutiple properties.
+      this.get(["sample", "pizza"]);
+
+    @example Get all properties.
+      this.get();
   ###
-  get: (property) -> @data[property]
+  get: (limit) ->
+    if not limit? then return @data
+    if typeof limit is "string" then @data[limit]
+    else
+      base = if @data instanceof Array then [] else {}
+      for item in limit
+        base[item] = @data[item]
+      base
 
   ###
     Checks if a property exists from the base storage.
@@ -140,3 +167,34 @@ class tweak.Store extends tweak.Events
     @length = 0
     @triggerEvent "changed"
     return
+
+  ###
+    Import data into the Store.
+    @param [Object, Array] data data to import.
+    @param [Boolean] silent (optional, default = true) If false events are not triggered upon any changes.
+
+    @event changed:#{index} Triggers an event and passes in changed property.
+    @event changed Triggers a generic event that the Collection has been updated.
+  ###
+  import: (data, silent = true) ->
+    for key, item of data
+      if @data[key].import?
+        @data[key].import item, silent
+      else
+        @data.set key, item, silent
+    return
+
+  ###
+    Export the Store's data.
+    @param [Array<String>] limit (default = all properties) Limit which properties to convert.
+    @return [Object] Collection as a JSONString
+  ###
+  export: (limit) ->
+    res = {}
+    limit ?= @data
+    for key, item of @data
+      if limit[key]? and item.export?
+        res[key] = item.export()
+      else
+        res[key] = item
+    res
