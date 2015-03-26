@@ -70,7 +70,7 @@ class tweak.Components extends tweak.Collection
       for item in @data
         item.controller.addEvent "ready", ->
           if ++@total is @length then @triggerEvent "ready"
-        , 1, @
+        , @, 1
         item[type]()
     return
 

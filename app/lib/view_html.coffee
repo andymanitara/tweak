@@ -1,5 +1,5 @@
 ###
-  tweak.view.html.js 1.0.6
+  tweak.view.html.js 1.0.7
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -70,7 +70,7 @@ class tweak.ViewHTML extends tweak.View
       # Attach template to the DOM and set @el
       attachTo = @config.attach?.to or @config.attach?.name or @name
       parent = @component.parent?.view?.el
-      html = document.getElementsByTagName("html")[0]
+      html = document.documentElement
       attachment = if attachTo.tagName then attachTo
       else @getAttachmentNode(parent) or @getAttachmentNode(html) or parent or html
       
@@ -120,7 +120,7 @@ class tweak.ViewHTML extends tweak.View
     Checks to see if the item is rendered; this is determined if the node has a parentNode.
     @return [Boolean] Returns whether the View has been rendered.
   ###
-  isRendered: -> if document.getElementsByTagName("html")[0].contains @el then true else false
+  isRendered: -> if document.documentElement.contains @el then true else false
   
   ###
     Get the attachment node for this element.

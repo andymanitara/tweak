@@ -1,5 +1,5 @@
 ###
-  tweak.component.js 1.0.6
+  tweak.component.js 1.0.7
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -122,13 +122,14 @@ class tweak.Component
 
     extension = @name
     if options
+      strict = options.strict ?= true
       configs.push @clone options
       if options.extends then extension = options.extends
 
     # Gets all configs, by configs extension path
     name = @parent?.name or @name
     while extension
-      requested = @require name, "#{extension}/config"
+      requested = @require name, "#{extension}/config", if strict then null else {}
       # Store all the paths
       paths.push @relToAbs name, extension
       # Push a clone of the config file to remove reference
@@ -219,9 +220,9 @@ class tweak.Component
     @view.addEvent "#{type}ed", ->
       @components.addEvent "ready", ->
         @controller.triggerEvent "ready"
-      , 1, @
+      , @, 1
       @components[type]()
-    , 1, @
+    , @, 1
     @view[type]()
     return
 
