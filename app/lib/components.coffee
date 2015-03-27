@@ -21,7 +21,7 @@ class tweak.Components extends tweak.Collection
   ###
     The constructor initialises the controllers unique ID, relating Component, its root and its initial configuration.
   ###
-  constructor: (@component, @_config = {}) ->
+  constructor: (@component, @config = []) ->
     @root = @component.root
     @uid = "cp_#{tweak.uids.cp++}"
 
@@ -31,8 +31,8 @@ class tweak.Components extends tweak.Collection
   init: ->
     @data = []
     data = []
-    _name = @component.name or @_config.name
-    for item in @_config
+    _name = @component.name or @config.name
+    for item in @config
       obj = {}
       if item instanceof Array
         names = @splitMultiName _name, item[0]
@@ -52,9 +52,6 @@ class tweak.Components extends tweak.Collection
           obj.name = prop
           @data.push new tweak.Component @, obj
       @data[@length++].init()
-
-      # Remove @_config as the data is no longer required
-      delete @_config
     return
 
   ###
