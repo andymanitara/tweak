@@ -191,10 +191,9 @@ class tweak.Store extends tweak.Events
   ###
   export: (limit) ->
     res = {}
-    limit ?= @data
-    for key, item of @data
-      if limit[key]? and item.export?
+    limit ?= for key, item of @data then key
+    for key in limit when (item = @data[key])?
+      if item.export?
         res[key] = item.export()
-      else
-        res[key] = item
+      else res[key] = item
     res
