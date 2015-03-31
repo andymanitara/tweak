@@ -178,10 +178,10 @@ class tweak.Store extends tweak.Events
   ###
   import: (data, silent = true) ->
     for key, item of data
-      if @data[key].import?
+      if @data[key]?.import?
         @data[key].import item, silent
       else
-        @data.set key, item, silent
+        @set key, item, silent
     return
 
   ###
