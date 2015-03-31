@@ -48,7 +48,7 @@ class tweak.View extends tweak.Events
     if not silent
       @addEvent "rendered", ->
         @triggerEvent "rerendered"
-      , 1
+      , @, 1
     return
 
   ###
