@@ -88,7 +88,6 @@ class tweak.History extends tweak.Events
     # Set the interval rate for older browsers
     @intervalRate = options.interval or @intervalRate
 
-
     # Set the normalized root for the history to check against.
     @root = root = ("/#{options.root or "/"}/").replace /^\/+|\/+$/g, "/"
     # Get the current URL
@@ -98,10 +97,8 @@ class tweak.History extends tweak.Events
     # Validate the hash state - if not at root then replace URL with root & hash
     if useHash and not atRoot
       root = root.slice(0, -1) or "/"
-      @location.replace "#{root}##{@__getPath()}"
-      # Return immediately as browser has now triggered URL change
-      return
-
+      @location.replace "#{root}#{@__getPath()}#"
+      
     # Validate the push state - if not at root she replace URL with root
     else if usePush and atRoot
       @set @__getHash(), {replace: true}
