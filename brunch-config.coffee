@@ -29,14 +29,6 @@ exports.config =
 
     stylesheets:
       joinTo: 'stylesheets/vendor.css': /^(?!app)/
-
-  plugins:
-    autoReload:
-      port: [1234, 2345, 3456]
-      delay: 200 if require('os').platform() is 'win32'
-
-  server:
-    port: 3455
   
   modules:
     definition:false
@@ -46,9 +38,8 @@ exports.config =
     #{data}
     })(window); \n\n
       """
-
+      
   overrides:
     production:
       optimize: false
       sourceMaps: true
-      plugins: autoReload: enabled: false

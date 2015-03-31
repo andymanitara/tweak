@@ -17,7 +17,6 @@
     "test": "brunch test"
   },
   "dependencies": {
-    "auto-reload-brunch": "*",
     "coffee-script-brunch": "*",
     "css-brunch": "*",
     "javascript-brunch": "*"
