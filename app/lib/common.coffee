@@ -161,12 +161,19 @@ class tweak.Common
       version of the same listener, and vice versa.
   ###
   on: (element, type, callback, capture) ->
+    element.__events ?= {}
+    for key, event of element.__events[type] ?= [] when (not callback? or event.callback is callback) and (capture? or event.capture is capture)
+      element.__events[type][key].enabled = true
+      res = true
+    if res then return
+    element.__events[type].push {element, type, callback, capture, enabled:true}
+    fn = (e) -> for event in element.__events[type] when event.enabled then event.callback e, event.element
     if window.addEventListener
-      element.addEventListener type, callback, capture
+      element.addEventListener type, fn, capture
     else if window.attachEvent
-      element.attachEvent "on#{type}", callback
+      element.attachEvent "on#{type}", fn
     else
-      el["on#{type}"] = callback
+      element["on#{type}"] = fn
     return
 
   ###
@@ -181,12 +188,9 @@ class tweak.Common
       and vice versa.
   ###
   off: (element, type, callback, capture) ->
-    if window.removeEventListener
-      element.removeEventListener type, callback, capture
-    else if window.detachEvent
-      element.detachEvent "on#{type}", callback
-    else
-      el["on#{type}"] = null
+    element.__events ?= {}
+    for key, event of element.__events[type] ?= [] when (not callback? or event.callback is callback) and (capture? or event.capture is capture)
+      element.__events[type][key].enabled = false
     return
 
   ###
