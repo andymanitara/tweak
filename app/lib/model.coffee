@@ -68,20 +68,6 @@ class tweak.Model extends tweak.Store
     return
 
   ###
-    Get an element at position of a given number.
-    @param [Number] position Position of property to return.
-    @return [*] Returns data of property by given position.
-  ###
-  at: (position) ->
-    position = Number position
-    data = @data
-    i = 0
-    for key, prop of data
-      if i is position then return data[key]
-      i++
-    null
-
-  ###
     Looks through the store for where the data matches.
     @param [*] property The property data to find a match against.
     @return [Array] Returns an array of the positions of the data.

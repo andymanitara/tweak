@@ -71,11 +71,12 @@ class tweak.Store extends tweak.Events
       data = {}
       data[prevProps] = params[0]
       silent = params[1]
+
+    obj = {}
     for key, prop of data
       prev = @data[key]
       if not prev? then @length++
-      @data[key] = prop
-      
+      @data[key] = @["__set#{key.replace /^[a-z]/, (m) -> m.toUpperCase()}"]?(prop) or prop
       if not silent then @triggerEvent "changed:#{key}", prop
 
     if not silent then @triggerEvent "changed"
@@ -99,6 +100,7 @@ class tweak.Store extends tweak.Events
   ###
     Get a property from the base storage.
     @param [String, Array<String>] property Property/properties to retrieve from the base storage.
+    @param [...] params Parameters to pass into getter method
     @return [*] Property/properties from base storage.
     
     @overload get()
@@ -124,24 +126,47 @@ class tweak.Store extends tweak.Events
     @example Get all properties.
       this.get();
   ###
-  get: (limit) ->
-    if not limit? then return @data
-    if typeof limit is "string" then @data[limit]
-    else
-      base = if @data instanceof Array then [] else {}
-      for item in limit
-        base[item] = @data[item]
-      base
+  get: (limit, params...) ->
+    if not limit?
+      limit = for key, item of @data then key
+    if typeof limit is "string" or typeof limit is "number" then limit = [limit]
+    base = if @data instanceof Array then [] else {}
+    for item, i in limit
+      data = @["__get#{"#{item}".replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
+      if not data? then data = @data[item]
+      base[item] = data
+    if i <= 1 then base = base[item]
+    base
+    
 
   ###
-    Checks if a property exists from the base storage.
-    @param [String] property Property name to look for in the base storage.
+    Checks if a property/properties exists from the base storage.
+    @param [String, Array<String>] limit Property/properties name to look for in the base storage.
+    @param [...] params Parameters to pass into getter method
     @return [Boolean] Returns true or false depending if the property exists in the base storage.
 
-    @example Checking property exists.
+    @overload has(name)
+      Get an individual property by a property name.
+      @param [String] name The name of the property.
+      @return [*] Property from base storage.
+
+    @overload has(limit)
+      Get multiple properties from base storage.
+      @param [Array<String>] limit Array of property names to retrive from the base storage.
+      @return [Array<*>, Object] Properties from base storage.
+
+    @example Get property.
       this.has("sample");
+
+    @example Get mutiple properties.
+      this.has(["sample", "pizza"]);
   ###
-  has: (property) -> @data[property]?
+  has: (limit, params) ->
+    if typeof limit is "string" or typeof limit is "number" then limit = [limit]
+    for item, i in limit
+      data = @["__get#{item.replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
+      if not data? and not @data[item]? then return false
+    true
 
   ###
     Returns an array of keys where the property matches given value.
