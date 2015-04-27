@@ -31,32 +31,32 @@ class tweak.Events
       // This will find all events in the given space delimited string.
       var model;
       model = new Model();
-      model.findEvent("sample:event another:event");
+      model.findEvent('sample:event another:event');
 
     @example Delimited string with build
       // This will find all events in the given space delimited string.
       // If event cannot be found then it will be created.
       var model;
       model = new Model();
-      model.findEvent("sample:event another:event", true);
+      model.findEvent('sample:event another:event', true);
 
     @example Array of names (strings)
       // This will find all events from the names in the given array.
       var model;
       model = new Model();
-      model.findEvent(["sample:event", "another:event"]);
+      model.findEvent(['sample:event', 'another:event']);
 
     @example Array of names (strings) with build
       // This will find all events from the names in the given array.
       // If event cannot be found then it will be created.
       var model;
       model = new Model();
-      model.findEvent(["sample:event", "another:event"], true);
+      model.findEvent(['sample:event', 'another:event'], true);
 
   ###
   findEvent: (names, build = false) ->
     # Split name if it is a string
-    if typeof names is "string"
+    if typeof names is 'string'
       names = names.split /\s+/
     # Initiate @__events property if not yet initialised
     events = @__events = @__events or {}
@@ -65,7 +65,7 @@ class tweak.Events
       # Check if event exists
       if not event = events[item]
         # If we are to build then add a default event else continue the iteration
-        if build then event = @__events[item] = {name:item, __callbacks:[]}
+        if build then event = @__events[item] = name: item, __callbacks: []
         else continue
       # Push found/created event into the returning array
       event
@@ -95,35 +95,35 @@ class tweak.Events
     @example Bind a callback to event(s)
       var model;
       model = new Model();
-      model.addEvent("sample:event", function(){
-        alert("Sample event triggered.")
+      model.addEvent('sample:event', function(){
+        alert('Sample event triggered.')
       });
     
     @example Bind a callback to event(s) with total calls
       var model;
       model = new Model();
-      model.addEvent("sample:event", function(){
-        alert("Sample event triggered.")
+      model.addEvent('sample:event', function(){
+        alert('Sample event triggered.')
       }, 4);
 
     @example Bind a callback to event(s) with a separate context without total calls
       var model;
       model = new Model();
-      model.addEvent("sample:event", function(){
-        alert("Sample event triggered.")
+      model.addEvent('sample:event', function(){
+        alert('Sample event triggered.')
       }, this);
 
     @example Bind a callback to event(s) with a separate context with maximum calls
       var model;
       model = new Model();
-      model.addEvent("sample:event", function(){
-        alert("Sample event triggered.")
+      model.addEvent('sample:event', function(){
+        alert('Sample event triggered.')
       }, this, 3);
 
   ###
   addEvent: (names, callback, context = @, max) ->
     # Removes the need to have context when trying to pass max calls
-    if typeof context is "number" or context is null
+    if typeof context is 'number' or context is null
       max = context
       context = max or @
     # Find events / build the event path, then iterate through them.
@@ -138,7 +138,7 @@ class tweak.Events
           # Reset event calls and make event listen again
           item.calls = 0
           item.listen = ignore = true
-      if not ignore then event.__callbacks.push {ctx:context, callback, max, calls:0, listen:true}
+      if not ignore then event.__callbacks.push {ctx: context, callback, max, calls: 0, listen: true}
     return
 
   ###
@@ -150,12 +150,12 @@ class tweak.Events
     @example Unbind a callback from event(s)
       var model;
       model = new Model();
-      model.removeEvent("sample:event another:event", @callback);
+      model.removeEvent('sample:event another:event', @callback);
 
     @example Unbind all callbacks from event(s)
       var model;
       model = new Model();
-      model.removeEvent("sample:event another:event");
+      model.removeEvent('sample:event another:event');
   ###
   removeEvent: (names, callback, context = @) ->
     # Iterate through found events
@@ -188,21 +188,21 @@ class tweak.Events
     @example Triggering event(s)
       var model;
       model = new Model();
-      model.triggerEvent("sample:event, another:event");
+      model.triggerEvent('sample:event, another:event');
 
     @example Triggering event(s) with parameters
       var model;
       model = new Model();
-      model.triggerEvent("sample:event another:event", "whats my name", "its...");
+      model.triggerEvent('sample:event another:event', 'whats my name', 'its...');
 
     @example Triggering event(s) but only with matching context
       var model;
       model = new Model();
-      model.triggerEvent({context:@, name:"sample:event another:event"});
+      model.triggerEvent({context:@, name:'sample:event another:event'});
   ###
   triggerEvent: (names, params...) ->
     # If names is an object then set names and context
-    if typeof names is "object" and not names instanceof Array
+    if typeof names is 'object' and not names instanceof Array
       names = names.names or []
       context = names.context or null
     
@@ -234,33 +234,33 @@ class tweak.Events
     @example Updating event(s) to not listen
       var model;
       model = new Model();
-      model.updateEvent("sample:event, another:event", {listen:false});
+      model.updateEvent('sample:event, another:event', {listen:false});
 
     @example Updating event(s) to not listen, however limited by optional context and/or callback
       // Limit events that match to a context and callback.
       var model;
       model = new Model();
-      model.updateEvent("sample:event, another:event", {context:@, callback:@callback, listen:false});
+      model.updateEvent('sample:event, another:event', {context:@, callback:@callback, listen:false});
 
       // Limit events that match to a callback.
       var model;
       model = new Model();
-      model.updateEvent("sample:event, another:event", {callback:@anotherCallback, listen:false});
+      model.updateEvent('sample:event, another:event', {callback:@anotherCallback, listen:false});
 
       // Limit events that match to a context.
       var model;
       model = new Model();
-      model.updateEvent("sample:event, another:event", {context:@, listen:false});
+      model.updateEvent('sample:event, another:event', {context:@, listen:false});
 
     @example Updating event(s) maximum calls and reset its current calls
       var model;
       model = new Model();
-      model.updateEvent("sample:event, another:event", {reset:true, max:100});
+      model.updateEvent('sample:event, another:event', {reset:true, max:100});
 
     @example Updating event(s) total calls
       var model;
       model = new Model();
-      model.updateEvent("sample:event, another:event", {calls:29});
+      model.updateEvent('sample:event, another:event', {calls:29});
   ###
   updateEvent: (names, options = {}) ->
     # Set limiters and update properties

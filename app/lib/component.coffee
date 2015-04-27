@@ -63,14 +63,14 @@ class tweak.Component
   # @property [Method] see tweak.super
   super: tweak.super
 
-  modules: ["controller", "model", "view", "router", "components"]
+  modules: ['controller', 'model', 'view', 'router', 'components']
 
   ###
     @param [Object] relation Relation to the Component.
     @param [Object] options Configuration for the Component.
   ###
   constructor: (relation, options) ->
-    if not options? then throw new Error "No options given"
+    if not options? then throw new Error 'No options given'
 
     # Set uid
     @uid = "c_#{tweak.uids.c++}"
@@ -83,7 +83,7 @@ class tweak.Component
     @root = @parent.root or @
     # Set name of Component
     @name = options.name
-    if not @name? then throw new Error "No name given"
+    if not @name? then throw new Error 'No name given'
 
     @config = @__buildConfig(options) or {}
     # Router is optional as it is performance heavy
@@ -108,7 +108,7 @@ class tweak.Component
   ###
   init: ->
     # Call init on all the modules
-    for name in @modules when name isnt "view" and item = @[name]
+    for name in @modules when name isnt 'view' and item = @[name]
       item.init?()
     return
 
@@ -172,7 +172,7 @@ class tweak.Component
     @param [...] params Parameters passed to into the view constructor.
   ###
   __addView: (params...) ->
-    @__addModule "view", tweak.View, params...
+    @__addModule 'view', tweak.View, params...
     return
 
   ###
@@ -181,7 +181,7 @@ class tweak.Component
     @param [...] params Parameters passed to into the model constructor.
   ###
   __addModel: (params...) ->
-    @__addModule "model", tweak.Model, params...
+    @__addModule 'model', tweak.Model, params...
     return
 
   ###
@@ -190,7 +190,7 @@ class tweak.Component
     @param [...] params Parameters passed to into the controller constructor.
   ###
   __addController: (params...) ->
-    @__addModule "controller", tweak.Controller, params...
+    @__addModule 'controller', tweak.Controller, params...
     return
 
   ###
@@ -199,7 +199,7 @@ class tweak.Component
     @param [...] params Parameters passed to into the Components constructor.
   ###
   __addComponents: ->
-    name = "components"
+    name = 'components'
     Module = @findModule @paths, "./#{name}", tweak.Components
     module = @[name] = new Module @, @config[name]
     return
@@ -210,18 +210,18 @@ class tweak.Component
     @param [...] params Parameters passed to into the router constructor.
   ###
   __addRouter: (params...) ->
-    @__addModule "router", tweak.Router, params...
+    @__addModule 'router', tweak.Router, params...
     return
 
   ###
     @private
     Reusable method to render and re-render.
-    @param [String] type The type of rendering to do either "render" or "rerender".
+    @param [String] type The type of rendering to do either 'render' or 'rerender'.
   ###
   __componentRender: (type) ->
     @view.addEvent "#{type}ed", ->
-      @components.addEvent "ready", ->
-        @controller.triggerEvent "ready"
+      @components.addEvent 'ready', ->
+        @controller.triggerEvent 'ready'
       , @, 1
       @components[type]()
     , @, 1
@@ -234,7 +234,7 @@ class tweak.Component
   ###
   render: ->
     name = @name
-    @__componentRender "render"
+    @__componentRender 'render'
     return
 
   ###
@@ -242,7 +242,7 @@ class tweak.Component
     @event ready Triggers ready event when itself and its Components are ready/re-rendered.
   ###
   rerender: ->
-    @__componentRender "rerender"
+    @__componentRender 'rerender'
     return
 
   ###
@@ -340,7 +340,7 @@ class tweak.Component
     @param [Object] limit Limit the data from model to be exported
     @return [Object] Extracted data from Component.
   ###
-  export: (limit) -> @controller.export?() or {model:@model.export limit, components:@components.export()}
+  export: (limit) -> @controller.export?() or model: @model.export limit, components: @components.export()
 
   ###
     This method is used to import data into a component. If there is an import method within the Component Controller

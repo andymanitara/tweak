@@ -24,7 +24,7 @@
 ###
 class tweak.Collection extends tweak.Store
   # @property [String] The type of Store, i.e. 'collection' or 'model'.
-  _type: "collection"
+  _type: 'collection'
 
   ###
     @private
@@ -32,7 +32,7 @@ class tweak.Collection extends tweak.Store
   ###
   __fullTrigger = (data, trigger) ->
     for key, item of data then trigger "changed:#{key}", item
-    triggerEvent "changed", data
+    triggerEvent 'changed', data
 
   ###
     The constructor initialises the controllers unique ID and its initial data.
@@ -95,12 +95,12 @@ class tweak.Collection extends tweak.Store
     @example Inserting two properties from the 3rd position in the array.
       var collection;
       collection = new tweak.Collection();
-      collection.splice(2, 0, ["100", "200"]);
+      collection.splice(2, 0, ['100', '200']);
 
     @example Silently insert two properties from the 3rd position in the array.
       var collection;
       collection = new tweak.Collection();
-      collection.splice(2, 0, ["100", "200"], true);
+      collection.splice(2, 0, ['100', '200'], true);
   ###
   splice: (position, remove, data, silent = false) ->
     @data.splice position, remove, data...
@@ -121,12 +121,12 @@ class tweak.Collection extends tweak.Store
     @example Inserting two properties from the 3rd position in the array.
       var collection;
       collection = new tweak.Collection();
-      collection.insert(2, ["100", "200"]);
+      collection.insert(2, ['100', '200']);
 
     @example Silently insert two properties from the 3rd position in the array.
       var collection;
       collection = new tweak.Collection();
-      collection.splice(2, ["100", "200"], true);
+      collection.splice(2, ['100', '200'], true);
   ###
   insert: (index, data, silent) ->
     @splice position, 0, data, silent
@@ -182,7 +182,7 @@ class tweak.Collection extends tweak.Store
     for index in keys
       @data.splice index, 1
       if not silent then @triggerEvent "removed:#{index}"
-    if not silent then @triggerEvent "changed"
+    if not silent then @triggerEvent 'changed'
     return
 
   ###
@@ -310,12 +310,12 @@ class tweak.Collection extends tweak.Store
     @example Concatenate a set of Arrays to the end of a collection.
       var collection;
       collection = new tweak.Collection();
-      collection.concat([[1,4,6], ["dog", "cat"]);
+      collection.concat([[1,4,6], ['dog', 'cat']);
 
     @example Silently concatenate a set of Arrays to the end of a collection.
       var collection;
       collection = new tweak.Collection();
-      collection.concat([["frog", "toad"]], true);
+      collection.concat([['frog', 'toad']], true);
   ###
   concat: (arrays, silent) ->
     @splice @length-1, 0, [].concat(arrays...), silent

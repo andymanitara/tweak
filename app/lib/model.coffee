@@ -17,7 +17,7 @@ class tweak.Model extends tweak.Store
   # @property [Object] Data storage holder, for a model this is an object.
   data: {}
   # @property [String] The type of Store, i.e. 'collection' or 'model'.
-  _type: "model"
+  _type: 'model'
 
   ###
     The constructor initialises the controllers unique ID and its initial data.
@@ -25,9 +25,9 @@ class tweak.Model extends tweak.Store
     @example Creating a Model with predefined set of data
       var model;
       model = new tweak.Model({
-        "demo":true,
-        "example":false,
-        "position":99
+        'demo':true,
+        'example':false,
+        'position':99
       });
   ###
   constructor: (@data = {}) -> @uid = "m_#{tweak.uids.m++}"
@@ -43,18 +43,18 @@ class tweak.Model extends tweak.Store
     @example Removing a single property.
       var model;
       model = new tweak.Model();
-      model.remove("demo");
+      model.remove('demo');
 
     @example Removing multiple properties.
       var model;
       model = new tweak.Model();
-      model.remove(["demo", "example"]);
+      model.remove(['demo', 'example']);
 
     @example Removing properties silently.
       var model;
       model = new tweak.Model();
-      model.remove(["demo", "example"], true);
-      model.remove("position", true);
+      model.remove(['demo', 'example'], true);
+      model.remove('position', true);
   ###
   remove: (properties, silent) ->
     if typeof properties is 'string' then properties = [properties]
@@ -64,7 +64,7 @@ class tweak.Model extends tweak.Store
         delete @data[key]
         if not silent then @triggerEvent "removed:#{key}"
 
-    if not silent then @triggerEvent "changed"
+    if not silent then @triggerEvent 'changed'
     return
 
   ###

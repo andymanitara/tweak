@@ -28,7 +28,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     if typeof element is 'string'
       if tweak.Selector
         tweak.Selector element, root
-      else throw new Error "No selector engine defined to tweak.Selector"
+      else throw new Error 'No selector engine defined to tweak.Selector'
     else [element]
 
   ###
@@ -113,8 +113,8 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string representing a selector query if using a selector engine
     @return [Number] Returns the element offset value relative to another element.
   ###
-  offsetFrom:(element, from = "top", relativeTo) ->
-    relativeTo ?= document.getElementsByTagName("html")[0]
+  offsetFrom: (element, from = 'top', relativeTo) ->
+    relativeTo ?= document.getElementsByTagName('html')[0]
     relativeTo = @element(relativeTo)[0]
     element = @element(element)[0]
     elementBounds = element.getBoundingClientRect()
@@ -127,7 +127,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string representing a selector query if using a selector engine.
     @return [Number] Returns the top offset of an element relative to another element (or default to the body).
   ###
-  offsetTop: (element, relativeTo) -> @offsetFrom element, "top", relativeTo
+  offsetTop: (element, relativeTo) -> @offsetFrom element, 'top', relativeTo
 
   ###
     Returns the bottom offset of an element relative to another element (or default to the body).
@@ -135,7 +135,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string representing a selector query if using a selector engine.
     @return [Number] Returns the bottom offset of an element relative to another element (or default to the body).
   ###
-  offsetBottom: (element, relativeTo) -> @offsetFrom element, "bottom", relativeTo
+  offsetBottom: (element, relativeTo) -> @offsetFrom element, 'bottom', relativeTo
   
   ###
     Returns the left offset of an element relative to another element (or default to the body).
@@ -143,7 +143,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] relativeTo (default = document.getElementsByTagName("html")[0]) A DOMElement or a string representing a selector query if using a selector engine.
     @return [Number] Returns the left offset of an element relative to another element (or default to the body).
   ###
-  offsetLeft: (element, relativeTo) -> @offsetFrom element, "left", relativeTo
+  offsetLeft: (element, relativeTo) -> @offsetFrom element, 'left', relativeTo
   
   ###
     Returns the right offset of an element relative to another element (or default to the body).
@@ -151,7 +151,7 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
     @param [String, DOMElement] relativeTo (default = window.document.body) A DOMElement or a string representing a selector query if using a selector engine.
     @return [Number] Returns the right offset of an element relative to another element (or default to the body).
   ###
-  offsetRight: (element, relativeTo) -> @offsetFrom element, "right", relativeTo
+  offsetRight: (element, relativeTo) -> @offsetFrom element, 'right', relativeTo
 
   ###
     @private
@@ -179,11 +179,11 @@ class tweak.ViewHTMLAdvanced extends tweak.ViewHTML
       i = 0
       for prop in str2
         name = item[type]
-        if method is "add"
+        if method is 'add'
           if not __has type, item, prop then name += " #{prop}"
         else
           if prop is ' ' then continue
-          if method is "remove"
+          if method is 'remove'
             name = (" #{name} ").split(" #{prop} ").join ' '
           else
             name = (" #{name} ").split(" #{prop} ").join " #{str[i++]} "

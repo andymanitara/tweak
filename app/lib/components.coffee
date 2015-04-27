@@ -12,7 +12,7 @@
 ###
 class tweak.Components extends tweak.Collection
    # @property [String] The type of Store, i.e. 'collection', 'components' or 'model'.
-  _type: "components"
+  _type: 'components'
   # @property [Method] see tweak.Common.relToAbs
   relToAbs: tweak.Common.relToAbs
   # @property [Method] see tweak.Common.splitMultiName
@@ -38,8 +38,8 @@ class tweak.Components extends tweak.Collection
         names = @splitMultiName _name, item[0]
         path = @relToAbs _name, item[1]
         for name in names
-          @data.push new tweak.Component @, {name, extends:path}
-      else if typeof item is "string"
+          @data.push new tweak.Component @, {name, extends: path}
+      else if typeof item is 'string'
         data = @splitMultiName _name, item
         for name in data
           @data.push new tweak.Component @, {name}
@@ -57,16 +57,16 @@ class tweak.Components extends tweak.Collection
   ###
     @private
     Reusable method to render and re-render.
-    @param [String] type The type of rendering to do either "render" or "rerender".
+    @param [String] type The type of rendering to do either 'render' or 'rerender'.
   ###
   __componentRender: (type) ->
     if @length is 0
-      @triggerEvent "ready"
+      @triggerEvent 'ready'
     else
       @total = 0
       for item in @data
-        item.controller.addEvent "ready", ->
-          if ++@total is @length then @triggerEvent "ready"
+        item.controller.addEvent 'ready', ->
+          if ++@total is @length then @triggerEvent 'ready'
         , @, 1
         item[type]()
     return
@@ -76,7 +76,7 @@ class tweak.Components extends tweak.Collection
     @event ready Triggers ready event when itself and its sub-Components are ready/rendered.
   ###
   render: ->
-    @__componentRender "render"
+    @__componentRender 'render'
     return
 
   ###
@@ -84,7 +84,7 @@ class tweak.Components extends tweak.Collection
     @event ready Triggers ready event when itself and its sub-Components are ready/re-rendered.
   ###
   rerender: ->
-    @__componentRender "rerender"
+    @__componentRender 'rerender'
     return
 
   ###

@@ -7,10 +7,9 @@
   http://tweakjs.com
 ###
 
-tweak.Viewable = {
-  width : window.innerWidth or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientWidth
-  height : window.innerHeight or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientHeight
-}
+tweak.Viewable =
+  width: window.innerWidth or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientWidth
+  height: window.innerHeight or (document.documentElement or document.documentElement.getElementsByTagName('body')[0]).clientHeight
 
 ###
   This class extends the View class, extending its rendering functionality for HTML.
@@ -49,17 +48,17 @@ class tweak.ViewHTML extends tweak.View
   ###
   render: (silent) ->
     if @isRendered() and not silent
-      @triggerEvent "rendered"
+      @triggerEvent 'rendered'
       return
       
-    if not @model? then throw new Error "No model attached to View"
+    if not @model? then throw new Error 'No model attached to View'
     config = @config
     config.attach ?= {}
 
     @name = @component.name or @config.name or @uid
     
     # Makes sure that there is an id for this component set, either by the config or by its name
-    className = @model.data.className = @config.className or @name.replace /[\/\\]/g, "-"
+    className = @model.data.className = @config.className or @name.replace /[\/\\]/g, '-'
 
     # Build the template with the date from the model
     template = if config.template then @require @name, config.template else @findModule @component.paths, './template'
@@ -81,7 +80,7 @@ class tweak.ViewHTML extends tweak.View
       @el.className = "#{@el.className} #{className}".replace strip, ''
       @el.id = "#{@el.id} #{@uid}".replace strip, ''
 
-      if not silent then @triggerEvent "rendered"
+      if not silent then @triggerEvent 'rendered'
       @init()
 
     @createAsync template, rendered
@@ -178,7 +177,7 @@ class tweak.ViewHTML extends tweak.View
     @return [DOMElement] Parsed DOMElement.
   ###
   create: (template) ->
-    temp = document.createElement "div"
+    temp = document.createElement 'div'
     frag = document.createDocumentFragment()
     temp.innerHTML = template
     temp.firstChild

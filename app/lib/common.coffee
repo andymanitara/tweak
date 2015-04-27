@@ -29,7 +29,7 @@ class tweak.Common
   ###
   clone: (ref) ->
     # Handle the 3 simple types, and null or undefined. Peturns itself if it tries to clone itself otherwise it will stack overflow
-    return ref if null is ref or "object" isnt typeof ref or ref is @
+    return ref if null is ref or 'object' isnt typeof ref or ref is @
 
     # Handle Date
     if ref instanceof Date
@@ -40,10 +40,10 @@ class tweak.Common
     # Handle Array
     if ref instanceof Array
       copy = []
-    else if typeof ref is "object"
+    else if typeof ref is 'object'
       copy = {}
     else
-      throw new Error "Unable to copy object, type not supported."
+      throw new Error 'Unable to copy object, type not supported.'
 
     # Handle Object
     for attr of ref
@@ -55,7 +55,7 @@ class tweak.Common
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
     @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
-  parse: (data) -> JSON[if typeof data is "string" then "parse" else "data"] data
+  parse: (data) -> JSON[if typeof data is 'string' then 'parse' else 'data'] data
 
   ###
     Try to find a module by name in multiple paths. A final surrogate if available will be returned if no module can be found.
@@ -75,9 +75,9 @@ class tweak.Common
       try
         return tweak.Common.require context, module
       catch e
-        # If the error thrown isn't a direct call on "Error" Then the module was found however there was an internal error in the module
-        if e.name isnt "Error"
-          e.message = "Module (#{"#{path}"}) found. Encountered #{e.name}: #{e.message}"
+        # If the error thrown isn't a direct call on 'Error' Then the module was found however there was an internal error in the module
+        if e.name isnt 'Error'
+          e.message = "Module (#{path}}) found. Encountered #{e.name}: #{e.message}"
           throw e
     return surrogate if surrogate?
     # If no paths are found then throw an error
@@ -104,9 +104,9 @@ class tweak.Common
 
   ###
     Split a name out to individual absolute names.
-    Names formated like "./cd[2-4]" will return an array or something like ["album1/cd2","album1/cd3","album1/cd4"].
-    Names formated like "./cd[2-4]a ./item[1]/model" will return an array or something
-    like ["album1/cd2a","album1/cd3a","album1/cd4a","album1/item0/model","album1/item1/model"].
+    Names formated like './cd[2-4]' will return an array or something like ['album1/cd2','album1/cd3','album1/cd4'].
+    Names formated like './cd[2-4]a ./item[1]/model' will return an array or something
+    like ['album1/cd2a','album1/cd3a','album1/cd4a','album1/item0/model','album1/item1/model'].
     @param [String] context The current context's name.
     @param [String, Array<String>] names The string to split into separate component names.
     @return [Array<String>] Array of absolute names.
@@ -117,7 +117,7 @@ class tweak.Common
     reg = /^(.*)\[(\d*)(?:[,\-](\d*)){0,1}\](.*)$/
 
     # Split name if it is a string
-    if typeof names is "string"
+    if typeof names is 'string'
       names = names.split /\s+/
 
     # Iterate through names in
@@ -166,7 +166,7 @@ class tweak.Common
       element.__events[type][key].enabled = true
       res = true
     if res then return
-    element.__events[type].push {element, type, callback, capture, enabled:true}
+    element.__events[type].push {element, type, callback, capture, enabled: true}
     fn = (e) -> for event in element.__events[type] when event.enabled then event.callback e, event.element
     if window.addEventListener
       element.addEventListener type, fn, capture
@@ -201,11 +201,11 @@ class tweak.Common
   trigger: (element, event) ->
     doc = window.document
     if doc.createEvent
-      if typeof event is "string" then event = new Event event
+      if typeof event is 'string' then event = new Event event
       event.root = element
       element.dispatchEvent event
     else
-      if typeof event is "string" then event = doc.createEventObject()
+      if typeof event is 'string' then event = doc.createEventObject()
       event.root = element
       element.fireEvent "on#{event}", event
     return

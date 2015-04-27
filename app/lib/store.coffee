@@ -51,13 +51,13 @@ class tweak.Store extends tweak.Events
       @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
 
     @example Setting single property.
-      this.set("sample", 100);
+      this.set('sample', 100);
 
     @example Setting multiple properties.
       this.set({sample:100, second:2});
   
     @example Setting properties silently.
-      this.set("sample", 100, true);
+      this.set('sample', 100, true);
       this.set({sample:100, second:2}, true);
 
     @event changed:#{key} Triggers an event and passes in changed property.
@@ -79,7 +79,7 @@ class tweak.Store extends tweak.Events
       @data[key] = @["__set#{key.replace /^[a-z]/, (m) -> m.toUpperCase()}"]?(prop) or prop
       if not silent then @triggerEvent "changed:#{key}", prop
 
-    if not silent then @triggerEvent "changed"
+    if not silent then @triggerEvent 'changed'
     return
 
   ###
@@ -89,8 +89,8 @@ class tweak.Store extends tweak.Events
     @return [Boolean] Are the two Objects the same/similar?
 
     @example comparing objects.
-      this.same({"sample":true},{"sample":true}); //true
-      this.same({"sample":true},{"not":true}); //false
+      this.same({'sample':true},{'sample':true}); //true
+      this.same({'sample':true},{'not':true}); //false
   ###
   same: (one, two) ->
     for key, prop of one
@@ -118,10 +118,10 @@ class tweak.Store extends tweak.Events
       @return [Array<*>, Object] Properties from base storage.
 
     @example Get property.
-      this.get("sample");
+      this.get('sample');
 
     @example Get mutiple properties.
-      this.get(["sample", "pizza"]);
+      this.get(['sample', 'pizza']);
 
     @example Get all properties.
       this.get();
@@ -129,7 +129,7 @@ class tweak.Store extends tweak.Events
   get: (limit, params...) ->
     if not limit?
       limit = for key, item of @data then key
-    if typeof limit is "string" or typeof limit is "number" then limit = [limit]
+    if typeof limit is 'string' or typeof limit is 'number' then limit = [limit]
     base = if @data instanceof Array then [] else {}
     for item, i in limit
       data = @["__get#{"#{item}".replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
@@ -156,13 +156,13 @@ class tweak.Store extends tweak.Events
       @return [Array<*>, Object] Properties from base storage.
 
     @example Get property.
-      this.has("sample");
+      this.has('sample');
 
     @example Get mutiple properties.
-      this.has(["sample", "pizza"]);
+      this.has(['sample', 'pizza']);
   ###
   has: (limit, params) ->
-    if typeof limit is "string" or typeof limit is "number" then limit = [limit]
+    if typeof limit is 'string' or typeof limit is 'number' then limit = [limit]
     for item, i in limit
       data = @["__get#{item.replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
       if not data? and not @data[item]? then return false
@@ -190,7 +190,7 @@ class tweak.Store extends tweak.Events
   ###
   reset: ->
     @length = 0
-    @triggerEvent "changed"
+    @triggerEvent 'changed'
     return
 
   ###

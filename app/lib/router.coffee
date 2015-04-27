@@ -11,58 +11,58 @@
   Which implements splats, parameters and optional parameters.
   
   @example Route with parameters
-    Adding a route ":section:page" or ":section/:page" attached to the event of "navigation", will trigger a
-    "navigation" event and pass the following data with a similar HashState of "/#/5/93".
+    Adding a route ':section:page' or ':section/:page' attached to the event of 'navigation', will trigger a
+    'navigation' event and pass the following data with a similar HashState of '/#/5/93'.
     {
-      url:"/5/93",
+      url:'/5/93',
       data:{
-        section:"5",
-        page:"93"
+        section:'5',
+        page:'93'
       }
     }
   
   @example Route with parameters one being optional
-    Adding a optional parameter route ":section?page" or ":section/?page" attached to the event of "navigation",
-    will trigger a "navigation" event and pass the following data with a similar HashState of "/#/5/6".
+    Adding a optional parameter route ':section?page' or ':section/?page' attached to the event of 'navigation',
+    will trigger a 'navigation' event and pass the following data with a similar HashState of '/#/5/6'.
     {
-      url:"/5/6",
+      url:'/5/6',
       data:{
-        section:"5",
-        page:"6"
+        section:'5',
+        page:'6'
       }
     }
 
-    Adding a optional parameter route ":section?page" or ":section/?page" attached to the event of "navigation",
-    will trigger a "navigation" event and pass the following data with a similar HashState of "/#/5".
+    Adding a optional parameter route ':section?page' or ':section/?page' attached to the event of 'navigation',
+    will trigger a 'navigation' event and pass the following data with a similar HashState of '/#/5'.
     {
-      url:"/5",
+      url:'/5',
       data:{
-        section:"5"
+        section:'5'
       }
     }
   
   @example Route with splat
-    Adding a splat route ":section:page/*" or ":section/:page/*" attached to the event of "navigation", will
-    trigger a "navigation" event and pass the following data with a similar HashState of "/#/5/6/www.example.com".
+    Adding a splat route ':section:page/*' or ':section/:page/*' attached to the event of 'navigation', will
+    trigger a 'navigation' event and pass the following data with a similar HashState of '/#/5/6/www.example.com'.
     {
-      url:"/5/6/www.example.com",
+      url:'/5/6/www.example.com',
       data:{
-        section:"5",
-        page:"6",
-        splat:"www.example.com"
+        section:'5',
+        page:'6',
+        splat:'www.example.com'
       }
     }
   
   @example URL with query string
-    When you want to use URLs that contain a query string, "/blog?id=9836384&light&reply=false", then the data
+    When you want to use URLs that contain a query string, '/blog?id=9836384&light&reply=false', then the data
     sent back to an event will look like:
     {
-      url:"/blog?id=9836384&light&reply=false",
+      url:'/blog?id=9836384&light&reply=false',
       data:{
         blog:{
           id:9836384,
-          light:"true",
-          reply:"false"
+          light:'true',
+          reply:'false'
         }
       }
     }
@@ -85,18 +85,18 @@ class tweak.Router extends tweak.Events
     @example Creating a Router with a set of predefined routes.
       var router;
       router = new tweak.Router({
-        "navigation":[
-          ":section/:page",
+        'navigation':[
+          ':section/:page',
           /:website/:section/?page
         ],
-        "demo":[
-          ":splat/:example/*"
+        'demo':[
+          ':splat/:example/*'
         ]
       });
   ###
   constructor: (@routes = {}) ->
     @uid = "r_#{tweak.uids.r++}"
-    tweak.History.addEvent "changed", @__urlChanged, @
+    tweak.History.addEvent 'changed', @__urlChanged, @
 
   ###
     Add a route to the Router.
@@ -106,12 +106,12 @@ class tweak.Router extends tweak.Events
     @example Adding a single string formatted route to an event.
       var router;
       router = new tweak.Router();
-      router.add("navigation", "/:section/:page");
+      router.add('navigation', '/:section/:page');
   
     @example Adding a single Reg-ex formatted route to an event.
       var router;
       router = new tweak.Router();
-      router.add("navigation", /^(*.)$/);
+      router.add('navigation', /^(*.)$/);
   ###
   add: (event, route) ->
     # If the route event exists then push route to existing event
@@ -124,12 +124,12 @@ class tweak.Router extends tweak.Events
     @overload remove(event, route)
       Remove a single string formatted route from an event.
       @param [String] event The event name to add route to.
-      @param [String] route A string formatted string. (":section/:page")
+      @param [String] route A string formatted string. (':section/:page')
 
     @overload remove(event, route)
       Remove a string containing multiple string formatted routes from an event.
       @param [String] event The event name to add route to.
-      @param [String] route A string containing multiple string formatted routes. (":section/:page :section/:page/*")
+      @param [String] route A string containing multiple string formatted routes. (':section/:page :section/:page/*')
 
     @overload remove(event, route)
       Remove a single Reg-ex formatted route from an event.
@@ -139,23 +139,23 @@ class tweak.Router extends tweak.Events
     @example Removing a single string formatted route from an event
       var router;
       router = new tweak.Router();
-      router.remove("navigation", "/:section/:page");
+      router.remove('navigation', '/:section/:page');
 
     @example Removing a multiple string formatted routes from an event.
       var router;
       router = new tweak.Router();
-      router.remove("navigation", "/:section/:page /:website/:section/?page");
+      router.remove('navigation', '/:section/:page /:website/:section/?page');
   
     @example Removing a single Reg-ex formatted route from an event.
       var router;
       router = new tweak.Router();
-      router.remove("navigation", /^(*.)$/);
+      router.remove('navigation', /^(*.)$/);
   ###
   remove: (event, routes) ->
     routers = @routes[event]
     # Check the route type and removes accordingly
-    if typeof routes is "string"
-      for route in " #{routes.replace /\s+/g, ' '} ".split " "
+    if typeof routes is 'string'
+      for route in " #{routes.replace /\s+/g, ' '} ".split ' '
         routers = " #{routers.join ' '} ".split " #{route} "
     else
       for key, route of routers
@@ -194,8 +194,8 @@ class tweak.Router extends tweak.Events
           props = /(.+)[:=]+(.+)|(.+)/.exec segment
           if props
             key = props[3] or props[1]
-            # If there is no value from parameters then set it to the value of "true"
-            prop = props[2] or "true"
+            # If there is no value from parameters then set it to the value of 'true'
+            prop = props[2] or 'true'
             segment[key] = prop
     else if segment
       # If there is no valid query string remove any ? characters
@@ -221,7 +221,7 @@ class tweak.Router extends tweak.Events
     # Retrieve optional and non-optional parameters from route
     route = route.replace __paramReg, (match) ->
       # The Reg-ex equivalent to a non-optional parameter
-      res = "\\/?([^\\/]*?)"
+      res = '\\/?([^\\/]*?)'
       # If the parameter is optional then wrap the Reg-ex equivalent to make it an optional Reg-ex equivalent
       if /^\/?\?/.exec match then "(?:#{res})?" else res
     # Replace the splat to its Reg-ex equivalent
@@ -236,7 +236,7 @@ class tweak.Router extends tweak.Events
   ###
   __getKeys = (route) ->
     res = route.match(__paramReg) or []
-    res.push "splat"
+    res.push 'splat'
     res
   
   ###
@@ -247,7 +247,7 @@ class tweak.Router extends tweak.Events
   ###
   __urlChanged: (url) ->
     # Remove trailing slashes from url
-    url = url.replace /^\/+|\/+$/g, ""
+    url = url.replace /^\/+|\/+$/g, ''
 
     # For each route event
     for event, routes of @routes
@@ -255,7 +255,7 @@ class tweak.Router extends tweak.Events
       for route in routes
         keys = []
         # If the route is a string formatted route
-        if typeof route is "string"
+        if typeof route is 'string'
           # Get the keys of this string formatted route
           keys = __getKeys route
           # Get the Reg-ex equivalent of the string formatted route
@@ -263,11 +263,11 @@ class tweak.Router extends tweak.Events
         # Check the reg-ex to the URL
         if match = route.exec url
           # Create the data to pass into event
-          res = {url, data:{}}
+          res = {url, data: {}}
           match.splice 0,1
           key = 0
           for item in match
-            res.data[keys[key]?.replace(/^[?:\/]*/, "") or key] = __getQueryData item
+            res.data[keys[key]?.replace(/^[?:\/]*/, '') or key] = __getQueryData item
             key++
           # Trigger this route event with the retrieved data from the URL
           @triggerEvent event, res

@@ -34,7 +34,7 @@ class tweak.View extends tweak.Events
     @event rendered View has been rendered.
   ###
   render: (silent) ->
-    if not silent then @triggerEvent "rendered"
+    if not silent then @triggerEvent 'rendered'
     return
 
   ###
@@ -46,8 +46,8 @@ class tweak.View extends tweak.Events
     @clear()
     @render silent
     if not silent
-      @addEvent "rendered", ->
-        @triggerEvent "rerendered"
+      @addEvent 'rendered', ->
+        @triggerEvent 'rerendered'
       , @, 1
     return
 
