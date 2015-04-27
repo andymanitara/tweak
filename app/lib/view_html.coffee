@@ -130,7 +130,7 @@ class tweak.ViewHTML extends tweak.View
   getAttachmentNode: (parent) ->
     if not parent then return
     # The result is the parent el, or it will try to find a node to attach to in the DOM
-    name = @config.attach?.to or @config.attach?.name or @name
+    name = @config.attach?.to or @name
     nodes = @getChildren parent
     nodes.unshift parent
     for prop in nodes
