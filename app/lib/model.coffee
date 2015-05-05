@@ -59,7 +59,7 @@ class tweak.Model extends tweak.Store
   remove: (properties, silent) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
-      for key, prop of data when key is property
+      for key, prop of @data when key is property
         @length--
         delete @data[key]
         if not silent then @triggerEvent "removed:#{key}"
