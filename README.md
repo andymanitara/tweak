@@ -33,8 +33,9 @@ To download the framework visit the [downloads page](http://dl.tweakjs.com).
 * tweak.components.js (Component and Components)
  * When using this set of modules Tweak.js depends on a **module loader** like [require.js](http://requirejs.org/)
 * tweak.view.html.js (Adds html rendering to a view)
-* tweak.view.html.advanced.js (Additional html functionality)
  * This module extension depends a **selector engine** like [sizzle.js](http://sizzlejs.com/)
+
+ 
 
 ### Bower
 Tweak.js is not yet hosted through bower - I aim to host it through bower when a strong stable version is available.
@@ -83,23 +84,7 @@ Tweak.js is not yet hosted through bower - I aim to host it through bower when a
 <!-- truncated -->
 ```
 
-```
-#### Core - Advanced HTML View
-```html
-<!-- truncated -->
-  <!-- Optional  -->
-  <script src="js/[template engine].js"></script>
-  <script src="js/[module loader].js"></script>
-  <!-- Optional  -->
- 
-  <script src="js/tweak.js"></script>
-  <script src="js/tweak.view.html.js"></script>
-  <script src="js/tweak.view.html.advanced.js"></script>
-</body>
-<!-- truncated -->
-```
-
-#### Core - Components - HTML Advanced View
+#### Core - Components - HTML View
 ```html
 <!-- truncated -->
   <!-- Optional  -->
@@ -110,7 +95,6 @@ Tweak.js is not yet hosted through bower - I aim to host it through bower when a
   <script src="js/tweak.js"></script>
   <script src="js/tweak.components.js"></script>
   <script src="js/tweak.view.html.js"></script>
-  <script src="js/tweak.view.html.advanced.js"></script>
 </body>
 <!-- truncated -->
 ```
@@ -131,9 +115,9 @@ A View is a module used as a presentation layer. Which is used to render, manipu
 
 #### Sub Views
 Tweak.js has multiple layers to the View. Its core being available in the main file of Tweak.js provides simple rendering logic. 
-To render to a web-page using templates the view is further extended with the ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) class. To further manipulate the view/DOM there is another class that adds further functionality this being the ['ViewHTMLAdvanced'](http://docs.tweakjs.com/class/tweak/ViewHTMLAdvanced.html) class. The extra functionality is for manipulating the DOM, it is a very light weight alternative to jQuery for when creating lightweight applications is priority.  
+To render to a web-page using templates the view is further extended with the ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) class.
 
-For more information please look at the [documentation](http://docs.tweakjs.com) under the ['View'](http://docs.tweakjs.com/class/tweak/View.html), ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) and ['ViewHTMLAdvanced'](http://docs.tweakjs.com/class/tweak/ViewHTMLAdvanced.html) sections.
+For more information please look at the [documentation](http://docs.tweakjs.com) under the ['View'](http://docs.tweakjs.com/class/tweak/View.html), ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) sections.
 
 ### Controller
 A Controller defines the business logic between other modules. It can be used to control data flow, logic and more. It should process the data from the Model, interactions and responses from the View, and control the logic between other modules.

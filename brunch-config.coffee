@@ -6,7 +6,6 @@ exports.config =
         'javascripts/tweak.js': /^app(\/|\\)(?!((lib(\/|\\)(view_|component|components))|header|.*(_test)))/
         'javascripts/tweak.component.js': /^app(\/|\\)lib(\/|\\)(component|components)/
         'javascripts/tweak.view.html.js': /^app(\/|\\)lib(\/|\\)view_html\.coffee/
-        'javascripts/tweak.view.html.advanced.js': /^app(\/|\\)lib(\/|\\)view_html_advanced/
         'javascripts/etc/tests.js': /^app(\/|\\).*(?=_test)/
         'javascripts/etc/header.js': /^app(\/|\\)(?=header)/
         'javascripts/etc/vendor.js': /^(?!app)/
