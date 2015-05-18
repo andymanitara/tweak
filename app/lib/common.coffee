@@ -160,9 +160,9 @@ class tweak.Common
       removed separately. Removal of a capturing listener does not affect a non-capturing
       version of the same listener, and vice versa.
   ###
-  on: (element, type, callback, capture) ->
+  on: (element, type, callback, capture = false) ->
     element.__events ?= {}
-    for key, event of element.__events[type] ?= [] when (not callback? or event.callback is callback) and (capture? or event.capture is capture)
+    for key, event of element.__events[type] ?= [] when (not callback? or event.callback is callback) and event.capture is capture
       element.__events[type][key].enabled = true
       res = true
     if res then return
@@ -187,9 +187,9 @@ class tweak.Common
       a capturing listener does not affect a non-capturing version of the same listener,
       and vice versa.
   ###
-  off: (element, type, callback, capture) ->
+  off: (element, type, callback, capture = false) ->
     element.__events ?= {}
-    for key, event of element.__events[type] ?= [] when (not callback? or event.callback is callback) and (capture? or event.capture is capture)
+    for key, event of element.__events[type] ?= [] when (not callback? or event.callback is callback) and event.capture is capture
       element.__events[type][key].enabled = false
     return
 
