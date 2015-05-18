@@ -1,5 +1,5 @@
 ###
-  tweak.component.js 1.1.2
+  tweak.component.js 1.2.0
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -84,6 +84,7 @@ class tweak.Component
     # Set name of Component
     @name = options.name
     if not @name? then throw new Error 'No name given'
+    options.name = @name = @relToAbs @parent.name or '', @name
 
     @config = @__buildConfig(options) or {}
     # Router is optional as it is performance heavy
@@ -138,6 +139,7 @@ class tweak.Component
       configs.push @clone requested
       extension = requested.extends
 
+    @names = paths
     # Combine all the config files into one
     # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]
