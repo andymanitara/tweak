@@ -32,11 +32,6 @@
   tweak.view.html.js (optional)
     Adds core functionality for rendering templates to views in a web page.
     lib/view_html.coffee
-
-  tweak.view.html.advanced.js (optional)
-    Extra functionality for html views - a selector engine is needed.
-    Aim to remove the need for JQuery. In my opinion jQuery is too big of a framework for majority of use case scenarios.
-    lib/view_html_advanced.coffee
 ###
 
 
