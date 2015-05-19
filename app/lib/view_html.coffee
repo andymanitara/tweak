@@ -136,7 +136,7 @@ class tweak.ViewHTML extends tweak.View
       if child then break
       attachment = prop.getAttribute 'data-attach'
       if attachment? and not attachment.match /\s+/
-        for val in @splitMultiName name, attachment
+        for val in @splitMultiName @component.parent.name or '', attachment
           if name is val
             child = prop
             break
