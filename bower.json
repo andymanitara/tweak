@@ -1,11 +1,30 @@
 {
-  "name": "TweakJS",
-  "version": "1.3.0",
+  "name": "tweakjs",
+  "author":"Blake Newman <blake.newman@ignitiononline.com>",
+  "description": "TweakJS MVC Framework",
+  "version": "1.3.1",
+  "license": "MIT",
+  "homepage": "http://tweakjs.com",
   "main": [
-    "public/javascripts/tweak.js",
-    "public/javascripts/tweak.view.html.js"
+    "lib/tweak.js",
+    "lib/tweak.view.html.js"
   ],
-  "dependencies": {
+  "keywords": ["MVC", "Components", "TweakJS", "Application"],
+  "ignore": [
+    "docs",
+    "test",
+    "public",
+    "vendor",
+    "bower_components",
+    "node_modules",
+    ".git",
+    ".editorconfig",
+    ".floo",
+    ".flooignore",
+    ".gitignore",
+    "package.json"
+  ],
+  "devDependencies": {
     "jquery": "*",
     "mocha": "*",
     "chai": "*",
