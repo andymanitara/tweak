@@ -21,13 +21,10 @@
     lib/controller.coffee
     lib/model.coffee
     lib/view.coffee
-    lib/router.coffee
-    lib/history.coffee
-
-  tweak.component.js (optional)
-    To use the component functionality a module loader is needed.
     lib/component.coffee
     lib/components.coffee - collection of components
+    lib/router.coffee
+    lib/history.coffee
   
   tweak.view.html.js (optional)
     Adds core functionality for rendering templates to views in a web page.

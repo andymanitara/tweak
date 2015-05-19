@@ -23,8 +23,7 @@
   },
   "main": [
     "public/javascripts/tweak.js",
-    "public/javascripts/tweak.component.js",
-    "public/javascripts/tweak.view.advanced.js"
+    "public/javascripts/tweak.view.html.js"
   ],
   "directories": {
     "test": "test"

@@ -1,13 +1,4 @@
 ###
-  tweak.component.js 1.2.0
-
-  (c) 2014 Blake Newman.
-  TweakJS may be freely distributed under the MIT license.
-  For all details and documentation:
-  http://tweakjs.com
-###
-
-###
   The future of MVC doesn't always lie in web applications; the architecture to
   TweakJS allows for integration of components anywhere on a website. For example
   you can plug "Web Components" into your static site; like sliders, accordions.

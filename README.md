@@ -30,8 +30,7 @@ To download the framework visit the [downloads page](http://dl.tweakjs.com).
 
 * tweak.js (Models, View, Controller, Collection, Router, Event API, Classes)
  * The view module depends on a **template engine** like [handlebars.js](http://handlebarsjs.com/)
-* tweak.components.js (Component and Components)
- * When using this set of modules Tweak.js depends on a **module loader** like [require.js](http://requirejs.org/)
+ * Tweak.js depends on a **module loader** like [require.js](http://requirejs.org/)
 * tweak.view.html.js (Adds html rendering to a view)
  * This module extension depends a **selector engine** like [sizzle.js](http://sizzlejs.com/)
 
@@ -57,18 +56,6 @@ Tweak.js is not yet hosted through bower - I aim to host it through bower when a
 </body>
 <!-- truncated -->
 ```
-#### Core - Components
-```html
-<!-- truncated -->
-  <!-- Optional  -->
-  <script src="js/[template engine].js"></script>
-  <!-- Optional  -->
-  <script src="js/[module loader].js"></script>
-  <script src="js/tweak.js"></script>
-  <script src="js/tweak.components.js"></script>
-</body>
-<!-- truncated -->
-```
 
 #### Core - HTML View
 ```html
@@ -79,21 +66,6 @@ Tweak.js is not yet hosted through bower - I aim to host it through bower when a
   <!-- Optional  -->
  
   <script src="js/tweak.js"></script>
-  <script src="js/tweak.view.html.js"></script>
-</body>
-<!-- truncated -->
-```
-
-#### Core - Components - HTML View
-```html
-<!-- truncated -->
-  <!-- Optional  -->
-  <script src="js/[template engine].js"></script>
-  <!-- Optional  -->
-
-  <script src="js/[module loader].js"></script>
-  <script src="js/tweak.js"></script>
-  <script src="js/tweak.components.js"></script>
   <script src="js/tweak.view.html.js"></script>
 </body>
 <!-- truncated -->
