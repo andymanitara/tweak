@@ -16,8 +16,11 @@ For a full understanding to the framework please look at the [documentation](htt
 
 ## Use
 ### Installation
+
 BOWER: `bower install tweakjs`
+
 NPM: `npm install tweakjs`
+
 DOWNLOAD: [Downloads page](http://dl.tweakjs.com). (Coming soon)
 
 This framework optionally depends on a **module loader** like [require.js](http://requirejs.org/). It can be used without a module loader however templates will need to be directly attached to a View. When using the Components features you will need to use a module loader.  
