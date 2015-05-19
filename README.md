@@ -1,15 +1,9 @@
 # Tweak.js - MVC your way.
 # Support Notes
-Support for older browsers is being added in. Current support is IE9+. 
-
-Changes below for the core to support older browsers
-## Core
-JSON parsing - http://bestiejs.github.io/json3/
-## view.html
-Rendering 
+Support for older browsers is being added in. Current support for IE is limited to IE9+. 
+To add support for older IE the ViewHTML class needs to be adapted. JSON parsing support is also need you can use this to add that polyfil to IE8 and below http://bestiejs.github.io/json3/
 
 ## Introduction
-
 Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
 
 Initially Tweak.js was primarily designed for CoffeeScripters, although JavaScripters can take advantage of CoffeeScript’s Class features through Tweak.js’ Class module. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple and effective.
@@ -21,23 +15,18 @@ Tweak.js is also built to be as independent as possible, removing needs for larg
 For a full understanding to the framework please look at the [documentation](http://docs.tweakjs.com) or the source code.
 
 ## Use
-
-### Downloads
+### Installation
+BOWER: `bower install tweakjs`
+NPM: `npm install tweakjs`
+DOWNLOAD: [Downloads page](http://dl.tweakjs.com). (Coming soon)
 
 This framework optionally depends on a **module loader** like [require.js](http://requirejs.org/). It can be used without a module loader however templates will need to be directly attached to a View. When using the Components features you will need to use a module loader.  
-
-To download the framework visit the [downloads page](http://dl.tweakjs.com).
 
 * tweak.js (Models, View, Controller, Collection, Router, Event API, Classes)
  * The view module depends on a **template engine** like [handlebars.js](http://handlebarsjs.com/)
  * Tweak.js depends on a **module loader** like [require.js](http://requirejs.org/)
 * tweak.view.html.js (Adds html rendering to a view)
  * This module extension depends a **selector engine** like [sizzle.js](http://sizzlejs.com/)
-
- 
-
-### Bower
-Tweak.js is not yet hosted through bower - I aim to host it through bower when a strong stable version is available.
 
 ### Tags
 [[module loader]](http://www.creativebloq.com/javascript/essential-javascript-top-five-script-loaders-8122862) - List of module/script loaders. Tested & Built with RequireJS so currently it is recommended.
