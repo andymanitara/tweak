@@ -77,7 +77,7 @@ class tweak.Common
       catch e
         # If the error thrown isn't a direct call on 'Error' Then the module was found however there was an internal error in the module
         if e.name isnt 'Error'
-          e.message = "Module (#{path}}) found. Encountered #{e.name}: #{e.message}"
+          e.message = "Module (#{context}}) found. Encountered #{e.name}: #{e.message}"
           throw e
     return surrogate if surrogate?
     # If no paths are found then throw an error
