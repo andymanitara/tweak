@@ -32,8 +32,7 @@ class tweak.History extends tweak.Events
     Start listening to the URL changes to push back the history API if available.
     
     @param [Object] options An optional object to pass in optional arguments
-    @option options [Boolean] pushState (default = true) Specify whether to use pushState if false then hashState will be used.
-    @option options [Boolean] hashState (default = false) Specify whether to use hashState if true then pushState will be set to false.
+    @option options [Boolean] useHash (default = false) Specify whether to use hashState if true then pushState will be set to false.
     @option options [Boolean] forceRefresh (default = false) When set to true then pushState and hashState will not be used.
     @option options [Number] interval (default = null) When set to a number this is what the refresh rate will be when an interval has to be used to check changes to the URL.
     @option options [Boolean] silent (default = false) If set to true then an initial change event trigger will not be called.
@@ -77,30 +76,25 @@ class tweak.History extends tweak.Events
     @started = true
 
     # Set usePush and useHash based on the options passed in.
-    @usePush = usePush = not useHash = @useHash = options.hashState or not options.pushState or not @history?.pushState
-
-    # Make sure using one state or the other
-    if usePush is true then @useHash = useHash = false
+    usePush = @usePush = if options.useHash then false else @history?.pushState
+    useHash = @useHash = not usePush
 
     # If the page is to be refreshed on a navigation event then set both useHash and usePush to false
     if options.forceRefresh or (useHash and not `('onhashchange' in this.window)`) then @usePush = @useHash = useHash = usePush = false
 
     # Set the interval rate for older browsers
-    @intervalRate = options.interval or @intervalRate
+    if options.interval then @intervalRate = options.interval
 
     # Set the normalized root for the history to check against.
     @root = root = ("/#{options.root or '/'}/").replace /^\/+|\/+$/g, '/'
     # Get the current URL
     @url = url = @__getURL()
     location = @location
-    atRoot = @__atRoot()
-    # Validate the hash state - if not at root then replace URL with root & hash
-    if useHash and not atRoot
-      root = root.slice(0, -1) or '/'
-      @location.replace "#{root}#{@__getPath()}#"
-      
-    # Validate the push state - if not at root she replace URL with root
-    else if usePush and atRoot
+    # Validate the hash state
+    if useHash
+      @location.replace "#{root}##{@__getPath()}#{@__getHash()}"
+    # Validate the push state
+    else if usePush and @__getHash() isnt ''
       @set @__getHash(), {replace: true}
 
     # If the browser doesn't support hash or pushState and it isn't being forced to be refreshed
@@ -115,7 +109,7 @@ class tweak.History extends tweak.Events
       @__setHash @iframe, "##{url}", false
 
     @__toggleListeners()
-    if not options.silent then return @triggerEvent 'changed', @url
+    if not options.silent then return @triggerEvent 'changed', @url.replace /^\/+/, ''
   
   ###
    Stop tweak.History. Most likely useful for a web component that uses the history to change state,
@@ -161,7 +155,7 @@ class tweak.History extends tweak.Events
       root = root.slice(0, -1) or  '/'
 
     # Create full URL with root
-    fullUrl = "#{root}#{url}"
+    fullUrl = "#{root}#{url.replace /^\/*/, ''}"
 
     # Strip the hash from the URL and decode
     url = decodeURI url.replace /#.*$/, ''
@@ -183,9 +177,8 @@ class tweak.History extends tweak.Events
       # Return as the page is refreshing at that point
       @location.assign fullURL
       return
-    
     # If the option not to be silent is made then send a change event
-    if not options.silent then @triggerEvent 'changed', @url = url
+    if not options.silent then @triggerEvent 'changed', (@url = url).replace /^\/+/, ''
     return
 
   ###
@@ -211,15 +204,6 @@ class tweak.History extends tweak.Events
         document.body.removeChild @iframe.frameElement
         @iframe = @__interval = null
     return
-
-  ###
-    @private
-    Gets whether the URL is at the root of application.
-    @return Gets whether the URL is at the root of application.
-  ###
-  __atRoot: ->
-    path = @location.pathname.replace /[^\/]$/, '$&/'
-    path is @root and not @__getSearch()
 
   ###
     @private
@@ -273,10 +257,10 @@ class tweak.History extends tweak.Events
         # Get the hash
         url = @__getHash()
 
-    # Return URL without trailing slashes
-    # We may want to neaten the URL with a single prefix slash therefore it accepts 1 prefix slash
-    url.replace /^\/+/g, '/'
-    url.replace /^\/+$/g, ''
+    # Return URL without trailing slashes and force one at start
+    url = url.replace /^\/{2,}/g, '/'
+    if not url.match(/^\/+/) then url ="/#{url}"
+    url.replace /\/+$/g, ''
 
   ###
     @private
