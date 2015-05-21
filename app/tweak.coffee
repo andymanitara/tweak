@@ -1,5 +1,5 @@
 ###
-  tweak.js 1.3.3
+  tweak.js 1.5.0
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -35,6 +35,8 @@
 ### Initialise tweak object to the window ###
 if typeof exports isnt 'undefined' then tweak = window.tweak = exports
 else tweak = window.tweak = {}
+
+tweak.$ = window.jQuery or window.Zepto or window.ender or window.$ or window.Sizzle
 
 ###
   A count for the uid's
