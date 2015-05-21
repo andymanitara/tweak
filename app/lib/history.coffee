@@ -217,7 +217,7 @@ class tweak.History extends tweak.Events
 
   ###
     @private
-    In IE6 the search and hash are wrong when it contains a question mark.
+    Get search part of url
     @return search if it matches or return empty string.
   ###
   __getSearch: ->
