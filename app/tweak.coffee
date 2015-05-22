@@ -32,7 +32,7 @@
 if typeof exports isnt 'undefined' then tweak = window.tweak = exports
 else tweak = window.tweak = {}
 
-tweak.$ = window.jQuery or window.Zepto or window.ender or window.$ or window.Sizzle
+tweak.$ = window.jQuery or window.Zepto or window.ender or window.$
 
 ###
   A count for the uid's
