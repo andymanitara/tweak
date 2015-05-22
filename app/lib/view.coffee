@@ -1,6 +1,4 @@
 ###
-  The core View.
-  
   A View is a module used as a presentation layer. Which is used to render,
   manipulate and listen to an interface. The Model, View and Controller separates
   logic of the Views interaction to that of data and functionality. This helps to
@@ -18,14 +16,6 @@ class tweak.View extends tweak.Events
   uid: 0
   # @property [Method] see tweak.super
   super: tweak.super
-  # @property [Method] see tweak.Common.require
-  require: tweak.Common.require
-  # @property [Method] see tweak.Common.splitMultiName
-  splitMultiName: tweak.Common.splitMultiName
-  # @property [Method] see tweak.Common.relToAbs
-  relToAbs: tweak.Common.relToAbs
-  # @property [Method] see tweak.Common.findModule
-  findModule: tweak.Common.findModule
 
   $ = tweak.$
 
