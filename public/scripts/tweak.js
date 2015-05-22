@@ -2,7 +2,7 @@
 (function(window){
     
 /*
-  tweak.js 1.5.2
+  tweak.js 1.5.4
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -39,7 +39,15 @@ if (typeof exports !== 'undefined') {
   tweak = window.tweak = {};
 }
 
+
+/* Assign DOM manipulation framework to tweak */
+
 tweak.$ = window.jQuery || window.Zepto || window.ender || window.$;
+
+
+/* When tweak.strict is true then config objects must be present for a component */
+
+tweak.strict = false;
 
 
 /*
@@ -2995,12 +3003,11 @@ tweak.Component = (function() {
    */
 
   Component.prototype.__buildConfig = function(options) {
-    var configs, extension, i, name, paths, requested, result, strict, _i, _ref, _ref1;
+    var configs, extension, i, name, paths, requested, result, _i, _ref, _ref1;
     configs = [];
     paths = this.paths = [];
     extension = this.name;
     if (options) {
-      strict = options.strict != null ? options.strict : options.strict = true;
       configs.push(tweak.Common.clone(options));
       if (options["extends"]) {
         extension = options["extends"];
@@ -3008,7 +3015,7 @@ tweak.Component = (function() {
     }
     name = ((_ref = this.parent) != null ? _ref.name : void 0) || this.name;
     while (extension) {
-      requested = tweak.Common.require(name, "" + extension + "/config", strict ? null : {});
+      requested = tweak.Common.require(name, "" + extension + "/config", tweak.strict ? null : {});
       paths.push(tweak.Common.relToAbs(name, extension));
       configs.push(tweak.Common.clone(requested));
       extension = requested["extends"];
