@@ -1,7 +1,4 @@
 # Tweak.js - MVC your way.
-# Support Notes
-Support for older browsers is being added in. Current support for IE is limited to IE9+. 
-To add support for older IE the ViewHTML class needs to be adapted. JSON parsing support is also need you can use this to add that polyfil to IE8 and below http://bestiejs.github.io/json3/
 
 ## Introduction
 Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
@@ -9,8 +6,6 @@ Tweak.js is a MVC framework built to help developers' structure code; for use in
 Initially Tweak.js was primarily designed for CoffeeScripters, although JavaScripters can take advantage of CoffeeScript’s Class features through Tweak.js’ Class module. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple and effective.
 
 In addition to common MVC concepts Tweak.js introduces features like Components. Components are used to dynamically create a set of linking modules like the typical Models, Views and Controllers; that can be configured, extended, reused and organised. Tweak.js also includes Collection and Router modules like that of typical frameworks. Furthermore, to enhance the relationship between modules Tweak.js includes a powerful event system. The event system is simple and designed to extend modules/classes/objects with functionality to link actions between the individual modules.
-
-Tweak.js is also built to be as independent as possible, removing needs for large frameworks such as jQuery. However use of these frameworks is still possible, implemented and used like normal. To keep Tweak.js extremely light it is separated into three fundamental parts. The separation includes a core set of modules, needed for MVC. A set of modules to enable Component based features, and a set of modules that extends the View to increase the View functionality. The extra View functionality can be used when you want to keep file size lighter with DOM manipulation.
 
 For a full understanding to the framework please look at the [documentation](http://docs.tweakjs.com) or the source code.
 
@@ -26,39 +21,21 @@ DOWNLOAD: [Downloads page](http://dl.tweakjs.com). (Coming soon)
 This framework optionally depends on a **module loader** like [require.js](http://requirejs.org/). It can be used without a module loader however templates will need to be directly attached to a View. When using the Components features you will need to use a module loader.  
 
 * tweak.js (Models, View, Controller, Collection, Router, Event API, Classes)
- * The view module depends on a **template engine** like [handlebars.js](http://handlebarsjs.com/)
- * Tweak.js depends on a **module loader** like [require.js](http://requirejs.org/)
-* tweak.view.html.js (Adds html rendering to a view)
- * This module extension depends a **selector engine** like [sizzle.js](http://sizzlejs.com/)
+ * Depends on a **template engine** like [handlebars.js](http://handlebarsjs.com/)
+ * Depends on a **module loader** like [require.js](http://requirejs.org/)
+ * Depends on a **DOM engine** like [jquery](http://jquery.com/) or [zepto](http://zeptojs.com/)
 
 ### Tags
-[[module loader]](http://www.creativebloq.com/javascript/essential-javascript-top-five-script-loaders-8122862) - List of module/script loaders. Tested & Built with RequireJS so currently it is recommended.
+[[module loader]](http://www.creativebloq.com/javascript/essential-javascript-top-five-script-loaders-8122862) - List of module/script loaders.
 
-[[template engine]](http://garann.github.io/template-chooser/) - list of template engines
+[[template engine]](http://garann.github.io/template-chooser/) - list of template engines.
 
-#### Core
 ```html
 <!-- truncated -->
-  <!-- Optional  -->
   <script src="js/[module loader].js"></script>
   <script src="js/[template engine].js"></script>
-  <!-- Optional  -->
-
+  <script src="js/[DOM engine].js"></script>
   <script src="js/tweak.js"></script>
-</body>
-<!-- truncated -->
-```
-
-#### Core - HTML View
-```html
-<!-- truncated -->
-  <!-- Optional  -->
-  <script src="js/[template engine].js"></script>
-  <script src="js/[module loader].js"></script>
-  <!-- Optional  -->
- 
-  <script src="js/tweak.js"></script>
-  <script src="js/tweak.view.html.js"></script>
 </body>
 <!-- truncated -->
 ```
@@ -77,11 +54,7 @@ For more information please look at the [documentation](http://docs.tweakjs.com)
 ### View
 A View is a module used as a presentation layer. Which is used to render, manipulate and listen to an interface. The Model, View and Controller separates logic of the Views interaction to that of data and functionality. This helps to keep code organized and tangle free - the View should primarily be used to render, manipulate and listen to the presentation layer. A View consists of a template to which data is bound to and rendered/re-rendered. 
 
-#### Sub Views
-Tweak.js has multiple layers to the View. Its core being available in the main file of Tweak.js provides simple rendering logic. 
-To render to a web-page using templates the view is further extended with the ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) class.
-
-For more information please look at the [documentation](http://docs.tweakjs.com) under the ['View'](http://docs.tweakjs.com/class/tweak/View.html), ['ViewHTML'](http://docs.tweakjs.com/class/tweak/ViewHTML.html) sections.
+For more information please look at the [documentation](http://docs.tweakjs.com) under the ['View'](http://docs.tweakjs.com/class/tweak/View.html).
 
 ### Controller
 A Controller defines the business logic between other modules. It can be used to control data flow, logic and more. It should process the data from the Model, interactions and responses from the View, and control the logic between other modules.
