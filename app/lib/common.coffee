@@ -17,7 +17,7 @@ class tweak.Common
     for key, prop of two
       if typeof prop is 'object'
         one[key] ?= if prop instanceof Array then [] else {}
-        one[key] = @combine one[key], prop
+        one[key] = tweak.Common.combine one[key], prop
       else
         one[key] = prop
     one
@@ -47,7 +47,7 @@ class tweak.Common
 
     # Handle Object
     for attr of ref
-      if ref.hasOwnProperty(attr) then copy[attr] = @clone ref[attr]
+      if ref.hasOwnProperty(attr) then copy[attr] = tweak.Common.clone ref[attr]
     return copy
 
   ###
@@ -130,9 +130,9 @@ class tweak.Common
         max = result[3] or min
         suffix = result[4]
         while min <= max
-          values.push @relToAbs context, "#{prefix}#{min++}#{suffix}"
+          values.push tweak.Common.relToAbs context, "#{prefix}#{min++}#{suffix}"
       else
-        values.push @relToAbs context, item
+        values.push tweak.Common.relToAbs context, item
     values
 
   ###
