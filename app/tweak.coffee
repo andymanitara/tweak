@@ -25,10 +25,6 @@
     lib/components.coffee - collection of components
     lib/router.coffee
     lib/history.coffee
-  
-  tweak.view.html.js (optional)
-    Adds core functionality for rendering templates to views in a web page.
-    lib/view_html.coffee
 ###
 
 
