@@ -3,10 +3,10 @@ exports.config =
     javascripts:
       defaultExtension: 'coffee'
       joinTo:
-        'javascripts/tweak.js': /^app(\/|\\)(?!((lib(\/|\\)(view_))|header|.*(_test)))/
-        'javascripts/etc/tests.js': /^app(\/|\\).*(?=_test)/
-        'javascripts/etc/header.js': /^app(\/|\\)(?=header)/
-        'javascripts/etc/vendor.js': /^(?!app)/
+        'scripts/tweak.js': /^app(\/|\\)(?!((lib(\/|\\)(view_))|header|.*(_test)))/
+        'scripts/etc/tests.js': /^app(\/|\\).*(?=_test)/
+        'scripts/etc/header.js': /^app(\/|\\)(?=header)/
+        'scripts/etc/vendor.js': /^(?!app)/
       order:
         before: [
           'app/tweak.coffee',
@@ -25,7 +25,7 @@ exports.config =
         ]
 
     stylesheets:
-      joinTo: 'stylesheets/vendor.css': /^(?!app)/
+      joinTo: 'styles/vendor.css': /^(?!app)/
   
   modules:
     definition:false

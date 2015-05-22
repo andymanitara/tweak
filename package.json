@@ -7,13 +7,10 @@
   },
   "description": "TweakJS MVC Framework",
   "keywords": ["MVC", "Components", "TweakJS", "Application"],
-  "version": "1.5.0",
+  "version": "1.5.1",
   "license": "MIT",
   "homepage": "http://tweakjs.com",
-  "main": [
-    "lib/tweak.js",
-    "lib/tweak.view.html.js"
-  ],
+  "main": ["public/scripts/tweak.js"],
   "repository": {
     "type": "git",
     "url": "git://github.com/blake-newman/tweakjs"
