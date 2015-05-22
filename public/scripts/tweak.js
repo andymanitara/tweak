@@ -2,7 +2,7 @@
 (function(window){
     
 /*
-  tweak.js 1.5.7
+  tweak.js 1.5.8
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
