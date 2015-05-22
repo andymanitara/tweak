@@ -15,6 +15,7 @@
     "test",
     "public/styles",
     "public/scripts/etc",
+    "public/index.html",
     "vendor",
     "bower_components",
     "node_modules",
