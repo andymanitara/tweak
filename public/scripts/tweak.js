@@ -2,7 +2,7 @@
 (function(window){
     
 /*
-  tweak.js 1.5.6
+  tweak.js 1.5.7
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -1949,22 +1949,21 @@ tweak.View = (function(_super) {
           return;
         }
         check = function(elements) {
-          var attachment, prop, val, _i, _len, _ref, _results;
-          _ref = [parent];
+          var attachment, prop, val, _i, _len, _results;
           _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            prop = _ref[_i];
+          for (_i = 0, _len = elements.length; _i < _len; _i++) {
+            prop = elements[_i];
             if (child) {
               break;
             }
             attachment = prop.getAttribute('data-attach');
             if ((attachment != null) && !attachment.match(/\s+/)) {
               _results.push((function() {
-                var _j, _len1, _ref1, _results1;
-                _ref1 = tweak.Common.splitMultiName(this.component.parent.name || '', attachment);
+                var _j, _len1, _ref, _results1;
+                _ref = tweak.Common.splitMultiName(this.component.parent.name || '', attachment);
                 _results1 = [];
-                for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-                  val = _ref1[_j];
+                for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+                  val = _ref[_j];
                   if (name === val) {
                     child = prop;
                     break;
@@ -2032,6 +2031,7 @@ tweak.View = (function(_super) {
     }).call(this);
     template = (this.config.template ? tweak.Common.require(this.config.template) : tweak.Common.findModule(this.component.paths, './template'))(((_ref = this.config.view) != null ? _ref.data : void 0) || this.model.data);
     attachTo = ((_ref1 = this.config.attach) != null ? _ref1.to : void 0) || this.component.name;
+    console.log(attachTo);
     parent = (_ref2 = this.component.parent) != null ? (_ref3 = _ref2.view) != null ? _ref3.el : void 0 : void 0;
     attachment = _getAttachment(parent) || _getAttachment(document.documentElement) || parent || document.documentElement;
     this.$el = $(_attach(attachment, template, this.config.attach.method));
