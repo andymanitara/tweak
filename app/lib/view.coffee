@@ -47,7 +47,7 @@ class tweak.View extends tweak.Events
       if not parent then return
       # The result is the parent el, or it will try to find a node to attach to in the DOM
       check = (elements) =>
-        for prop in [parent]
+        for prop in elements
           if child then break
           attachment = prop.getAttribute 'data-attach'
           if attachment? and not attachment.match /\s+/
@@ -92,6 +92,7 @@ class tweak.View extends tweak.Events
        
     # Attach template to the DOM and set @el
     attachTo = @config.attach?.to or @component.name
+    console.log attachTo
     parent = @component.parent?.view?.el
     attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     
