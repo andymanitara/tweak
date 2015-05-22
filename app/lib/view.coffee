@@ -92,7 +92,6 @@ class tweak.View extends tweak.Events
        
     # Attach template to the DOM and set @el
     attachTo = @config.attach?.to or @component.name
-    console.log attachTo
     parent = @component.parent?.view?.el
     attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     
