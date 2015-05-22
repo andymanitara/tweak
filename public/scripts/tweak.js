@@ -2,7 +2,7 @@
 (function(window){
     
 /*
-  tweak.js 1.5.4
+  tweak.js 1.5.5
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -1902,15 +1902,21 @@ tweak.View = (function(_super) {
 
   __extends(View, _super);
 
-  function View() {
-    return View.__super__.constructor.apply(this, arguments);
-  }
-
   View.prototype.uid = 0;
 
   View.prototype["super"] = tweak["super"];
 
   $ = tweak.$;
+
+
+  /*
+    The constructor initialises the Views unique ID and config.
+   */
+
+  function View(config) {
+    this.config = config != null ? config : {};
+    this.uid = "v_" + (tweak.uids.v++);
+  }
 
 
   /*

@@ -20,6 +20,12 @@ class tweak.View extends tweak.Events
   $ = tweak.$
 
   ###
+    The constructor initialises the Views unique ID and config.
+  ###
+  constructor: (@config ={}) -> @uid = "v_#{tweak.uids.v++}"
+    
+
+  ###
     Default initialiser function - called when the View has rendered
   ###
   init: ->
