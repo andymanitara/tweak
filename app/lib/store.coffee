@@ -21,8 +21,6 @@ class tweak.Store extends tweak.Events
   data: []
   # @property [Integer] The UID of this object - for unique reference
   uid: 0
-  # @property [Method] see tweak.Common.parse
-  parse: tweak.Common.parse
   # @property [Method] see tweak.super
   super: tweak.super
 

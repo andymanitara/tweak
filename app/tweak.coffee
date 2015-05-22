@@ -1,5 +1,5 @@
 ###
-  tweak.js 1.3.3
+  tweak.js 1.5.0
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -25,16 +25,14 @@
     lib/components.coffee - collection of components
     lib/router.coffee
     lib/history.coffee
-  
-  tweak.view.html.js (optional)
-    Adds core functionality for rendering templates to views in a web page.
-    lib/view_html.coffee
 ###
 
 
 ### Initialise tweak object to the window ###
 if typeof exports isnt 'undefined' then tweak = window.tweak = exports
 else tweak = window.tweak = {}
+
+tweak.$ = window.jQuery or window.Zepto or window.ender or window.$
 
 ###
   A count for the uid's
