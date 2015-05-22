@@ -38,20 +38,8 @@ class tweak.Component
   router: null
   # @property [Interger] The uid of this object - for unique reference.
   uid: 0
-
-  # @property [Method] see tweak.Common.require
-  require: tweak.Common.require
-  # @property [Method] see tweak.Common.clone
-  clone: tweak.Common.clone
-  # @property [Method] see tweak.Common.combine
-  combine: tweak.Common.combine
-  # @property [Method] see tweak.Common.findModule
-  findModule: tweak.Common.findModule
-  # @property [Method] see tweak.Common.relToAbs
-  relToAbs: tweak.Common.relToAbs
-  # @property [Method] see tweak.Common.parse
-  parse: tweak.Common.parse
-  # @property [Method] see tweak.super
+ 
+   # @property [Method] see tweak.super
   super: tweak.super
 
   modules: ['controller', 'model', 'view', 'router', 'components']
@@ -75,7 +63,7 @@ class tweak.Component
     # Set name of Component
     @name = options.name
     if not @name? then throw new Error 'No name given'
-    options.name = @name = @relToAbs @parent.name or '', @name
+    options.name = @name = tweak.Common.relToAbs @parent.name or '', @name
 
     @config = @__buildConfig(options) or {}
     # Router is optional as it is performance heavy
@@ -117,17 +105,17 @@ class tweak.Component
     extension = @name
     if options
       strict = options.strict ?= true
-      configs.push @clone options
+      configs.push tweak.Common.clone options
       if options.extends then extension = options.extends
 
     # Gets all configs, by configs extension path
     name = @parent?.name or @name
     while extension
-      requested = @require name, "#{extension}/config", if strict then null else {}
+      requested = tweak.Common.require name, "#{extension}/config", if strict then null else {}
       # Store all the paths
-      paths.push @relToAbs name, extension
+      paths.push tweak.Common.relToAbs name, extension
       # Push a clone of the config file to remove reference
-      configs.push @clone requested
+      configs.push tweak.Common.clone requested
       extension = requested.extends
 
 
@@ -137,7 +125,7 @@ class tweak.Component
     # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]
     for i in [configs.length-2..0]
-      result = @combine result, configs[i]
+      result = tweak.Common.combine result, configs[i]
 
     # Set initial values in config if they do not exist
     result.model ?= {}
@@ -155,7 +143,7 @@ class tweak.Component
     @param [...] params Parameters passed into the module on construction.
   ###
   __addModule: (name, surrogate, params...) ->
-    Module = @findModule @paths, "./#{name}", surrogate
+    Module = tweak.Common.findModule @paths, "./#{name}", surrogate
     module = @[name] = new Module @config[name], params...
     module.component = @
     module.root = @root
@@ -195,7 +183,7 @@ class tweak.Component
   ###
   __addComponents: ->
     name = 'components'
-    Module = @findModule @paths, "./#{name}", tweak.Components
+    Module = tweak.Common.findModule @paths, "./#{name}", tweak.Components
     module = @[name] = new Module @, @config[name]
     return
 

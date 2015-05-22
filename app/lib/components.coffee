@@ -13,10 +13,6 @@
 class tweak.Components extends tweak.Collection
    # @property [String] The type of Store, i.e. 'collection', 'components' or 'model'.
   _type: 'components'
-  # @property [Method] see tweak.Common.relToAbs
-  relToAbs: tweak.Common.relToAbs
-  # @property [Method] see tweak.Common.splitMultiName
-  splitMultiName: tweak.Common.splitMultiName
 
   ###
     The constructor initialises the controllers unique ID, relating Component, its root and its initial configuration.
@@ -35,19 +31,19 @@ class tweak.Components extends tweak.Collection
     for item in @config
       obj = {}
       if item instanceof Array
-        names = @splitMultiName _name, item[0]
-        path = @relToAbs _name, item[1]
+        names = tweak.Common.splitMultiName _name, item[0]
+        path = tweak.Common.relToAbs _name, item[1]
         for name in names
           @data.push new tweak.Component @, {name, extends: path}
       else if typeof item is 'string'
-        data = @splitMultiName _name, item
+        data = tweak.Common.splitMultiName _name, item
         for name in data
           @data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
-        data = @splitMultiName _name, name
-        obj.extends = @relToAbs _name, obj.extends
+        data = tweak.Common.splitMultiName _name, name
+        obj.extends = tweak.Common.relToAbs _name, obj.extends
         for prop in data
           obj.name = prop
           @data.push new tweak.Component @, obj
