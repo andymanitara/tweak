@@ -1974,7 +1974,7 @@ tweak.View = (function(_super) {
           }
           return _results;
         };
-        name = ((_ref = _this.component.config.attach) != null ? _ref.to : void 0) || _this.component.name;
+        name = ((_ref = _this.config.attach) != null ? _ref.to : void 0) || _this.component.name;
         check(parent);
         check($('[data-attach]', parent));
         return child;
@@ -2011,7 +2011,7 @@ tweak.View = (function(_super) {
           }
       }
     };
-    if ((_base = this.component.config).attach == null) {
+    if ((_base = this.config).attach == null) {
       _base.attach = {};
     }
     classNames = (function() {
@@ -2024,11 +2024,11 @@ tweak.View = (function(_super) {
       }
       return _results;
     }).call(this);
-    template = (this.component.config.template ? tweak.Common.require(this.component.config.template) : tweak.Common.findModule(this.component.paths, './template'))(((_ref = this.component.config.view) != null ? _ref.data : void 0) || this.model.data);
-    attachTo = ((_ref1 = this.component.config.attach) != null ? _ref1.to : void 0) || this.component.name;
+    template = (this.config.template ? tweak.Common.require(this.config.template) : tweak.Common.findModule(this.component.paths, './template'))(((_ref = this.config.view) != null ? _ref.data : void 0) || this.model.data);
+    attachTo = ((_ref1 = this.config.attach) != null ? _ref1.to : void 0) || this.component.name;
     parent = (_ref2 = this.component.parent) != null ? (_ref3 = _ref2.view) != null ? _ref3.el : void 0 : void 0;
     attachment = _getAttachment(parent) || _getAttachment(document.documentElement) || parent || document.documentElement;
-    this.$el = $(_attach(attachment, template, this.component.config.attach.method));
+    this.$el = $(_attach(attachment, template, this.config.attach.method));
     this.el = this.$el[0];
     this.$el.addClass(classNames.join(' '));
     this.$el.attr('id', this.uid);

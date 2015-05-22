@@ -49,7 +49,7 @@ class tweak.View extends tweak.Events
               if name is val
                 child = prop
                 break
-      name = @component.config.attach?.to or @component.name
+      name = @config.attach?.to or @component.name
       check parent
       check $('[data-attach]', parent)
       child
@@ -76,20 +76,20 @@ class tweak.View extends tweak.Events
             parent.appendChild content
             return parent.lastElementChild
       
-    @component.config.attach ?= {}
+    @config.attach ?= {}
     
     # Makes sure that there is an id for this component set, either by the config or by its name
     classNames = for name in @component.names then name.replace /[\/\\]/g, '-'
 
     # Build the template with the date from the model
-    template = (if @component.config.template then tweak.Common.require @component.config.template else tweak.Common.findModule @component.paths, './template') @component.config.view?.data or @model.data
+    template = (if @config.template then tweak.Common.require @config.template else tweak.Common.findModule @component.paths, './template') @config.view?.data or @model.data
        
     # Attach template to the DOM and set @el
-    attachTo = @component.config.attach?.to or @component.name
+    attachTo = @config.attach?.to or @component.name
     parent = @component.parent?.view?.el
     attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     
-    @$el = $(_attach attachment, template, @component.config.attach.method)
+    @$el = $(_attach attachment, template, @config.attach.method)
     @el = @$el[0]
       
     # Attempt to add class and uid
