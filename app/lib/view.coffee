@@ -34,130 +34,149 @@ class tweak.View extends tweak.Events
     @event rendered The event is called when the View has been rendered.
   ###
   render: (silent) ->
-    if @isRendered() and not silent
-      @triggerEvent 'rendered'
-      return
-      
-    if not @model? then throw new Error 'No model attached to View'
-    config = @config
-    config.attach ?= {}
+    if @isAttached() and not silent then return @triggerEvent 'rendered'
 
-    @name = @component.name or @config.name or @uid
+    _getAttachment = (parent) =>
+      child = null
+      if not parent then return
+      # The result is the parent el, or it will try to find a node to attach to in the DOM
+      check = (elements) =>
+        for prop in [parent]
+          if child then break
+          attachment = prop.getAttribute 'data-attach'
+          if attachment? and not attachment.match /\s+/
+            for val in tweak.Common.splitMultiName @component.parent.name or '', attachment
+              if name is val
+                child = prop
+                break
+      name = @component.config.attach?.to or @component.name
+      check parent
+      check $('[data-attach]', parent)
+      child
+
+    _attach = (parent, content, method) ->
+      content = $(content)[0]
+      switch method
+        when 'prefix', 'before'
+          parent.insertBefore content, parent.firstChild
+          return parent.firstElementChild
+        when 'replace'
+          for item in parent.children
+            try
+              parent.removeChild item
+            catch e
+          parent.appendChild content
+          return parent.firstElementChild
+        else
+          if /^\d+$/.test "#{method}"
+            num = Number(method)
+            parent.insertBefore content, parent.children[num]
+            return parent.children[num]
+          else
+            parent.appendChild content
+            return parent.lastElementChild
+      
+    @component.config.attach ?= {}
     
     # Makes sure that there is an id for this component set, either by the config or by its name
     classNames = for name in @component.names then name.replace /[\/\\]/g, '-'
 
     # Build the template with the date from the model
-    template = if config.template then @require @name, config.template else @findModule @component.paths, './template'
-    template = @template @model.data
+    template = (if @component.config.template then tweak.Common.require @component.config.template else tweak.Common.findModule @component.paths, './template') @component.config.view?.data or @model.data
+       
+    # Attach template to the DOM and set @el
+    attachTo = @component.config.attach?.to or @component.name
+    parent = @component.parent?.view?.el
+    attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     
-    # Create HTML element add add to DOM
-    rendered = (template) =>
-      # Attach template to the DOM and set @el
-      attachTo = @config.attach?.to or @config.attach?.name or @name
-      parent = @component.parent?.view?.el
-      html = document.documentElement
-      attachment = @getAttachmentNode(parent) or @getAttachmentNode(html) or parent or html
+    @$el = $(_attach attachment, template, @component.config.attach.method)
+    @el = @$el[0]
       
-      @$el = $(@attach attachment, template, config.attach.method)
-      @el = @$el[0]
-        
-      # Attempt to add class and uid
-      @$el.addClass classNames.join ' '
-      @$el.attr 'id', @uid
+    # Attempt to add class and uid
+    @$el.addClass classNames.join ' '
+    @$el.attr 'id', @uid
 
-      if not silent then @triggerEvent 'rendered'
-      @init()
-
-    @createAsync template, rendered
+    if not silent then @triggerEvent 'rendered'
+    @init()
     return
 
   ###
-    Clears the View and removed event listeners of DOM elements.
+    Clears and element and removes event listeners on itself and child DOM elements.
+    @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
   ###
-  remove: (element = @el) -> $(element).remove()
-
+  clear: (element = @el) ->
+    element = $(element)[0]
+    remove = element.remove
+    if remove?
+      remove()
+    else
+      elements = $ '*', element
+      elements.push element
+      for el in elements
+        @off el
+      element.parentNode.removeChild element
+      element = null
+    return
   ###
-    Checks to see if the item is rendered; this is determined if the node has a parentNode.
+    Checks to see if the item is attached to ; this is determined if the node has a parentNode.
     @return [Boolean] Returns whether the View has been rendered.
   ###
-  isRendered: -> if document.documentElement.contains @el then true else false
-  
-  ###
-    Get the attachment node for this element.
-    @param [DOMElement] parent the DOM Element to search in
-    @return [DOMElement] Returns the parent DOMElement.
-  ###
-  getAttachmentNode: (parent) ->
-    if not parent then return
-    # The result is the parent el, or it will try to find a node to attach to in the DOM
-    name = @config.attach?.to or @name
-    nodes = @element(parent, '[data-attach]')
-    for prop in nodes or []
-      if child then break
-      attachment = prop.getAttribute 'data-attach'
-      if attachment? and not attachment.match /\s+/
-        for val in @splitMultiName @component.parent.name or '', attachment
-          if name is val
-            child = prop
-            break
-    child
-
-  ###
-    Attach a DOMElement to another DOMElement. Attachment can happen by three methods, inserting before, inserting after, inserting at position and replacing.
-
-    @param [DOMElement] parent DOMElement to attach to.
-    @param [DOMElement] node DOMElement to attach to parent.
-    @param [String, Number] method (Default = append) The method to attach ('prefix'/'before', 'replace', (number) = insert at position) any other method will use the attach method to insert after.
-  ###
-  attach: (parent, node, method) ->
-    switch method
-      when 'prefix', 'before'
-        parent.insertBefore node, parent.firstChild
-        return parent.firstElementChild
-      when 'replace'
-        for item in parent.children
-          try
-            parent.removeChild item
-          catch e
-        parent.appendChild node
-        return parent.firstElementChild
-      else
-        if /^\d+$/.test "#{method}"
-          num = Number(method)
-          parent.insertBefore node, parent.children[num]
-          return parent.children[num]
-        else
-          parent.appendChild node
-          return parent.lastElementChild
-
-  ###
-    Create an Element from a template string.
-    
-    @param [String] template A template String to parse to a DOMElement.
-    @return [DOMElement] Parsed DOMElement.
-  ###
-  create: (template) ->
-    temp = document.createElement 'div'
-    frag = document.createDocumentFragment()
-    temp.innerHTML = template
-    temp.firstChild
-
-  ###
-    Asynchronously create an Element from a template string.
-    
-    @param [String] template A template String to parse to a DOMElement.
-    @return [DOMElement] Parsed DOMElement.
-  ###
-  createAsync: (template, callback) -> setTimeout => callback @create template, 0
+  isAttached: (element = @el, parent = document.documentElement) -> parent.contains element
 
   ###
     Select a DOMElement using a selector engine dependency affixed to the tweak.Selector object.
     @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
     @param [DOMElement] root (Default = @el) The element root to search for elements with a selector engine.
     @return [Array<DOMElement>] An array of DOMElements.
-
-    @throw When trying to use a selector engine without having one assigned to the tweak.Selector property you will
-    receive the following error - "No selector engine defined to tweak.Selector"
   ###
-  element: (element, root= @el) -> $(element, root)
+  element: (element, root= @el) ->
+    if element instanceof Array
+      $ item, root for item in element
+    else $ element, root
+
+  ###
+    Apply event listener to element(s).
+    @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
+    @param [String] type The type of event.
+    @param [Function] callback The method to add to the events callbacks.
+    @param [Boolean] capture (Default = false) After initiating capture, all events of
+      the specified type will be dispatched to the registered listener before being
+      dispatched to any EventTarget beneath it in the DOM tree. Events which are bubbling
+      upward through the tree will not trigger a listener designated to use capture. If
+      a listener was registered twice, one with capture and one without, each must be
+      removed separately. Removal of a capturing listener does not affect a non-capturing
+      version of the same listener, and vice versa.
+  ###
+  on: (element, params...) ->
+    if not $(element).on?(params...)
+      elements = @element(element or @el)
+      tweak.Common.on item, params... for item in elements
+    return
+
+  ###
+    Remove event listener to element(s).
+    @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
+    @param [String] type The type of event.
+    @param [Function] callback The method to remove from the events callbacks
+    @param [Boolean] capture (Default = false) Specifies whether the EventListener being
+      removed was registered as a capturing listener or not. If a listener was registered
+      twice, one with capture and one without, each must be removed separately. Removal of
+      a capturing listener does not affect a non-capturing version of the same listener,
+      and vice versa.
+  ###
+  off: (element, params...) ->
+    if not $(element).off?(params...)
+      elements = @element(element or @el)
+      tweak.Common.off item, params... for item in elements
+    return
+
+  ###
+    Trigger event listener on element(s).
+    @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
+    @param [Event, String] event Event to trigger or string if to create new event.
+  ###
+  trigger: (element, params...) ->
+    if not $(element).trigger?(params...)
+      elements = @element(element or @el)
+      tweak.Common.trigger item, params... for item in elements
+    return
