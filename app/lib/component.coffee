@@ -104,14 +104,13 @@ class tweak.Component
 
     extension = @name
     if options
-      strict = options.strict ?= true
       configs.push tweak.Common.clone options
       if options.extends then extension = options.extends
 
     # Gets all configs, by configs extension path
     name = @parent?.name or @name
     while extension
-      requested = tweak.Common.require name, "#{extension}/config", if strict then null else {}
+      requested = tweak.Common.require name, "#{extension}/config", if tweak.strict then null else {}
       # Store all the paths
       paths.push tweak.Common.relToAbs name, extension
       # Push a clone of the config file to remove reference

@@ -1,5 +1,5 @@
 ###
-  tweak.js 1.5.2
+  tweak.js 1.5.3
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -32,7 +32,11 @@
 if typeof exports isnt 'undefined' then tweak = window.tweak = exports
 else tweak = window.tweak = {}
 
+### Assign DOM manipulation framework to tweak ###
 tweak.$ = window.jQuery or window.Zepto or window.ender or window.$
+
+### When tweak.strict is true then config objects must be present for a component ###
+tweak.strict = false
 
 ###
   A count for the uid's
