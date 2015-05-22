@@ -7,7 +7,7 @@
   },
   "description": "TweakJS MVC Framework",
   "keywords": ["MVC", "Components", "TweakJS", "Application"],
-  "version": "1.5.2",
+  "version": "1.5.3",
   "license": "MIT",
   "homepage": "http://tweakjs.com",
   "main": ["public/scripts/tweak.js"],
