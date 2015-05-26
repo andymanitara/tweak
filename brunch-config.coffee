@@ -4,6 +4,7 @@ exports.config =
       defaultExtension: 'coffee'
       joinTo:
         'scripts/tweak.js': /^app(\/|\\)(?!((lib(\/|\\)(view_))|header|.*(_test)))/
+        'scripts/tweak.min.js': /^app(\/|\\)(?!((lib(\/|\\)(view_))|header|.*(_test)))/
         'scripts/etc/tests.js': /^app(\/|\\).*(?=_test)/
         'scripts/etc/header.js': /^app(\/|\\)(?=header)/
         'scripts/etc/vendor.js': /^(?!app)/
@@ -27,6 +28,11 @@ exports.config =
     stylesheets:
       joinTo: 'styles/vendor.css': /^(?!app)/
   
+  plugins:
+    on: ['uglify-js-brunch']
+    uglify:
+      ignored: /tweak\.js|header\.js|tests\.js|vendor\.js/
+
   modules:
     definition:false
     wrapper: (path, data) ->
@@ -38,5 +44,4 @@ exports.config =
       
   overrides:
     production:
-      optimize: false
       sourceMaps: true
