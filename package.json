@@ -7,7 +7,7 @@
   },
   "description": "TweakJS MVC Framework",
   "keywords": ["MVC", "Components", "TweakJS", "Application"],
-  "version": "1.5.8",
+  "version": "1.5.9",
   "license": "MIT",
   "homepage": "http://tweakjs.com",
   "main": ["public/scripts/tweak.js"],
@@ -24,6 +24,7 @@
   },
   "devDependencies": {
     "coffee-script-brunch": "*",
+    "uglify-js-brunch": "*",
     "css-brunch": "*",
     "javascript-brunch": "*"
   }  
