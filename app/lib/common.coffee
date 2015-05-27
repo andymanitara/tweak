@@ -96,7 +96,7 @@ class tweak.Common
     # Convert path to absolute
     path = tweak.Common.relToAbs context, module
     try
-      return require path
+      return tweak.require path
     catch e
       return surrogate if surrogate?
       throw e

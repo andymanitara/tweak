@@ -35,6 +35,9 @@ else tweak = window.tweak = {}
 ### Assign DOM manipulation framework to tweak ###
 tweak.$ = window.jQuery or window.Zepto or window.ender or window.$
 
-### When tweak.strict is true then config objects must be present for a component ###
-tweak.strict = false
 
+### Assign module loader require to tweak ###
+tweak.require = window.require
+
+### When tweak.strict is true then config objects must be present for a component upon creation ###
+tweak.strict = false
