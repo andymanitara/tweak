@@ -18,12 +18,52 @@ class tweak.View extends tweak.Events
     Default initialiser function - called when the View has rendered
   ###
   init: ->
-    
 
   ###
-    Default initialiser function - called when the View has rendered
+    Default template method. This is used to generate a html fro a template engine ect, to be used during the rendering
+    process.By default this method will generate a template through handlebars, it will also seek out the handlebars
+    template through the module loader.
+    @return [String] Returns a string representaion of HTML to attach to view during render.
   ###
-  init: ->
+  template: ->
+    config = @component.config.view or {}
+    (if config.template then tweak.Common.require config.template else tweak.Common.findModule @component.paths, './template') config.data or @model._data
+
+  ###
+    Default attach method. This is used to attach a HTML string to an element. You can override this method with your
+    own attachment functionality.
+
+    @param [DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
+    @param [String] content A HTML representation of a string
+    @return [DOMElement] Returns athe attached DOMElement
+  ###
+  attach: (parent, content) ->
+    content = $(content)[0]
+    switch method = @component.config.view?.attach?.method
+      when 'prefix', 'before'
+        parent.insertBefore content, parent.firstChild
+        return parent.firstElementChild
+      when 'replace'
+        for item in parent.children
+          try
+            parent.removeChild item
+          catch e
+        parent.appendChild content
+        return parent.firstElementChild
+      else
+        if /^\d+$/.test "#{method}"
+          num = Number(method)
+          parent.insertBefore content, parent.children[num]
+          return parent.children[num]
+        else
+          parent.appendChild content
+          return parent.lastElementChild
+
+  ###
+    Checks to see if the item is attached to ; this is determined if the node has a parentNode.
+    @return [Boolean] Returns whether the View has been rendered.
+  ###
+  isAttached: (element = @el, parent = document.documentElement) -> parent.contains element
 
   ###
     Renders the View, using a html template engine. The View is loaded asynchronously, this prevents the DOM from
@@ -36,6 +76,8 @@ class tweak.View extends tweak.Events
   ###
   render: (silent) ->
     if @isAttached() and not silent then return @triggerEvent 'rendered'
+
+    config = @component.config.view
 
     _getAttachment = (parent) =>
       child = null
@@ -50,45 +92,17 @@ class tweak.View extends tweak.Events
               if name is val
                 child = prop
                 break
-      name = @config.attach?.to or @component.name
+      name = config.attach?.to or @component.name
       check parent
       check $('[data-attach]', parent)
       child
-
-    _attach = (parent, content, method) ->
-      content = $(content)[0]
-      switch method
-        when 'prefix', 'before'
-          parent.insertBefore content, parent.firstChild
-          return parent.firstElementChild
-        when 'replace'
-          for item in parent.children
-            try
-              parent.removeChild item
-            catch e
-          parent.appendChild content
-          return parent.firstElementChild
-        else
-          if /^\d+$/.test "#{method}"
-            num = Number(method)
-            parent.insertBefore content, parent.children[num]
-            return parent.children[num]
-          else
-            parent.appendChild content
-            return parent.lastElementChild
-      
-    @config.attach ?= {}
     
-
-    # Build the template with the date from the model
-    template = (if @config.template then tweak.Common.require @config.template else tweak.Common.findModule @component.paths, './template') @config.view?.data or @model.data
-       
     # Attach template to the DOM and set @el
-    attachTo = @config.attach?.to or @component.name
+    attachTo = config?.attach?.to or @component.name
     parent = @component.parent?.view?.el
     attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     
-    @$el = $(_attach attachment, template, @config.attach.method)
+    @$el = $(@attach attachment, @template())
     @el = @$el[0]
       
     # Add class names
@@ -106,23 +120,8 @@ class tweak.View extends tweak.Events
     @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
   ###
   clear: (element = @el) ->
-    element = $(element)[0]
-    remove = element.remove
-    if remove?
-      remove()
-    else
-      elements = $ '*', element
-      elements.push element
-      for el in elements
-        @off el
-      element.parentNode.removeChild element
-      element = null
+    $(element).remove()
     return
-  ###
-    Checks to see if the item is attached to ; this is determined if the node has a parentNode.
-    @return [Boolean] Returns whether the View has been rendered.
-  ###
-  isAttached: (element = @el, parent = document.documentElement) -> parent.contains element
 
   ###
     Select a DOMElement using a selector engine dependency affixed to the tweak.Selector object.
