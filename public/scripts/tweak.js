@@ -2,7 +2,7 @@
 (function(window){
     
 /*
-  tweak.js 1.5.9
+  tweak.js 1.6.0
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -45,72 +45,30 @@ if (typeof exports !== 'undefined') {
 tweak.$ = window.jQuery || window.Zepto || window.ender || window.$;
 
 
-/* When tweak.strict is true then config objects must be present for a component */
+/* Assign module loader require to tweak */
+
+tweak.require = window.require;
+
+
+/* When tweak.strict is true then config objects must be present for a component upon creation */
 
 tweak.strict = false;
-
-
-/*
-  A count for the uid's
-  Multiple sets of uid codes so its more manageable
-
-  c = component
-  cp = components
-  v = view
-  m = model
-  r = router
-  cl = collection
-  ct = controller
-  s = store
- */
-
-tweak.uids = {
-  c: 0,
-  cp: 0,
-  v: 0,
-  m: 0,
-  r: 0,
-  cl: 0,
-  ct: 0,
-  s: 0
-};
 
     })(window); 
 
 ;;
 (function(window){
-    tweak["__hasProp"] = {}.hasOwnProperty;
-
-tweak.Extends = function(child, parent) {
-  var ctor, key;
-  ctor = function() {
-    this.constructor = child;
-  };
-  for (key in parent) {
-    if (tweak["__hasProp"].call(parent, key)) {
-      child[key] = parent[key];
-    }
-  }
-  ctor.prototype = parent.prototype;
-  child.prototype = new ctor();
-  child.__super__ = parent.prototype;
-  return child;
-};
-
-tweak.Super = function(context, name) {
-  return context.__super__[name].call(this);
-};
-
-
+    
 /*
   TweakJS was initially designed in CoffeeScript for CoffeeScripters. It is much
   easier to use the framework in CoffeeScript; however those using JS the
   following helpers will provide extending features that CoffeeScipt possess.
   These can also be used to reduce the file size of compiled CoffeeScript files.
  */
-
 tweak.Class = (function() {
   function Class() {}
+
+  Class.prototype["__hasProp"] = {}.hasOwnProperty;
 
 
   /*
@@ -120,7 +78,23 @@ tweak.Class = (function() {
     @return [Object] Extended object
    */
 
-  Class.prototype["extends"] = function(child, parent) {};
+  Class.prototype["extends"] = function(child, parent) {
+    return function(child, parent) {
+      var ctor, key;
+      ctor = function() {
+        this.constructor = child;
+      };
+      for (key in parent) {
+        if (this["__hasProp"].call(parent, key)) {
+          child[key] = parent[key];
+        }
+      }
+      ctor.prototype = parent.prototype;
+      child.prototype = new ctor();
+      child.__super__ = parent.prototype;
+      return child;
+    };
+  };
 
 
   /*
@@ -132,7 +106,9 @@ tweak.Class = (function() {
     @param [string] name The method name to call super upon.
    */
 
-  Class.prototype["super"] = function(context, name) {};
+  Class.prototype["super"] = function(context, name) {
+    return context.__super__[name].call(this);
+  };
 
   return Class;
 
@@ -218,7 +194,7 @@ tweak.Common = (function() {
    */
 
   Common.prototype.parse = function(data) {
-    return JSON[typeof data === 'string' ? 'parse' : 'data'](data);
+    return tweak.$[typeof data === 'string' ? 'parseJSON' : 'getJSON'](data);
   };
 
 
@@ -269,7 +245,7 @@ tweak.Common = (function() {
     var e, path;
     path = tweak.Common.relToAbs(context, module);
     try {
-      return require(path);
+      return tweak.require(path);
     } catch (_error) {
       e = _error;
       if (surrogate != null) {
@@ -331,124 +307,6 @@ tweak.Common = (function() {
     return name.replace(/^(\.+[\/\\]*)+/, "" + context + "/");
   };
 
-
-  /*
-    Apply event listener to a DOMElement, with cross/old browser support.
-    @param [DOMElement] element A DOMElement.
-    @param [String] type The type of event.
-    @param [Function] callback The method to add to the events callbacks.
-    @param [Boolean] capture (Default = false) After initiating capture, all events of
-      the specified type will be dispatched to the registered listener before being
-      dispatched to any EventTarget beneath it in the DOM tree. Events which are bubbling
-      upward through the tree will not trigger a listener designated to use capture. If
-      a listener was registered twice, one with capture and one without, each must be
-      removed separately. Removal of a capturing listener does not affect a non-capturing
-      version of the same listener, and vice versa.
-   */
-
-  Common.prototype.on = function(element, type, callback, capture) {
-    var event, fn, key, res, _base, _ref;
-    if (capture == null) {
-      capture = false;
-    }
-    if (element.__events == null) {
-      element.__events = {};
-    }
-    _ref = (_base = element.__events)[type] != null ? _base[type] : _base[type] = [];
-    for (key in _ref) {
-      event = _ref[key];
-      if (!(((callback == null) || event.callback === callback) && event.capture === capture)) {
-        continue;
-      }
-      element.__events[type][key].enabled = true;
-      res = true;
-    }
-    if (res) {
-      return;
-    }
-    element.__events[type].push({
-      element: element,
-      type: type,
-      callback: callback,
-      capture: capture,
-      enabled: true
-    });
-    fn = function(e) {
-      var _i, _len, _ref1, _results;
-      _ref1 = element.__events[type];
-      _results = [];
-      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-        event = _ref1[_i];
-        if (event.enabled) {
-          _results.push(event.callback(e, event.element));
-        }
-      }
-      return _results;
-    };
-    if (window.addEventListener) {
-      element.addEventListener(type, fn, capture);
-    } else if (window.attachEvent) {
-      element.attachEvent("on" + type, fn);
-    } else {
-      element["on" + type] = fn;
-    }
-  };
-
-
-  /*
-    Remove event listener to a DOMElement, with cross/old browser support.
-    @param [DOMElement] element A DOMElement.
-    @param [String] type The type of event.
-    @param [Function] callback The method to remove from the events callbacks.
-    @param [Boolean] capture (Default = false) Specifies whether the EventListener being
-      removed was registered as a capturing listener or not. If a listener was registered
-      twice, one with capture and one without, each must be removed separately. Removal of
-      a capturing listener does not affect a non-capturing version of the same listener,
-      and vice versa.
-   */
-
-  Common.prototype.off = function(element, type, callback, capture) {
-    var event, key, _base, _ref;
-    if (capture == null) {
-      capture = false;
-    }
-    if (element.__events == null) {
-      element.__events = {};
-    }
-    _ref = (_base = element.__events)[type] != null ? _base[type] : _base[type] = [];
-    for (key in _ref) {
-      event = _ref[key];
-      if (((callback == null) || event.callback === callback) && event.capture === capture) {
-        element.__events[type][key].enabled = false;
-      }
-    }
-  };
-
-
-  /*
-    Trigger event listener on a DOMElement, with cross/old browser support.
-    @param [DOMElement] element A DOMElement to trigger event on.
-    @param [Event, String] event Event to trigger or string if to create new event.
-   */
-
-  Common.prototype.trigger = function(element, event) {
-    var doc;
-    doc = window.document;
-    if (doc.createEvent) {
-      if (typeof event === 'string') {
-        event = new Event(event);
-      }
-      event.root = element;
-      element.dispatchEvent(event);
-    } else {
-      if (typeof event === 'string') {
-        event = doc.createEventObject();
-      }
-      event.root = element;
-      element.fireEvent("on" + event, event);
-    }
-  };
-
   return Common;
 
 })();
@@ -473,10 +331,16 @@ tweak.Common = new tweak.Common();
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __slice = [].slice;
+var __hasProp = {}.hasOwnProperty,
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  __slice = [].slice;
 
-tweak.Events = (function() {
-  function Events() {}
+tweak.Events = (function(_super) {
+  __extends(Events, _super);
+
+  function Events() {
+    return Events.__super__.constructor.apply(this, arguments);
+  }
 
 
   /*
@@ -816,7 +680,7 @@ tweak.Events = (function() {
 
   return Events;
 
-})();
+})(tweak.Class);
 
     })(window); 
 
@@ -843,24 +707,13 @@ var __hasProp = {}.hasOwnProperty,
 tweak.Store = (function(_super) {
   __extends(Store, _super);
 
+  function Store() {
+    return Store.__super__.constructor.apply(this, arguments);
+  }
+
   Store.prototype._type = 'BASE';
 
   Store.prototype.length = 0;
-
-  Store.prototype.data = [];
-
-  Store.prototype.uid = 0;
-
-  Store.prototype["super"] = tweak["super"];
-
-
-  /*
-    The constructor initialises the controllers unique ID.
-   */
-
-  function Store() {
-    this.uid = "s_" + (tweak.uids.s++);
-  }
 
 
   /*
@@ -912,11 +765,11 @@ tweak.Store = (function(_super) {
     obj = {};
     for (key in data) {
       prop = data[key];
-      prev = this.data[key];
+      prev = this._data[key];
       if (prev == null) {
         this.length++;
       }
-      this.data[key] = (typeof this[_name = "__set" + (key.replace(/^[a-z]/, function(m) {
+      this._data[key] = (typeof this[_name = "__set" + (key.replace(/^[a-z]/, function(m) {
         return m.toUpperCase();
       }))] === "function" ? this[_name](prop) : void 0) || prop;
       if (!silent) {
@@ -988,7 +841,7 @@ tweak.Store = (function(_super) {
     if (limit == null) {
       limit = (function() {
         var _ref, _results;
-        _ref = this.data;
+        _ref = this._data;
         _results = [];
         for (key in _ref) {
           item = _ref[key];
@@ -1000,14 +853,14 @@ tweak.Store = (function(_super) {
     if (typeof limit === 'string' || typeof limit === 'number') {
       limit = [limit];
     }
-    base = this.data instanceof Array ? [] : {};
+    base = this._data instanceof Array ? [] : {};
     for (i = _i = 0, _len = limit.length; _i < _len; i = ++_i) {
       item = limit[i];
       data = typeof this[_name = "__get" + (("" + item).replace(/^[a-z]/, function(m) {
         return m.toUpperCase();
       }))] === "function" ? this[_name].apply(this, params) : void 0;
       if (data == null) {
-        data = this.data[item];
+        data = this._data[item];
       }
       base[item] = data;
     }
@@ -1051,7 +904,7 @@ tweak.Store = (function(_super) {
       data = typeof this[_name = "__get" + (item.replace(/^[a-z]/, function(m) {
         return m.toUpperCase();
       }))] === "function" ? this[_name].apply(this, params) : void 0;
-      if ((data == null) && (this.data[item] == null)) {
+      if ((data == null) && (this._data[item] == null)) {
         return false;
       }
     }
@@ -1071,7 +924,7 @@ tweak.Store = (function(_super) {
   Store.prototype.where = function(value) {
     var data, key, prop, result;
     result = [];
-    data = this.data;
+    data = this._data;
     for (key in data) {
       prop = data[key];
       if (prop === value) {
@@ -1110,8 +963,8 @@ tweak.Store = (function(_super) {
     }
     for (key in data) {
       item = data[key];
-      if (((_ref = this.data[key]) != null ? _ref["import"] : void 0) != null) {
-        this.data[key]["import"](item, silent);
+      if (((_ref = this._data[key]) != null ? _ref["import"] : void 0) != null) {
+        this._data[key]["import"](item, silent);
       } else {
         this.set(key, item, silent);
       }
@@ -1131,7 +984,7 @@ tweak.Store = (function(_super) {
     if (limit == null) {
       limit = (function() {
         var _ref, _results;
-        _ref = this.data;
+        _ref = this._data;
         _results = [];
         for (key in _ref) {
           item = _ref[key];
@@ -1183,8 +1036,6 @@ var __hasProp = {}.hasOwnProperty,
 tweak.Model = (function(_super) {
   __extends(Model, _super);
 
-  Model.prototype.data = {};
-
   Model.prototype._type = 'model';
 
 
@@ -1200,9 +1051,8 @@ tweak.Model = (function(_super) {
       });
    */
 
-  function Model(data) {
-    this.data = data != null ? data : {};
-    this.uid = "m_" + (tweak.uids.m++);
+  function Model(_data) {
+    this._data = _data != null ? _data : {};
   }
 
 
@@ -1238,14 +1088,14 @@ tweak.Model = (function(_super) {
     }
     for (_i = 0, _len = properties.length; _i < _len; _i++) {
       property = properties[_i];
-      _ref = this.data;
+      _ref = this._data;
       for (key in _ref) {
         prop = _ref[key];
         if (!(key === property)) {
           continue;
         }
         this.length--;
-        delete this.data[key];
+        delete this._data[key];
         if (!silent) {
           this.triggerEvent("removed:" + key);
         }
@@ -1266,7 +1116,7 @@ tweak.Model = (function(_super) {
   Model.prototype.pluck = function(property) {
     var key, prop, result, _ref;
     result = [];
-    _ref = this.data;
+    _ref = this._data;
     for (key in _ref) {
       prop = _ref[key];
       if (prop === property) {
@@ -1283,7 +1133,7 @@ tweak.Model = (function(_super) {
    */
 
   Model.prototype.reset = function() {
-    this.data = {};
+    this._data = {};
     Model.__super__.reset.call(this);
   };
 
@@ -1358,9 +1208,8 @@ tweak.Collection = (function(_super) {
       ]);
    */
 
-  function Collection(data) {
-    this.data = data != null ? data : [];
-    this.uid = "cl_" + (tweak.uids.cl++);
+  function Collection(_data) {
+    this._data = _data != null ? _data : [];
   }
 
 
@@ -1434,10 +1283,10 @@ tweak.Collection = (function(_super) {
     if (silent == null) {
       silent = false;
     }
-    (_ref = this.data).splice.apply(_ref, [position, remove].concat(__slice.call(data)));
-    this.length = this.data.length;
+    (_ref = this._data).splice.apply(_ref, [position, remove].concat(__slice.call(data)));
+    this.length = this._data.length;
     if (!silent) {
-      __fullTrigger(this.data, this.triggerEvent);
+      __fullTrigger(this._data, this.triggerEvent);
     }
   };
 
@@ -1524,7 +1373,7 @@ tweak.Collection = (function(_super) {
     }
     for (_i = 0, _len = keys.length; _i < _len; _i++) {
       index = keys[_i];
-      this.data.splice(index, 1);
+      this._data.splice(index, 1);
       if (!silent) {
         this.triggerEvent("removed:" + index);
       }
@@ -1583,7 +1432,7 @@ tweak.Collection = (function(_super) {
   Collection.prototype.pop = function(silent) {
     var length, result;
     length = this.length - 1;
-    result = this.data[length];
+    result = this._data[length];
     this.remove(length, silent);
     return result;
   };
@@ -1610,7 +1459,7 @@ tweak.Collection = (function(_super) {
 
   Collection.prototype.shift = function(silent) {
     var result;
-    result = this.data[0];
+    result = this._data[0];
     this.remove(0, silent);
     return result;
   };
@@ -1669,7 +1518,7 @@ tweak.Collection = (function(_super) {
 
   Collection.prototype.indexes = function(value) {
     var index, prop, _ref, _results;
-    _ref = this.data;
+    _ref = this._data;
     _results = [];
     for (index in _ref) {
       prop = _ref[index];
@@ -1711,7 +1560,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.reset = function() {
-    this.data = [];
+    this._data = [];
     Collection.__super__.reset.call(this);
   };
 
@@ -1722,7 +1571,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.every = function() {
-    return this.data.every(arguments);
+    return this._data.every(arguments);
   };
 
 
@@ -1732,7 +1581,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.filter = function() {
-    return this.data.filter(arguments);
+    return this._data.filter(arguments);
   };
 
 
@@ -1742,7 +1591,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.forEach = function() {
-    return this.data.forEach(arguments);
+    return this._data.forEach(arguments);
   };
 
 
@@ -1752,7 +1601,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.join = function() {
-    return this.data.join(arguments);
+    return this._data.join(arguments);
   };
 
 
@@ -1762,7 +1611,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.map = function() {
-    return this.data.map(arguments);
+    return this._data.map(arguments);
   };
 
 
@@ -1778,9 +1627,9 @@ tweak.Collection = (function(_super) {
 
   Collection.prototype.reverse = function(silent) {
     var result;
-    result = this.data.reverse();
+    result = this._data.reverse();
     if (!silent) {
-      __fullTrigger(this.data, this.triggerEvent);
+      __fullTrigger(this._data, this.triggerEvent);
     }
     return result;
   };
@@ -1792,7 +1641,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.slice = function() {
-    return this.data.slice(arguments);
+    return this._data.slice(arguments);
   };
 
 
@@ -1802,7 +1651,7 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.some = function() {
-    return this.data.some(arguments);
+    return this._data.some(arguments);
   };
 
 
@@ -1822,8 +1671,8 @@ tweak.Collection = (function(_super) {
     if (silent == null) {
       silent = false;
     }
-    result = fn != null ? this.data.sort(fn) : this.data.sort();
-    __fullTrigger(this.data, this.triggerEvent);
+    result = fn != null ? this._data.sort(fn) : this._data.sort();
+    __fullTrigger(this._data, this.triggerEvent);
     return result;
   };
 
@@ -1852,17 +1701,8 @@ var __hasProp = {}.hasOwnProperty,
 tweak.Controller = (function(_super) {
   __extends(Controller, _super);
 
-  Controller.prototype.uid = 0;
-
-  Controller.prototype["super"] = tweak["super"];
-
-
-  /*
-    The constructor initialises the Controllers unique ID.
-   */
-
   function Controller() {
-    this.uid = "ct_" + (tweak.uids.ct++);
+    return Controller.__super__.constructor.apply(this, arguments);
   }
 
 
@@ -1894,29 +1734,18 @@ tweak.Controller = (function(_super) {
   is to show how to roughly use a method.
  */
 var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __slice = [].slice;
+  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 tweak.View = (function(_super) {
   var $;
 
   __extends(View, _super);
 
-  View.prototype.uid = 0;
-
-  View.prototype["super"] = tweak["super"];
+  function View() {
+    return View.__super__.constructor.apply(this, arguments);
+  }
 
   $ = tweak.$;
-
-
-  /*
-    The constructor initialises the Views unique ID and config.
-   */
-
-  function View(config) {
-    this.config = config != null ? config : {};
-    this.uid = "v_" + (tweak.uids.v++);
-  }
 
 
   /*
@@ -1924,6 +1753,78 @@ tweak.View = (function(_super) {
    */
 
   View.prototype.init = function() {};
+
+
+  /*
+    Default template method. This is used to generate a html fro a template engine ect, to be used during the rendering
+    process.By default this method will generate a template through handlebars, it will also seek out the handlebars
+    template through the module loader.
+    @return [String] Returns a string representaion of HTML to attach to view during render.
+   */
+
+  View.prototype.template = function() {
+    var config;
+    config = this.component.config.view || {};
+    return (config.template ? tweak.Common.require(config.template) : tweak.Common.findModule(this.component.paths, './template'))(config.data || this.model._data);
+  };
+
+
+  /*
+    Default attach method. This is used to attach a HTML string to an element. You can override this method with your
+    own attachment functionality.
+  
+    @param [DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
+    @param [String] content A HTML representation of a string
+    @return [DOMElement] Returns athe attached DOMElement
+   */
+
+  View.prototype.attach = function(parent, content) {
+    var e, item, method, num, _i, _len, _ref, _ref1, _ref2;
+    content = $(content)[0];
+    switch (method = (_ref = this.component.config.view) != null ? (_ref1 = _ref.attach) != null ? _ref1.method : void 0 : void 0) {
+      case 'prefix':
+      case 'before':
+        parent.insertBefore(content, parent.firstChild);
+        return parent.firstElementChild;
+      case 'replace':
+        _ref2 = parent.children;
+        for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
+          item = _ref2[_i];
+          try {
+            parent.removeChild(item);
+          } catch (_error) {
+            e = _error;
+          }
+        }
+        parent.appendChild(content);
+        return parent.firstElementChild;
+      default:
+        if (/^\d+$/.test("" + method)) {
+          num = Number(method);
+          parent.insertBefore(content, parent.children[num]);
+          return parent.children[num];
+        } else {
+          parent.appendChild(content);
+          return parent.lastElementChild;
+        }
+    }
+  };
+
+
+  /*
+    Checks to see if the item is attached to ; this is determined if the node has a parentNode.
+    @return [Boolean] Returns whether the View has been rendered.
+   */
+
+  View.prototype.isAttached = function(element, parent) {
+    if (element == null) {
+      element = this.el;
+    }
+    if (parent == null) {
+      parent = document.documentElement;
+    }
+    return parent.contains(element);
+  };
 
 
   /*
@@ -1937,10 +1838,11 @@ tweak.View = (function(_super) {
    */
 
   View.prototype.render = function(silent) {
-    var attachTo, attachment, classNames, name, parent, template, _attach, _base, _getAttachment, _ref, _ref1, _ref2, _ref3;
+    var attachTo, attachment, classNames, config, name, names, parent, _getAttachment, _ref, _ref1, _ref2;
     if (this.isAttached() && !silent) {
       return this.triggerEvent('rendered');
     }
+    config = this.component.config.view;
     _getAttachment = (function(_this) {
       return function(parent) {
         var check, child, name, _ref;
@@ -1979,64 +1881,31 @@ tweak.View = (function(_super) {
           }
           return _results;
         };
-        name = ((_ref = _this.config.attach) != null ? _ref.to : void 0) || _this.component.name;
+        name = ((_ref = config.attach) != null ? _ref.to : void 0) || _this.component.name;
         check(parent);
         check($('[data-attach]', parent));
         return child;
       };
     })(this);
-    _attach = function(parent, content, method) {
-      var e, item, num, _i, _len, _ref;
-      content = $(content)[0];
-      switch (method) {
-        case 'prefix':
-        case 'before':
-          parent.insertBefore(content, parent.firstChild);
-          return parent.firstElementChild;
-        case 'replace':
-          _ref = parent.children;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            item = _ref[_i];
-            try {
-              parent.removeChild(item);
-            } catch (_error) {
-              e = _error;
-            }
-          }
-          parent.appendChild(content);
-          return parent.firstElementChild;
-        default:
-          if (/^\d+$/.test("" + method)) {
-            num = Number(method);
-            parent.insertBefore(content, parent.children[num]);
-            return parent.children[num];
-          } else {
-            parent.appendChild(content);
-            return parent.lastElementChild;
-          }
-      }
-    };
-    if ((_base = this.config).attach == null) {
-      _base.attach = {};
+    attachTo = (config != null ? (_ref = config.attach) != null ? _ref.to : void 0 : void 0) || this.component.name;
+    parent = (_ref1 = this.component.parent) != null ? (_ref2 = _ref1.view) != null ? _ref2.el : void 0 : void 0;
+    attachment = _getAttachment(parent) || _getAttachment(document.documentElement) || parent || document.documentElement;
+    this.$el = $(this.attach(attachment, this.template()));
+    this.el = this.$el[0];
+    names = tweak.Common.clone(this.component.paths);
+    if (names.indexOf(this.component.name) === -1) {
+      names.unshift(this.component.name);
     }
     classNames = (function() {
-      var _i, _len, _ref, _results;
-      _ref = this.component.names;
+      var _i, _len, _results;
       _results = [];
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        name = _ref[_i];
+      for (_i = 0, _len = names.length; _i < _len; _i++) {
+        name = names[_i];
         _results.push(name.replace(/[\/\\]/g, '-'));
       }
       return _results;
-    }).call(this);
-    template = (this.config.template ? tweak.Common.require(this.config.template) : tweak.Common.findModule(this.component.paths, './template'))(((_ref = this.config.view) != null ? _ref.data : void 0) || this.model.data);
-    attachTo = ((_ref1 = this.config.attach) != null ? _ref1.to : void 0) || this.component.name;
-    parent = (_ref2 = this.component.parent) != null ? (_ref3 = _ref2.view) != null ? _ref3.el : void 0 : void 0;
-    attachment = _getAttachment(parent) || _getAttachment(document.documentElement) || parent || document.documentElement;
-    this.$el = $(_attach(attachment, template, this.config.attach.method));
-    this.el = this.$el[0];
+    })();
     this.$el.addClass(classNames.join(' '));
-    this.$el.attr('id', this.uid);
     if (!silent) {
       this.triggerEvent('rendered');
     }
@@ -2050,40 +1919,10 @@ tweak.View = (function(_super) {
    */
 
   View.prototype.clear = function(element) {
-    var el, elements, remove, _i, _len;
     if (element == null) {
       element = this.el;
     }
-    element = $(element)[0];
-    remove = element.remove;
-    if (remove != null) {
-      remove();
-    } else {
-      elements = $('*', element);
-      elements.push(element);
-      for (_i = 0, _len = elements.length; _i < _len; _i++) {
-        el = elements[_i];
-        this.off(el);
-      }
-      element.parentNode.removeChild(element);
-      element = null;
-    }
-  };
-
-
-  /*
-    Checks to see if the item is attached to ; this is determined if the node has a parentNode.
-    @return [Boolean] Returns whether the View has been rendered.
-   */
-
-  View.prototype.isAttached = function(element, parent) {
-    if (element == null) {
-      element = this.el;
-    }
-    if (parent == null) {
-      parent = document.documentElement;
-    }
-    return parent.contains(element);
+    $(element).remove();
   };
 
 
@@ -2108,77 +1947,6 @@ tweak.View = (function(_super) {
       return _results;
     } else {
       return $(element, root);
-    }
-  };
-
-
-  /*
-    Apply event listener to element(s).
-    @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
-    @param [String] type The type of event.
-    @param [Function] callback The method to add to the events callbacks.
-    @param [Boolean] capture (Default = false) After initiating capture, all events of
-      the specified type will be dispatched to the registered listener before being
-      dispatched to any EventTarget beneath it in the DOM tree. Events which are bubbling
-      upward through the tree will not trigger a listener designated to use capture. If
-      a listener was registered twice, one with capture and one without, each must be
-      removed separately. Removal of a capturing listener does not affect a non-capturing
-      version of the same listener, and vice versa.
-   */
-
-  View.prototype.on = function() {
-    var element, elements, item, params, _base, _i, _len, _ref;
-    element = arguments[0], params = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    if (!(typeof (_base = $(element)).on === "function" ? _base.on.apply(_base, params) : void 0)) {
-      elements = this.element(element || this.el);
-      for (_i = 0, _len = elements.length; _i < _len; _i++) {
-        item = elements[_i];
-        (_ref = tweak.Common).on.apply(_ref, [item].concat(__slice.call(params)));
-      }
-    }
-  };
-
-
-  /*
-    Remove event listener to element(s).
-    @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
-    @param [String] type The type of event.
-    @param [Function] callback The method to remove from the events callbacks
-    @param [Boolean] capture (Default = false) Specifies whether the EventListener being
-      removed was registered as a capturing listener or not. If a listener was registered
-      twice, one with capture and one without, each must be removed separately. Removal of
-      a capturing listener does not affect a non-capturing version of the same listener,
-      and vice versa.
-   */
-
-  View.prototype.off = function() {
-    var element, elements, item, params, _base, _i, _len, _ref;
-    element = arguments[0], params = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    if (!(typeof (_base = $(element)).off === "function" ? _base.off.apply(_base, params) : void 0)) {
-      elements = this.element(element || this.el);
-      for (_i = 0, _len = elements.length; _i < _len; _i++) {
-        item = elements[_i];
-        (_ref = tweak.Common).off.apply(_ref, [item].concat(__slice.call(params)));
-      }
-    }
-  };
-
-
-  /*
-    Trigger event listener on element(s).
-    @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
-    @param [Event, String] event Event to trigger or string if to create new event.
-   */
-
-  View.prototype.trigger = function() {
-    var element, elements, item, params, _base, _i, _len, _ref;
-    element = arguments[0], params = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    if (!(typeof (_base = $(element)).trigger === "function" ? _base.trigger.apply(_base, params) : void 0)) {
-      elements = this.element(element || this.el);
-      for (_i = 0, _len = elements.length; _i < _len; _i++) {
-        item = elements[_i];
-        (_ref = tweak.Common).trigger.apply(_ref, [item].concat(__slice.call(params)));
-      }
     }
   };
 
@@ -2408,9 +2176,9 @@ tweak.History = (function(_super) {
       prefix = 'on';
     }
     if (this.pushState) {
-      tweak.Common[prefix](this.window, 'popstate', this.__checkChanged);
+      tweak.$(this.window)[prefix]('popstate', this.__checkChanged);
     } else if (this.useHash && !this.iframe) {
-      tweak.Common[prefix](this.window, 'hashchange', this.__checkChanged);
+      tweak.$(this.window)[prefix]('hashchange', this.__checkChanged);
     } else if (this.useHash) {
       if (prefix === 'on') {
         this.__interval = setInterval(this.__checkChanged, this.intervalRate);
@@ -2666,7 +2434,6 @@ tweak.Router = (function(_super) {
 
   function Router(routes) {
     this.routes = routes != null ? routes : {};
-    this.uid = "r_" + (tweak.uids.r++);
     tweak.History.addEvent('changed', this.__urlChanged, this);
   }
 
@@ -2926,10 +2693,6 @@ tweak.Component = (function() {
 
   Component.prototype.router = null;
 
-  Component.prototype.uid = 0;
-
-  Component.prototype["super"] = tweak["super"];
-
   Component.prototype.modules = ['controller', 'model', 'view', 'router', 'components'];
 
 
@@ -2943,7 +2706,6 @@ tweak.Component = (function() {
     if (options == null) {
       throw new Error('No options given');
     }
-    this.uid = "c_" + (tweak.uids.c++);
     relation = this.relation = relation === window ? {} : relation;
     if (relation.relation == null) {
       relation.relation = {};
@@ -2955,7 +2717,7 @@ tweak.Component = (function() {
       throw new Error('No name given');
     }
     options.name = this.name = tweak.Common.relToAbs(this.parent.name || '', this.name);
-    this.config = this.__buildConfig(options) || {};
+    this.config = this.__buildConfig(options);
     if (this.config.router) {
       this.__addRouter();
     }
@@ -3024,10 +2786,6 @@ tweak.Component = (function() {
       paths.push(tweak.Common.relToAbs(name, extension));
       configs.push(tweak.Common.clone(requested));
       extension = requested["extends"];
-    }
-    this.names = paths;
-    if (this.names.indexOf(this.name === -1)) {
-      this.names.unshift(this.name);
     }
     result = configs[configs.length - 1];
     for (i = _i = _ref1 = configs.length - 2; _ref1 <= 0 ? _i <= 0 : _i >= 0; i = _ref1 <= 0 ? ++_i : --_i) {
@@ -3120,10 +2878,9 @@ tweak.Component = (function() {
    */
 
   Component.prototype.__addComponents = function() {
-    var Module, module, name;
-    name = 'components';
-    Module = tweak.Common.findModule(this.paths, "./" + name, tweak.Components);
-    module = this[name] = new Module(this, this.config[name]);
+    var params;
+    params = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+    this.__addModule.apply(this, ['components', tweak.Components].concat(__slice.call(params)));
   };
 
 
@@ -3366,19 +3123,11 @@ var __hasProp = {}.hasOwnProperty,
 tweak.Components = (function(_super) {
   __extends(Components, _super);
 
-  Components.prototype._type = 'components';
-
-
-  /*
-    The constructor initialises the controllers unique ID, relating Component, its root and its initial configuration.
-   */
-
-  function Components(component, config) {
-    this.component = component;
-    this.config = config != null ? config : [];
-    this.root = this.component.root;
-    this.uid = "cp_" + (tweak.uids.cp++);
+  function Components() {
+    return Components.__super__.constructor.apply(this, arguments);
   }
+
+  Components.prototype._type = 'components';
 
 
   /*
@@ -3387,10 +3136,10 @@ tweak.Components = (function(_super) {
 
   Components.prototype.init = function() {
     var data, item, name, names, obj, path, prop, _i, _j, _k, _l, _len, _len1, _len2, _len3, _name, _ref;
-    this.data = [];
+    this._data = [];
     data = [];
-    _name = this.component.name || this.config.name;
-    _ref = this.config;
+    _name = this.component.name;
+    _ref = this.component.config.components;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       item = _ref[_i];
       obj = {};
@@ -3399,7 +3148,7 @@ tweak.Components = (function(_super) {
         path = tweak.Common.relToAbs(_name, item[1]);
         for (_j = 0, _len1 = names.length; _j < _len1; _j++) {
           name = names[_j];
-          this.data.push(new tweak.Component(this, {
+          this._data.push(new tweak.Component(this, {
             name: name,
             "extends": path
           }));
@@ -3408,7 +3157,7 @@ tweak.Components = (function(_super) {
         data = tweak.Common.splitMultiName(_name, item);
         for (_k = 0, _len2 = data.length; _k < _len2; _k++) {
           name = data[_k];
-          this.data.push(new tweak.Component(this, {
+          this._data.push(new tweak.Component(this, {
             name: name
           }));
         }
@@ -3420,10 +3169,10 @@ tweak.Components = (function(_super) {
         for (_l = 0, _len3 = data.length; _l < _len3; _l++) {
           prop = data[_l];
           obj.name = prop;
-          this.data.push(new tweak.Component(this, obj));
+          this._data.push(new tweak.Component(this, obj));
         }
       }
-      this.data[this.length++].init();
+      this._data[this.length++].init();
     }
   };
 
@@ -3440,7 +3189,7 @@ tweak.Components = (function(_super) {
       this.triggerEvent('ready');
     } else {
       this.total = 0;
-      _ref = this.data;
+      _ref = this._data;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
         item.controller.addEvent('ready', function() {
@@ -3484,7 +3233,7 @@ tweak.Components = (function(_super) {
   Components.prototype.whereData = function(property, value) {
     var collectionKey, componentData, data, key, modelData, prop, result;
     result = [];
-    componentData = this.data;
+    componentData = this._data;
     for (collectionKey in componentData) {
       data = componentData[collectionKey];
       modelData = data.model.data || model.data;
@@ -3506,7 +3255,7 @@ tweak.Components = (function(_super) {
 
   Components.prototype.reset = function() {
     var item, _i, _len, _ref;
-    _ref = this.data;
+    _ref = this._data;
     for (_i = 0, _len = _ref.length; _i < _len; _i++) {
       item = _ref[_i];
       item.destroy();
