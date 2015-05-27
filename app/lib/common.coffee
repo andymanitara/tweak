@@ -55,7 +55,7 @@ class tweak.Common
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
     @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
-  parse: (data) -> JSON[if typeof data is 'string' then 'parse' else 'data'] data
+  parse: (data) -> tweak.$[if typeof data is 'string' then 'parseJSON' else 'getJSON'] data
 
   ###
     Try to find a module by name in multiple paths. A final surrogate if available will be returned if no module can be found.
@@ -146,5 +146,5 @@ class tweak.Common
     amount = name.split(/\.{2,}[\/\\]*/).length-1 or 0
     context = context.replace new RegExp("([\\/\\\\]*[^\\/\\\\]+){#{amount}}[\\/\\\\]?$"), ''
     name.replace /^(\.+[\/\\]*)+/, "#{context}/"
-
+      
 tweak.Common = new tweak.Common()
