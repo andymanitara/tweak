@@ -36,7 +36,7 @@ class tweak.Component
   controller: null
   # @property [Object]
   router: null
- 
+
   modules: ['controller', 'model', 'view', 'router', 'components']
 
   ###
@@ -58,7 +58,7 @@ class tweak.Component
     if not @name? then throw new Error 'No name given'
     options.name = @name = tweak.Common.relToAbs @parent.name or '', @name
 
-    @config = @__buildConfig(options) or {}
+    @config = @__buildConfig options
     # Router is optional as it is performance heavy
     # So it needs to be explicitly defined in the config for the Component that it should be used
     if @config.router then @__addRouter()
