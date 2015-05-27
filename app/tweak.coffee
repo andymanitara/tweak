@@ -38,25 +38,3 @@ tweak.$ = window.jQuery or window.Zepto or window.ender or window.$
 ### When tweak.strict is true then config objects must be present for a component ###
 tweak.strict = false
 
-###
-  A count for the uid's
-  Multiple sets of uid codes so its more manageable
-
-  c = component
-  cp = components
-  v = view
-  m = model
-  r = router
-  cl = collection
-  ct = controller
-  s = store
-###
-tweak.uids =
-  c:0
-  cp:0
-  v:0
-  m:0
-  r:0
-  cl:0
-  ct:0
-  s:0

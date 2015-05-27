@@ -12,17 +12,15 @@
 ###
 class tweak.View extends tweak.Events
  
-  # @property [Integer] The uid of this object - for unique reference.
-  uid: 0
   # @property [Method] see tweak.super
   super: tweak.super
 
   $ = tweak.$
 
   ###
-    The constructor initialises the Views unique ID and config.
+    Default initialiser function - called when the View has rendered
   ###
-  constructor: (@config ={}) -> @uid = "v_#{tweak.uids.v++}"
+  init: ->
     
 
   ###
@@ -100,7 +98,6 @@ class tweak.View extends tweak.Events
       
     # Attempt to add class and uid
     @$el.addClass classNames.join ' '
-    @$el.attr 'id', @uid
 
     if not silent then @triggerEvent 'rendered'
     @init()

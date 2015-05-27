@@ -36,8 +36,6 @@ class tweak.Component
   controller: null
   # @property [Object]
   router: null
-  # @property [Interger] The uid of this object - for unique reference.
-  uid: 0
  
    # @property [Method] see tweak.super
   super: tweak.super
@@ -51,8 +49,6 @@ class tweak.Component
   constructor: (relation, options) ->
     if not options? then throw new Error 'No options given'
 
-    # Set uid
-    @uid = "c_#{tweak.uids.c++}"
     # Build relation if window and build its default properties
     # The relation is it direct caller
     relation = @relation = if relation is window then {} else relation

@@ -95,7 +95,6 @@ class tweak.Router extends tweak.Events
       });
   ###
   constructor: (@routes = {}) ->
-    @uid = "r_#{tweak.uids.r++}"
     tweak.History.addEvent 'changed', @__urlChanged, @
 
   ###
