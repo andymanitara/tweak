@@ -14,8 +14,6 @@
   example is to show how to roughly use a method.
 ###
 class tweak.Model extends tweak.Store
-  # @property [Object] Data storage holder, for a model this is an object.
-  data: {}
   # @property [String] The type of Store, i.e. 'collection' or 'model'.
   _type: 'model'
 
@@ -30,7 +28,7 @@ class tweak.Model extends tweak.Store
         'position':99
       });
   ###
-  constructor: (@data = {}) -> @uid = "m_#{tweak.uids.m++}"
+  constructor: (@_data = {}) ->
 
   ###
     Remove a single property or many properties.
@@ -59,9 +57,9 @@ class tweak.Model extends tweak.Store
   remove: (properties, silent) ->
     if typeof properties is 'string' then properties = [properties]
     for property in properties
-      for key, prop of @data when key is property
+      for key, prop of @_data when key is property
         @length--
-        delete @data[key]
+        delete @_data[key]
         if not silent then @triggerEvent "removed:#{key}"
 
     if not silent then @triggerEvent 'changed'
@@ -74,7 +72,7 @@ class tweak.Model extends tweak.Store
   ###
   pluck: (property) ->
     result = []
-    for key, prop of @data
+    for key, prop of @_data
       if prop is property then result.push key
     result
 
@@ -83,6 +81,6 @@ class tweak.Model extends tweak.Store
     @event changed Triggers a generic event that the Model has been updated.
   ###
   reset: ->
-    @data = {}
+    @_data = {}
     super()
     return

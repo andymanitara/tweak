@@ -190,10 +190,10 @@ class tweak.History extends tweak.Events
     # Setup or remove event triggers for when the history updates - depending on the type of state being used.
     if @pushState
       # If a pushState is available
-      tweak.Common[prefix] @window, 'popstate', @__checkChanged
+      tweak.$(@window)[prefix] 'popstate', @__checkChanged
     else if @useHash and not @iframe
       # If hashState is available and not using an iframe
-      tweak.Common[prefix] @window, 'hashchange', @__checkChanged
+      tweak.$(@window)[prefix] 'hashchange', @__checkChanged
 
     else if @useHash
       # If using iframe and hash state

@@ -11,28 +11,25 @@ For a full understanding to the framework please look at the [documentation](htt
 
 ## Use
 ### Installation
-
 BOWER: `bower install tweakjs`
 
 NPM: `npm install tweakjs`
 
-DOWNLOAD: [Downloads page](http://dl.tweakjs.com). (Coming soon)
-
-This framework optionally depends on a **module loader** like [require.js](http://requirejs.org/). It can be used without a module loader however templates will need to be directly attached to a View. When using the Components features you will need to use a module loader.  
-
-* tweak.js (Models, View, Controller, Collection, Router, Event API, Classes)
- * Depends on a **template engine** like [handlebars.js](http://handlebarsjs.com/)
- * Depends on a **module loader** like [require.js](http://requirejs.org/)
- * Depends on a **DOM engine** like [jquery](http://jquery.com/) or [zepto](http://zeptojs.com/)
+### Dependencies
+* Depends on a **CommonJS based loader** see [description on module loaders](http://addyosmani.com/writing-modular-js/)
+* Depends on a **DOM engine** like [jquery](http://jquery.com/) or [zepto](http://zeptojs.com/)
+* An optional dependency of a **template engine** like [handlebars.js](http://handlebarsjs.com/) can be used.
 
 ### Tags
-[[module loader]](http://www.creativebloq.com/javascript/essential-javascript-top-five-script-loaders-8122862) - List of module/script loaders.
+[[CommonJS loader]](http://addyosmani.com/writing-modular-js/) - List of module/script loaders.
+
+[[template engine]](http://garann.github.io/template-chooser/) - list of template engines.
 
 [[template engine]](http://garann.github.io/template-chooser/) - list of template engines.
 
 ```html
 <!-- truncated -->
-  <script src="js/[module loader].js"></script>
+  <script src="js/[CommonJS loader].js"></script>
   <script src="js/[template engine].js"></script>
   <script src="js/[DOM engine].js"></script>
   <script src="js/tweak.js"></script>

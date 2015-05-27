@@ -11,7 +11,8 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.Events
+class tweak.Events extends tweak.Class
+  
   ###
     Iterate through events to find matching named events. Can be used to add a new event through the optional Boolean build argument
 

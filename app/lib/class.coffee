@@ -1,18 +1,3 @@
-tweak.__hasProp = {}.hasOwnProperty
-
-tweak.Extends = (child, parent) ->
-  ctor = ->
-    @constructor = child
-    return
-  for key of parent
-    child[key] = parent[key] if tweak.__hasProp.call parent, key
-  ctor:: = parent::
-  child:: = new ctor()
-  child.__super__ = parent::
-  child
-
-tweak.Super = (context, name) -> context.__super__[name].call @
-  
 ###
   TweakJS was initially designed in CoffeeScript for CoffeeScripters. It is much
   easier to use the framework in CoffeeScript; however those using JS the
@@ -20,6 +5,8 @@ tweak.Super = (context, name) -> context.__super__[name].call @
   These can also be used to reduce the file size of compiled CoffeeScript files.
 ###
 class tweak.Class
+  __hasProp: {}.hasOwnProperty
+
   ###
     To extend an object with JS use tweak.Extends.
     @param [Object] child The child Object to extend.
@@ -27,6 +14,16 @@ class tweak.Class
     @return [Object] Extended object
   ###
   extends: (child, parent) ->
+    (child, parent) ->
+      ctor = ->
+        @constructor = child
+        return
+      for key of parent
+        child[key] = parent[key] if @__hasProp.call parent, key
+      ctor:: = parent::
+      child:: = new ctor()
+      child.__super__ = parent::
+      child
 
   ###
     To super a method with JS use this.super from within the class definition.
@@ -36,4 +33,4 @@ class tweak.Class
     @param [Object] context The context to apply a super call to
     @param [string] name The method name to call super upon.
   ###
-  super: (context, name) ->
+  super: (context, name) -> context.__super__[name].call @

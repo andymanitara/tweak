@@ -1,5 +1,5 @@
 ###
-  tweak.js 1.5.9
+  tweak.js 1.6.0
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -35,28 +35,9 @@ else tweak = window.tweak = {}
 ### Assign DOM manipulation framework to tweak ###
 tweak.$ = window.jQuery or window.Zepto or window.ender or window.$
 
-### When tweak.strict is true then config objects must be present for a component ###
+
+### Assign module loader require to tweak ###
+tweak.require = window.require
+
+### When tweak.strict is true then config objects must be present for a component upon creation ###
 tweak.strict = false
-
-###
-  A count for the uid's
-  Multiple sets of uid codes so its more manageable
-
-  c = component
-  cp = components
-  v = view
-  m = model
-  r = router
-  cl = collection
-  ct = controller
-  s = store
-###
-tweak.uids =
-  c:0
-  cp:0
-  v:0
-  m:0
-  r:0
-  cl:0
-  ct:0
-  s:0

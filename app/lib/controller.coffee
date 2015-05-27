@@ -9,16 +9,6 @@
   is to show how to roughly use a method.
 ###
 class tweak.Controller extends tweak.Events
-  # @property [Integer] The uid of this object - for unique reference
-  uid: 0
-  # @property [Method] see tweak.super
-  super: tweak.super
-
-  ###
-    The constructor initialises the Controllers unique ID.
-  ###
-  constructor: -> @uid = "ct_#{tweak.uids.ct++}"
-
   ###
     By default, this does nothing during initialization unless it is overridden.
   ###

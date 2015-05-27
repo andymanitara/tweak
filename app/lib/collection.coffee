@@ -44,7 +44,7 @@ class tweak.Collection extends tweak.Store
         new Model()
       ]);
   ###
-  constructor: (@data = []) -> @uid = "cl_#{tweak.uids.cl++}"
+  constructor: (@_data = []) ->
 
   ###
     Add a new property to the end of the Collection.
@@ -103,9 +103,9 @@ class tweak.Collection extends tweak.Store
       collection.splice(2, 0, ['100', '200'], true);
   ###
   splice: (position, remove, data, silent = false) ->
-    @data.splice position, remove, data...
-    @length = @data.length
-    if not silent then __fullTrigger @data, @triggerEvent
+    @_data.splice position, remove, data...
+    @length = @_data.length
+    if not silent then __fullTrigger @_data, @triggerEvent
     return
 
   ###
@@ -180,7 +180,7 @@ class tweak.Collection extends tweak.Store
   remove: (keys, silent) ->
     if not (keys instanceof Array) then keys = [keys]
     for index in keys
-      @data.splice index, 1
+      @_data.splice index, 1
       if not silent then @triggerEvent "removed:#{index}"
     if not silent then @triggerEvent 'changed'
     return
@@ -226,7 +226,7 @@ class tweak.Collection extends tweak.Store
   ###
   pop: (silent) ->
     length = @length-1
-    result = @data[length]
+    result = @_data[length]
     @remove length, silent
     result
 
@@ -249,7 +249,7 @@ class tweak.Collection extends tweak.Store
       collection.shift(true);
   ###
   shift: (silent) ->
-    result = @data[0]
+    result = @_data[0]
     @remove 0, silent
     result
 
@@ -299,7 +299,7 @@ class tweak.Collection extends tweak.Store
       collection = new tweak.Collection();
       collection.indexes('dog');
   ###
-  indexes: (value) -> index for index, prop of @data when value is prop
+  indexes: (value) -> index for index, prop of @_data when value is prop
 
   ###
     Concatenate Arrays to the end of the Collection.
@@ -321,14 +321,13 @@ class tweak.Collection extends tweak.Store
     @splice @length-1, 0, [].concat(arrays...), silent
     return
 
-
   ###
     Reset the Collection back to defaults
     
     @event changed Triggers a generic event that the store has been updated
   ###
   reset: ->
-    @data = []
+    @_data = []
     super()
     return
 
@@ -336,31 +335,31 @@ class tweak.Collection extends tweak.Store
     This method directly accesses the Collection's data's every method.
     See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/every
   ###
-  every: -> @data.every arguments
+  every: -> @_data.every arguments
 
   ###
     This method directly accesses the Collection's data's filter method.
     See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
   ###
-  filter: -> @data.filter arguments
+  filter: -> @_data.filter arguments
 
   ###
     This method directly accesses the Collection's data's forEach method.
     See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
   ###
-  forEach: -> @data.forEach arguments
+  forEach: -> @_data.forEach arguments
 
   ###
     This method directly accesses the Collection's data's join method.
     See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join
   ###
-  join: -> @data.join arguments
+  join: -> @_data.join arguments
 
   ###
     This method directly accesses the Collection's data's map method.
     See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
   ###
-  map: -> @data.map arguments
+  map: -> @_data.map arguments
 
   ###
     This method directly accesses the Collection's data's reverse method.
@@ -372,21 +371,21 @@ class tweak.Collection extends tweak.Store
     @event changed Triggers a generic event that the Collection has been updated.
   ###
   reverse: (silent) ->
-    result = @data.reverse()
-    if not silent then __fullTrigger @data, @triggerEvent
+    result = @_data.reverse()
+    if not silent then __fullTrigger @_data, @triggerEvent
     result
 
   ###
     This method directly accesses the Collection's data's slice method.
     See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
   ###
-  slice: -> @data.slice arguments
+  slice: -> @_data.slice arguments
 
   ###
     This method directly accesses the Collection's data's some method.
     See: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/some
   ###
-  some: -> @data.some arguments
+  some: -> @_data.some arguments
 
   ###
     This method directly accesses the Collection's data's sort method.
@@ -399,6 +398,6 @@ class tweak.Collection extends tweak.Store
     @event changed Triggers a generic event that the Collection has been updated.
   ###
   sort: (fn, silent = false) ->
-    result = if fn? then @data.sort(fn) else @data.sort()
-    __fullTrigger @data, @triggerEvent
+    result = if fn? then @_data.sort(fn) else @_data.sort()
+    __fullTrigger @_data, @triggerEvent
     result

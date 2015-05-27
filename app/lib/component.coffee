@@ -36,11 +36,6 @@ class tweak.Component
   controller: null
   # @property [Object]
   router: null
-  # @property [Interger] The uid of this object - for unique reference.
-  uid: 0
- 
-   # @property [Method] see tweak.super
-  super: tweak.super
 
   modules: ['controller', 'model', 'view', 'router', 'components']
 
@@ -51,8 +46,6 @@ class tweak.Component
   constructor: (relation, options) ->
     if not options? then throw new Error 'No options given'
 
-    # Set uid
-    @uid = "c_#{tweak.uids.c++}"
     # Build relation if window and build its default properties
     # The relation is it direct caller
     relation = @relation = if relation is window then {} else relation
@@ -65,7 +58,7 @@ class tweak.Component
     if not @name? then throw new Error 'No name given'
     options.name = @name = tweak.Common.relToAbs @parent.name or '', @name
 
-    @config = @__buildConfig(options) or {}
+    @config = @__buildConfig options
     # Router is optional as it is performance heavy
     # So it needs to be explicitly defined in the config for the Component that it should be used
     if @config.router then @__addRouter()
@@ -117,9 +110,6 @@ class tweak.Component
       configs.push tweak.Common.clone requested
       extension = requested.extends
 
-
-    @names = paths
-    if @names.indexOf @name is -1 then @names.unshift @name
     # Combine all the config files into one
     # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]
@@ -180,10 +170,8 @@ class tweak.Component
     Add module to this Component.
     @param [...] params Parameters passed to into the Components constructor.
   ###
-  __addComponents: ->
-    name = 'components'
-    Module = tweak.Common.findModule @paths, "./#{name}", tweak.Components
-    module = @[name] = new Module @, @config[name]
+  __addComponents: (params...) ->
+    @__addModule 'components', tweak.Components, params...
     return
 
   ###

@@ -17,17 +17,6 @@ class tweak.Store extends tweak.Events
   _type: 'BASE'
   # @property [Integer] Length of the Stores data
   length: 0
-  # @property [Object, Array] Data holder for the Store
-  data: []
-  # @property [Integer] The UID of this object - for unique reference
-  uid: 0
-  # @property [Method] see tweak.super
-  super: tweak.super
-
-  ###
-    The constructor initialises the controllers unique ID.
-  ###
-  constructor: -> @uid = "s_#{tweak.uids.s++}"
 
   ###
     Default initialiser function
@@ -72,9 +61,9 @@ class tweak.Store extends tweak.Events
 
     obj = {}
     for key, prop of data
-      prev = @data[key]
+      prev = @_data[key]
       if not prev? then @length++
-      @data[key] = @["__set#{key.replace /^[a-z]/, (m) -> m.toUpperCase()}"]?(prop) or prop
+      @_data[key] = @["__set#{key.replace /^[a-z]/, (m) -> m.toUpperCase()}"]?(prop) or prop
       if not silent then @triggerEvent "changed:#{key}", prop
 
     if not silent then @triggerEvent 'changed'
@@ -126,12 +115,12 @@ class tweak.Store extends tweak.Events
   ###
   get: (limit, params...) ->
     if not limit?
-      limit = for key, item of @data then key
+      limit = for key, item of @_data then key
     if typeof limit is 'string' or typeof limit is 'number' then limit = [limit]
-    base = if @data instanceof Array then [] else {}
+    base = if @_data instanceof Array then [] else {}
     for item, i in limit
       data = @["__get#{"#{item}".replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
-      if not data? then data = @data[item]
+      if not data? then data = @_data[item]
       base[item] = data
     if i <= 1 then base = base[item]
     base
@@ -163,7 +152,7 @@ class tweak.Store extends tweak.Events
     if typeof limit is 'string' or typeof limit is 'number' then limit = [limit]
     for item, i in limit
       data = @["__get#{item.replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
-      if not data? and not @data[item]? then return false
+      if not data? and not @_data[item]? then return false
     true
 
   ###
@@ -176,7 +165,7 @@ class tweak.Store extends tweak.Events
   ###
   where: (value) ->
     result = []
-    data = @data
+    data = @_data
     for key, prop of data
       if prop is value then result.push key
     return result
@@ -201,8 +190,8 @@ class tweak.Store extends tweak.Events
   ###
   import: (data, silent = true) ->
     for key, item of data
-      if @data[key]?.import?
-        @data[key].import item, silent
+      if @_data[key]?.import?
+        @_data[key].import item, silent
       else
         @set key, item, silent
     return
@@ -214,7 +203,7 @@ class tweak.Store extends tweak.Events
   ###
   export: (limit) ->
     res = {}
-    limit ?= for key, item of @data then key
+    limit ?= for key, item of @_data then key
     for key in limit when (item = @get key)?
       if item.export?
         res[key] = item.export()

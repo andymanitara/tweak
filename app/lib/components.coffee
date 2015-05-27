@@ -15,30 +15,23 @@ class tweak.Components extends tweak.Collection
   _type: 'components'
 
   ###
-    The constructor initialises the controllers unique ID, relating Component, its root and its initial configuration.
-  ###
-  constructor: (@component, @config = []) ->
-    @root = @component.root
-    @uid = "cp_#{tweak.uids.cp++}"
-
-  ###
    Construct the Collection with given options from the Components configuration.
   ###
   init: ->
-    @data = []
+    @_data = []
     data = []
-    _name = @component.name or @config.name
-    for item in @config
+    _name = @component.name
+    for item in @component.config.components
       obj = {}
       if item instanceof Array
         names = tweak.Common.splitMultiName _name, item[0]
         path = tweak.Common.relToAbs _name, item[1]
         for name in names
-          @data.push new tweak.Component @, {name, extends: path}
+          @_data.push new tweak.Component @, {name, extends: path}
       else if typeof item is 'string'
         data = tweak.Common.splitMultiName _name, item
         for name in data
-          @data.push new tweak.Component @, {name}
+          @_data.push new tweak.Component @, {name}
       else
         obj = item
         name = obj.name
@@ -46,8 +39,8 @@ class tweak.Components extends tweak.Collection
         obj.extends = tweak.Common.relToAbs _name, obj.extends
         for prop in data
           obj.name = prop
-          @data.push new tweak.Component @, obj
-      @data[@length++].init()
+          @_data.push new tweak.Component @, obj
+      @_data[@length++].init()
     return
 
   ###
@@ -60,7 +53,7 @@ class tweak.Components extends tweak.Collection
       @triggerEvent 'ready'
     else
       @total = 0
-      for item in @data
+      for item in @_data
         item.controller.addEvent 'ready', ->
           if ++@total is @length then @triggerEvent 'ready'
         , @, 1
@@ -91,7 +84,7 @@ class tweak.Components extends tweak.Collection
   ###
   whereData: (property, value) ->
     result = []
-    componentData = @data
+    componentData = @_data
     for collectionKey, data of componentData
       modelData = data.model.data or model.data
       for key, prop of modelData when key is property and prop is value
@@ -103,7 +96,7 @@ class tweak.Components extends tweak.Collection
     @event changed Triggers a generic event that the store has been updated.
   ###
   reset: ->
-    for item in @data
+    for item in @_data
       item.destroy()
     super()
     return
