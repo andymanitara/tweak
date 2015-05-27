@@ -12,9 +12,6 @@
 ###
 class tweak.View extends tweak.Events
  
-  # @property [Method] see tweak.super
-  super: tweak.super
-
   $ = tweak.$
 
   ###

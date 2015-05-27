@@ -17,9 +17,6 @@ class tweak.Store extends tweak.Events
   _type: 'BASE'
   # @property [Integer] Length of the Stores data
   length: 0
-  # @property [Method] see tweak.super
-  super: tweak.super
-
 
   ###
     Default initialiser function

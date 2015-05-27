@@ -9,10 +9,6 @@
   is to show how to roughly use a method.
 ###
 class tweak.Controller extends tweak.Events
-  # @property [Method] see tweak.super
-  super: tweak.super
-
-
   ###
     By default, this does nothing during initialization unless it is overridden.
   ###

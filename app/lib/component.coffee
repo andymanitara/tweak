@@ -37,9 +37,6 @@ class tweak.Component
   # @property [Object]
   router: null
  
-   # @property [Method] see tweak.super
-  super: tweak.super
-
   modules: ['controller', 'model', 'view', 'router', 'components']
 
   ###
