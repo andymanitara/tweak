@@ -15,19 +15,13 @@ class tweak.Components extends tweak.Collection
   _type: 'components'
 
   ###
-    The constructor initialises the controllers unique ID, relating Component, its root and its initial configuration.
-  ###
-  constructor: (@component, @config = []) ->
-    @root = @component.root
-
-  ###
    Construct the Collection with given options from the Components configuration.
   ###
   init: ->
     @_data = []
     data = []
-    _name = @component.name or @config.name
-    for item in @config
+    _name = @component.name
+    for item in @component.config.components
       obj = {}
       if item instanceof Array
         names = tweak.Common.splitMultiName _name, item[0]

@@ -173,10 +173,8 @@ class tweak.Component
     Add module to this Component.
     @param [...] params Parameters passed to into the Components constructor.
   ###
-  __addComponents: ->
-    name = 'components'
-    Module = tweak.Common.findModule @paths, "./#{name}", tweak.Components
-    module = @[name] = new Module @, @config[name]
+  __addComponents: (params...) ->
+    @__addModule 'components', tweak.Components, params...
     return
 
   ###
