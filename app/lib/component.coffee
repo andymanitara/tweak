@@ -110,9 +110,6 @@ class tweak.Component
       configs.push tweak.Common.clone requested
       extension = requested.extends
 
-
-    @names = paths
-    if @names.indexOf @name is -1 then @names.unshift @name
     # Combine all the config files into one
     # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]

@@ -79,8 +79,6 @@ class tweak.View extends tweak.Events
       
     @config.attach ?= {}
     
-    # Makes sure that there is an id for this component set, either by the config or by its name
-    classNames = for name in @component.names then name.replace /[\/\\]/g, '-'
 
     # Build the template with the date from the model
     template = (if @config.template then tweak.Common.require @config.template else tweak.Common.findModule @component.paths, './template') @config.view?.data or @model.data
@@ -93,7 +91,10 @@ class tweak.View extends tweak.Events
     @$el = $(_attach attachment, template, @config.attach.method)
     @el = @$el[0]
       
-    # Attempt to add class and uid
+    # Add class names
+    names = tweak.Common.clone @component.paths
+    if names.indexOf(@component.name) is -1 then names.unshift @component.name
+    classNames = for name in names then name.replace /[\/\\]/g, '-'
     @$el.addClass classNames.join ' '
 
     if not silent then @triggerEvent 'rendered'
