@@ -1,15 +1,15 @@
-;
-(function(window){
-    
+
 /*
-  tweak.js 1.7.1
+  tweak.js 1.7.2
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
   For all details and documentation:
   http://tweakjs.com
+
+  Brunch-config wrappes this coffeescript file and its modules into self contained function.
  */
-var wrapper;
+var $, exports, root, wrapper;
 
 wrapper = function(root, tweak, require, $) {
   var pTweak;
@@ -39,66 +39,71 @@ wrapper = function(root, tweak, require, $) {
   /*
     Restore the previous stored tweak.
    */
-  tweak.noConflict = function() {
+  return tweak.noConflict = function() {
     root.tweak = pTweak;
     return this;
   };
-  return tweak;
 };
 
-(function(wrapper) {
-  var $, root;
-  root = (typeof self === 'object' && self.self === self && self) || (typeof global === 'object' && global.global === global && global) || window;
+root = (typeof self === 'object' && self.self === self && self) || (typeof global === 'object' && global.global === global && global) || window;
 
-  /* 
-    To keep alternative frameworks to jQuery available to tweak, 
-    register/define the appropriate framework to '$'
+
+/* 
+  To keep alternative frameworks to jQuery available to tweak, 
+  register/define the appropriate framework to '$'
+ */
+
+if (typeof define === 'function' && define.amd) {
+  define(['$', 'exports'], function($, exports) {
+
+    /*
+      This will enable a switch to a CommonJS based system with AMD.
+      This may need adjustment to
+     */
+    var toRequire;
+    toRequire = function(module) {
+      return define([module], function(res) {
+        return res;
+      });
+    };
+    return wrapper(root, root.tweak = exports, toRequire, $);
+  });
+} else if (typeof exports !== 'undefined') {
+
+  /*
+    CommonJS and Node environment
    */
-  if (typeof define === 'function' && define.amd) {
-    return define(['$', 'exports'], function($, exports) {
-
-      /*
-        This will enable a switch to a CommonJS based system with AMD.
-        This may need adjustment to
-       */
-      var toRequire;
-      toRequire = function(module) {
-        return define([module], function(res) {
-          return res;
-        });
-      };
-      return wrapper(root, root.tweak = exports, toRequire, $);
-    });
-  } else if (typeof exports !== 'undefined') {
-
-    /*
-      CommonJS and Node environment
-     */
+  try {
+    $ = require('$');
+  } catch (_error) {}
+  if (!$) {
     try {
-      $ = require('$');
+      $ = require('jquery');
     } catch (_error) {}
-    if (!$) {
-      try {
-        $ = require('jquery');
-      } catch (_error) {}
-    }
-    return wrapper(root, exports, require, $);
-  } else {
-
-    /*
-      Typical web environment - even though a module loader is required
-      it is best to allow the user to set it up. Example Brunch uses CommonJS
-      however it does not work exactly like it does in node so it goes through here
-     */
-    return wrapper(root, root.tweak = {}, require, root.jQuery || root.Zepto || root.ender || root.$);
   }
-})(wrapper);
+  wrapper(root, exports = root.tweak = {}, require, $);
+} else {
 
-    })(window); 
+  /*
+    Typical web environment - even though a module loader is required
+    it is best to allow the user to set it up. Example Brunch uses CommonJS
+    however it does not work exactly like it does in node so it goes through here
+   */
+  wrapper(root, root.tweak = {}, require, root.jQuery || root.Zepto || root.ender || root.$);
+}
 
-;;
-(function(window){
-    
+
+/*
+  Due to a slight annoyance with coffeescript self wrapping to make it work in node
+  we need to assign to module[ClassName] = class ClassName 
+  However this will break in a web enviroment as exports isnt defined. So we create
+  a dummy exports variable within this code
+ */
+
+if (typeof exports === 'undefined') {
+  exports = root.tweak;
+}
+;
 /*
   TweakJS was initially designed in CoffeeScript for CoffeeScripters. It is much
   easier to use the framework in CoffeeScript; however those using JS the
@@ -153,12 +158,7 @@ tweak.Class = (function() {
   return Class;
 
 })();
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   Tweak.js has an event system class, this provides functionality to extending
   classes to communicate simply and effectively while maintaining an organised
@@ -522,12 +522,7 @@ tweak.Events = (function(_super) {
   return Events;
 
 })(tweak.Class);
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   This class contains common shared functionality. The aim to reduce repeated code
   and overall file size of the framework.
@@ -721,12 +716,7 @@ tweak.Common = (function() {
 })();
 
 tweak.Common = new tweak.Common();
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   This is the base Class for dynamic storage based modules. A good way to think of
   a Store/Model/Collection is to think it as Cache; it can be used to Store data for
@@ -1049,12 +1039,7 @@ tweak.Store = (function(_super) {
   return Store;
 
 })(tweak.Events);
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   A Collection is used by other modules like the Controller to store, retrieve and
   listen to a set of ordered data. A Collection triggers events when its storage
@@ -1588,12 +1573,7 @@ tweak.Collection = (function(_super) {
   return Collection;
 
 })(tweak.Store);
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   This class provides a collection of components. Upon initialisation components
   are dynamically built, from its configuration. The configuration for this
@@ -1755,12 +1735,7 @@ tweak.Components = (function(_super) {
   return Components;
 
 })(tweak.Collection);
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   The future of MVC doesn't always lie in web applications; the architecture to
   TweakJS allows for integration of components anywhere on a website. For example
@@ -2206,12 +2181,7 @@ tweak.Component = (function() {
   return Component;
 
 })();
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   A Controller defines the business logic between other modules. It can be used to
   control data flow, logic and more. It should process the data from the Model,
@@ -2242,12 +2212,7 @@ tweak.Controller = (function(_super) {
   return Controller;
 
 })(tweak.Events);
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   Simple cross browser history API. Upon changes to the history a change event is
   called. The ability to hook event listeners to the tweak.History API allows
@@ -2625,12 +2590,7 @@ tweak.History = (function(_super) {
 })(tweak.Events);
 
 tweak.History = new tweak.History();
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   A Model is used by other modules like the Controller to store, retrieve and
   listen to a set of data. Tweak.js will call events through its
@@ -2756,12 +2716,7 @@ tweak.Model = (function(_super) {
   return Model;
 
 })(tweak.Store);
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   Web applications often provide linkable, bookmark, shareable URLs for important
   locations in the application. The Router module provides methods for routing to
@@ -3082,12 +3037,7 @@ tweak.Router = (function(_super) {
   return Router;
 
 })(tweak.Events);
-
-    })(window); 
-
-;;
-(function(window){
-    
+;
 /*
   A View is a module used as a presentation layer. Which is used to render,
   manipulate and listen to an interface. The Model, View and Controller separates
@@ -3320,8 +3270,5 @@ tweak.View = (function(_super) {
   return View;
 
 })(tweak.Events);
-
-    })(window); 
-
 ;
 //# sourceMappingURL=tweak.js.map

@@ -1,12 +1,13 @@
 ###
-  tweak.js 1.7.1
+  tweak.js 1.7.2
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
   For all details and documentation:
   http://tweakjs.com
-###
 
+  Brunch-config wrappes this coffeescript file and its modules into self contained function.
+###
 wrapper = (root, tweak, require, $) ->
   pTweak = tweak
 
@@ -38,36 +39,41 @@ wrapper = (root, tweak, require, $) ->
     root.tweak = pTweak
     @
 
-  tweak
+root = (typeof(self) is 'object' and self.self is self and self) or
+(typeof(global) is 'object' and global.global is global and global) or
+window
 
-do (wrapper) ->  
-  root = (typeof(self) is 'object' and self.self is self and self) or
-  (typeof(global) is 'object' and global.global is global and global) or
-  window
-
-  ### 
-    To keep alternative frameworks to jQuery available to tweak, 
-    register/define the appropriate framework to '$'
+### 
+  To keep alternative frameworks to jQuery available to tweak, 
+  register/define the appropriate framework to '$'
+###
+if typeof(define) is 'function' and define.amd
+  define ['$', 'exports'], ($, exports) ->
+    ###
+      This will enable a switch to a CommonJS based system with AMD.
+      This may need adjustment to 
+    ###
+    toRequire = (module) -> define [module], (res) -> return res
+    wrapper root, root.tweak = exports, toRequire , $
+else if typeof(exports) isnt 'undefined'
   ###
-  if typeof(define) is 'function' and define.amd
-    define ['$', 'exports'], ($, exports) ->
-      ###
-        This will enable a switch to a CommonJS based system with AMD.
-        This may need adjustment to 
-      ###
-      toRequire = (module) -> define [module], (res) -> return res
-      wrapper root, root.tweak = exports, toRequire , $
-  else if typeof(exports) isnt 'undefined'
-    ###
-      CommonJS and Node environment
-    ###
-    try $ = require '$'
-    if not $ then try $ = require 'jquery'
-    wrapper root, exports, require, $
-  else
-    ###
-      Typical web environment - even though a module loader is required
-      it is best to allow the user to set it up. Example Brunch uses CommonJS
-      however it does not work exactly like it does in node so it goes through here
-    ###
-    wrapper root, root.tweak = {}, require, root.jQuery or root.Zepto or root.ender or root.$
+    CommonJS and Node environment
+  ###
+  try $ = require '$'
+  if not $ then try $ = require 'jquery'
+  wrapper root, exports = root.tweak = {}, require, $
+else
+  ###
+    Typical web environment - even though a module loader is required
+    it is best to allow the user to set it up. Example Brunch uses CommonJS
+    however it does not work exactly like it does in node so it goes through here
+  ###
+  wrapper root, root.tweak = {}, require, root.jQuery or root.Zepto or root.ender or root.$
+
+###
+  Due to a slight annoyance with coffeescript self wrapping to make it work in node
+  we need to assign to module[ClassName] = class ClassName 
+  However this will break in a web enviroment as exports isnt defined. So we create
+  a dummy exports variable within this code
+###
+if typeof(exports) is 'undefined' then exports = root.tweak 
