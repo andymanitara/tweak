@@ -116,7 +116,7 @@ class tweak.History extends tweak.Events
    but if removed from page then component may want to stop the history.
   ###
   stop: ->
-    @__toggleListeners 'off'
+    @__toggleListeners 'remvoe'
     @started = false
 
   ###
@@ -181,23 +181,32 @@ class tweak.History extends tweak.Events
     if not options.silent then @triggerEvent 'changed', (@url = url).replace /^\/+/, ''
     return
 
+  __toggleListener = (prefix, type, fn)->
+    if window.addEventListener
+      element[prefix+'EventListener'] type, fn
+    else if window.attachEvent
+      attach = if prefix is 'on' then 'attach' else 'detach'
+      element[attach+'Event'] "prefix#{type}", fn
+    else
+      element[prefix+type] = fn
+  
   ###
     @private
     Add listeners of remove history change listeners.
-    @param [String] prefix (Default = 'on') Set the prefix - 'on' or 'off'.
+    @param [String] prefix (Default = 'add') Set the prefix - 'add' or 'remove'.
   ###
-  __toggleListeners: (prefix = 'on') ->
+  __toggleListeners: (prefix = 'add') ->
     # Setup or remove event triggers for when the history updates - depending on the type of state being used.
     if @pushState
       # If a pushState is available
-      tweak.$(@window)[prefix] 'popstate', @__checkChanged
+      __toggleListener 'popstate', @__checkChanged
     else if @useHash and not @iframe
       # If hashState is available and not using an iframe
-      tweak.$(@window)[prefix] 'hashchange', @__checkChanged
+      __toggleListener 'hashchange', @__checkChanged
 
     else if @useHash
       # If using iframe and hash state
-      if prefix is 'on'
+      if prefix is 'add'
         @__interval = setInterval @__checkChanged, @intervalRate
       else
         clearInterval @__interval
