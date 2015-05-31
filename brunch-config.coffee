@@ -12,16 +12,10 @@ exports.config =
         before: [
           'app/tweak.coffee',
           'app/lib/class.coffee',
-          'app/lib/common.coffee',
           'app/lib/events.coffee',
+          'app/lib/common.coffee',
           'app/lib/store.coffee',
-          'app/lib/model.coffee',
           'app/lib/collection.coffee',
-          'app/lib/controller.coffee',
-          'app/lib/view.coffee',
-          'app/lib/history.coffee',
-          'app/lib/router.coffee',
-          'app/lib/component.coffee',
           'app/lib/components.coffee'
         ]
 
