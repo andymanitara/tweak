@@ -27,17 +27,33 @@
     lib/history.coffee
 ###
 
+wrapper = (root, tweak, require, $) ->
+  pTweak = tweak
+  tweak.$ = $
+  tweak.require = require
+  tweak.strict = false
 
-### Initialise tweak object to the window ###
-if typeof exports isnt 'undefined' then tweak = window.tweak = exports
-else tweak = window.tweak = {}
+  tweak.noConflict = ->
+    root.tweak = pTweak
+    @
 
-### Assign DOM manipulation framework to tweak ###
-tweak.$ = window.jQuery or window.Zepto or window.ender or window.$
+  tweak
 
+do (wrapper) ->  
+  _root = (type) -> if typeof(type) is 'object' and type?.type is type then type else null
+  root = _root(self) or _root global
 
-### Assign module loader require to tweak ###
-tweak.require = window.require
-
-### When tweak.strict is true then config objects must be present for a component upon creation ###
-tweak.strict = false
+  ### To keep alternative frameworks to jQuery available to tweak, 
+      register/define the appropriate framework to '$'
+  ###
+  if typeof(define) is 'function' and define.amd
+    define ['$', 'exports'], ($, exports) ->
+      # I belive this snippet will enable a switch to a require based system with AMD
+      toRequire = (module) -> define [module], (res) -> return res
+      root.tweak = wrapper root, exports, toRequire , $
+  else if typeof(exports) isnt 'undefined'
+    try $ = root.require '$'
+    if not $ then try $ = root.require 'jquery'
+    wrapper root, exports, root.require, $
+  else
+    throw new Error 'It is required that tweakjs is used with module loaders'

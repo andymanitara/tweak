@@ -2,7 +2,7 @@
 (function(window){
     
 /*
-  tweak.js 1.6.0
+  tweak.js 1.7.0
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -29,30 +29,59 @@
     lib/router.coffee
     lib/history.coffee
  */
+var wrapper;
 
-/* Initialise tweak object to the window */
-var tweak;
+wrapper = function(root, tweak, require, $) {
+  var pTweak;
+  pTweak = tweak;
+  tweak.$ = $;
+  tweak.require = require;
+  tweak.strict = false;
+  tweak.noConflict = function() {
+    root.tweak = pTweak;
+    return this;
+  };
+  return tweak;
+};
 
-if (typeof exports !== 'undefined') {
-  tweak = window.tweak = exports;
-} else {
-  tweak = window.tweak = {};
-}
+(function(wrapper) {
+  var $, _root, root;
+  _root = function(type) {
+    if (typeof type === 'object' && (type != null ? type.type : void 0) === type) {
+      return type;
+    } else {
+      return null;
+    }
+  };
+  root = _root(self) || _root(global);
 
-
-/* Assign DOM manipulation framework to tweak */
-
-tweak.$ = window.jQuery || window.Zepto || window.ender || window.$;
-
-
-/* Assign module loader require to tweak */
-
-tweak.require = window.require;
-
-
-/* When tweak.strict is true then config objects must be present for a component upon creation */
-
-tweak.strict = false;
+  /* To keep alternative frameworks to jQuery available to tweak, 
+      register/define the appropriate framework to '$'
+   */
+  if (typeof define === 'function' && define.amd) {
+    return define(['$', 'exports'], function($, exports) {
+      var toRequire;
+      toRequire = function(module) {
+        return define([module], function(res) {
+          return res;
+        });
+      };
+      return root.tweak = wrapper(root, exports, toRequire, $);
+    });
+  } else if (typeof exports !== 'undefined') {
+    try {
+      $ = root.require('$');
+    } catch (_error) {}
+    if (!$) {
+      try {
+        $ = root.require('jquery');
+      } catch (_error) {}
+    }
+    return wrapper(root, exports, root.require, $);
+  } else {
+    throw new Error('It is required that tweakjs is used with module loaders');
+  }
+})(wrapper);
 
     })(window); 
 
@@ -68,7 +97,7 @@ tweak.strict = false;
 tweak.Class = (function() {
   function Class() {}
 
-  Class.prototype["__hasProp"] = {}.hasOwnProperty;
+  Class.prototype.__hasProp = {}.hasOwnProperty;
 
 
   /*
@@ -85,7 +114,7 @@ tweak.Class = (function() {
         this.constructor = child;
       };
       for (key in parent) {
-        if (this["__hasProp"].call(parent, key)) {
+        if (this.__hasProp.call(parent, key)) {
           child[key] = parent[key];
         }
       }
@@ -211,9 +240,9 @@ tweak.Common = (function() {
    */
 
   Common.prototype.findModule = function(contexts, module, surrogate) {
-    var context, e, _i, _len;
-    for (_i = 0, _len = contexts.length; _i < _len; _i++) {
-      context = contexts[_i];
+    var context, e, i, len;
+    for (i = 0, len = contexts.length; i < len; i++) {
+      context = contexts[i];
       try {
         return tweak.Common.require(context, module);
       } catch (_error) {
@@ -267,14 +296,14 @@ tweak.Common = (function() {
    */
 
   Common.prototype.splitMultiName = function(context, names) {
-    var item, max, min, prefix, reg, result, suffix, values, _i, _len;
+    var i, item, len, max, min, prefix, reg, result, suffix, values;
     values = [];
     reg = /^(.*)\[(\d*)(?:[,\-](\d*)){0,1}\](.*)$/;
     if (typeof names === 'string') {
       names = names.split(/\s+/);
     }
-    for (_i = 0, _len = names.length; _i < _len; _i++) {
-      item = names[_i];
+    for (i = 0, len = names.length; i < len; i++) {
+      item = names[i];
       result = reg.exec(item);
       if (result != null) {
         prefix = result[1];
@@ -304,7 +333,7 @@ tweak.Common = (function() {
     var amount;
     amount = name.split(/\.{2,}[\/\\]*/).length - 1 || 0;
     context = context.replace(new RegExp("([\\/\\\\]*[^\\/\\\\]+){" + amount + "}[\\/\\\\]?$"), '');
-    return name.replace(/^(\.+[\/\\]*)+/, "" + context + "/");
+    return name.replace(/^(\.+[\/\\]*)+/, context + "/");
   };
 
   return Common;
@@ -331,12 +360,12 @@ tweak.Common = new tweak.Common();
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __slice = [].slice;
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty,
+  slice = [].slice;
 
-tweak.Events = (function(_super) {
-  __extends(Events, _super);
+tweak.Events = (function(superClass) {
+  extend(Events, superClass);
 
   function Events() {
     return Events.__super__.constructor.apply(this, arguments);
@@ -386,7 +415,7 @@ tweak.Events = (function(_super) {
    */
 
   Events.prototype.findEvent = function(names, build) {
-    var event, events, item, _i, _len, _results;
+    var event, events, i, item, len, results;
     if (build == null) {
       build = false;
     }
@@ -394,9 +423,9 @@ tweak.Events = (function(_super) {
       names = names.split(/\s+/);
     }
     events = this.__events = this.__events || {};
-    _results = [];
-    for (_i = 0, _len = names.length; _i < _len; _i++) {
-      item = names[_i];
+    results = [];
+    for (i = 0, len = names.length; i < len; i++) {
+      item = names[i];
       if (!(event = events[item])) {
         if (build) {
           event = this.__events[item] = {
@@ -407,9 +436,9 @@ tweak.Events = (function(_super) {
           continue;
         }
       }
-      _results.push(event);
+      results.push(event);
     }
-    return _results;
+    return results;
   };
 
 
@@ -465,7 +494,7 @@ tweak.Events = (function(_super) {
    */
 
   Events.prototype.addEvent = function(names, callback, context, max) {
-    var event, ignore, item, _i, _j, _len, _len1, _ref, _ref1;
+    var event, i, ignore, item, j, len, len1, ref, ref1;
     if (context == null) {
       context = this;
     }
@@ -473,13 +502,13 @@ tweak.Events = (function(_super) {
       max = context;
       context = max || this;
     }
-    _ref = this.findEvent(names, true);
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      event = _ref[_i];
+    ref = this.findEvent(names, true);
+    for (i = 0, len = ref.length; i < len; i++) {
+      event = ref[i];
       ignore = false;
-      _ref1 = event.__callbacks;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        item = _ref1[_j];
+      ref1 = event.__callbacks;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        item = ref1[j];
         if (item.callback === callback && context === item.ctx) {
           item.max = max;
           item.calls = 0;
@@ -517,16 +546,16 @@ tweak.Events = (function(_super) {
    */
 
   Events.prototype.removeEvent = function(names, callback, context) {
-    var event, item, key, _i, _len, _ref, _ref1;
+    var event, i, item, key, len, ref, ref1;
     if (context == null) {
       context = this;
     }
-    _ref = this.findEvent(names);
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      event = _ref[_i];
-      _ref1 = event.__callbacks;
-      for (key in _ref1) {
-        item = _ref1[key];
+    ref = this.findEvent(names);
+    for (i = 0, len = ref.length; i < len; i++) {
+      event = ref[i];
+      ref1 = event.__callbacks;
+      for (key in ref1) {
+        item = ref1[key];
         if (((callback == null) || callback === item.callback) && ((context == null) || context === item.ctx)) {
           event.__callbacks.splice(key, 1);
         }
@@ -569,18 +598,18 @@ tweak.Events = (function(_super) {
    */
 
   Events.prototype.triggerEvent = function() {
-    var context, event, item, names, params, _i, _j, _len, _len1, _ref, _ref1;
-    names = arguments[0], params = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    var context, event, i, item, j, len, len1, names, params, ref, ref1;
+    names = arguments[0], params = 2 <= arguments.length ? slice.call(arguments, 1) : [];
     if (typeof names === 'object' && !names instanceof Array) {
       names = names.names || [];
       context = names.context || null;
     }
-    _ref = this.findEvent(names);
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      event = _ref[_i];
-      _ref1 = event.__callbacks;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        item = _ref1[_j];
+    ref = this.findEvent(names);
+    for (i = 0, len = ref.length; i < len; i++) {
+      event = ref[i];
+      ref1 = event.__callbacks;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        item = ref1[j];
         if (item.listen && ((context == null) || context === item.ctx)) {
           if ((item.max != null) && ++item.calls >= item.max) {
             item.listen = false;
@@ -638,7 +667,7 @@ tweak.Events = (function(_super) {
    */
 
   Events.prototype.updateEvent = function(names, options) {
-    var callback, calls, ctx, event, item, listen, max, reset, _i, _j, _len, _len1, _ref, _ref1;
+    var callback, calls, ctx, event, i, item, j, len, len1, listen, max, ref, ref1, reset;
     if (options == null) {
       options = {};
     }
@@ -648,12 +677,12 @@ tweak.Events = (function(_super) {
     calls = reset ? 0 : options.calls || 0;
     listen = options.listen;
     callback = options.callback;
-    _ref = this.findEvent(names);
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      event = _ref[_i];
-      _ref1 = event.__callbacks;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        item = _ref1[_j];
+    ref = this.findEvent(names);
+    for (i = 0, len = ref.length; i < len; i++) {
+      event = ref[i];
+      ref1 = event.__callbacks;
+      for (j = 0, len1 = ref1.length; j < len1; j++) {
+        item = ref1[j];
         if (((ctx == null) || ctx !== item.ctx) && ((callback == null) || callback !== item.callback)) {
           if (max != null) {
             item.max = max;
@@ -700,12 +729,12 @@ tweak.Events = (function(_super) {
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __slice = [].slice;
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty,
+  slice = [].slice;
 
-tweak.Store = (function(_super) {
-  __extends(Store, _super);
+tweak.Store = (function(superClass) {
+  extend(Store, superClass);
 
   function Store() {
     return Store.__super__.constructor.apply(this, arguments);
@@ -752,8 +781,8 @@ tweak.Store = (function(_super) {
    */
 
   Store.prototype.set = function() {
-    var data, key, obj, params, prev, prevProps, prop, silent, type, _name;
-    data = arguments[0], params = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    var data, key, name, obj, params, prev, prevProps, prop, silent, type;
+    data = arguments[0], params = 2 <= arguments.length ? slice.call(arguments, 1) : [];
     silent = params[0];
     type = typeof data;
     if (type === 'string' || type === 'number') {
@@ -769,9 +798,9 @@ tweak.Store = (function(_super) {
       if (prev == null) {
         this.length++;
       }
-      this._data[key] = (typeof this[_name = "__set" + (key.replace(/^[a-z]/, function(m) {
+      this._data[key] = (typeof this[name = "__set" + (key.replace(/^[a-z]/, function(m) {
         return m.toUpperCase();
-      }))] === "function" ? this[_name](prop) : void 0) || prop;
+      }))] === "function" ? this[name](prop) : void 0) || prop;
       if (!silent) {
         this.triggerEvent("changed:" + key, prop);
       }
@@ -836,29 +865,29 @@ tweak.Store = (function(_super) {
    */
 
   Store.prototype.get = function() {
-    var base, data, i, item, key, limit, params, _i, _len, _name;
-    limit = arguments[0], params = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+    var base, data, i, item, j, key, len, limit, name, params;
+    limit = arguments[0], params = 2 <= arguments.length ? slice.call(arguments, 1) : [];
     if (limit == null) {
       limit = (function() {
-        var _ref, _results;
-        _ref = this._data;
-        _results = [];
-        for (key in _ref) {
-          item = _ref[key];
-          _results.push(key);
+        var ref, results;
+        ref = this._data;
+        results = [];
+        for (key in ref) {
+          item = ref[key];
+          results.push(key);
         }
-        return _results;
+        return results;
       }).call(this);
     }
     if (typeof limit === 'string' || typeof limit === 'number') {
       limit = [limit];
     }
     base = this._data instanceof Array ? [] : {};
-    for (i = _i = 0, _len = limit.length; _i < _len; i = ++_i) {
+    for (i = j = 0, len = limit.length; j < len; i = ++j) {
       item = limit[i];
-      data = typeof this[_name = "__get" + (("" + item).replace(/^[a-z]/, function(m) {
+      data = typeof this[name = "__get" + (("" + item).replace(/^[a-z]/, function(m) {
         return m.toUpperCase();
-      }))] === "function" ? this[_name].apply(this, params) : void 0;
+      }))] === "function" ? this[name].apply(this, params) : void 0;
       if (data == null) {
         data = this._data[item];
       }
@@ -895,15 +924,15 @@ tweak.Store = (function(_super) {
    */
 
   Store.prototype.has = function(limit, params) {
-    var data, i, item, _i, _len, _name;
+    var data, i, item, j, len, name;
     if (typeof limit === 'string' || typeof limit === 'number') {
       limit = [limit];
     }
-    for (i = _i = 0, _len = limit.length; _i < _len; i = ++_i) {
+    for (i = j = 0, len = limit.length; j < len; i = ++j) {
       item = limit[i];
-      data = typeof this[_name = "__get" + (item.replace(/^[a-z]/, function(m) {
+      data = typeof this[name = "__get" + (item.replace(/^[a-z]/, function(m) {
         return m.toUpperCase();
-      }))] === "function" ? this[_name].apply(this, params) : void 0;
+      }))] === "function" ? this[name].apply(this, params) : void 0;
       if ((data == null) && (this._data[item] == null)) {
         return false;
       }
@@ -957,13 +986,13 @@ tweak.Store = (function(_super) {
    */
 
   Store.prototype["import"] = function(data, silent) {
-    var item, key, _ref;
+    var item, key, ref;
     if (silent == null) {
       silent = true;
     }
     for (key in data) {
       item = data[key];
-      if (((_ref = this._data[key]) != null ? _ref["import"] : void 0) != null) {
+      if (((ref = this._data[key]) != null ? ref["import"] : void 0) != null) {
         this._data[key]["import"](item, silent);
       } else {
         this.set(key, item, silent);
@@ -979,22 +1008,22 @@ tweak.Store = (function(_super) {
    */
 
   Store.prototype["export"] = function(limit) {
-    var item, key, res, _i, _len;
+    var item, j, key, len, res;
     res = {};
     if (limit == null) {
       limit = (function() {
-        var _ref, _results;
-        _ref = this._data;
-        _results = [];
-        for (key in _ref) {
-          item = _ref[key];
-          _results.push(key);
+        var ref, results;
+        ref = this._data;
+        results = [];
+        for (key in ref) {
+          item = ref[key];
+          results.push(key);
         }
-        return _results;
+        return results;
       }).call(this);
     }
-    for (_i = 0, _len = limit.length; _i < _len; _i++) {
-      key = limit[_i];
+    for (j = 0, len = limit.length; j < len; j++) {
+      key = limit[j];
       if ((item = this.get(key)) != null) {
         if (item["export"] != null) {
           res[key] = item["export"]();
@@ -1030,11 +1059,11 @@ tweak.Store = (function(_super) {
   are not exact, and will not directly represent valid code; the aim of an
   example is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
 
-tweak.Model = (function(_super) {
-  __extends(Model, _super);
+tweak.Model = (function(superClass) {
+  extend(Model, superClass);
 
   Model.prototype._type = 'model';
 
@@ -1082,15 +1111,15 @@ tweak.Model = (function(_super) {
    */
 
   Model.prototype.remove = function(properties, silent) {
-    var key, prop, property, _i, _len, _ref;
+    var i, key, len, prop, property, ref;
     if (typeof properties === 'string') {
       properties = [properties];
     }
-    for (_i = 0, _len = properties.length; _i < _len; _i++) {
-      property = properties[_i];
-      _ref = this._data;
-      for (key in _ref) {
-        prop = _ref[key];
+    for (i = 0, len = properties.length; i < len; i++) {
+      property = properties[i];
+      ref = this._data;
+      for (key in ref) {
+        prop = ref[key];
         if (!(key === property)) {
           continue;
         }
@@ -1114,11 +1143,11 @@ tweak.Model = (function(_super) {
    */
 
   Model.prototype.pluck = function(property) {
-    var key, prop, result, _ref;
+    var key, prop, ref, result;
     result = [];
-    _ref = this._data;
-    for (key in _ref) {
-      prop = _ref[key];
+    ref = this._data;
+    for (key in ref) {
+      prop = ref[key];
       if (prop === property) {
         result.push(key);
       }
@@ -1170,14 +1199,14 @@ tweak.Model = (function(_super) {
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __slice = [].slice;
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty,
+  slice = [].slice;
 
-tweak.Collection = (function(_super) {
+tweak.Collection = (function(superClass) {
   var __fullTrigger;
 
-  __extends(Collection, _super);
+  extend(Collection, superClass);
 
   Collection.prototype._type = 'collection';
 
@@ -1279,11 +1308,11 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.splice = function(position, remove, data, silent) {
-    var _ref;
+    var ref;
     if (silent == null) {
       silent = false;
     }
-    (_ref = this._data).splice.apply(_ref, [position, remove].concat(__slice.call(data)));
+    (ref = this._data).splice.apply(ref, [position, remove].concat(slice.call(data)));
     this.length = this._data.length;
     if (!silent) {
       __fullTrigger(this._data, this.triggerEvent);
@@ -1367,12 +1396,12 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.remove = function(keys, silent) {
-    var index, _i, _len;
+    var i, index, len;
     if (!(keys instanceof Array)) {
       keys = [keys];
     }
-    for (_i = 0, _len = keys.length; _i < _len; _i++) {
-      index = keys[_i];
+    for (i = 0, len = keys.length; i < len; i++) {
+      index = keys[i];
       this._data.splice(index, 1);
       if (!silent) {
         this.triggerEvent("removed:" + index);
@@ -1517,16 +1546,16 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.indexes = function(value) {
-    var index, prop, _ref, _results;
-    _ref = this._data;
-    _results = [];
-    for (index in _ref) {
-      prop = _ref[index];
+    var index, prop, ref, results;
+    ref = this._data;
+    results = [];
+    for (index in ref) {
+      prop = ref[index];
       if (value === prop) {
-        _results.push(index);
+        results.push(index);
       }
     }
-    return _results;
+    return results;
   };
 
 
@@ -1548,8 +1577,8 @@ tweak.Collection = (function(_super) {
    */
 
   Collection.prototype.concat = function(arrays, silent) {
-    var _ref;
-    this.splice(this.length - 1, 0, (_ref = []).concat.apply(_ref, arrays), silent);
+    var ref;
+    this.splice(this.length - 1, 0, (ref = []).concat.apply(ref, arrays), silent);
   };
 
 
@@ -1695,11 +1724,11 @@ tweak.Collection = (function(_super) {
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
 
-tweak.Controller = (function(_super) {
-  __extends(Controller, _super);
+tweak.Controller = (function(superClass) {
+  extend(Controller, superClass);
 
   function Controller() {
     return Controller.__super__.constructor.apply(this, arguments);
@@ -1733,13 +1762,13 @@ tweak.Controller = (function(_super) {
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
 
-tweak.View = (function(_super) {
+tweak.View = (function(superClass) {
   var $;
 
-  __extends(View, _super);
+  extend(View, superClass);
 
   function View() {
     return View.__super__.constructor.apply(this, arguments);
@@ -1779,17 +1808,17 @@ tweak.View = (function(_super) {
    */
 
   View.prototype.attach = function(parent, content) {
-    var e, item, method, num, _i, _len, _ref, _ref1, _ref2;
+    var e, i, item, len, method, num, ref, ref1, ref2;
     content = $(content)[0];
-    switch (method = (_ref = this.component.config.view) != null ? (_ref1 = _ref.attach) != null ? _ref1.method : void 0 : void 0) {
+    switch (method = (ref = this.component.config.view) != null ? (ref1 = ref.attach) != null ? ref1.method : void 0 : void 0) {
       case 'prefix':
       case 'before':
         parent.insertBefore(content, parent.firstChild);
         return parent.firstElementChild;
       case 'replace':
-        _ref2 = parent.children;
-        for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-          item = _ref2[_i];
+        ref2 = parent.children;
+        for (i = 0, len = ref2.length; i < len; i++) {
+          item = ref2[i];
           try {
             parent.removeChild(item);
           } catch (_error) {
@@ -1838,57 +1867,57 @@ tweak.View = (function(_super) {
    */
 
   View.prototype.render = function(silent) {
-    var attachTo, attachment, classNames, config, name, names, parent, _getAttachment, _ref, _ref1, _ref2;
+    var _getAttachment, attachTo, attachment, classNames, config, name, names, parent, ref, ref1, ref2;
     if (this.isAttached() && !silent) {
       return this.triggerEvent('rendered');
     }
     config = this.component.config.view;
     _getAttachment = (function(_this) {
       return function(parent) {
-        var check, child, name, _ref;
+        var check, child, name, ref;
         child = null;
         if (!parent) {
           return;
         }
         check = function(elements) {
-          var attachment, prop, val, _i, _len, _results;
-          _results = [];
-          for (_i = 0, _len = elements.length; _i < _len; _i++) {
-            prop = elements[_i];
+          var attachment, i, len, prop, results, val;
+          results = [];
+          for (i = 0, len = elements.length; i < len; i++) {
+            prop = elements[i];
             if (child) {
               break;
             }
             attachment = prop.getAttribute('data-attach');
             if ((attachment != null) && !attachment.match(/\s+/)) {
-              _results.push((function() {
-                var _j, _len1, _ref, _results1;
-                _ref = tweak.Common.splitMultiName(this.component.parent.name || '', attachment);
-                _results1 = [];
-                for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
-                  val = _ref[_j];
+              results.push((function() {
+                var j, len1, ref, results1;
+                ref = tweak.Common.splitMultiName(this.component.parent.name || '', attachment);
+                results1 = [];
+                for (j = 0, len1 = ref.length; j < len1; j++) {
+                  val = ref[j];
                   if (name === val) {
                     child = prop;
                     break;
                   } else {
-                    _results1.push(void 0);
+                    results1.push(void 0);
                   }
                 }
-                return _results1;
+                return results1;
               }).call(_this));
             } else {
-              _results.push(void 0);
+              results.push(void 0);
             }
           }
-          return _results;
+          return results;
         };
-        name = ((_ref = config.attach) != null ? _ref.to : void 0) || _this.component.name;
+        name = ((ref = config.attach) != null ? ref.to : void 0) || _this.component.name;
         check(parent);
         check($('[data-attach]', parent));
         return child;
       };
     })(this);
-    attachTo = (config != null ? (_ref = config.attach) != null ? _ref.to : void 0 : void 0) || this.component.name;
-    parent = (_ref1 = this.component.parent) != null ? (_ref2 = _ref1.view) != null ? _ref2.el : void 0 : void 0;
+    attachTo = (config != null ? (ref = config.attach) != null ? ref.to : void 0 : void 0) || this.component.name;
+    parent = (ref1 = this.component.parent) != null ? (ref2 = ref1.view) != null ? ref2.el : void 0 : void 0;
     attachment = _getAttachment(parent) || _getAttachment(document.documentElement) || parent || document.documentElement;
     this.$el = $(this.attach(attachment, this.template()));
     this.el = this.$el[0];
@@ -1897,13 +1926,13 @@ tweak.View = (function(_super) {
       names.unshift(this.component.name);
     }
     classNames = (function() {
-      var _i, _len, _results;
-      _results = [];
-      for (_i = 0, _len = names.length; _i < _len; _i++) {
-        name = names[_i];
-        _results.push(name.replace(/[\/\\]/g, '-'));
+      var i, len, results;
+      results = [];
+      for (i = 0, len = names.length; i < len; i++) {
+        name = names[i];
+        results.push(name.replace(/[\/\\]/g, '-'));
       }
-      return _results;
+      return results;
     })();
     this.$el.addClass(classNames.join(' '));
     if (!silent) {
@@ -1934,17 +1963,17 @@ tweak.View = (function(_super) {
    */
 
   View.prototype.element = function(element, root) {
-    var item, _i, _len, _results;
+    var i, item, len, results;
     if (root == null) {
       root = this.el;
     }
     if (element instanceof Array) {
-      _results = [];
-      for (_i = 0, _len = element.length; _i < _len; _i++) {
-        item = element[_i];
-        _results.push($(item, root));
+      results = [];
+      for (i = 0, len = element.length; i < len; i++) {
+        item = element[i];
+        results.push($(item, root));
       }
-      return _results;
+      return results;
     } else {
       return $(element, root);
     }
@@ -1969,12 +1998,12 @@ tweak.View = (function(_super) {
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
 
-tweak.History = (function(_super) {
-  __extends(History, _super);
+tweak.History = (function(superClass) {
+  extend(History, superClass);
 
   History.prototype.usePush = true;
 
@@ -2000,7 +2029,7 @@ tweak.History = (function(_super) {
    */
 
   function History() {
-    this.__checkChanged = __bind(this.__checkChanged, this);
+    this.__checkChanged = bind(this.__checkChanged, this);
     if (typeof window !== 'undefined') {
       this.location = (this.window = window).location;
       this.history = window.history;
@@ -2051,7 +2080,7 @@ tweak.History = (function(_super) {
    */
 
   History.prototype.start = function(options) {
-    var body, frame, location, root, url, useHash, usePush, _ref;
+    var body, frame, location, ref, root, url, useHash, usePush;
     if (options == null) {
       options = {};
     }
@@ -2059,7 +2088,7 @@ tweak.History = (function(_super) {
       return;
     }
     this.started = true;
-    usePush = this.usePush = options.useHash ? false : (_ref = this.history) != null ? _ref.pushState : void 0;
+    usePush = this.usePush = options.useHash ? false : (ref = this.history) != null ? ref.pushState : void 0;
     useHash = this.useHash = !usePush;
     if (options.forceRefresh || (useHash && !('onhashchange' in this.window))) {
       this.usePush = this.useHash = useHash = usePush = false;
@@ -2071,7 +2100,7 @@ tweak.History = (function(_super) {
     this.url = url = this.__getURL();
     location = this.location;
     if (useHash) {
-      this.location.replace("" + root + "#" + (this.__getPath()) + (this.__getHash()));
+      this.location.replace(root + "#" + (this.__getPath()) + (this.__getHash()));
     } else if (usePush && this.__getHash() !== '') {
       this.set(this.__getHash(), {
         replace: true
@@ -2289,7 +2318,7 @@ tweak.History = (function(_super) {
       window.document.open().close();
     }
     if (replace) {
-      window.location.replace("" + (location.href.replace(/(javascript:|#).*$/, '')) + "#" + url);
+      window.location.replace((location.href.replace(/(javascript:|#).*$/, '')) + "#" + url);
     } else {
       window.location.hash = "" + url;
     }
@@ -2401,13 +2430,13 @@ tweak.History = new tweak.History();
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
 
-tweak.Router = (function(_super) {
+tweak.Router = (function(superClass) {
   var __getKeys, __getQueryData, __paramReg, __toRegex;
 
-  __extends(Router, _super);
+  extend(Router, superClass);
 
   Router.prototype.uid = 0;
 
@@ -2432,8 +2461,8 @@ tweak.Router = (function(_super) {
       });
    */
 
-  function Router(routes) {
-    this.routes = routes != null ? routes : {};
+  function Router(routes1) {
+    this.routes = routes1 != null ? routes1 : {};
     tweak.History.addEvent('changed', this.__urlChanged, this);
   }
 
@@ -2496,12 +2525,12 @@ tweak.Router = (function(_super) {
    */
 
   Router.prototype.remove = function(event, routes) {
-    var key, route, routers, _i, _len, _ref;
+    var i, key, len, ref, route, routers;
     routers = this.routes[event];
     if (typeof routes === 'string') {
-      _ref = (" " + (routes.replace(/\s+/g, ' ')) + " ").split(' ');
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        route = _ref[_i];
+      ref = (" " + (routes.replace(/\s+/g, ' ')) + " ").split(' ');
+      for (i = 0, len = ref.length; i < len; i++) {
+        route = ref[i];
         routers = (" " + (routers.join(' ')) + " ").split(" " + route + " ");
       }
     } else {
@@ -2535,13 +2564,13 @@ tweak.Router = (function(_super) {
    */
 
   __getQueryData = function(segment) {
-    var key, option, params, prop, props, query, _i, _len;
+    var i, key, len, option, params, prop, props, query;
     query = /^.*\?(.+)/.exec(segment);
     if (query) {
       params = /([^&]+)&*/.exec(query[1]);
       if (params) {
-        for (_i = 0, _len = params.length; _i < _len; _i++) {
-          option = params[_i];
+        for (i = 0, len = params.length; i < len; i++) {
+          option = params[i];
           segment = {};
           props = /(.+)[:=]+(.+)|(.+)/.exec(segment);
           if (props) {
@@ -2606,17 +2635,17 @@ tweak.Router = (function(_super) {
    */
 
   Router.prototype.__urlChanged = function(url) {
-    var event, item, key, keys, match, res, route, routes, _ref, _results;
+    var event, item, key, keys, match, ref, res, results, route, routes;
     url = url.replace(/^\/+|\/+$/g, '');
-    _ref = this.routes;
-    _results = [];
-    for (event in _ref) {
-      routes = _ref[event];
-      _results.push((function() {
-        var _i, _j, _len, _len1, _ref1, _results1;
-        _results1 = [];
-        for (_i = 0, _len = routes.length; _i < _len; _i++) {
-          route = routes[_i];
+    ref = this.routes;
+    results = [];
+    for (event in ref) {
+      routes = ref[event];
+      results.push((function() {
+        var i, j, len, len1, ref1, results1;
+        results1 = [];
+        for (i = 0, len = routes.length; i < len; i++) {
+          route = routes[i];
           keys = [];
           if (typeof route === 'string') {
             keys = __getKeys(route);
@@ -2629,20 +2658,20 @@ tweak.Router = (function(_super) {
             };
             match.splice(0, 1);
             key = 0;
-            for (_j = 0, _len1 = match.length; _j < _len1; _j++) {
-              item = match[_j];
-              res.data[((_ref1 = keys[key]) != null ? _ref1.replace(/^[?:\/]*/, '') : void 0) || key] = __getQueryData(item);
+            for (j = 0, len1 = match.length; j < len1; j++) {
+              item = match[j];
+              res.data[((ref1 = keys[key]) != null ? ref1.replace(/^[?:\/]*/, '') : void 0) || key] = __getQueryData(item);
               key++;
             }
-            _results1.push(this.triggerEvent(event, res));
+            results1.push(this.triggerEvent(event, res));
           } else {
-            _results1.push(void 0);
+            results1.push(void 0);
           }
         }
-        return _results1;
+        return results1;
       }).call(this));
     }
-    return _results;
+    return results;
   };
 
   return Router;
@@ -2680,7 +2709,7 @@ tweak.Router = (function(_super) {
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __slice = [].slice;
+var slice = [].slice;
 
 tweak.Component = (function() {
   Component.prototype.model = null;
@@ -2702,7 +2731,7 @@ tweak.Component = (function() {
    */
 
   function Component(relation, options) {
-    var name, name2, prop, prop2, _i, _j, _len, _len1, _ref, _ref1;
+    var j, k, len, len1, name, name2, prop, prop2, ref, ref1;
     if (options == null) {
       throw new Error('No options given');
     }
@@ -2725,17 +2754,17 @@ tweak.Component = (function() {
     this.__addView();
     this.__addComponents();
     this.__addController();
-    _ref = this.modules;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      name = _ref[_i];
+    ref = this.modules;
+    for (j = 0, len = ref.length; j < len; j++) {
+      name = ref[j];
       if (!(prop = this[name])) {
         continue;
       }
       prop.parent = this.parent;
       prop.component = this;
-      _ref1 = this.modules;
-      for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-        name2 = _ref1[_j];
+      ref1 = this.modules;
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        name2 = ref1[k];
         if (name !== name2 && (prop2 = this[name2])) {
           prop[name2] = prop2;
         }
@@ -2749,10 +2778,10 @@ tweak.Component = (function() {
    */
 
   Component.prototype.init = function() {
-    var item, name, _i, _len, _ref;
-    _ref = this.modules;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      name = _ref[_i];
+    var item, j, len, name, ref;
+    ref = this.modules;
+    for (j = 0, len = ref.length; j < len; j++) {
+      name = ref[j];
       if (name !== 'view' && (item = this[name])) {
         if (typeof item.init === "function") {
           item.init();
@@ -2770,7 +2799,7 @@ tweak.Component = (function() {
    */
 
   Component.prototype.__buildConfig = function(options) {
-    var configs, extension, i, name, paths, requested, result, _i, _ref, _ref1;
+    var configs, extension, i, j, name, paths, ref, ref1, requested, result;
     configs = [];
     paths = this.paths = [];
     extension = this.name;
@@ -2780,15 +2809,15 @@ tweak.Component = (function() {
         extension = options["extends"];
       }
     }
-    name = ((_ref = this.parent) != null ? _ref.name : void 0) || this.name;
+    name = ((ref = this.parent) != null ? ref.name : void 0) || this.name;
     while (extension) {
-      requested = tweak.Common.require(name, "" + extension + "/config", tweak.strict ? null : {});
+      requested = tweak.Common.require(name, extension + "/config", tweak.strict ? null : {});
       paths.push(tweak.Common.relToAbs(name, extension));
       configs.push(tweak.Common.clone(requested));
       extension = requested["extends"];
     }
     result = configs[configs.length - 1];
-    for (i = _i = _ref1 = configs.length - 2; _ref1 <= 0 ? _i <= 0 : _i >= 0; i = _ref1 <= 0 ? ++_i : --_i) {
+    for (i = j = ref1 = configs.length - 2; ref1 <= 0 ? j <= 0 : j >= 0; i = ref1 <= 0 ? ++j : --j) {
       result = tweak.Common.combine(result, configs[i]);
     }
     if (result.model == null) {
@@ -2820,13 +2849,13 @@ tweak.Component = (function() {
 
   Component.prototype.__addModule = function() {
     var Module, module, name, params, surrogate;
-    name = arguments[0], surrogate = arguments[1], params = 3 <= arguments.length ? __slice.call(arguments, 2) : [];
+    name = arguments[0], surrogate = arguments[1], params = 3 <= arguments.length ? slice.call(arguments, 2) : [];
     Module = tweak.Common.findModule(this.paths, "./" + name, surrogate);
     module = this[name] = (function(func, args, ctor) {
       ctor.prototype = func.prototype;
       var child = new ctor, result = func.apply(child, args);
       return Object(result) === result ? result : child;
-    })(Module, [this.config[name]].concat(__slice.call(params)), function(){});
+    })(Module, [this.config[name]].concat(slice.call(params)), function(){});
     module.component = this;
     module.root = this.root;
   };
@@ -2840,8 +2869,8 @@ tweak.Component = (function() {
 
   Component.prototype.__addView = function() {
     var params;
-    params = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    this.__addModule.apply(this, ['view', tweak.View].concat(__slice.call(params)));
+    params = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    this.__addModule.apply(this, ['view', tweak.View].concat(slice.call(params)));
   };
 
 
@@ -2853,8 +2882,8 @@ tweak.Component = (function() {
 
   Component.prototype.__addModel = function() {
     var params;
-    params = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    this.__addModule.apply(this, ['model', tweak.Model].concat(__slice.call(params)));
+    params = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    this.__addModule.apply(this, ['model', tweak.Model].concat(slice.call(params)));
   };
 
 
@@ -2866,8 +2895,8 @@ tweak.Component = (function() {
 
   Component.prototype.__addController = function() {
     var params;
-    params = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    this.__addModule.apply(this, ['controller', tweak.Controller].concat(__slice.call(params)));
+    params = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    this.__addModule.apply(this, ['controller', tweak.Controller].concat(slice.call(params)));
   };
 
 
@@ -2879,8 +2908,8 @@ tweak.Component = (function() {
 
   Component.prototype.__addComponents = function() {
     var params;
-    params = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    this.__addModule.apply(this, ['components', tweak.Components].concat(__slice.call(params)));
+    params = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    this.__addModule.apply(this, ['components', tweak.Components].concat(slice.call(params)));
   };
 
 
@@ -2892,8 +2921,8 @@ tweak.Component = (function() {
 
   Component.prototype.__addRouter = function() {
     var params;
-    params = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-    this.__addModule.apply(this, ['router', tweak.Router].concat(__slice.call(params)));
+    params = 1 <= arguments.length ? slice.call(arguments, 0) : [];
+    this.__addModule.apply(this, ['router', tweak.Router].concat(slice.call(params)));
   };
 
 
@@ -2904,7 +2933,7 @@ tweak.Component = (function() {
    */
 
   Component.prototype.__componentRender = function(type) {
-    this.view.addEvent("" + type + "ed", function() {
+    this.view.addEvent(type + "ed", function() {
       this.components.addEvent('ready', function() {
         return this.controller.triggerEvent('ready');
       }, this, 1);
@@ -2942,14 +2971,14 @@ tweak.Component = (function() {
    */
 
   Component.prototype.destroy = function(silent) {
-    var components, i, item, _i, _len, _ref;
+    var components, i, item, j, len, ref;
     this.view.clear();
     components = this.relation.components;
     if (components != null) {
       i = 0;
-      _ref = components.data;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
+      ref = components.data;
+      for (j = 0, len = ref.length; j < len; j++) {
+        item = ref[j];
         if (item.uid === this.uid) {
           components.remove(i, silent);
           return;
@@ -3025,9 +3054,9 @@ tweak.Component = (function() {
    */
 
   Component.prototype.triggerEvent = function() {
-    var names, params, _ref;
-    names = arguments[0], params = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
-    return (_ref = this.controller).triggerEvent.apply(_ref, [names].concat(__slice.call(params)));
+    var names, params, ref;
+    names = arguments[0], params = 2 <= arguments.length ? slice.call(arguments, 1) : [];
+    return (ref = this.controller).triggerEvent.apply(ref, [names].concat(slice.call(params)));
   };
 
 
@@ -3066,8 +3095,8 @@ tweak.Component = (function() {
    */
 
   Component.prototype["export"] = function(limit) {
-    var _base;
-    return (typeof (_base = this.controller)["export"] === "function" ? _base["export"]() : void 0) || {
+    var base;
+    return (typeof (base = this.controller)["export"] === "function" ? base["export"]() : void 0) || {
       model: this.model["export"](limit, {
         components: this.components["export"]()
       })
@@ -3117,11 +3146,11 @@ tweak.Component = (function() {
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
  */
-var __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+var extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
 
-tweak.Components = (function(_super) {
-  __extends(Components, _super);
+tweak.Components = (function(superClass) {
+  extend(Components, superClass);
 
   function Components() {
     return Components.__super__.constructor.apply(this, arguments);
@@ -3135,19 +3164,19 @@ tweak.Components = (function(_super) {
    */
 
   Components.prototype.init = function() {
-    var data, item, name, names, obj, path, prop, _i, _j, _k, _l, _len, _len1, _len2, _len3, _name, _ref;
+    var _name, data, i, item, j, k, l, len, len1, len2, len3, name, names, obj, path, prop, ref;
     this._data = [];
     data = [];
     _name = this.component.name;
-    _ref = this.component.config.components;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      item = _ref[_i];
+    ref = this.component.config.components;
+    for (i = 0, len = ref.length; i < len; i++) {
+      item = ref[i];
       obj = {};
       if (item instanceof Array) {
         names = tweak.Common.splitMultiName(_name, item[0]);
         path = tweak.Common.relToAbs(_name, item[1]);
-        for (_j = 0, _len1 = names.length; _j < _len1; _j++) {
-          name = names[_j];
+        for (j = 0, len1 = names.length; j < len1; j++) {
+          name = names[j];
           this._data.push(new tweak.Component(this, {
             name: name,
             "extends": path
@@ -3155,8 +3184,8 @@ tweak.Components = (function(_super) {
         }
       } else if (typeof item === 'string') {
         data = tweak.Common.splitMultiName(_name, item);
-        for (_k = 0, _len2 = data.length; _k < _len2; _k++) {
-          name = data[_k];
+        for (k = 0, len2 = data.length; k < len2; k++) {
+          name = data[k];
           this._data.push(new tweak.Component(this, {
             name: name
           }));
@@ -3166,8 +3195,8 @@ tweak.Components = (function(_super) {
         name = obj.name;
         data = tweak.Common.splitMultiName(_name, name);
         obj["extends"] = tweak.Common.relToAbs(_name, obj["extends"]);
-        for (_l = 0, _len3 = data.length; _l < _len3; _l++) {
-          prop = data[_l];
+        for (l = 0, len3 = data.length; l < len3; l++) {
+          prop = data[l];
           obj.name = prop;
           this._data.push(new tweak.Component(this, obj));
         }
@@ -3184,14 +3213,14 @@ tweak.Components = (function(_super) {
    */
 
   Components.prototype.__componentRender = function(type) {
-    var item, _i, _len, _ref;
+    var i, item, len, ref;
     if (this.length === 0) {
       this.triggerEvent('ready');
     } else {
       this.total = 0;
-      _ref = this._data;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        item = _ref[_i];
+      ref = this._data;
+      for (i = 0, len = ref.length; i < len; i++) {
+        item = ref[i];
         item.controller.addEvent('ready', function() {
           if (++this.total === this.length) {
             return this.triggerEvent('ready');
@@ -3254,10 +3283,10 @@ tweak.Components = (function(_super) {
    */
 
   Components.prototype.reset = function() {
-    var item, _i, _len, _ref;
-    _ref = this._data;
-    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-      item = _ref[_i];
+    var i, item, len, ref;
+    ref = this._data;
+    for (i = 0, len = ref.length; i < len; i++) {
+      item = ref[i];
       item.destroy();
     }
     Components.__super__.reset.call(this);
