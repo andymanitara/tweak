@@ -28,13 +28,8 @@ exports.config =
       ignored: /tweak\.js|header\.js|tests\.js|vendor\.js/
 
   modules:
-    definition:false
-    wrapper: (path, data) ->
-      """
-;\n(function(window){
-    #{data}
-    })(window); \n\n
-      """
+    definition: false
+    wrapper: false
       
   overrides:
     production:
