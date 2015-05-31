@@ -1,5 +1,5 @@
 ###
-  tweak.js 1.7.0
+  tweak.js 1.7.1
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -9,11 +9,31 @@
 
 wrapper = (root, tweak, require, $) ->
   pTweak = tweak
-  tweak.$ = $
-  tweak.require = require
-  tweak.strict = false
-  tweak.simple = true
 
+  ###
+   Assign $ to tweak for internal use and allow to be overridden at anypoint
+  ###
+  tweak.$ = $
+
+  ###
+   Assign the module loader's require method to tweak.require. By default it
+   used the passed require. However, for example, if using Curl then curl can
+   be assigned to tweak.require
+  ###
+  tweak.require = require
+
+  ###
+    By default when creating a new Component if there is not an initial
+    external config file relating to that Component then it doesn't matter.
+    However when extending lots of Components it is generally better to
+    make external relating config objects required to be found by a module loader
+    so mistakes are reduced. 
+  ###
+  tweak.strict = false
+
+  ###
+    Restore the previous stored tweak.
+  ###
   tweak.noConflict = ->
     root.tweak = pTweak
     @
@@ -21,20 +41,33 @@ wrapper = (root, tweak, require, $) ->
   tweak
 
 do (wrapper) ->  
-  _root = (type) -> if typeof(type) is 'object' and type?.type is type then type else null
-  root = _root(self) or _root global
+  root = (typeof(self) is 'object' and self.self is self and self) or
+  (typeof(global) is 'object' and global.global is global and global) or
+  window
 
-  ### To keep alternative frameworks to jQuery available to tweak, 
-      register/define the appropriate framework to '$'
+  ### 
+    To keep alternative frameworks to jQuery available to tweak, 
+    register/define the appropriate framework to '$'
   ###
   if typeof(define) is 'function' and define.amd
     define ['$', 'exports'], ($, exports) ->
-      # I belive this snippet will enable a switch to a require based system with AMD
+      ###
+        This will enable a switch to a CommonJS based system with AMD.
+        This may need adjustment to 
+      ###
       toRequire = (module) -> define [module], (res) -> return res
-      root.tweak = wrapper root, exports, toRequire , $
+      wrapper root, root.tweak = exports, toRequire , $
   else if typeof(exports) isnt 'undefined'
-    try $ = root.require '$'
-    if not $ then try $ = root.require 'jquery'
-    wrapper root, exports, root.require, $
+    ###
+      CommonJS and Node environment
+    ###
+    try $ = require '$'
+    if not $ then try $ = require 'jquery'
+    wrapper root, exports, require, $
   else
-    throw new Error 'It is required that tweakjs is used with module loaders'
+    ###
+      Typical web environment - even though a module loader is required
+      it is best to allow the user to set it up. Example Brunch uses CommonJS
+      however it does not work exactly like it does in node so it goes through here
+    ###
+    wrapper root, root.tweak = {}, require, root.jQuery or root.Zepto or root.ender or root.$
