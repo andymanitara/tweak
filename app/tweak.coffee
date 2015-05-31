@@ -7,26 +7,6 @@
   http://tweakjs.com
 ###
 
-###
-  All of the modules to the source code are separated into the following files
-  The order of the merging is determined in the brunch-config.coffee file
- 
-  tweak.js
-    This is the core of the framework - with these modules you can use them in any many of way.
-    lib/common.coffee - Common methods used throughout the framework
-    lib/class.coffee - Methods to supply JS users the ability to use CoffeScripts OOP methology.
-    lib/events.coffee - Event system
-    lib/store.coffee - Core/shared code for collections and models
-    lib/collection.coffee
-    lib/controller.coffee
-    lib/model.coffee
-    lib/view.coffee
-    lib/component.coffee
-    lib/components.coffee - collection of components
-    lib/router.coffee
-    lib/history.coffee
-###
-
 wrapper = (root, tweak, require, $) ->
   pTweak = tweak
   tweak.$ = $
