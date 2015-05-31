@@ -224,7 +224,7 @@ tweak.Common = (function() {
    */
 
   Common.prototype.parse = function(data) {
-    return tweak.$[typeof data === 'string' ? 'parseJSON' : 'getJSON'](data);
+    return JSON[typeof data === 'string' ? 'parse' : 'stringify'](data);
   };
 
 

@@ -55,7 +55,7 @@ class tweak.Common
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
     @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
-  parse: (data) -> tweak.$[if typeof data is 'string' then 'parseJSON' else 'getJSON'] data
+  parse: (data) -> JSON[if typeof data is 'string' then 'parse' else 'stringify'] data
 
   ###
     Try to find a module by name in multiple paths. A final surrogate if available will be returned if no module can be found.
