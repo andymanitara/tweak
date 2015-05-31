@@ -2,7 +2,7 @@
   "name": "tweakjs",
   "author":"Blake Newman <blake.newman@ignitiononline.com>",
   "description": "TweakJS MVC Framework",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "license": "MIT",
   "homepage": "http://tweakjs.com",
   "main": [
