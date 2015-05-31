@@ -32,6 +32,7 @@ wrapper = (root, tweak, require, $) ->
   tweak.$ = $
   tweak.require = require
   tweak.strict = false
+  tweak.simple = true
 
   tweak.noConflict = ->
     root.tweak = pTweak

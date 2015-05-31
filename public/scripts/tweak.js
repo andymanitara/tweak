@@ -37,6 +37,7 @@ wrapper = function(root, tweak, require, $) {
   tweak.$ = $;
   tweak.require = require;
   tweak.strict = false;
+  tweak.simple = true;
   tweak.noConflict = function() {
     root.tweak = pTweak;
     return this;
@@ -2003,6 +2004,8 @@ var bind = function(fn, me){ return function(){ return fn.apply(me, arguments); 
   hasProp = {}.hasOwnProperty;
 
 tweak.History = (function(superClass) {
+  var __toggleListener;
+
   extend(History, superClass);
 
   History.prototype.usePush = true;
@@ -2128,7 +2131,7 @@ tweak.History = (function(superClass) {
    */
 
   History.prototype.stop = function() {
-    this.__toggleListeners('off');
+    this.__toggleListeners('remvoe');
     return this.started = false;
   };
 
@@ -2193,23 +2196,35 @@ tweak.History = (function(superClass) {
     }
   };
 
+  __toggleListener = function(prefix, type, fn) {
+    var attach;
+    if (window.addEventListener) {
+      return element[prefix + 'EventListener'](type, fn);
+    } else if (window.attachEvent) {
+      attach = prefix === 'on' ? 'attach' : 'detach';
+      return element[attach + 'Event']("prefix" + type, fn);
+    } else {
+      return element[prefix + type] = fn;
+    }
+  };
+
 
   /*
     @private
     Add listeners of remove history change listeners.
-    @param [String] prefix (Default = 'on') Set the prefix - 'on' or 'off'.
+    @param [String] prefix (Default = 'add') Set the prefix - 'add' or 'remove'.
    */
 
   History.prototype.__toggleListeners = function(prefix) {
     if (prefix == null) {
-      prefix = 'on';
+      prefix = 'add';
     }
     if (this.pushState) {
-      tweak.$(this.window)[prefix]('popstate', this.__checkChanged);
+      __toggleListener('popstate', this.__checkChanged);
     } else if (this.useHash && !this.iframe) {
-      tweak.$(this.window)[prefix]('hashchange', this.__checkChanged);
+      __toggleListener('hashchange', this.__checkChanged);
     } else if (this.useHash) {
-      if (prefix === 'on') {
+      if (prefix === 'add') {
         this.__interval = setInterval(this.__checkChanged, this.intervalRate);
       } else {
         clearInterval(this.__interval);
