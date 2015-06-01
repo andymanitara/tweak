@@ -1,5 +1,5 @@
 ###
-  tweak.js 1.7.2
+  tweak.js 1.7.3
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -61,7 +61,7 @@ else if typeof(exports) isnt 'undefined'
   ###
   try $ = require '$'
   if not $ then try $ = require 'jquery'
-  wrapper root, exports = root.tweak = {}, require, $
+  wrapper root, tweak = exports, require, $
 else
   ###
     Typical web environment - even though a module loader is required
@@ -69,11 +69,3 @@ else
     however it does not work exactly like it does in node so it goes through here
   ###
   wrapper root, root.tweak = {}, require, root.jQuery or root.Zepto or root.ender or root.$
-
-###
-  Due to a slight annoyance with coffeescript self wrapping to make it work in node
-  we need to assign to module[ClassName] = class ClassName 
-  However this will break in a web enviroment as exports isnt defined. So we create
-  a dummy exports variable within this code
-###
-if typeof(exports) is 'undefined' then exports = root.tweak 
