@@ -1,5 +1,7 @@
 # Tweak.js - MVC your way.
 
+[![Join the chat at https://gitter.im/blake-newman/TweakJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/blake-newman/TweakJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ## Introduction
 Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
 
