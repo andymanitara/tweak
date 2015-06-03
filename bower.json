@@ -27,21 +27,5 @@
     "package.json"
   ],
   "devDependencies": {
-    "jquery": "*",
-    "mocha": "*",
-    "chai": "*",
-    "sinon-chai": "*",
-    "sinonjs": "*"
-  },
-  "overrides": {
-    "sinon-chai": {
-      "main": "./lib/sinon-chai.js"
-    },
-    "mocha": {
-      "main": [
-        "mocha.js",
-        "mocha.css"
-      ]
-    }
   }
 }
