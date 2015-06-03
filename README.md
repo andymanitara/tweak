@@ -1,4 +1,4 @@
-# Tweak.js - MVC your way.
+# Tweak.js - Component driven MVC framework.
 
 [![Join the chat at https://gitter.im/blake-newman/TweakJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/blake-newman/TweakJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![npm version](https://badge.fury.io/js/tweakjs.svg)](http://badge.fury.io/js/tweakjs)
@@ -47,7 +47,7 @@ NPM: `npm install tweakjs`
 A skeleton for Grunt, Brunch a Gulp will shortly be created
 
 ## Concepts
-Below is a rough guide to the concepts used within Tweak.js. Additional information can be found on the web to help your understanding on MVC concepts. For more in-depth details on what Tweak.js can do, look at the relevant module in the [documentation](http://docs.tweakjs.com/) or look at the source code for line by line comments. Better yet just get stuck in and mess around with it; its versatile for lots of needs, so **MVC your way** .  
+Below is a rough guide to the concepts used within Tweak.js. Additional information can be found on the web to help your understanding on MVC concepts. For more in-depth details on what Tweak.js can do, look at the relevant module in the [documentation](http://docs.tweakjs.com/) or look at the source code for line by line comments. Better yet just get stuck in and mess around with it; its versatile for lots of needs.  
 
 ### Model
 A Model is used by other modules like the Controller to store, retrieve and listen to a set of data. A Model triggers events when it's storage base is updated, this makes it easy to listen to changes and to action as and when required. The Model’s data is not a database, but a JSON representation of its data can be exported and imported to and from storage sources. In Tweak.js the Model extends the ['Store'](http://docs.tweakjs.com/class/tweak/Store.html) module - which is the core functionality shared between Model's and Collection's. The main difference between a Model and collection it the base of its data type. The Model uses an object as its base data type and a collection base type is an Array.
