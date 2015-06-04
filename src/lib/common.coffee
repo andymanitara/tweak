@@ -85,8 +85,7 @@ class Tweak.Common
     throw new Error "No default module (#{module}) for component #{contexts[0]}"
 
   ###
-    Require method to find a module in a given context path and module path.
-    The context path and module path are merged together to create an absolute path.
+    Find a module from given context and path or return a surrogate
     @param [String] context The context path.
     @param [String] module The module path to convert to absolute path, based on the context path.
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
@@ -94,13 +93,17 @@ class Tweak.Common
     @throw Error upon no found module.
   ###
   @require = (context, module, surrogate) ->
-    # Convert path to absolute
-    path = Tweak.Common.relToAbs context, module
+    # module path to absolute
+    path = Tweak.Common.toAbsolute context, module
     try
+      # Try to require the module returning if successful
       return Tweak.require path
     catch e
+      # If there is in error then attempt to use a surrogate
+      # If returns surrogate else it throws the error 
       return surrogate if surrogate?
       throw e
+    # Void return
     return
 
   ###
