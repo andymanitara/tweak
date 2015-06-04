@@ -191,7 +191,7 @@ class Tweak.Common
         [\/\\]*     # Zero or more \ or / characters
         [^\/\\]+    # One or more characters that are not \ or /
       ){#{amount}}  # Close capture group - capture x amount of times
-      [\/\\]?       #
+      [\/\\]?       # Single \ or / charater - Lazy (doesn't have to exist)
       $             # Assert end of String
     ///
 
