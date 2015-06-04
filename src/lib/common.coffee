@@ -113,7 +113,6 @@ class Tweak.Common
     @return [Array<String>] Array of absolute names.
   ###
   @splitMultiName = (context, names) ->
-    values = []
     # Reg-ex to split out the name prefix, suffix and the amount to expand by
     reg = ///
       ^           # Assert start of string
@@ -133,20 +132,22 @@ class Tweak.Common
     if typeof names is 'string'
       names = names.split /\s+/
 
+    paths = []
     # Iterate through names in
-    for item in names
-      result = reg.exec item
-      # If Reg-ex matches then expand the name
-      if result?
-        prefix = result[1]
-        min = result[2] or 0
-        max = result[3] or min
-        suffix = result[4]
-        while min <= max
-          values.push Tweak.Common.relToAbs context, "#{prefix}#{min++}#{suffix}"
+    for name in names
+      match = reg.exec name
+      # If RegExp has a match then the name needs to be expanded
+      if match?
+        # Deconstruct match to variables
+        [prefix, min, max, suffix] = match
+        # For each name in min to max create a path name and push it to paths Array
+        paths.push "#{prefix or ''}#{num}#{suffix or ''}" for num in [(min or 0)..(max or min)]
       else
-        values.push Tweak.Common.relToAbs context, item
-    values
+        # Push name to paths Array
+        paths.push name
+    
+    # Convert paths to absolute and return them
+    Tweak.Common.relToAbs context, path for path in paths
 
   ###
     Convert relative path to an absolute path; relative path defined by ./ or .\
