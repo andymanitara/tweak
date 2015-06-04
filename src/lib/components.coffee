@@ -15,35 +15,31 @@ class Tweak.Components extends Tweak.Collection
   # @property [String] The type of Store, i.e. 'collection', 'components' or 'model'.
   _type: 'components'
 
-
-
   ###
    Construct the Collection with given options from the Components configuration.
   ###
   init: ->
     @_data = []
     data = []
-    _name = @component.name
+    _absolute = (path) -> Tweak.Common.toAbsolute @component.name, path
+    _paths = (paths) -> _absolute path for path in Tweak.Common.splitPath paths
+    _add = (component) ->
+      @_data.push component
+      @length++
+      component.init()
+
     for item in @component.config.components
       obj = {}
       if item instanceof Array
-        names = Tweak.Common.splitMultiName _name, item[0]
-        path = Tweak.Common.toAbsolute _name, item[1]
-        for name in names
-          @_data.push new Tweak.Component @, {name, extends: path}
+        _extends = _absolute item[1]
+        for name in _paths item[0] then _add new Tweak.Component @, {path, extends:_extends}
       else if typeof item is 'string'
-        data = Tweak.Common.splitMultiName _name, item
-        for name in data
-          @_data.push new Tweak.Component @, {name}
+        for name in _paths item then _add new Tweak.Component @, {name}
       else
-        obj = item
-        name = obj.name
-        data = Tweak.Common.splitMultiName _name, name
-        obj.extends = Tweak.Common.toAbsolute _name, obj.extends
-        for prop in data
-          obj.name = prop
-          @_data.push new Tweak.Component @, obj
-      @_data[@length++].init()
+        item.extends = _absolute item.extends
+        for name in _paths item.name
+          item.name = name
+          _add new Tweak.Component @, item
     return
 
   ###

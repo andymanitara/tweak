@@ -90,7 +90,8 @@ class Tweak.View extends Tweak.Events
           if child then break
           attachment = prop.getAttribute 'data-attach'
           if attachment? and not attachment.match /\s+/
-            for val in Tweak.Common.splitMultiName @component.parent.name or '', attachment
+            for val in Tweak.Common.splitPath attachment
+              val = Tweak.Common.toAbsolute @component.parent.name or ''
               if name is val
                 child = prop
                 break

@@ -104,16 +104,24 @@ class Tweak.Common
     return
 
   ###
-    Split a name out to individual absolute names.
-    Names formated like './cd[2-4]' will return an array or something like ['album1/cd2','album1/cd3','album1/cd4'].
-    Names formated like './cd[2-4]a ./item[1]/model' will return an array or something
-    like ['album1/cd2a','album1/cd3a','album1/cd4a','album1/item0/model','album1/item1/model'].
-    @param [String] context The current context's name.
-    @param [String, Array<String>] names The string to split into separate component names.
-    @return [Array<String>] Array of absolute names.
+    Split a path formated as a 'multi-path' into individual paths.
+    @param [Array<String>, String] paths 'multi-path's to format.
+    @return [Array<String>] Array of paths.
+
+    @example Names formated as './cd[2-4]'
+      Tweak.Common.splitPaths('./cd[2-4]');
+      // Returns ['./cd2','./cd3','./cd4']
+
+    @example Names formated as ['./cd[2]/model', '../what1']
+      Tweak.Common.splitPaths(['./cd[2]', '../what1']);
+      // Returns ['./item0/model','./item1/model','./item2/model', '../what1']
+
+    @example Names formated as single space delimited String './cd[2]/model ../what1'
+      Tweak.Common.splitPaths('./cd[2]/model ../what1');
+      // Returns ['./item0/model','./item1/model','./item2/model', '../what1']
   ###
-  @splitMultiName = (context, names) ->
-    # Reg-ex to split out the name prefix, suffix and the amount to expand by
+  @splitPaths = (paths) ->
+    # RegExp to split out the name prefix, suffix and the amount to expand by
     reg = ///
       ^           # Assert start of string
       (.*)        # Capture any character up to the next statement (prefix)
@@ -129,25 +137,24 @@ class Tweak.Common
     ///
 
     # Split name if it is a string
-    if typeof names is 'string'
-      names = names.split /\s+/
+    if typeof paths is 'string'
+      paths = paths.split /\s+/
 
-    paths = []
-    # Iterate through names in
-    for name in names
-      match = reg.exec name
-      # If RegExp has a match then the name needs to be expanded
+    results = []
+    # Iterate through paths
+    for path in paths
+      match = reg.exec path
+      # If RegExp has a match then the path needs to be expanded
       if match?
         # Deconstruct match to variables
         [prefix, min, max, suffix] = match
-        # For each name in min to max create a path name and push it to paths Array
-        paths.push "#{prefix or ''}#{num}#{suffix or ''}" for num in [(min or 0)..(max or min)]
+        # For each path in min to max create a single path and push it to results Array
+        results.push "#{prefix}#{num}#{suffix}" for num in [(min or 0)..(max or min)]
       else
-        # Push name to paths Array
-        paths.push name
-    
-    # Convert paths to absolute and return them
-    Tweak.Common.relToAbs context, path for path in paths
+        # Push path to results Array
+        results.push path
+    # Return split paths
+    results
 
   ###
     Convert a relative path to an absolute path; relative path defined by ./ or .\
