@@ -12,7 +12,7 @@ compile = (flags) ->
   fs.mkdir 'build', ->
     fs.writeFile 'build/tweak.coffee', build.join('\n\n'), 'utf8', (err) ->
       throw err if err
-      exec 'coffee '+flags+' lib build', (error, stdout, stderr) ->
+      exec 'coffee '+flags+' lib build', (err, stdout, stderr) ->
         throw err if err
         console.log 'Built'
         exec 'uglifyjs lib/tweak.js -cm --source-map lib/tweak.min.js.map', (err, stdout, stderr) ->
