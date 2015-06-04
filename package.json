@@ -6,11 +6,16 @@
     "url": "http://blakenewman.com"
   },
   "description": "TweakJS MVC Framework",
-  "keywords": ["MVC", "Components", "TweakJS", "Application"],
-  "version": "1.7.4",
+  "keywords": [
+    "MVC",
+    "Components",
+    "TweakJS",
+    "Application"
+  ],
+  "version": "1.7.5",
   "license": "MIT",
   "homepage": "http://tweakjs.com",
-  "main":"public/scripts/tweak.js",
+  "main": "lib/tweak.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/blake-newman/tweakjs"
@@ -20,11 +25,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "devDependencies": {
-    "coffee-script-brunch": "*",
-    "uglify-js-brunch": "*",
-    "css-brunch": "*",
-    "javascript-brunch": "*"
-  }  
+  }
 }

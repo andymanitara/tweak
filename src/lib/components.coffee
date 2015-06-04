@@ -10,9 +10,12 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.Components extends tweak.Collection
-   # @property [String] The type of Store, i.e. 'collection', 'components' or 'model'.
+class Tweak.Components extends Tweak.Collection
+
+  # @property [String] The type of Store, i.e. 'collection', 'components' or 'model'.
   _type: 'components'
+
+
 
   ###
    Construct the Collection with given options from the Components configuration.

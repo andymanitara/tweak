@@ -24,7 +24,7 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.Component
+class Tweak.Component
  
   # @property [Object]
   model: null

@@ -1,4 +1,0 @@
-$ ->
-  mocha
-  .checkLeaks()
-  .run()
