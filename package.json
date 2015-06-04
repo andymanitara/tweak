@@ -25,5 +25,9 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "devDependencies": {
+    "uglify-js":"latest",
+    "coffee-script": "latest"
   }
 }
