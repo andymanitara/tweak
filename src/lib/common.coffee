@@ -115,7 +115,19 @@ class Tweak.Common
   @splitMultiName = (context, names) ->
     values = []
     # Reg-ex to split out the name prefix, suffix and the amount to expand by
-    reg = /^(.*)\[(\d*)(?:[,\-](\d*)){0,1}\](.*)$/
+    reg = ///
+      ^           # Assert start of string
+      (.*)        # Capture any character up to the next statement (prefix)
+      \[          # Check for a single [ character
+        (\d*)     # Greedily capture digits (min)
+        (?:       # Look ahead
+          [,\-]   # check for , or - character
+          (\d*)   # Greedily capture digits (max)
+        ){0,1}    # End look ahead - only between 0 and one times
+      \]          # Check for a single ] character
+      (.*)        # Capture any character up to the next statement (suffix)
+      $           # Assert end of string
+    ///
 
     # Split name if it is a string
     if typeof names is 'string'
