@@ -27,22 +27,22 @@ class Tweak.Components extends Tweak.Collection
     for item in @component.config.components
       obj = {}
       if item instanceof Array
-        names = tweak.Common.splitMultiName _name, item[0]
-        path = tweak.Common.relToAbs _name, item[1]
+        names = Tweak.Common.splitMultiName _name, item[0]
+        path = Tweak.Common.relToAbs _name, item[1]
         for name in names
-          @_data.push new tweak.Component @, {name, extends: path}
+          @_data.push new Tweak.Component @, {name, extends: path}
       else if typeof item is 'string'
-        data = tweak.Common.splitMultiName _name, item
+        data = Tweak.Common.splitMultiName _name, item
         for name in data
-          @_data.push new tweak.Component @, {name}
+          @_data.push new Tweak.Component @, {name}
       else
         obj = item
         name = obj.name
-        data = tweak.Common.splitMultiName _name, name
-        obj.extends = tweak.Common.relToAbs _name, obj.extends
+        data = Tweak.Common.splitMultiName _name, name
+        obj.extends = Tweak.Common.relToAbs _name, obj.extends
         for prop in data
           obj.name = prop
-          @_data.push new tweak.Component @, obj
+          @_data.push new Tweak.Component @, obj
       @_data[@length++].init()
     return
 

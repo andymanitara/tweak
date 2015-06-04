@@ -90,7 +90,7 @@ class Tweak.Router extends Tweak.Events
       });
   ###
   constructor: (@routes = {}) ->
-    tweak.History.addEvent 'changed', @__urlChanged, @
+    Tweak.History.addEvent 'changed', @__urlChanged, @
 
   ###
     Add a route to the Router.

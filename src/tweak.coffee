@@ -1,5 +1,5 @@
 ###
-  tweak.js 1.7.5
+  tweak.js 1.7.6
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
@@ -33,7 +33,7 @@ class Tweak
   strict:false
 
   constructor: (@root, tweak, @require, @$) ->
-    @prevTweak = tweak
+    @prevTweak = @root.tweak or tweak
 
   ###
     To extend an object with JS use tweak.extends.
@@ -63,9 +63,8 @@ class Tweak
     Restore the previous stored tweak.
   ###
   noConflict: ->
-    tweak = Tweak = @pTweak
+    if pTweak then tweak = Tweak = @pTweak
     @
-
   
 
 root = (typeof(self) is 'object' and self.self is self and self) or
@@ -82,14 +81,14 @@ if typeof(define) is 'function' and define.amd
       This will enable a switch to a CommonJS based system with AMD.
     ###
     toRequire = (module) -> define [module], (res) -> return res
-    root.tweak = root.Tweak = new Tweak root,  exports, toRequire , $
+    exports = root.tweak = root.Tweak = new Tweak root, exports, toRequire , $
 else if typeof(exports) isnt 'undefined'
   ###
     CommonJS and Node environment
   ###
   try $ = require '$'
   if not $ then try $ = require 'jquery'
-  tweak = Tweak = new Tweak root, exports, require, $
+  module?.exports = tweak = Tweak = new Tweak root, exports, require, $
 else
   ###
     Typical web environment - even though a module loader is required

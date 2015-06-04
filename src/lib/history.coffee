@@ -303,4 +303,4 @@ class Tweak.History extends Tweak.Events
     @triggerEvent 'changed', @url = now
     true
 
-tweak.History = new tweak.History()
+Tweak.History = new Tweak.History()

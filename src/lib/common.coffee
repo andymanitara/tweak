@@ -14,11 +14,11 @@ class Tweak.Common
     @param [Object, Array] two The Object/Array that shall be combined into the first object.
     @return [Object, Array] Returns the resulting combined object from two Object/Array.
   ###
-  combine: (one, two) ->
+  @combine = (one, two) ->
     for key, prop of two
       if typeof prop is 'object'
         one[key] ?= if prop instanceof Array then [] else {}
-        one[key] = tweak.Common.combine one[key], prop
+        one[key] = Tweak.Common.combine one[key], prop
       else
         one[key] = prop
     one
@@ -28,7 +28,7 @@ class Tweak.Common
     @param [Object, Array] ref Reference object to clone.
     @return [Object, Array] Returns the copied object, while removing object references.
   ###
-  clone: (ref) ->
+  @clone = (ref) ->
     # Handle the 3 simple types, and null or undefined. Peturns itself if it tries to clone itself otherwise it will stack overflow
     return ref if null is ref or 'object' isnt typeof ref or ref is @
 
@@ -48,7 +48,7 @@ class Tweak.Common
 
     # Handle Object
     for attr of ref
-      if ref.hasOwnProperty(attr) then copy[attr] = tweak.Common.clone ref[attr]
+      if ref.hasOwnProperty(attr) then copy[attr] = Tweak.Common.clone ref[attr]
     return copy
 
   ###
@@ -56,7 +56,7 @@ class Tweak.Common
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
     @return [JSONObject, JSONString] Returns JSON data of the opposite data type
   ###
-  parse: (data) -> JSON[if typeof data is 'string' then 'parse' else 'stringify'] data
+  @parse = (data) -> JSON[if typeof data is 'string' then 'parse' else 'stringify'] data
 
   ###
     Try to find a module by name in multiple paths. A final surrogate if available will be returned if no module can be found.
@@ -69,12 +69,12 @@ class Tweak.Common
     @throw When an object is found but there is an error during processing the found object the following message will appear -
       "Module (#{path}) found. Encountered #{e.name}: #{e.message}".
   ###
-  findModule: (contexts, module, surrogate) ->
+  @findModule = (contexts, module, surrogate) ->
     # Iterate each context
     for context in contexts
       # Convert path to absolute
       try
-        return tweak.Common.require context, module
+        return Tweak.Common.require context, module
       catch e
         # If the error thrown isn't a direct call on 'Error' Then the module was found however there was an internal error in the module
         if e.name isnt 'Error'
@@ -93,11 +93,11 @@ class Tweak.Common
     @return [Object] Required object or the surrogate if requested.
     @throw Error upon no found module.
   ###
-  require: (context, module, surrogate) ->
+  @require = (context, module, surrogate) ->
     # Convert path to absolute
-    path = tweak.Common.relToAbs context, module
+    path = Tweak.Common.relToAbs context, module
     try
-      return tweak.require path
+      return Tweak.require path
     catch e
       return surrogate if surrogate?
       throw e
@@ -112,7 +112,7 @@ class Tweak.Common
     @param [String, Array<String>] names The string to split into separate component names.
     @return [Array<String>] Array of absolute names.
   ###
-  splitMultiName: (context, names) ->
+  @splitMultiName = (context, names) ->
     values = []
     # Reg-ex to split out the name prefix, suffix and the amount to expand by
     reg = /^(.*)\[(\d*)(?:[,\-](\d*)){0,1}\](.*)$/
@@ -131,9 +131,9 @@ class Tweak.Common
         max = result[3] or min
         suffix = result[4]
         while min <= max
-          values.push tweak.Common.relToAbs context, "#{prefix}#{min++}#{suffix}"
+          values.push Tweak.Common.relToAbs context, "#{prefix}#{min++}#{suffix}"
       else
-        values.push tweak.Common.relToAbs context, item
+        values.push Tweak.Common.relToAbs context, item
     values
 
   ###
@@ -143,9 +143,7 @@ class Tweak.Common
     @param [String] name The path to convert to absolute path, based on the context path.
     @return [String] Absolute path.
   ###
-  relToAbs: (context, name) ->
+  @relToAbs = (context, name) ->
     amount = name.split(/\.{2,}[\/\\]*/).length-1 or 0
     context = context.replace new RegExp("([\\/\\\\]*[^\\/\\\\]+){#{amount}}[\\/\\\\]?$"), ''
     name.replace /^(\.+[\/\\]*)+/, "#{context}/"
-      
-tweak.Common = new tweak.Common()
