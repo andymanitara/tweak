@@ -56,7 +56,7 @@ class Tweak.Component
     # Set name of Component
     @name = options.name
     if not @name? then throw new Error 'No name given'
-    options.name = @name = Tweak.Common.relToAbs @parent.name or '', @name
+    options.name = @name = Tweak.Common.toAbsolute @parent.name or '', @name
 
     @config = @__buildConfig options
     # Router is optional as it is performance heavy
@@ -105,7 +105,7 @@ class Tweak.Component
     while extension
       requested = Tweak.Common.require name, "#{extension}/config", if Tweak.strict then null else {}
       # Store all the paths
-      paths.push Tweak.Common.relToAbs name, extension
+      paths.push Tweak.Common.toAbsolute name, extension
       # Push a clone of the config file to remove reference
       configs.push Tweak.Common.clone requested
       extension = requested.extends

@@ -28,7 +28,7 @@ class Tweak.Components extends Tweak.Collection
       obj = {}
       if item instanceof Array
         names = Tweak.Common.splitMultiName _name, item[0]
-        path = Tweak.Common.relToAbs _name, item[1]
+        path = Tweak.Common.toAbsolute _name, item[1]
         for name in names
           @_data.push new Tweak.Component @, {name, extends: path}
       else if typeof item is 'string'
@@ -39,7 +39,7 @@ class Tweak.Components extends Tweak.Collection
         obj = item
         name = obj.name
         data = Tweak.Common.splitMultiName _name, name
-        obj.extends = Tweak.Common.relToAbs _name, obj.extends
+        obj.extends = Tweak.Common.toAbsolute _name, obj.extends
         for prop in data
           obj.name = prop
           @_data.push new Tweak.Component @, obj

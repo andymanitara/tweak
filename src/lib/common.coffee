@@ -150,13 +150,41 @@ class Tweak.Common
     Tweak.Common.relToAbs context, path for path in paths
 
   ###
-    Convert relative path to an absolute path; relative path defined by ./ or .\
-    It will also reduce the prefix path by one level per ../ in the path.
-    @param [String] context The context path.
-    @param [String] name The path to convert to absolute path, based on the context path.
-    @return [String] Absolute path.
+    Convert a relative path to an absolute path; relative path defined by ./ or .\
+    It will also navigate up per defined ../.
+    @param [String] context The path to navigate to find absolute path based on given relative path.
+    @param [String] relative The relative path to convert to absolute path.
+    @return [String] Absolute path based upon the given context and relative path.
   ###
-  @relToAbs = (context, name) ->
-    amount = name.split(/\.{2,}[\/\\]*/).length-1 or 0
-    context = context.replace new RegExp("([\\/\\\\]*[^\\/\\\\]+){#{amount}}[\\/\\\\]?$"), ''
-    name.replace /^(\.+[\/\\]*)+/, "#{context}/"
+  @toAbsolute = (context, relative) ->
+    # RegExp to find the affix point on the relative path (./ ../ ../../ ect)
+    affixReg = ///
+      ^           # Assert start of String
+      (           # Open capture group
+        \.+       # One or more . characters
+        [\/\\]*   # Zero or more / characters
+      )+          # Close capture group - capture 1 or more times
+    ///
+    
+    # RegExp to detirmine how many levels path should go up by (defined by ../)
+    upReg = ///
+      ^         # Assert start of String
+      \.{2,}    # Two or more . characters
+      [\/\\]*   # Zero or more \ or / characters
+    ///         
+    
+    # The amount or directories/paths to go up by
+    amount = name.split(upReg).length-1 or 0
+
+    # RegExp to reduce the context path
+    reduceReg = ///
+      (             # Open capture group
+        [\/\\]*     # Zero or more \ or / characters
+        [^\/\\]+    # One or more characters that are not \ or /
+      ){#{amount}}  # Close capture group - capture x amount of times
+      [\/\\]?       #
+      $             # Assert end of String
+    ///
+
+    # Return the combined paths
+    name.replace affixReg, "#{context.replace reduceReg, 1}/"
