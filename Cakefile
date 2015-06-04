@@ -15,7 +15,7 @@ compile = (flags) ->
       exec 'coffee '+flags+' lib build', (error, stdout, stderr) ->
         throw err if err
         console.log 'Built'
-        exec 'uglifyjs lib/tweak.js -cm --source-map lib/tweak.min.js.map', (err, stdout, stderr) ->
+        exec 'uglifyjs lib/tweak.js -cmo lib/tweak.min.js --source-map lib/tweak.min.js.map', (err, stdout, stderr) ->
           throw err if err
           console.log 'Compressed'
 
