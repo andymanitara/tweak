@@ -22,6 +22,8 @@ Thumbs.db
 # NPM packages folder.
 node_modules/
 
+# Build output folders.
+build/
 
 # Documentation output folder.
 doc/

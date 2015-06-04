@@ -6,10 +6,12 @@
   "license": "MIT",
   "homepage": "http://tweakjs.com",
   "main": [
-    "public/scripts/tweak.js"
+    "lib/tweak.js"
   ],
   "keywords": ["MVC", "Components", "TweakJS", "Application"],
   "ignore": [
+    "src",
+    "build",
     "docs",
     "vendor",
     "bower_components",
