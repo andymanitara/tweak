@@ -12,7 +12,7 @@
     "TweakJS",
     "Application"
   ],
-  "version": "1.7.5",
+  "version": "1.7.6",
   "license": "MIT",
   "homepage": "http://tweakjs.com",
   "main": "lib/tweak.js",
