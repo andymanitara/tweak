@@ -20,11 +20,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "devDependencies": {
-    "coffee-script-brunch": "*",
-    "uglify-js-brunch": "*",
-    "css-brunch": "*",
-    "javascript-brunch": "*"
   }  
 }
