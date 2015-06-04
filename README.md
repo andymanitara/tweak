@@ -6,6 +6,9 @@
 [![Dependency Status](https://david-dm.org/blake-newman/TweakJS.svg)](https://david-dm.org/blake-newman/TweakJS)
 [![devDependency Status](https://david-dm.org/blake-newman/TweakJS/dev-status.svg)](https://david-dm.org/blake-newman/TweakJS#info=devDependencies)
 
+master: [![Build Status](https://travis-ci.org/blake-newman/TweakJS.svg?branch=master)](https://travis-ci.org/blake-newman/TweakJS)
+develop: [![Build Status](https://travis-ci.org/blake-newman/TweakJS.svg?branch=develop)](https://travis-ci.org/blake-newman/TweakJS)
+
 ## Introduction
 Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
 
