@@ -155,6 +155,15 @@ class Tweak.Common
     @param [String] context The path to navigate to find absolute path based on given relative path.
     @param [String] relative The relative path to convert to absolute path.
     @return [String] Absolute path based upon the given context and relative path.
+
+
+    @example Create absolute path from context of "albums/cds/songs"  with a path of '../cd1'
+      Tweak.Common.toAbsolute('albums/cds/songs', '../cd1');
+      // Returns 'albums/cds/cd1'
+
+    @example Create absolute path from context of "album1/cd1"  with a path of './beautiful'
+      Tweak.Common.toAbsolute('album1/cd1', './beautiful');
+      // Returns 'album1/cd1/beautiful'
   ###
   @toAbsolute = (context, relative) ->
     # RegExp to find the affix point on the relative path (./ ../ ../../ ect)
