@@ -51,12 +51,12 @@ class Tweak.Component
     relation = @relation = if relation is window then {} else relation
     relation.relation ?= {}
     # Get parent Component
-    @parent = if relation instanceof tweak.Component then relation else relation.component or relation
+    @parent = if relation instanceof Tweak.Component then relation else relation.component or relation
     @root = @parent.root or @
     # Set name of Component
     @name = options.name
     if not @name? then throw new Error 'No name given'
-    options.name = @name = tweak.Common.relToAbs @parent.name or '', @name
+    options.name = @name = Tweak.Common.relToAbs @parent.name or '', @name
 
     @config = @__buildConfig options
     # Router is optional as it is performance heavy
@@ -97,24 +97,24 @@ class Tweak.Component
 
     extension = @name
     if options
-      configs.push tweak.Common.clone options
+      configs.push Tweak.Common.clone options
       if options.extends then extension = options.extends
 
     # Gets all configs, by configs extension path
     name = @parent?.name or @name
     while extension
-      requested = tweak.Common.require name, "#{extension}/config", if tweak.strict then null else {}
+      requested = Tweak.Common.require name, "#{extension}/config", if Tweak.strict then null else {}
       # Store all the paths
-      paths.push tweak.Common.relToAbs name, extension
+      paths.push Tweak.Common.relToAbs name, extension
       # Push a clone of the config file to remove reference
-      configs.push tweak.Common.clone requested
+      configs.push Tweak.Common.clone requested
       extension = requested.extends
 
     # Combine all the config files into one
     # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]
     for i in [configs.length-2..0]
-      result = tweak.Common.combine result, configs[i]
+      result = Tweak.Common.combine result, configs[i]
 
     # Set initial values in config if they do not exist
     result.model ?= {}
@@ -132,7 +132,7 @@ class Tweak.Component
     @param [...] params Parameters passed into the module on construction.
   ###
   __addModule: (name, surrogate, params...) ->
-    Module = tweak.Common.findModule @paths, "./#{name}", surrogate
+    Module = Tweak.Common.findModule @paths, "./#{name}", surrogate
     module = @[name] = new Module @config[name], params...
     module.component = @
     module.root = @root
@@ -144,7 +144,7 @@ class Tweak.Component
     @param [...] params Parameters passed to into the view constructor.
   ###
   __addView: (params...) ->
-    @__addModule 'view', tweak.View, params...
+    @__addModule 'view', Tweak.View, params...
     return
 
   ###
@@ -153,7 +153,7 @@ class Tweak.Component
     @param [...] params Parameters passed to into the model constructor.
   ###
   __addModel: (params...) ->
-    @__addModule 'model', tweak.Model, params...
+    @__addModule 'model', Tweak.Model, params...
     return
 
   ###
@@ -162,7 +162,7 @@ class Tweak.Component
     @param [...] params Parameters passed to into the controller constructor.
   ###
   __addController: (params...) ->
-    @__addModule 'controller', tweak.Controller, params...
+    @__addModule 'controller', Tweak.Controller, params...
     return
 
   ###
@@ -171,7 +171,7 @@ class Tweak.Component
     @param [...] params Parameters passed to into the Components constructor.
   ###
   __addComponents: (params...) ->
-    @__addModule 'components', tweak.Components, params...
+    @__addModule 'components', Tweak.Components, params...
     return
 
   ###
@@ -180,7 +180,7 @@ class Tweak.Component
     @param [...] params Parameters passed to into the router constructor.
   ###
   __addRouter: (params...) ->
-    @__addModule 'router', tweak.Router, params...
+    @__addModule 'router', Tweak.Router, params...
     return
 
   ###

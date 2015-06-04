@@ -10,9 +10,9 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class Tweak.View extends tweak.Events
+class Tweak.View extends Tweak.Events
  
-  $ = tweak.$
+  $ = Tweak.$
 
   ###
     Default initialiser function - called when the View has rendered
@@ -29,7 +29,7 @@ class Tweak.View extends tweak.Events
     @return [String] Returns a string representaion of HTML to attach to view during render.
   ###
   template: (data) ->
-    (if config.template then tweak.Common.require config.template else tweak.Common.findModule @component.paths, './template') data
+    (if config.template then Tweak.Common.require config.template else Tweak.Common.findModule @component.paths, './template') data
 
   ###
     Default attach method. This is used to attach a HTML string to an element. You can override this method with your
@@ -90,7 +90,7 @@ class Tweak.View extends tweak.Events
           if child then break
           attachment = prop.getAttribute 'data-attach'
           if attachment? and not attachment.match /\s+/
-            for val in tweak.Common.splitMultiName @component.parent.name or '', attachment
+            for val in Tweak.Common.splitMultiName @component.parent.name or '', attachment
               if name is val
                 child = prop
                 break
@@ -108,7 +108,7 @@ class Tweak.View extends tweak.Events
     @el = @$el[0]
       
     # Add class names
-    names = tweak.Common.clone @component.paths
+    names = Tweak.Common.clone @component.paths
     if names.indexOf(@component.name) is -1 then names.unshift @component.name
     classNames = for name in names then name.replace /[\/\\]/g, '-'
     @$el.addClass classNames.join ' '
@@ -126,7 +126,7 @@ class Tweak.View extends tweak.Events
     return
 
   ###
-    Select a DOMElement using a selector engine dependency affixed to the tweak.Selector object.
+    Select a DOMElement from within the assigned view element
     @param [String, DOMElement] element A DOMElement or a string representing a selector query if using a selector engine.
     @param [DOMElement] root (Default = @el) The element root to search for elements with a selector engine.
     @return [Array<DOMElement>] An array of DOMElements.
