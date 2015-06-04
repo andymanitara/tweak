@@ -3,6 +3,4 @@ node_js:
   - "node"
   - "iojs"
 before_script:
-  cake watch
-before_install:
-  - npm install coffee-script uglify-js
+  cake build
