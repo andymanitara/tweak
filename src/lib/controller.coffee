@@ -8,7 +8,8 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.Controller extends tweak.Events
+class Tweak.Controller extends Tweak.Events
+  
   ###
     By default, this does nothing during initialization unless it is overridden.
   ###

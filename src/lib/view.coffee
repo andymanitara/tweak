@@ -10,7 +10,7 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.View extends tweak.Events
+class Tweak.View extends tweak.Events
  
   $ = tweak.$
 
@@ -21,13 +21,15 @@ class tweak.View extends tweak.Events
 
   ###
     Default template method. This is used to generate a html fro a template engine ect, to be used during the rendering
-    process.By default this method will generate a template through handlebars, it will also seek out the handlebars
-    template through the module loader.
+    process. By default this method will generate a template through handlebars, it will also seek out the template
+    through the module loader. This may be cross compatible with other template engines, however you can overwrite this
+    method if you want to use an alternative non-compatible template engine. There may also be an extension available
+    for your chosen template engine. Search [name]Tweaked for possible premade extensions.
+    @param [Object] data An object of data that can be passed to the template.
     @return [String] Returns a string representaion of HTML to attach to view during render.
   ###
-  template: ->
-    config = @component.config.view or {}
-    (if config.template then tweak.Common.require config.template else tweak.Common.findModule @component.paths, './template') config.data or @model._data
+  template: (data) ->
+    (if config.template then tweak.Common.require config.template else tweak.Common.findModule @component.paths, './template') data
 
   ###
     Default attach method. This is used to attach a HTML string to an element. You can override this method with your
@@ -102,7 +104,7 @@ class tweak.View extends tweak.Events
     parent = @component.parent?.view?.el
     attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     
-    @$el = $(@attach attachment, @template())
+    @$el = $(@attach attachment, @template @component.config.view.data or @model._data)
     @el = @$el[0]
       
     # Add class names

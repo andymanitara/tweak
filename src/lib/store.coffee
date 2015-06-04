@@ -11,7 +11,7 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.Store extends tweak.Events
+class Tweak.Store extends Tweak.Events
 
   # @property [String] The type of storage, i.e. 'collection' or 'model'
   _type: 'BASE'

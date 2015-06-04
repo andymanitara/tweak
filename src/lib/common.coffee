@@ -6,7 +6,8 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.Common
+class Tweak.Common
+  
   ###
     Merge properties from object from one object to another. (First object is the object to take on the properties from the second object).
     @param [Object, Array] one The Object/Array to combine properties into.

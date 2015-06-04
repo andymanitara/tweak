@@ -8,7 +8,8 @@
   are not exact, and will not directly represent valid code; the aim of an example
   is to show how to roughly use a method.
 ###
-class tweak.History extends tweak.Events
+class Tweak.History extends Tweak.Events
+
   usePush: true
   useHash: false
   started: false

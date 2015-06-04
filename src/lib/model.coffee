@@ -13,7 +13,8 @@
   are not exact, and will not directly represent valid code; the aim of an
   example is to show how to roughly use a method.
 ###
-class tweak.Model extends tweak.Store
+class Tweak.Model extends Tweak.Store
+
   # @property [String] The type of Store, i.e. 'collection' or 'model'.
   _type: 'model'
 
