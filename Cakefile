@@ -1,7 +1,7 @@
 exec = require('child_process').exec
 fs = require('fs')
 
-files = ['tweak', 'lib/common', 'lib/events', 'lib/store',  'lib/model', 'lib/view', 'lib/controller', 'lib/collection', 'lib/component', 'lib/components', 'lib/history', 'lib/router']
+files = ['tweak', 'lib/events', 'lib/store',  'lib/model', 'lib/view', 'lib/controller', 'lib/collection', 'lib/component', 'lib/components', 'lib/history', 'lib/router']
 
 compile = (flags) ->
   build = []
