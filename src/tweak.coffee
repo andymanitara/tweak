@@ -81,7 +81,7 @@ if typeof(define) is 'function' and define.amd
       This will enable a switch to a CommonJS based system with AMD.
     ###
     toRequire = (module) -> define [module], (res) -> return res
-    exports = root.tweak = root.Tweak = new Tweak root, exports, toRequire , $
+    exports = Tweak = root.tweak = root.Tweak = new Tweak root, exports, toRequire , $
 else if typeof(exports) isnt 'undefined'
   ###
     CommonJS and Node environment
@@ -95,4 +95,4 @@ else
     it is best to allow the user to set it up. Example Brunch uses CommonJS
     however it does not work exactly like it does in node so it goes through here
   ###
-  root.tweak = root.Tweak = new Tweak root, {}, root.require, root.jQuery or root.Zepto or root.ender or root.$
+  Tweak = root.tweak = root.Tweak = new Tweak root, {}, root.require, root.jQuery or root.Zepto or root.ender or root.$
