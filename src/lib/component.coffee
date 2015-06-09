@@ -56,7 +56,7 @@ class Tweak.Component
     # Set name of Component
     @name = options.name
     if not @name? then throw new Error 'No name given'
-    options.name = @name = Tweak.Common.relToAbs @parent.name or '', @name
+    options.name = @name = Tweak.toAbsolute @parent.name or '', @name
 
     @config = @__buildConfig options
     # Router is optional as it is performance heavy
@@ -97,24 +97,24 @@ class Tweak.Component
 
     extension = @name
     if options
-      configs.push Tweak.Common.clone options
+      configs.push Tweak.clone options
       if options.extends then extension = options.extends
 
     # Gets all configs, by configs extension path
     name = @parent?.name or @name
     while extension
-      requested = Tweak.Common.require name, "#{extension}/config", if Tweak.strict then null else {}
+      requested = Tweak.request name, "#{extension}/config", if Tweak.strict then null else {}
       # Store all the paths
-      paths.push Tweak.Common.relToAbs name, extension
+      paths.push Tweak.toAbsolute name, extension
       # Push a clone of the config file to remove reference
-      configs.push Tweak.Common.clone requested
+      configs.push Tweak.clone requested
       extension = requested.extends
 
     # Combine all the config files into one
     # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]
-    for i in [configs.length-2..0]
-      result = Tweak.Common.combine result, configs[i]
+    for i in [configs.length-1..0]
+      result = Tweak.extends result, configs[i]
 
     # Set initial values in config if they do not exist
     result.model ?= {}
@@ -132,7 +132,7 @@ class Tweak.Component
     @param [...] params Parameters passed into the module on construction.
   ###
   __addModule: (name, surrogate, params...) ->
-    Module = Tweak.Common.findModule @paths, "./#{name}", surrogate
+    Module = Tweak.findModule @paths, "./#{name}", surrogate
     module = @[name] = new Module @config[name], params...
     module.component = @
     module.root = @root

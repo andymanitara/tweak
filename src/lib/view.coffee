@@ -29,7 +29,7 @@ class Tweak.View extends Tweak.Events
     @return [String] Returns a string representaion of HTML to attach to view during render.
   ###
   template: (data) ->
-    (if config.template then Tweak.Common.require config.template else Tweak.Common.findModule @component.paths, './template') data
+    (if (config = @component.config.view)?.template then Tweak.request config.template else Tweak.findModule @component.paths, './template') data
 
   ###
     Default attach method. This is used to attach a HTML string to an element. You can override this method with your
@@ -90,7 +90,8 @@ class Tweak.View extends Tweak.Events
           if child then break
           attachment = prop.getAttribute 'data-attach'
           if attachment? and not attachment.match /\s+/
-            for val in Tweak.Common.splitMultiName @component.parent.name or '', attachment
+            for val in Tweak.splitPaths attachment
+              val = Tweak.toAbsolute @component.parent.name or '', val
               if name is val
                 child = prop
                 break
@@ -100,7 +101,6 @@ class Tweak.View extends Tweak.Events
       child
     
     # Attach template to the DOM and set @el
-    attachTo = config?.attach?.to or @component.name
     parent = @component.parent?.view?.el
     attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     
@@ -108,7 +108,7 @@ class Tweak.View extends Tweak.Events
     @el = @$el[0]
       
     # Add class names
-    names = Tweak.Common.clone @component.paths
+    names = Tweak.clone @component.paths
     if names.indexOf(@component.name) is -1 then names.unshift @component.name
     classNames = for name in names then name.replace /[\/\\]/g, '-'
     @$el.addClass classNames.join ' '
