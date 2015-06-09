@@ -21,9 +21,9 @@ class Tweak.Components extends Tweak.Collection
   init: ->
     @_data = []
     data = []
-    _absolute = (path) -> Tweak.toAbsolute @component.name, path
-    _paths = (paths) -> _absolute path for path in Tweak.splitPath paths
-    _add = (component) ->
+    _absolute = (path) => Tweak.toAbsolute @component.name, path
+    _paths = (paths) => _absolute path for path in Tweak.splitPaths paths
+    _add = (component) =>
       @_data.push component
       @length++
       component.init()

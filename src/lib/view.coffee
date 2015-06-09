@@ -29,7 +29,7 @@ class Tweak.View extends Tweak.Events
     @return [String] Returns a string representaion of HTML to attach to view during render.
   ###
   template: (data) ->
-    (if config.template then Tweak.request config.template else Tweak.findModule @component.paths, './template') data
+    (if (config = @component.config.view)?.template then Tweak.request config.template else Tweak.findModule @component.paths, './template') data
 
   ###
     Default attach method. This is used to attach a HTML string to an element. You can override this method with your
@@ -90,8 +90,8 @@ class Tweak.View extends Tweak.Events
           if child then break
           attachment = prop.getAttribute 'data-attach'
           if attachment? and not attachment.match /\s+/
-            for val in Tweak.splitPath attachment
-              val = Tweak.toAbsolute @component.parent.name or ''
+            for val in Tweak.splitPaths attachment
+              val = Tweak.toAbsolute @component.parent.name or '', val
               if name is val
                 child = prop
                 break
@@ -101,7 +101,6 @@ class Tweak.View extends Tweak.Events
       child
     
     # Attach template to the DOM and set @el
-    attachTo = config?.attach?.to or @component.name
     parent = @component.parent?.view?.el
     attachment = _getAttachment(parent) or _getAttachment(document.documentElement) or parent or document.documentElement
     

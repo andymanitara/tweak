@@ -107,7 +107,7 @@ class Tweak
     _new = if obj instanceof Array then [] else {}
 
     for key of obj when obj.hasOwnProperty key
-      _new[key] = clone obj[key], obj
+      _new[key] = @clone obj[key], obj
 
     return _new
 
@@ -159,8 +159,8 @@ class Tweak
     # Iterate each context
     for context in contexts
       try
-        # Attempt to require module
-        return Tweak.require context, module
+        # Attempt to request module
+        return @request context, module
       catch e
         # If the error thrown isn't a direct call on 'Error' Then the module was found
         # however there was an internal error in the module
@@ -194,10 +194,10 @@ class Tweak
   ###
   request: (context, module, surrogate) ->
     # module path to absolute
-    path = Tweak.toAbsolute context, module
+    path = @toAbsolute context, module
     try
       # Try to require the module returning if successful
-      return Tweak.require path
+      return @require path
     catch e
       # If there is in error then attempt to use a surrogate
       # If returns surrogate else it throws the error
@@ -293,7 +293,7 @@ class Tweak
     ///
     
     # The amount or directories/paths to go up by
-    amount = name.split(upReg).length-1 or 0
+    amount = relative.split(upReg).length-1 or 0
 
     # RegExp to reduce the context path
     reduceReg = ///
@@ -306,7 +306,7 @@ class Tweak
     ///
 
     # Return the combined paths
-    name.replace affixReg, "#{context.replace reduceReg, 1}/"
+    relative.replace affixReg, "#{context.replace reduceReg, ''}/"
   
 ###
   Assign root as either self, global or window.
