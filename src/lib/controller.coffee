@@ -29,12 +29,10 @@ class Tweak.Controller extends Tweak.Events
     initialized.
 
     @example Providing set-up to a Component through the Controller.
-      /*
-        Register the Controller to the Component's path name with a Module loader,
-        this will allow the Component to find its relating modules.
-      */
-      
-      // Using a CommonJS set-up
+    
+      //  Register the Controller to the Component's path name with a Module loader,
+      //  this will allow the Component to find its relating modules.      
+      //  Using a CommonJS set-up
       require.register('dummy/controller', function(exports, require, module) {
         var DummyComponentController;
         return module.exports = exports = DummyComponentController = (function() {
