@@ -8,10 +8,13 @@
   functionality shared between the Model and Collection. The main difference
   between a Model and collection it the base of its storage. The Model uses an
   object to store its data and a collection base storage is an Array.
-
-  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
-  are not exact, and will not directly represent valid code; the aim of an
-  example is to show how to roughly use a method.
+  
+  Examples are not exact, and will not directly represent valid code; the aim of
+  an example is to be a rough guide. JS is chosen as the default language to
+  represent Tweak.js as those using 'compile-to-languages' should have a good
+  understanding of JS and be able to translate the examples to a chosen language.
+  Support can be found through the community if needed. Please see our
+  Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
 ###
 class Tweak.Model extends Tweak.Store
 

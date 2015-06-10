@@ -11,6 +11,13 @@
   The benefits of the controller can include preprocessing of information and set-up of
   Components with its modules prior and after rendering a View. A Component upon its
   initialization will call the init method of its Controller module.
+
+  Examples are not exact, and will not directly represent valid code; the aim of
+  an example is to be a rough guide. JS is chosen as the default language to
+  represent Tweak.js as those using 'compile-to-languages' should have a good
+  understanding of JS and be able to translate the examples to a chosen language.
+  Support can be found through the community if needed. Please see our
+  Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
 ###
 class Tweak.Controller extends Tweak.Events
   

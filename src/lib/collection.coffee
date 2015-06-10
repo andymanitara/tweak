@@ -18,9 +18,12 @@
   should be possible to export and import data of that nature, but it’s not
   recommended - always try to keep stored data structured simply.
 
-  Examples are in JS, unless where CoffeeScript syntax may be unusual. Examples
-  are not exact, and will not directly represent valid code; the aim of an example
-  is to show how to roughly use a method.
+  Examples are not exact, and will not directly represent valid code; the aim of
+  an example is to be a rough guide. JS is chosen as the default language to
+  represent Tweak.js as those using 'compile-to-languages' should have a good
+  understanding of JS and be able to translate the examples to a chosen language.
+  Support can be found through the community if needed. Please see our
+  Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
 ###
 class Tweak.Collection extends Tweak.Store
   
