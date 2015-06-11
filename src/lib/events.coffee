@@ -1,10 +1,15 @@
 ###
   Tweak.js has an event system class, this provides functionality to extending classes to communicate simply and
   effectively while maintaining an organised structure to your code and applications. Each object can extend the
-  tweak.EventSystem class to provide event functionality to classes. Majority of Tweak.js modules/classes already extend
-  the EventSystem class, however when creating custom objects/classes you can extend the class using the tweak.Extends
-  method, please see the Class class in the documentation.
-    
+  Tweak.EventSystem class to inherit event functionality. Majority of Tweak.js modules/classes already extend
+  the EventSystem class, however when creating custom objects/classes you can extend the class using the Tweak.extends
+  method or your chosen language's extends method.
+  
+  The event system is bound to an object instance that extends the Tweak.Events Class. By bounding a Event system to
+  an instance you keep your event structure focused and accurate; avoiding confusion with complex event scopes. Event
+  names can be name spaced by any character, but you should keep the same name spacing structure as each structure will
+  be treated as unique. The typical character is to use is a ':'; so an example of a event name will be 'changed:name'.
+
   Examples are not exact, and will not directly represent valid code; the aim of an example is to be a rough guide. JS
   is chosen as the default language to represent Tweak.js as those using 'compile-to-languages' should have a good
   understanding of JS and be able to translate the examples to a chosen language. Support can be found through the
@@ -13,8 +18,8 @@
 class Tweak.Events
   
   ###
-    Iterate through events to find matching named events. Can be used to add a new event through the optional Boolean
-    build argument
+    Iterate through bound events to find matching events. The method can also be used to construct an event by passing
+    an optional true value Boolean argument.
 
     @overload findEvent(names, build)
       Find events with a space separated string.
@@ -56,28 +61,26 @@ class Tweak.Events
 
   ###
   findEvent: (names, build = false) ->
-    # Split name if it is a string
-    if typeof names is 'string'
-      names = names.split /\s+/
-    # Initiate @__events property if not yet initialised
+    # Split name into an Array of names if it is a string
+    if typeof names is 'string' then names = names.split /\s+/
+    # Initiate @__events property if not yet initialised, this avoids having to create a constructor method.
     events = @__events = @__events or {}
-    # Search for each name
-    for item in names
-      # Check if event exists
-      if not event = events[item]
-        # If we are to build then add a default event else continue the iteration
-        if build then event = @__events[item] = name: item, __callbacks: []
+    # Iterate through each name returns the found/created events
+    for name in names
+      # Check if event exists assigning it to event for later use
+      if not event = events[name]
+        # If we are to build then add a default event structure else continue the iteration
+        if build then event = @__events[name] = {name, __callbacks: []}
         else continue
-      # Push found/created event into the returning array
+      # Push found/created event into the returning Array
       event
 
   ###
-    Bind a callback to the event system. The callback is invoked when an
-    event is triggered. Events are added to an object based on their name.
-
-    Name spacing is useful to separate events into their relevant types.
-    It is typical to use colons for name spacing. However you can use any other
-    name spacing characters such as / \ - _ or .
+    Bind a callback to the event system. The callback is invoked when an event is triggered. Events are added to an
+    object based on their name. Name spacing is useful to separate events into their relevant types. It is typical to
+    use colons for name spacing, Default Tweak events will use the colon character as its name spacing. However you can
+    use any other name spacing characters such as / \ - _ or . Please keep in mind that if you vary the name spacing the
+    events will be treated as unique.
     
     @overload addEvent(names, callback, context, max)
       Bind a callback to event(s) with context and/or total calls
@@ -121,35 +124,42 @@ class Tweak.Events
       model.addEvent('sample:event', function(){
         alert('Sample event triggered.')
       }, this, 3);
-
   ###
   addEvent: (names, callback, context = @, max) ->
-    # Removes the need to have context when trying to pass max calls
-    if typeof context is 'number' or context is null
-      max = context
-      context = max or @
+    # Allows for context and max calls to be reversed
+    if typeof context is 'number' or context is null then [max, context] = [context, max]
+    # Set max to 0 if null
+    max or= 0
+
     # Find events / build the event path, then iterate through them.
     for event in @findEvent names, true
-      ignore = false
+      # For each iteration set toAdd to true, this determines whether to add or update event callback
+      toAdd = true
       # Iterate through all callbacks to this event
       for item in event.__callbacks
         # If the callback and context for an event match then ignore adding the event, but update the current event.
-        if item.callback is callback and context is item.ctx
-          # Update events maximum calls property
-          item.max = max
-          # Reset event calls and make event listen again
+        if item.callback is callback and context is item.context
+          # Update events maximum calls property if max value is undefined then leave as original value
+          item.max = max ? item.max
+          # Reset event calls back to zero
           item.calls = 0
-          item.listen = ignore = true
-      if not ignore then event.__callbacks.push {ctx: context, callback, max, calls: 0, listen: true}
+          # Event may listen again ignore adding new callback
+          item.listen = not toAdd = false
+      # If event was not updated then push callback to event
+      if toAdd then event.__callbacks.push context, callback, max, calls:0, listen:true
     return
 
   ###
-    Remove a previously bound callback function. Removing events can be limited to context and its callback.
+    Remove a previously bound callback function. Removing events can be limited to context and its callback. This will
+    destroy references to the callback event. To stop listening to an event without removing the event use the
+    updateEvent method. 
+
     @param [String] names The event name(s). Split on a space, or an array of event names.
-    @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all
-    the events under event name are removed.
-    @param [Object] context (default = this) The contextual object of which the event is bound to. If this matches then
-    it will be removed, however if set to null then all events no matter of context will be removed.
+    @param [Function] callback (optional) The callback function of the event. If an event has a matching callback or
+    callback argument is null it will be removed, however removing this event will be limited to the context argument.
+    @param [Object] context (default = this) The contextual object of which the event is bound to. If an event has a
+    matching context or context argument is null it will be removed, however removing this event will be limited to the
+    callback argument.
 
     @example Unbind a callback from event(s)
       var model;
@@ -167,7 +177,7 @@ class Tweak.Events
       # Check to see if the callback and/or context matches.
       # If event matches criteria then delete.
       for key, item of event.__callbacks
-        if (not callback? or callback is item.callback) and (not context? or context is item.ctx)
+        if (not callback? or callback is item.callback) and (not context? or context is item.context)
           event.__callbacks.splice key,1
       # If callbacks is empty then delete from @__events object
       if event.__callbacks.length is 0
@@ -176,7 +186,9 @@ class Tweak.Events
     return
 
   ###
-    Trigger events by name.
+    Trigger event callbacks by name. Triggers can be limited to matching context. When triggering an event you may pass
+    as many arguments to the callback method.
+
     @overload triggerEvent(names, params)
       Trigger events by name only.
       @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
@@ -205,35 +217,34 @@ class Tweak.Events
       model.triggerEvent({context:@, name:'sample:event another:event'});
   ###
   triggerEvent: (names, params...) ->
-    # If names is an object then set names and context
-    if typeof names is 'object' and not names instanceof Array
-      names = names.names or []
-      context = names.context or null
+    # If names argument is an object then set names and context
+    if typeof names is 'object' and not names instanceof Array then {names, context} = names
     
     # Iterate through found events
     for event in @findEvent names
-      # Iterate through this event's callbacks
-      for item in event.__callbacks
-        # If in listening state and if there is a context limit calls to the events with matching context
-        if item.listen and (not context? or context is item.ctx)
-          # Update the total calls to this event callback
-          if item.max? and ++item.calls >= item.max
-            # Event has hit call limit, so set its event listening state to false
-            item.listen = false
+      # Iterate through this event's callbacks only when item is in a listening state
+      for item in event.__callbacks when item.listen
+        # If there is a context limit calls to the events with matching context
+        if not context? or context is item.context
+          # Update the total calls and check if it has hit maximum calls, if it has turn listening state off
+          if ++item.calls >= item.max and item.max? then item.listen = false
           # Call the events callback - done asynchronously.
-          setTimeout (-> @callback.apply @ctx, params; return).bind(item), 0
+          setTimeout (-> @callback.apply @context, params; return).bind(item), 0
     return
 
   ###
-    Set events listening state, maximum calls, and total calls limited by name and options (callback, context).
+    Update an event. With this method it is possible to set the events listening state, maximum calls, and total calls
+    while limiting updated events by name and optional callback and/or context.
     @param [String] names The event name(s). Split on a space, or an array of event names.
     @param [Object] options Optional limiters and update values.
-    @option options [Object] context The contextual object to limit updating events to.
-    @option options [Function] callback Callback function to limit updating events to.
-    @option options [Number] max Set a new maximum calls to an event.
+    @option options [Object] context The contextual object to limit updating events to, this is a combined limiter, the 
+    value of the callback option will determine the events to update.
+    @option options [Function] callback Callback function to limit updating events to, this is a combined limiter, the
+    value of the context option will determine the events to update.
+    @option options [Number] max Set a new maximum amount of allowed calls for an event.
     @option options [Number] calls Set the amount of calls that has been triggered on this event.
     @option options [Boolean] reset (Default = false) If true then calls on an event get set back to 0.
-    @option options [Boolean] listen Whether to enable or disable listening to event.
+    @option options [Boolean] listen Whether to enable or disable listening state of an event.
 
     @example Updating event(s) to not listen
       var model;
@@ -268,19 +279,16 @@ class Tweak.Events
   ###
   updateEvent: (names, options = {}) ->
     # Set limiters and update properties
-    ctx = options.context
-    max = options.max
-    reset = options.reset
-    calls = if reset then 0 else options.calls or 0
-    listen = options.listen
-    callback = options.callback
+    {context, max, reset, calls, listen, callback} = options
+    # If reset is true then set calls to 0
+    if reset then calls = 0
 
     # Iterate through found events
     for event in @findEvent names
       # Iterate through this event's callbacks
       for item in event.__callbacks
         # Check to see if the callback and/or context matches.
-        if (not ctx? or ctx isnt item.ctx) and (not callback? or callback isnt item.callback)
+        if (not context? or context isnt item.context) and (not callback? or callback isnt item.callback)
           # Update event properties
           if max? then item.max = max
           if calls? then item.calls = calls
