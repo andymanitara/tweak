@@ -1,10 +1,8 @@
 ###
-  Tweak.js has an event system class, this provides functionality to extending
-  classes to communicate simply and effectively while maintaining an organised
-  structure to your code and applications. Each object can extend the
-  tweak.EventSystem class to provide event functionality to classes. Majority of
-  Tweak.js modules/classes already extend the EventSystem class, however when
-  creating custom objects/classes you can extend the class using the tweak.Extends
+  Tweak.js has an event system class, this provides functionality to extending classes to communicate simply and
+  effectively while maintaining an organised structure to your code and applications. Each object can extend the
+  tweak.EventSystem class to provide event functionality to classes. Majority of Tweak.js modules/classes already extend
+  the EventSystem class, however when creating custom objects/classes you can extend the class using the tweak.Extends
   method, please see the Class class in the documentation.
     
   Examples are not exact, and will not directly represent valid code; the aim of an example is to be a rough guide. JS
@@ -15,7 +13,8 @@
 class Tweak.Events
   
   ###
-    Iterate through events to find matching named events. Can be used to add a new event through the optional Boolean build argument
+    Iterate through events to find matching named events. Can be used to add a new event through the optional Boolean
+    build argument
 
     @overload findEvent(names, build)
       Find events with a space separated string.
@@ -85,7 +84,8 @@ class Tweak.Events
       @param [String, Array<String>] names The event name(s). Split on a space, or an array of event names.
       @param [Function] callback The event callback function.
       @param [Object] context (optional, default = this) The contextual object of which the event to be bound to.
-      @param [Number] max (optional, default = null). The maximum calls on the event listener. After the total calls the events callback will not invoke.
+      @param [Number] max (optional, default = null). The maximum calls on the event listener. After the total calls
+      the events callback will not invoke.
 
     @overload addEvent(names, callback, max, context)
       Bind a callback to event(s) with total calls and/or context
@@ -146,8 +146,10 @@ class Tweak.Events
   ###
     Remove a previously bound callback function. Removing events can be limited to context and its callback.
     @param [String] names The event name(s). Split on a space, or an array of event names.
-    @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all the events under event name are removed.
-    @param [Object] context (default = this) The contextual object of which the event is bound to. If this matches then it will be removed, however if set to null then all events no matter of context will be removed.
+    @param [Function] callback (optional) The callback function of the event. If no specific callback is given then all
+    the events under event name are removed.
+    @param [Object] context (default = this) The contextual object of which the event is bound to. If this matches then
+    it will be removed, however if set to null then all events no matter of context will be removed.
 
     @example Unbind a callback from event(s)
       var model;
