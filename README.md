@@ -10,9 +10,7 @@ master: [![Build Status](https://travis-ci.org/blake-newman/TweakJS.svg?branch=m
 develop: [![Build Status](https://travis-ci.org/blake-newman/TweakJS.svg?branch=develop)](https://travis-ci.org/blake-newman/TweakJS)
 
 ## Introduction
-Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
-
-Initially Tweak.js was primarily designed for CoffeeScripters, although JavaScripters can take advantage of CoffeeScript’s Class features through Tweak.js’ Class module. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple and effective.
+Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts. JavaScripters can take advantage of class features through Tweak.js, this makes OOP JavaScript easy to use even for JavaScipt purists. Tweak.js becomes even more powerful with JavaScript task runners such as Brunch, Grunt and Gulp. With the use of task runners structuring code into appropriate files/directories is extremely simple and effective.
 
 In addition to common MVC concepts Tweak.js introduces features like Components. Components are used to dynamically create a set of linking modules like the typical Models, Views and Controllers; that can be configured, extended, reused and organised. Tweak.js also includes Collection and Router modules like that of typical frameworks. Furthermore, to enhance the relationship between modules Tweak.js includes a powerful event system. The event system is simple and designed to extend modules/classes/objects with functionality to link actions between the individual modules.
 
@@ -49,14 +47,12 @@ NPM: `npm install tweakjs`
 ### Templates/Skeletons
 A skeleton for Grunt, Brunch a Gulp will shortly be created
 
-### Extensions
-As Tweak.js is built with CoffeeScript; which utilises OOP Classes, extending the framework is as easy as eating some pie. For example applying different template engines can be applied by an Extension. The extension can completely override a class or have to be directly accessed. 
+### Extensions/Plugins
+As Tweak.js is built with CoffeeScript; which utilises OOP Classes, extending the framework is as easy as eating some pie. For example applying different template engines can be applied by an extension/plugin. 
 
-When creating an Extension to a framework, please use the nameing convension of [Name]Tweaked, example JadeTweaked. This will make it easy for people to fine extensions to the framework. This isnt a required naming convetion, just a preferance, so dont worry if the name is already taken.
+When creating an extension/plugin to a framework, please use the naming convention of [Name]Tweaked, example JadeTweaked. This will make it easy for people to find extensions/plugins to the framework. This isn't a required naming convention, just a preference, so don't worry if the name is already taken.
 
-For a list of extentions look at EXTENSIONS.md. Please fork and add to the EXTENSIONS.md if you wish to submit an extension. 
-
-An example Extension will be supplied, along with how to apply it to the Framework.
+For a list of extensions/plugins look at EXTENSIONS.md. Please fork and add to the EXTENSIONS.md if you wish to submit an extension. An example extension will be supplied, along with how to apply it to the Framework.
 
 ## Concepts
 Below is a rough guide to the concepts used within Tweak.js. Additional information can be found on the web to help your understanding on MVC concepts. For more in-depth details on what Tweak.js can do, look at the relevant module in the [documentation](http://docs.tweakjs.com/) or look at the source code for line by line comments. Better yet just get stuck in and mess around with it; its versatile for lots of needs.  
@@ -108,15 +104,12 @@ Components bring Object Oriented Programming (OOP) concepts into MVC and JavaScr
 For more information please look at the [documentation](http://docs.tweakjs.com) under the ['Component'](http://docs.tweakjs.com/class/tweak/Component.html) and ['Component'](http://docs.tweakjs.com/class/tweak/Component.html) sections.
 
 ### Classes
-Classes are core to Tweak.js as it provides a solution to keep code organised, reusable and extend-able. If using CoffeeScript you should be well adapted the class concept and its functionality. The Class module provides JavaScript purists a way to use CoffeeScript based functionality to make objects extend-able without the complicated code that comes with it. ‘Super’ing inherited classes is also available through the class module.
-
-For more information and those using pure JavaScript please look at the [documentation](http://docs.tweakjs.com) under the ['Class'](http://docs.tweakjs.com/class/tweak/Class.html) section.
+Classes are core to Tweak.js as it provides a solution to keep code organised, reusable and extend-able. If using CoffeeScript you should be well adapted the OOP concepts and its functionalities. JavaScript purists can take advantage of Tweak.js' built in methods to embed OOP concepts; please look at the documentation/source for more information - [documentation](http://docs.tweakjs.com).
 
 ### Templates
-A template, written in a template language, describes the user interface of your application. Each template is backed by a Model, each template can be updated when you choose. You can use any template engine you with simple overwrite the views template engine, with your template creation. By default it uses Handlebars to generate the template, othere template engines may plug straight in; extenstions to the framework will be made for other templates. Eventually this will be changed to be a generic method within the View, with applied extensions to define the view being used.
+A template, written in a template language, describes the user interface of your application. Tweak.js doesn't limit you to how you create your templates, however as a rough guide; a template normally will be generated from a template engine like handlebars. Template engines will typically tie to a object to use as its construction, in Tweak.js this is normally your object. Templates are generated through the View module upon a render process, for more information on how this works look at the View modules documentation.
 
-#### Helpers
-Helper methods in template engines provide extra functionality to make template more dynamic. In a future update, it is hopeful that Tweak.js will provide a collection of useful helper functions that allow you to specify portions of a template that should listen to the event system to automatically update that portion of the template - providing simple and less expensive ways to update the View - similar to that of Ember.js.
+Currently Tweak.js uses HandleBars as it core template engine. You can override how templates are generated by extending the View module. This may be restructured in the future to not have any defaults; with handlebars and other generation methods being provided through extensions. 
 
 ## Contribution
 Feel free to contribute in any way you can. Whether it is contributing to the source code or [donating](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=648D6YUPB88XG) to help development. Tweak.js will always remain open source and I will never ask for your personal details.
