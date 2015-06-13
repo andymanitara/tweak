@@ -1,18 +1,13 @@
 ###
-  This is the base Class for dynamic storage based modules. A good way to think of
-  a Store/Model/Collection is to think it as Cache; it can be used to Store data for
-  temporary access. It receives and sends its data to a secondary permanent storage
-  solution. The Store class is the base functionality shared between a Model and
-  Collection. Classes that inherit Store class trigger events when it's storage
-  base is updated, this makes it easy to listen to changes and to action as and
-  when required.
+  This is the base Class for dynamic storage based modules. A good way to think of a Store/Model/Collection is to think
+  of it as Cache; it can be used to Store data for temporary access. This data can be provided to and from a permanent
+  data storage medium. A Store based Class should be used to listen to changes to data and providing actions upon the 
+  triggers provided by the event system.
 
-  Examples are not exact, and will not directly represent valid code; the aim of
-  an example is to be a rough guide. JS is chosen as the default language to
-  represent Tweak.js as those using 'compile-to-languages' should have a good
-  understanding of JS and be able to translate the examples to a chosen language.
-  Support can be found through the community if needed. Please see our
-  Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
+  Examples are not exact, and will not directly represent valid code; the aim of an example is to be a rough guide. JS
+  is chosen as the default language to represent Tweak.js as those using 'compile-to-languages' should have a good
+  understanding of JS and be able to translate the examples to a chosen language. Support can be found through the
+  community if needed. Please see our Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
 ###
 class Tweak.Store extends Tweak.Events
 
@@ -22,12 +17,15 @@ class Tweak.Store extends Tweak.Events
   length: 0
 
   ###
-    Default initialiser function
+    Default initialiser function. By default this is empty, upon initialisation of a component this will be called.
+    This acts as your constructor, giving you access to the other modules of the component. Please note you can use a
+    constructor method but you will not have access to other modules.
   ###
   init: ->
     
   ###
-    Set a single property or multiple properties.
+    Set a single property or multiple properties. Upon setting a property there will be an event triggered; you can use
+    this to listen to changes and act upon the changes as required; providing tangle free data binding. 
 
     @overload set(name, data, silent)
       Set an individual property by the name (String).
