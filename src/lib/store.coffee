@@ -106,8 +106,7 @@ class Tweak.Store extends Tweak.Events
       this.same({'sample':true},{'not':true}); //false
   ###
   same: (one, two) ->
-    for key, prop of one
-      if not two[key]? or two[key] isnt prop then return false
+    for key, prop of one when not two[key]? or prop isnt two[key] then return false
     true
     
   ###
