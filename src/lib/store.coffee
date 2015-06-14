@@ -4,6 +4,15 @@
   data storage medium. A Store based Class should be used to listen to changes to data and providing actions upon the 
   triggers provided by the event system.
 
+  A Store based class has a getter and setter system. So you can easily apply additional functionality when setting or 
+  getting from a Store based class. If there is a method within the Class that uses the naming convention of
+  'setter_{name}' or 'getter_{name}' ie 'getter_bike', then this method will be used to get/set the data from the Store
+  based Class. This is especially useful when a value of a property is subject to the value of other properties or 
+  conditions. The setter and getter naming convention is case sensitive, so if a property is called 'SuperBike' then the 
+  getter/setter will be formatted as 'setter_SuperBike'. For more information on how this works please see the methods
+  'get' and 'set'. Finally when using the set and get methods, you can pass in as many extra arguments which will be 
+  directed to the getter/setter methods.
+
   Examples are not exact, and will not directly represent valid code; the aim of an example is to be a rough guide. JS
   is chosen as the default language to represent Tweak.js as those using 'compile-to-languages' should have a good
   understanding of JS and be able to translate the examples to a chosen language. Support can be found through the
@@ -72,20 +81,15 @@ class Tweak.Store extends Tweak.Events
     @event changed:#{key} Triggers an event and passes in changed property.
     @event changed Triggers a generic event that the Store has been updated.
   ###
-  set: (data, params...) ->
-    silent = params[0]
-    type = typeof data
-    if type is 'string' or type is 'number'
-      prevProps = data
-      data = {}
-      data[prevProps] = params[0]
-      silent = params[1]
+  set: (data, silent, params...) ->
+    if typeof data isnt 'object'
+      data = {}[data] = silent
+      silent = params.splice 0, 1
 
-    obj = {}
     for key, prop of data
       prev = @_data[key]
       if not prev? then @length++
-      @_data[key] = @["__set#{key.replace /^[a-z]/, (m) -> m.toUpperCase()}"]?(prop) or prop
+      @_data[key] = @["setter_#{key}"]?(prop, params...) or prop
       if not silent then @triggerEvent "changed:#{key}", prop
 
     if not silent then @triggerEvent 'changed'
@@ -138,10 +142,10 @@ class Tweak.Store extends Tweak.Events
   get: (limit, params...) ->
     if not limit?
       limit = for key, item of @_data then key
-    if typeof limit is 'string' or typeof limit is 'number' then limit = [limit]
+    if not limit instanceof Array then limit = [limit]
     base = @__base()
     for item, i in limit
-      data = @["__get#{"#{item}".replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
+      data = @["getter_#{key}"]? params...
       if not data? then data = @_data[item]
       base[item] = data
     if i <= 1 then base = base[item]
@@ -170,11 +174,10 @@ class Tweak.Store extends Tweak.Events
     @example Get mutiple properties.
       this.has(['sample', 'pizza']);
   ###
-  has: (limit, params) ->
-    if typeof limit is 'string' or typeof limit is 'number' then limit = [limit]
-    for item, i in limit
-      data = @["__get#{item.replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
-      if not data? and not @_data[item]? then return false
+  has: (params) ->
+    res =  @get.apply @, params 
+    if not res instanceof Array then res = [res]
+    for prop in res when not prop? then return false
     true
 
   ###
