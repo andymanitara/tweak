@@ -188,12 +188,7 @@ class Tweak.Store extends Tweak.Events
     @example find keys of base storage where the value matches.
       this.where(1009); //[3,87]
   ###
-  where: (value) ->
-    result = []
-    data = @_data
-    for key, prop of data
-      if prop is value then result.push key
-    return result
+  where: (value) -> for key, prop of @_data when prop is value then key
 
   ###
     Reset the Store length to 0 and triggers change event.
