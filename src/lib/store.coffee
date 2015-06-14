@@ -11,10 +11,31 @@
 ###
 class Tweak.Store extends Tweak.Events
 
-  # @property [String] The type of storage, i.e. 'collection' or 'model'
-  _type: 'BASE'
+  # @property [String] The base object type ie {}, []
+  __base: -> {}
+
   # @property [Integer] Length of the Stores data
   length: 0
+
+  ###
+    The constructor initialises its initial data.
+
+    @example Creating a Collection with predefined set of data.
+      var collection;
+      collection = new tweak.Collection([
+        new Model(),
+        new Model()
+      ]);
+
+    @example Creating a Model with predefined set of data
+      var model;
+      model = new tweak.Model({
+        'demo':true,
+        'example':false,
+        'position':99
+      });
+  ###
+  constructor: (@_data = @__base()) ->
 
   ###
     Default initialiser function. By default this is empty, upon initialisation of a component this will be called.
@@ -118,7 +139,7 @@ class Tweak.Store extends Tweak.Events
     if not limit?
       limit = for key, item of @_data then key
     if typeof limit is 'string' or typeof limit is 'number' then limit = [limit]
-    base = if @_data instanceof Array then [] else {}
+    base = @__base()
     for item, i in limit
       data = @["__get#{"#{item}".replace /^[a-z]/, (m) -> m.toUpperCase()}"]? params...
       if not data? then data = @_data[item]
@@ -178,6 +199,7 @@ class Tweak.Store extends Tweak.Events
   ###
   reset: ->
     @length = 0
+    @_data = @__base()
     @triggerEvent 'changed'
     return
 
@@ -203,7 +225,7 @@ class Tweak.Store extends Tweak.Events
     @return [Object] Collection as a JSONString
   ###
   export: (limit) ->
-    res = {}
+    res = @__base()
     limit ?= for key, item of @_data then key
     for key in limit when (item = @get key)?
       if item.export?

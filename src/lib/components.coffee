@@ -14,10 +14,6 @@
   Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
 ###
 class Tweak.Components extends Tweak.Collection
-
-  # @property [String] The type of Store, i.e. 'collection', 'components' or 'model'.
-  _type: 'components'
-
   ###
    Construct the Collection with given options from the Components configuration.
   ###

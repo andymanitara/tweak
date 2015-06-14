@@ -27,8 +27,8 @@
 ###
 class Tweak.Collection extends Tweak.Store
   
-  # @property [String] The type of Store, i.e. 'collection' or 'model'.
-  _type: 'collection'
+  # @property [String] The base object type ie {}, []
+  __base: -> []
 
   ###
     @private
@@ -38,17 +38,7 @@ class Tweak.Collection extends Tweak.Store
     for key, item of data then trigger "changed:#{key}", item
     triggerEvent 'changed', data
 
-  ###
-    The constructor initialises the controllers unique ID and its initial data.
-
-    @example Creating a Collection with predefined set of data.
-      var collection;
-      collection = new tweak.Collection([
-        new Model(),
-        new Model()
-      ]);
-  ###
-  constructor: (@_data = []) ->
+  
 
   ###
     Add a new property to the end of the Collection.
@@ -323,16 +313,6 @@ class Tweak.Collection extends Tweak.Store
   ###
   concat: (arrays, silent) ->
     @splice @length-1, 0, [].concat(arrays...), silent
-    return
-
-  ###
-    Reset the Collection back to defaults
-    
-    @event changed Triggers a generic event that the store has been updated
-  ###
-  reset: ->
-    @_data = []
-    super()
     return
 
   ###

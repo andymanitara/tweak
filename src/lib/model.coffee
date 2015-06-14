@@ -18,22 +18,6 @@
 ###
 class Tweak.Model extends Tweak.Store
 
-  # @property [String] The type of Store, i.e. 'collection' or 'model'.
-  _type: 'model'
-
-  ###
-    The constructor initialises the controllers unique ID and its initial data.
-
-    @example Creating a Model with predefined set of data
-      var model;
-      model = new tweak.Model({
-        'demo':true,
-        'example':false,
-        'position':99
-      });
-  ###
-  constructor: (@_data = {}) ->
-
   ###
     Remove a single property or many properties.
     @param [String, Array<String>] properties Array of property names to remove from a Model, or single String of the name of the property to remove.
@@ -79,12 +63,3 @@ class Tweak.Model extends Tweak.Store
     for key, prop of @_data
       if prop is property then result.push key
     result
-
-  ###
-    Reset the Model back to defaults.
-    @event changed Triggers a generic event that the Model has been updated.
-  ###
-  reset: ->
-    @_data = {}
-    super()
-    return
