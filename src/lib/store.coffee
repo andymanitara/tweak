@@ -5,18 +5,104 @@
   triggers provided by the event system.
 
   A Store based class has a getter and setter system. So you can easily apply additional functionality when setting or 
-  getting from a Store based class. If there is a method within the Class that uses the naming convention of
-  'setter_{name}' or 'getter_{name}' i.e. 'getter_bike', then this method will be used to get/set the data from the Store
-  based Class. This is especially useful when a value of a property is subject to the value of other properties or 
-  conditions. The setter and getter naming convention is case sensitive, so if a property is called 'SuperBike' then the 
-  getter/setter will be formatted as 'setter_SuperBike'. For more information on how this works please see the methods
-  'get' and 'set'. Finally when using the set and get methods, you can pass in as many extra arguments which will be 
-  directed to the getter/setter methods.
+  getting from a Store based class. 
+
+  When calling the set method of a Store based class, a setter method may be called. If a setter method to the naming
+  convention of 'setter_{property name}' is found then the returning value of this setter method will be assigned to
+  the property being set. Setter method will have the argument of its corresponding data value that was passed in to the
+  set method.
+
+  When calling the get method of a Store based class, a getter method may be called. If a getter method to the naming
+  convention of 'getter_{property name}' is found then the returning value of this getter will be returned by the get
+  method. A getter method will have the currently stored value as its argument.
 
   Examples are not exact, and will not directly represent valid code; the aim of an example is to be a rough guide. JS
   is chosen as the default language to represent Tweak.js as those using 'compile-to-languages' should have a good
   understanding of JS and be able to translate the examples to a chosen language. Support can be found through the
   community if needed. Please see our Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
+
+  @example Creating a setter and getter in Model.
+    // This example is very trivial but it illustrates some use of setters and getters
+    var QuestionModel, _model, exports;
+
+    module.exports = exports = QuestionModel = (function() {
+      function QuestionModel() {}
+
+      Tweak.extends(QuestionModel, Tweak.Model);
+      
+      // Correct getter will return true or false
+      QuestionModel.prototype.getter_correct = function(_prev) {
+        _correct = this.get('answer') === this.get('correct_answer');
+        // You can use a getter to compare to the previous value
+        if (_prev === true && _correct === false) {
+          alert('You already got this correct, you should know the answer!'); 
+        }
+        // You can use the model value as a private property to later use as a comparison
+        // In this instance when answer has been answered correct it will be saved to model
+        if (_correct === true) {
+          // Set correct silently
+          this.set('correct', true, true);
+        }
+        return _correct
+      };
+
+      // The answer may only be in the range of 0 - 100
+      // This setter will auto validate the answer to within the range, while if its not in range it will trigger an
+      // event from the model. For example a notification could be displayed letting the user know his answer was 
+      QuestionModel.prototype.setter_answer = function(value) {
+        var error;
+        error = value > 100 ? 'above' : value < 0 ? 'below' : null;
+        if (error) {
+          this.trigger('error:range:' + error, value);
+        }
+        if (error < 0) {
+          return 0;
+        } else if (value > 100) {
+          return 100;
+        } else {
+          return value;
+        }
+      };
+
+      return QuestionModel;
+
+    })();
+
+    // Create a new QuestionModel where the answer correct_answer is 10
+    _model = new QuestionModel({
+      correct_answer: 10
+    });
+    
+    // Listen to answer being set alerting whether the user has got the answer correct
+    _model.addEvent('changed:answer', function() {
+      return alert('Answer is ' + (this.get('correct') ? 'Correct' : 'Wrong'));
+    });
+    
+    // Listen range error - lets the user knows that his answer was above range
+    _model.addEvent('error:range:above', function(value) {
+      return alert('Answer (' + value + ') is above max range of 100, answer has been altered to 100');
+    });
+    
+    // Listen range error - lets the user knows that his answer was above range
+    _model.addEvent('error:range:below', function(value) {
+      return alert('Answer (' + value + ') is below min range of 100, answer has been altered to 0');
+    });
+
+    // Alerts 'Answer is Wrong'
+    _model.set('answer', 20);
+
+    // Alerts 'Answer (500) is above max range of 100, answer has been altered to 100'
+    // Alerts 'Answer is Wrong'
+    _model.set('answer', 500);
+
+    // Alerts 'Answer is Correct'
+    _model.set('answer', 10);    
+    
+    // Alerts 'You already got this correct, you should know the answer!'
+    // Alerts 'Answer is wrong'
+    _model.set('answer', 5);    
+    
+  
 ###
 class Tweak.Store extends Tweak.Events
 
@@ -53,20 +139,22 @@ class Tweak.Store extends Tweak.Events
   ###
   init: ->
     
-  ###
+  ###    
     Set a single property or multiple properties. Upon setting a property there will be an event triggered; you can use
-    this to listen to changes and act upon the changes as required; providing tangle free data binding. 
-
-    @overload set(name, data, silent)
-      Set an individual property by the name (String).
-      @param [String] name The name of the property.
-      @param [*] data Data to Store in the property.
-      @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
-
+    this to listen to changes and act upon the changes as required.     
     @overload set(data, silent)
       Set multiple properties by an object of data.
       @param [Object] data Key and property based object.
       @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
+      @param [...] params (optional) Extra parameters get passed to setter. Silent argument must be passed when this is.
+    
+    @overload set(name, data, silent)
+      Set an individual property by the name (String) will passing extra parameters to setter
+      @param [String] name The name of the property.
+      @param [*] data Data to Store in the property.
+      @param [Boolean] silent (optional, default = false) If true events are not triggered upon any changes to the data.
+      @param [...] params (optional) Extra parameters get passed to setter. Silent argument must be passed when this is.
+    
 
     @example Setting single property.
       this.set('sample', 100);
@@ -81,15 +169,18 @@ class Tweak.Store extends Tweak.Events
     @event changed:#{key} Triggers an event and passes in changed property.
     @event changed Triggers a generic event that the Store has been updated.
   ###
-  set: (data, silent, params...) ->
-    if typeof data isnt 'object'
+  set: (data, silent, arg3) ->
+    # If there is a third argument then it is assumed that data is a String
+    if arg3?
+      # Create new Object with property as first argument with 
       data = {}[data] = silent
-      silent = params.splice 0, 1
+      silent = arg3
 
     for key, prop of data
       prev = @_data[key]
       if not prev? then @length++
-      @_data[key] = @["setter_#{key}"]?(prop, params...) or prop
+      fn = @["setter_#{key}"]      
+      @_data[key] = if fn? then fn(prop) else prop
       if not silent then @triggerEvent "changed:#{key}", prop
 
     if not silent then @triggerEvent 'changed'
@@ -111,10 +202,7 @@ class Tweak.Store extends Tweak.Events
     
   ###
     Get a property from the base storage.
-    @param [String, Array<String>] property Property/properties to retrieve from the base storage.
-    @param [...] params Parameters to pass into getter method
-    @return [*] Property/properties from base storage.
-    
+
     @overload get()
       Get all properties from base storage.
       @return [Array<*>, Object] Properties from base storage.
@@ -138,14 +226,15 @@ class Tweak.Store extends Tweak.Events
     @example Get all properties.
       this.get();
   ###
-  get: (limit, params...) ->
+  get: (limit) ->
     if not limit?
       limit = for key, item of @_data then key
     if not limit instanceof Array then limit = [limit]
     base = @__base()
     for item, i in limit
-      data = @["getter_#{key}"]? params...
-      if not data? then data = @_data[item]
+      fn = @["getter_#{key}"]
+      _data = @_data[item]
+      data = if fn? then fn _data else _data
       base[item] = data
     if i <= 1 then base = base[item]
     base
@@ -153,9 +242,6 @@ class Tweak.Store extends Tweak.Events
 
   ###
     Checks if a property/properties exists in the base storage.
-    @param [String, Array<String>] limit Property/properties name to look for in the base storage.
-    @param [...] params Parameters to pass into getter method
-    @return [Boolean] Returns true or false depending if the property exists in the base storage.
 
     @overload has(name)
       Get an individual property by a property name.
@@ -173,8 +259,8 @@ class Tweak.Store extends Tweak.Events
     @example Get mutiple properties.
       this.has(['sample', 'pizza']);
   ###
-  has: (params) ->
-    res =  @get.apply @, params 
+  has: (limit) ->
+    res = @get limit 
     if not res instanceof Array then res = [res]
     for prop in res when not prop? then return false
     true
