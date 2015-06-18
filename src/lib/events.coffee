@@ -146,13 +146,13 @@ class Tweak.Events
           # Event may listen again ignore adding new callback
           item.listen = not toAdd = false
       # If event was not updated then push callback to event
-      if toAdd then event.__callbacks.push context, callback, max, calls:0, listen:true
+      if toAdd then event.__callbacks.push {context, callback, max, calls:0, listen:true}
     return
 
   ###
     Remove a previously bound callback function. Removing events can be limited to context and its callback. This will
     destroy references to the callback event. To stop listening to an event without removing the event use the
-    updateEvent method. 
+    updateEvent method.
 
     @param [String] names The event name(s). Split on a space, or an array of event names.
     @param [Function] callback (optional) The callback function of the event. If an event has a matching callback or
@@ -237,7 +237,7 @@ class Tweak.Events
     while limiting updated events by name and optional callback and/or context.
     @param [String] names The event name(s). Split on a space, or an array of event names.
     @param [Object] options Optional limiters and update values.
-    @option options [Object] context The contextual object to limit updating events to, this is a combined limiter, the 
+    @option options [Object] context The contextual object to limit updating events to, this is a combined limiter, the
     value of the callback option will determine the events to update.
     @option options [Function] callback Callback function to limit updating events to, this is a combined limiter, the
     value of the context option will determine the events to update.
