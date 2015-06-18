@@ -92,7 +92,7 @@ class Tweak.View extends Tweak.Events
         for prop in elements
           if child then break
           attachment = prop.getAttribute 'data-attach'
-          if attachment? and not attachment.match /\s+/
+          if attachment? and not attachment.match /^\s+$/
             for val in Tweak.splitPaths attachment
               val = Tweak.toAbsolute @component.parent.name or '', val
               if name is val
