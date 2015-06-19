@@ -170,8 +170,8 @@ class Tweak.Store extends Tweak.Events
     @event changed Triggers a generic event that the Store has been updated.
   ###
   set: (data, silent, arg3) ->
-    # If there is a third argument then it is assumed that data is a String
-    if arg3?
+    # If first argument is a sting then structure into object
+    if typeof data is 'string'
       # Create new Object with property as first argument with 
       data = {}[data] = silent
       silent = arg3
@@ -181,7 +181,7 @@ class Tweak.Store extends Tweak.Events
       if not prev? then @length++
       fn = @["setter_#{key}"]      
       @_data[key] = if fn? then fn(prop) else prop
-      if not silent then @triggerEvent "changed:#{key}", prop
+      if not silent then @triggerEvent "changed:#{key}", @_data[key]
 
     if not silent then @triggerEvent 'changed'
     return
