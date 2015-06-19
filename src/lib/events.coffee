@@ -128,8 +128,6 @@ class Tweak.Events
   addEvent: (names, callback, context = @, max) ->
     # Allows for context and max calls to be reversed
     if typeof context is 'number' or context is null then [max, context] = [context, max]
-    # Set max to 0 if null
-    max or= 0
 
     # Find events / build the event path, then iterate through them.
     for event in @findEvent names, true
