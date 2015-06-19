@@ -229,7 +229,7 @@ class Tweak.Store extends Tweak.Events
   get: (limit) ->
     if not limit?
       limit = for key, item of @_data then key
-    if not limit instanceof Array then limit = [limit]
+    if not (limit instanceof Array) then limit = [limit]
     base = @__base()
     for item, i in limit
       fn = @["getter_#{key}"]
@@ -261,7 +261,7 @@ class Tweak.Store extends Tweak.Events
   ###
   has: (limit) ->
     res = @get limit 
-    if not res instanceof Array then res = [res]
+    if not (res instanceof Array) then res = [res]
     for prop in res when not prop? then return false
     true
 
