@@ -117,7 +117,7 @@ class Tweak.Component
     # The values of the config files from lower down the chain have priority
     result = configs[configs.length-1]
     for i in [configs.length-1..0]
-      result = Tweak.extends result, configs[i]
+      result = Tweak.combine result, configs[i]
 
     # Set initial values in config if they do not exist
     result.model ?= {}

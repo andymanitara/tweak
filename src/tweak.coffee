@@ -109,6 +109,43 @@ class Tweak
 
     return _new
 
+
+  ###
+    Similar to Tweak.extends. However this will combine nested objects to make a full cobined object. This should only
+    be done with simple objects; as this method can get very expensive.
+    @param [Object, Array] ref Reference Object.
+    @param [Object, Array] ref Object to merge into.
+    @return [Object, Array] Returns the combined Object.
+
+    @example Combining an Object.
+      var obj, obj2;
+      obj = {
+        total:{
+          laps:10,
+          miles:30
+        }
+      }
+
+      obj2 = {
+        total:{
+          miles:32
+        }
+      }
+      
+      // Clone the object.
+      Tweak.Combine(obj);
+      
+
+  ###
+  combine: (obj, parent) ->
+    for key, prop of parent
+      if typeof prop is 'object'
+        obj[key] ?= if prop instanceof Array then [] else {}
+        obj[key] = @combine obj[key], prop
+      else
+        obj[key] = prop
+    obj
+
   ###
     Switch a JSONObject/JSONString to it alternative type.
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
