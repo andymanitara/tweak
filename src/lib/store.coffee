@@ -173,14 +173,15 @@ class Tweak.Store extends Tweak.Events
     # If first argument is a sting then structure into object
     if typeof data is 'string'
       # Create new Object with property as first argument with 
-      data = {}[data] = silent
+      (_data = {})[data] = silent
+      data = _data
       silent = arg3
 
     for key, prop of data
       prev = @_data[key]
       if not prev? then @length++
       fn = @["setter_#{key}"]      
-      @_data[key] = if fn? then fn(prop) else prop
+      @_data[key] = if fn? then fn.call(@, prop) else prop
       if not silent then @triggerEvent "changed:#{key}", @_data[key]
 
     if not silent then @triggerEvent 'changed'
@@ -234,7 +235,7 @@ class Tweak.Store extends Tweak.Events
     for item, i in limit
       fn = @["getter_#{key}"]
       _data = @_data[item]
-      data = if fn? then fn _data else _data
+      data = if fn? then fn.call(@, _data) else _data
       base[item] = data
     if i <= 1 then base = base[item]
     base
