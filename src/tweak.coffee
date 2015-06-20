@@ -52,7 +52,7 @@ class Tweak
     @param [string] name The method name to call super upon.
     @param [Obect] that Pass a context to the super call.
   ###
-  super: (context, name, that) -> context.__super__[name].call that
+  super: (context, name, that, params...) -> context.__super__[name].apply that, params
 
   ###
     Restore the previous stored Tweak/tweak.
