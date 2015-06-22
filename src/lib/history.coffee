@@ -117,7 +117,7 @@ class Tweak.History extends Tweak.Events
    but if removed from page then component may want to stop the history.
   ###
   stop: ->
-    @__toggleListeners 'remvoe'
+    @__toggleListeners 'remove'
     @started = false
 
   ###
