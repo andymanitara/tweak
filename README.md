@@ -1,13 +1,13 @@
 # Tweak.js - Component driven MVC framework.
 
-[![Join the chat at https://gitter.im/blake-newman/TweakJS](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/blake-newman/TweakJS?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/tweak-js/tweak](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tweak-js/tweak?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![npm version](https://badge.fury.io/js/tweakjs.svg)](http://badge.fury.io/js/tweakjs)
 [![Bower version](https://badge.fury.io/bo/tweakjs.svg)](http://badge.fury.io/bo/tweakjs)
-[![Dependency Status](https://david-dm.org/blake-newman/TweakJS.svg)](https://david-dm.org/blake-newman/TweakJS)
-[![devDependency Status](https://david-dm.org/blake-newman/TweakJS/dev-status.svg)](https://david-dm.org/blake-newman/TweakJS#info=devDependencies)
+[![Dependency Status](https://david-dm.org/tweak-js/tweak.svg)](https://david-dm.org/tweak-js/tweak)
+[![devDependency Status](https://david-dm.org/tweak-js/tweak/dev-status.svg)](https://david-dm.org/tweak-js/tweak#info=devDependencies)
 
-master: [![Build Status](https://travis-ci.org/blake-newman/TweakJS.svg?branch=master)](https://travis-ci.org/blake-newman/TweakJS)
-develop: [![Build Status](https://travis-ci.org/blake-newman/TweakJS.svg?branch=develop)](https://travis-ci.org/blake-newman/TweakJS)
+master: [![Build Status](https://travis-ci.org/tweak-js/tweak.svg?branch=master)](https://travis-ci.org/tweak-js/tweak)
+develop: [![Build Status](https://travis-ci.org/tweak-js/tweak.svg?branch=develop)](https://travis-ci.org/tweak-js/tweak)
 
 ## Introduction
 Tweak.js is a MVC framework built to help developers' structure code; for use in web applications and web Components. Tweak.js is also accompanied with extra features that advances typical MVC concepts.
@@ -146,5 +146,5 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/blake-newman/tweakjs/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/tweak-js/tweak/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
