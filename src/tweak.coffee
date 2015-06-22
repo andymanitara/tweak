@@ -1,12 +1,10 @@
 ###
-  Tweak.js 1.7.10
-
+  Tweak.js 1.7.11
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
   For all details and documentation:
   http://tweakjs.com
-###
-###
+
   Tweak.js can be accessed globaly by tweak or Tweak. If using in node or a CommonJs then Tweak.js is not global.
 
   @note Assign ($, jQuery, Zepto...) to Tweak.$ for internal use. By default it will try to auto detect a value to use.
