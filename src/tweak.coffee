@@ -1,60 +1,57 @@
 ###
-  tweak.js 1.7.10
+  Tweak.js 1.7.11
 
   (c) 2014 Blake Newman.
   TweakJS may be freely distributed under the MIT license.
   For all details and documentation:
   http://tweakjs.com
-###
-###
-  Tweak.js can be accessed globaly by tweak or Tweak. If using in node or a
-  CommonJs then Tweak.js is not global.
 
-  @note Assign ($, jQuery, Zepto...) to Tweak.$ for internal use. By default it
-  will try to auto detect a value to use. This value can be overriden at any point.
-  
-  @note Assign module loader's require method to Tweak.require. By default it
-  will try to auto detect a value to use; depending on the enviroment and module
-  loader used you may need to overwrite this value.
-  
-  @note Assign true to Tweak.strict when you wish all components to require a related
-  config module. By default this module does not need to exist however it is recommended
-  as it allows powerful auto generation of components and deep extensions.
+  Tweak.js can be accessed globaly by tweak or Tweak. If using in node or a CommonJs then Tweak.js is not global.
 
+  @note Assign ($, jQuery, Zepto...) to Tweak.$ for internal use. By default it will try to auto detect a value to use.
+  This value can be overriden at any point.
+  
+  @note Assign module loader's require method to Tweak.require. By default it will try to auto detect a value to use; 
+  depending on the enviroment and module loader used you may need to overwrite this value.
+  
+  @note Assign true to Tweak.strict when you wish all components to require a related config module. By default this
+  module does not need to exist however  it is recommended as it allows powerful auto generation of components and deep
+  extensions.
+
+  Examples are not exact, and will not directly represent valid code; the aim of an example is to be a rough guide. JS
+  is chosen as the default language to represent Tweak.js as those using 'compile-to-languages' should have a good
+  understanding of JS and be able to translate the examples to a chosen language. Support can be found through the
+  community if needed. Please see our Gitter community for more help {http://gitter.im/blake-newman/TweakJS}.
 ###
 class Tweak
   ###
-    This constructs Tweak with default properties. Tweak is automatically assigned to
-    Tweak, tweak and module.exports.
+    This constructs Tweak with default properties. Tweak is automatically assigned to Tweak, tweak and module.exports.
   ###
-  constructor: (@root, tweak, @require, @$) ->
-    @prevTweak = @root.tweak or tweak
+  constructor: (@root, tweak, @require, @$) -> @prevTweak = @root.tweak or tweak
 
   ###
-    To extend an object with JS use Tweak.extends.
-    @note This is documented as a variable but is actually a method
+    To extend an object with JS use Tweak.extends().
+    @note This is documented as a variable but is actually a method.
     @param [Object] child The child Object to extend.
     @param [Object] parent The parent Object to inheret methods.
   ###
   extends: `extend`
 
   ###
-    Bind a context to a method. For example with 'that' being a
-    different context tweak.bind(this.pullyMethod, that).
-    @note This is documented as a variable but is actually a method
+    Bind a context to a method. For example with 'that' being a different context Tweak.bind(this.pullyMethod, that).
+    @note This is documented as a variable but is actually a method.
     @param [Function] fn The function to bind a property to.
     @param [Context] context The context to bing to a function.
   ###
   bind: `bind`
 
   ###
-    To super a method with JS use Tweak.super(context);.
-    Alternativaly just do (example) Model.__super__.set(this)
-    @param [Object] context The context to apply a super call to
+    To super a method with JS use Tweak.super(context);. Alternativaly just do (example) Model.__super__.set(this);
+    @param [Object] context The context to apply a super call to.
     @param [string] name The method name to call super upon.
-    @param [Obect] that Pass a context to the super call
+    @param [Obect] that Pass a context to the super call.
   ###
-  super: (context, name, that) -> context.__super__[name].call that
+  super: (context, name, that, params...) -> context.__super__[name].apply that, params
 
   ###
     Restore the previous stored Tweak/tweak.
@@ -69,17 +66,17 @@ class Tweak
     @return [Object, Array] Returns the copied Object, while removing references.
     @throw An error will be thrown if an object type is not supported.
 
-    @example Cloning an Object
+    @example Cloning an Object.
       var obj, obj2;
       obj = {
         test:'test',
         total:4
       }
       
-      // Clone the object
-      obj2 = tweak.Clone(obj);
+      // Clone the object.
+      obj2 = Tweak.Clone(obj);
       
-      // Alter the new object without adjusting other Object
+      // Alter the new object without adjusting other Object.
       obj2.test = null
 
   ###
@@ -111,12 +108,49 @@ class Tweak
 
     return _new
 
+
+  ###
+    Similar to Tweak.extends. However this will combine nested objects to make a full cobined object. This should only
+    be done with simple objects; as this method can get very expensive.
+    @param [Object, Array] ref Reference Object.
+    @param [Object, Array] ref Object to merge into.
+    @return [Object, Array] Returns the combined Object.
+
+    @example Combining an Object.
+      var obj, obj2;
+      obj = {
+        total:{
+          laps:10,
+          miles:30
+        }
+      }
+
+      obj2 = {
+        total:{
+          miles:32
+        }
+      }
+      
+      // Clone the object.
+      Tweak.Combine(obj);
+      
+
+  ###
+  combine: (obj, parent) ->
+    for key, prop of parent
+      if typeof prop is 'object'
+        obj[key] ?= if prop instanceof Array then [] else {}
+        obj[key] = @combine obj[key], prop
+      else
+        obj[key] = prop
+    obj
+
   ###
     Switch a JSONObject/JSONString to it alternative type.
     @param [JSONString, JSONObject] data JSONString/JSONObject to convert to vice versa.
     @return [JSONObject, JSONString] Returns JSONString/JSONObject data of the alternative type of passed value
 
-    @example JSON conversions
+    @example JSON conversions.
       var jString, jObj;
 
       jString = '{"cats":"meow"}';
@@ -124,17 +158,17 @@ class Tweak
         dogs:'woof'
       }
 
-      tweak.JSON(jString);
+      Tweak.JSON(jString);
       // Returns Object - { "cats":"meow" }
 
-      tweak.JSON(jObj);
+      Tweak.JSON(jObj);
       // Returns String - "{"dogs":"woof"}"
   ###
   JSON: (data) -> JSON[if typeof data is 'string' then 'parse' else 'stringify'] data
 
   ###
-    Try to find a module by name from multiple paths returning the first found module.
-    A final surrogate will be returned if no modules could be found.
+    Try to find a module by name from multiple paths returning the first found module. A final surrogate will be
+    returned if no modules could be found.
     @param [Array<String>] paths An array of context paths.
     @param [String] module The module path to convert to absolute path; based on the context path.
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
@@ -172,7 +206,7 @@ class Tweak
     throw new Error "No module #{module} for #{contexts[0]}"
 
   ###
-    Require/request a module from given context and path or return a surrogate
+    Require/request a module from given context and path or return a surrogate.
     @param [String] context The context path.
     @param [String] module The module path to convert to absolute path, based on the context path.
     @param [Object] surrogate (Optional) A surrogate Object that can be used if there is no module found.
@@ -260,8 +294,8 @@ class Tweak
     results
 
   ###
-    Convert a relative path to an absolute path; relative path defined by ./ or .\
-    It will also navigate up per defined ../.
+    Convert a relative path to an absolute path; relative path defined by ./ or .\ It will also
+    navigate up per defined ../.
     @param [String] context The path to navigate to find absolute path based on given relative path.
     @param [String] relative The relative path to convert to absolute path.
     @return [String] Absolute path based upon the given context and relative path.
@@ -316,8 +350,7 @@ root = (typeof(self) is 'object' and self.self is self and self) or
 window
 
 ###
-  To keep alternative frameworks to jQuery available to tweak,
-  register/define the appropriate framework to '$'
+  To keep alternative frameworks to jQuery available to Tweak, register/define the appropriate framework to '$'.
 ###
 if typeof(define) is 'function' and define.amd
   define ['$', 'exports'], ($, exports) ->
@@ -335,8 +368,7 @@ else if typeof(exports) isnt 'undefined'
   module?.exports = tweak = Tweak = new Tweak root, exports, require, $
 else
   ###
-    Typical web environment - even though a module loader is required
-    it is best to allow the user to set it up. Example Brunch uses CommonJS
-    however it does not work exactly like it does in node so it goes through here
+    Typical web environment - even though a module loader is required it is best to allow the user to set it up.
+    Example Brunch uses CommonJS however it does not work exactly like it does in node so it goes through here.
   ###
   Tweak = root.tweak = root.Tweak = new Tweak root, {}, root.require, root.jQuery or root.Zepto or root.ender or root.$
